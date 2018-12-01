@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Reloaded.Memory.Tests.Helpers
+{
+    public struct RandomByteArray
+    {
+        public byte[] Array { get; set; }
+
+        private RandomByteArray(byte[] array)
+        {
+            Array = array;
+        }
+
+        public static RandomByteArray GenerateRandomByteArray(int size)
+        {
+            RandomByteArray byteArray = new RandomByteArray();
+            Random randomGenerator    = new Random();
+
+            byteArray.Array = new byte[size];
+            randomGenerator.NextBytes(byteArray.Array);
+
+            return byteArray;
+        }
+    }
+}

@@ -2,12 +2,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.ExceptionServices;
+using System.Security;
+using Reloaded.Memory.Exceptions;
 using Reloaded.Memory.Sources;
 using Reloaded.Memory.Tests.Helpers;
+using Vanara.PInvoke;
 using Xunit;
 
 namespace Reloaded.Memory.Tests.Sources
 {
+    /* Note: The tests in this can randomly fail. */
+
+
     /// <summary>
     /// An implementation of an IEnumerator that contains different Memory sources to test against.
     /// </summary>
@@ -16,7 +23,7 @@ namespace Reloaded.Memory.Tests.Sources
         private readonly List<object[]> _data = new List<object[]>
         {
             new object[] { new Memory.Sources.Memory() },
-            new object[] { new ExternalMemory(Process.GetCurrentProcess()) }
+            new object[] { new Memory.Sources.ExternalMemory(Process.GetCurrentProcess()) }
         };
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -24,8 +31,19 @@ namespace Reloaded.Memory.Tests.Sources
     }
 
     // ReSharper disable once InconsistentNaming
-    public class IMemory
+    public class IMemory : IDisposable
     {
+        // Create dummy HelloWorld.exe
+        private Process _helloWorldProcess;
+        public IMemory() { _helloWorldProcess = Process.Start("HelloWorld.exe"); }
+
+        // Dispose of HelloWorld.exe
+        public void Dispose()
+        {
+            _helloWorldProcess.Kill();
+            _helloWorldProcess.Dispose();
+        }
+
         /// <summary>
         /// Attempts to allocate memory, checks if result points to valid memory (nonzero).
         /// </summary>
@@ -34,6 +52,10 @@ namespace Reloaded.Memory.Tests.Sources
         [ClassData(typeof(IMemoryGenerator))]
         public void AllocateMemory(Memory.Sources.IMemory memorySource)
         {
+            // Prepare
+            IMemoryTools.SwapExternalMemorySource(ref memorySource, _helloWorldProcess);
+
+            // Test
             IntPtr pointer = memorySource.Allocate(0xFFFF);
             Assert.NotEqual((IntPtr)0, pointer);
             memorySource.Free(pointer);
@@ -45,9 +67,10 @@ namespace Reloaded.Memory.Tests.Sources
         /// <param name="memorySource">Memory source to test allocation for.</param>
         [Theory]
         [ClassData(typeof(IMemoryGenerator))]
-        public void ReadWriteMemoryPrimitives(Memory.Sources.IMemory memorySource)
+        public void ReadWritePrimitives(Memory.Sources.IMemory memorySource)
         {
             // Prepare
+            IMemoryTools.SwapExternalMemorySource(ref memorySource, _helloWorldProcess);
             IntPtr pointer = memorySource.Allocate(0x100);
 
             /* Start Test */
@@ -68,14 +91,45 @@ namespace Reloaded.Memory.Tests.Sources
         }
 
         /// <summary>
+        /// Attempts to write primitives to a specific allocated memory address, then attempts to read the written value.
+        /// </summary>
+        /// <param name="memorySource">Memory source to test allocation for.</param>
+        [Theory]
+        [ClassData(typeof(IMemoryGenerator))]
+        public void ReadWriteRawData(Memory.Sources.IMemory memorySource)
+        {
+            // Prepare
+            int allocationSize = 0x100;
+            IMemoryTools.SwapExternalMemorySource(ref memorySource, _helloWorldProcess);
+            IntPtr pointer = memorySource.Allocate(allocationSize);
+
+            /* Start Test */
+
+            // Random integer read/write.
+            for (int x = 0; x < 100; x++)
+            {
+                RandomByteArray randomArray = RandomByteArray.GenerateRandomByteArray(allocationSize);
+                memorySource.WriteRaw(pointer, randomArray.Array);
+                memorySource.ReadRaw (pointer, out byte[] randomValueCopy, randomArray.Array.Length);
+                Assert.Equal(randomArray.Array, randomValueCopy);
+            }
+
+            /* End Test */
+
+            // Cleanup 
+            memorySource.Free(pointer);
+        }
+
+        /// <summary>
         /// Attempts to write structs to a specific allocated memory address, then attempts to read the written value.
         /// </summary>
         /// <param name="memorySource">Memory source to test allocation for.</param>
         [Theory]
         [ClassData(typeof(IMemoryGenerator))]
-        public void ReadWriteMemoryStructs(Memory.Sources.IMemory memorySource)
+        public void ReadWriteStructs(Memory.Sources.IMemory memorySource)
         {
             // Prepare
+            IMemoryTools.SwapExternalMemorySource(ref memorySource, _helloWorldProcess);
             IntPtr pointer = memorySource.Allocate(0x100);
 
             /* Start Test */
@@ -95,16 +149,16 @@ namespace Reloaded.Memory.Tests.Sources
             memorySource.Free(pointer);
         }
 
-
         /// <summary>
         /// Attempts to write structs, WITH MARSHALLING to a specific allocated memory address. Then attempts to read the written value.
         /// </summary>
         /// <param name="memorySource">Memory source to test allocation for.</param>
         [Theory]
         [ClassData(typeof(IMemoryGenerator))]
-        public void ReadWriteMemoryMarshallingStructs(Memory.Sources.IMemory memorySource)
+        public void ReadWriteWithMarshalling(Memory.Sources.IMemory memorySource)
         {
             // Prepare
+            IMemoryTools.SwapExternalMemorySource(ref memorySource, _helloWorldProcess);
             IntPtr pointer = memorySource.Allocate(0x100);
 
             /* Start Test */
@@ -132,5 +186,53 @@ namespace Reloaded.Memory.Tests.Sources
             memorySource.Free(pointer);
         }
 
+        /// <summary>
+        /// Attempts to write structs, WITH MARSHALLING to a specific allocated memory address. Then attempts to read the written value.
+        /// </summary>
+        /// <param name="memorySource">Memory source to test allocation for.</param>
+        [Theory]
+        [ClassData(typeof(IMemoryGenerator))]
+        public void ChangePermissions(Memory.Sources.IMemory memorySource)
+        {
+            // Prepare
+            IMemoryTools.SwapExternalMemorySource(ref memorySource, _helloWorldProcess);
+            IntPtr pointer = memorySource.Allocate(0x100);
+
+            /* Start Test */
+
+            // Run the function normally.
+            try   { memorySource.ChangePermission(pointer, 0x100, Kernel32.MEM_PROTECTION.PAGE_NOACCESS); }
+            catch (NotImplementedException) { } // ChangePermission is optional to implement
+
+            // NETCore removed handling of Corrupted State Exceptions https://github.com/dotnet/coreclr/issues/9045
+            // We cannot properly test the method.
+
+            // Restore or NETCore execution engine will complain.
+            try { memorySource.ChangePermission(pointer, 0x100, Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE); }
+            catch (NotImplementedException) { } // ChangePermission is optional to implement
+
+            // Cleanup 
+            memorySource.Free(pointer);
+        }
+
+        /// <summary>
+        /// Attempts to write structs, WITH MARSHALLING to a specific allocated memory address. Then attempts to read the written value.
+        /// </summary>
+        /// <param name="memorySource">Memory source to test allocation for.</param>
+        [Theory]
+        [ClassData(typeof(IMemoryGenerator))]
+        public void ChangePermissionFail(Memory.Sources.IMemory memorySource)
+        {
+            /* Start Test */
+
+            // Run the function normally.
+            try { memorySource.ChangePermission((IntPtr)(-1), 0x100, Kernel32.MEM_PROTECTION.PAGE_NOACCESS); }
+            catch (NotImplementedException)          { return; } // ChangePermission is optional to implement
+            catch (PermissionChangeFailureException) { return; } // Thrown as expected.
+
+            // Cleanup on fail.
+            memorySource.ChangePermission((IntPtr)(-1), 0x100, Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
+            Assert.True(false, "This method should throw CannotChangePermissionsException");
+        }
     }
 }

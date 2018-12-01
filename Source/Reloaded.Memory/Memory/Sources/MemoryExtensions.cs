@@ -169,6 +169,10 @@ namespace Reloaded.Memory.Sources
             While it is not necessary; deriving classes may override the defaults as they wish.
         */
 
+        /* Write: By Value to By Reference */
+        public static void Write<T>    (this IMemory memory, IntPtr memoryAddress, T item, bool marshal = false) => memory.Write(memoryAddress, ref item, marshal);
+        public static void SafeWrite<T>(this IMemory memory, IntPtr memoryAddress, T item, bool marshal = false) => memory.SafeWrite(memoryAddress, ref item, marshal);
+
         /* ChangePermission: Size Redirections */
 
         /// <summary>

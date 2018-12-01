@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
+using System.Security;
+using Reloaded.Memory.Exceptions;
 using Vanara.PInvoke;
 
 namespace Reloaded.Memory.Sources
@@ -62,7 +65,11 @@ namespace Reloaded.Memory.Sources
 
         public Kernel32.MEM_PROTECTION ChangePermission(IntPtr memoryAddress, int size, Kernel32.MEM_PROTECTION newPermissions)
         {
-            Kernel32.VirtualProtect(memoryAddress, (uint)size, newPermissions, out var oldPermissions);
+            bool result = Kernel32.VirtualProtect(memoryAddress, (uint)size, newPermissions, out var oldPermissions);
+
+            if (!result)
+                throw new PermissionChangeFailureException($"Unable to change permissions for the following memory address {memoryAddress.ToString("X")} of size {size} and permission {newPermissions.ToString()}");
+
             return oldPermissions;
         }
     }
