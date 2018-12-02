@@ -9,6 +9,7 @@ using Vanara.PInvoke;
 
 namespace Reloaded.Memory.Sources
 {
+    /// <inheritdoc />
     public unsafe class Memory : IMemory
     {
         /// <summary>
@@ -21,18 +22,18 @@ namespace Reloaded.Memory.Sources
             Read/Write Implementation
             -------------------------
         */
-
+        /// <inheritdoc />
         public void    Read<T>(IntPtr memoryAddress, out T value, bool marshal = false)
         {
             value = marshal ? Marshal.PtrToStructure<T>(memoryAddress) : Unsafe.Read<T>((void*)memoryAddress);
         }
-
+        /// <inheritdoc />
         public void    ReadRaw(IntPtr memoryAddress, out byte[] value, int length)
         {
             value = new byte[length];
             Marshal.Copy(memoryAddress, value, 0, value.Length);
         }
-
+        /// <inheritdoc />
         public void    Write<T>(IntPtr memoryAddress, ref T item, bool marshal = false)
         {
             if (marshal)
@@ -40,17 +41,17 @@ namespace Reloaded.Memory.Sources
             else
                 Unsafe.Write((void*)memoryAddress, item);
         }
-
+        /// <inheritdoc />
         public void    WriteRaw(IntPtr memoryAddress, byte[] data)
         {
             Marshal.Copy(data, 0, memoryAddress, data.Length);
         }
-
+        /// <inheritdoc />
         public IntPtr  Allocate(int length)
         {
             return Marshal.AllocHGlobal(length);
         }
-
+        /// <inheritdoc />
         public bool    Free(IntPtr address)
         {
             Marshal.FreeHGlobal(address);
@@ -63,12 +64,13 @@ namespace Reloaded.Memory.Sources
             --------------------------------
         */
 
+        /// <inheritdoc />
         public Kernel32.MEM_PROTECTION ChangePermission(IntPtr memoryAddress, int size, Kernel32.MEM_PROTECTION newPermissions)
         {
             bool result = Kernel32.VirtualProtect(memoryAddress, (uint)size, newPermissions, out var oldPermissions);
 
             if (!result)
-                throw new PermissionChangeFailureException($"Unable to change permissions for the following memory address {memoryAddress.ToString("X")} of size {size} and permission {newPermissions.ToString()}");
+                throw new MemoryPermissionException($"Unable to change permissions for the following memory address {memoryAddress.ToString("X")} of size {size} and permission {newPermissions.ToString()}");
 
             return oldPermissions;
         }

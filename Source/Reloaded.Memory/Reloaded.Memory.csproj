@@ -16,6 +16,10 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DocumentationFile>E:\Users\Desktop\Github\Reloaded Project\Reloaded.Memory\Source\Reloaded.Memory\Reloaded.Memory.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.5.2" />
     <PackageReference Include="Vanara.PInvoke.Kernel32" Version="2.0.0" />

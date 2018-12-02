@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Reloaded.Memory.Sources;
@@ -14,7 +15,7 @@ namespace Reloaded.Memory
         /* Memory Sources */
 
         /// <summary>
-        /// Defines the source for the default memory reading and writing <see cref="ToPtr"/> and <see cref="FromPtr"/> functions.
+        /// Defines the source for the default memory reading and writing <see cref="ToPtr{T}(System.IntPtr,T,bool)"/> and <see cref="FromPtr{T}(System.IntPtr,out T,bool)"/> functions.
         /// This also affects the <see cref="StructArray"/> class.
         /// </summary>
         public static IMemory Source { get; set; } = new Sources.Memory();
@@ -35,6 +36,7 @@ namespace Reloaded.Memory
         /// <param name="item">T</param>
         /// <param name="marshalElement">Set to true to marshal the element.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [ExcludeFromCodeCoverage] // Proxy Overload
         public static void ToPtr<T>(IntPtr pointer, T item, bool marshalElement = false) => ToPtr(pointer, ref item, marshalElement);
 
         /// <summary>
@@ -44,6 +46,7 @@ namespace Reloaded.Memory
         /// <param name="item">The item to write to a specified pointer.</param>
         /// <param name="marshalElement">Set to true to marshal the element.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [ExcludeFromCodeCoverage] // Proxy Overload
         public static void ToPtr<T>(IntPtr pointer, ref T item, bool marshalElement = false) => ToPtr(pointer, ref item, Source.Write, marshalElement);
 
         /* FromPtr: Default Setting Shorthands */
@@ -54,6 +57,7 @@ namespace Reloaded.Memory
         /// <param name="pointer">The address where to read the struct from.</param>
         /// <param name="value">Local variable to receive the read in struct.</param>
         /// <param name="marshalElement">Set to true to marshal the element.</param>
+        [ExcludeFromCodeCoverage] // Proxy Overload (Source.Read cannot be set default)
         public static void FromPtr<T>(IntPtr pointer, out T value, bool marshalElement = false) => FromPtr(pointer, out value, Source.Read<T>, marshalElement);
 
 

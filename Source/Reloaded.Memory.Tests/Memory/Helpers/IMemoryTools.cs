@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
+﻿using System.Diagnostics;
 using Reloaded.Memory.Sources;
 
-namespace Reloaded.Memory.Tests.Helpers
+namespace Reloaded.Memory.Tests.Memory.Helpers
 {
     public class IMemoryTools
     {
         /// <summary>
         /// If the memory source is of type ExternalMemory, give it a new instance of this process.
         /// </summary>
-        public static void SwapExternalMemorySource(ref Memory.Sources.IMemory memorySource, Process newProcess = null)
+        public static void SwapExternalMemorySource(ref Reloaded.Memory.Sources.IMemory memorySource, Process newProcess = null)
         {
             // While running tests with xUnit, dotnet can seemingly restart itself causing for the old handle set in
             // the IMemoryGenerator class to be invalid.
@@ -20,9 +17,9 @@ namespace Reloaded.Memory.Tests.Helpers
             if (memorySource.GetType() == typeof(ExternalMemory))
             {
                 if (newProcess != null)
-                    memorySource = new Memory.Sources.ExternalMemory(newProcess);
+                    memorySource = new Reloaded.Memory.Sources.ExternalMemory(newProcess);
                 else
-                    memorySource = new Memory.Sources.ExternalMemory(Process.GetCurrentProcess());
+                    memorySource = new Reloaded.Memory.Sources.ExternalMemory(Process.GetCurrentProcess());
             }
                 
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Vanara.PInvoke;
 
@@ -19,7 +20,15 @@ namespace Reloaded.Memory.Sources
         */
 
         /* Delegates */
+
+        /// <summary>
+        /// See <see cref="IMemory.Read{T}"/>
+        /// </summary>
         public delegate void ReadFunction<T> (IntPtr memoryAddress, out T value, bool marshal);
+
+        /// <summary>
+        /// See <see cref="IMemory.Write{T}"/>
+        /// </summary>
         public delegate void WriteFunction<T>(IntPtr memoryAddress, ref T item, bool marshal);
 
         /* Read Base Implementation */
@@ -29,6 +38,7 @@ namespace Reloaded.Memory.Sources
         /// </summary>
         /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
         /// <param name="value">Local variable to receive the read in struct array.</param>
+        /// <param name="memory"></param>
         /// <param name="memoryAddress">The memory address to read from.</param>
         /// <param name="arrayLength">The amount of array items to read.</param>
         /// <param name="marshal">Set this to true to enable struct marshalling.</param>
@@ -37,6 +47,7 @@ namespace Reloaded.Memory.Sources
             IMemory oldSource = Struct.Source;
             Struct.Source = memory;
 
+            value = new T[arrayLength];
             StructArray.FromPtr(memoryAddress, out value, arrayLength, marshal);
 
             Struct.Source = oldSource;
@@ -47,10 +58,10 @@ namespace Reloaded.Memory.Sources
         /// </summary>
         /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
         /// <param name="memory"></param>
-        /// <param name="value">Local variable to receive the read in struct.</param>
         /// <param name="memoryAddress">The memory address to read from.</param>
+        /// <param name="value">Local variable to receive the read in struct.</param>
         /// <param name="marshal">Set this to true to enable struct marshalling.</param>
-        public static void SafeRead<T>(this IMemory memory, out T value, IntPtr memoryAddress, bool marshal = false)
+        public static void SafeRead<T>(this IMemory memory, IntPtr memoryAddress, out T value,  bool marshal = false)
         {
             int structSize = Struct.GetSize<T>(marshal);
 
@@ -63,13 +74,16 @@ namespace Reloaded.Memory.Sources
         /// Changes memory permissions to ensure memory can be read and reads bytes from a specified memory address.
         /// </summary>
         /// <param name="memory"></param>
-        /// <param name="value">Local variable to receive the read in bytes.</param>
         /// <param name="memoryAddress">The memory address to read from.</param>
+        /// <param name="value">Local variable to receive the read in bytes.</param>
         /// <param name="length">The amount of bytes to read from the executable.</param>
-        public static void SafeReadRaw<T>(this IMemory memory, out byte[] value, IntPtr memoryAddress, int length)
+        public static void SafeReadRaw(this IMemory memory, IntPtr memoryAddress, out byte[] value,  int length)
         {
             var oldProtection = memory.ChangePermission(memoryAddress, length, Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
+
+            value = new byte[length];
             memory.ReadRaw(memoryAddress, out value, length);
+
             memory.ChangePermission(memoryAddress, length, oldProtection);
         }
 
@@ -78,11 +92,11 @@ namespace Reloaded.Memory.Sources
         /// </summary>
         /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
         /// <param name="memory"></param>
-        /// <param name="value">Local variable to receive the read in struct array.</param>
         /// <param name="memoryAddress">The memory address to read from.</param>
+        /// <param name="value">Local variable to receive the read in struct array.</param>
         /// <param name="arrayLength">The amount of array items to read.</param>
         /// <param name="marshal">Set this to true to enable struct marshalling.</param>
-        public static void SafeRead<T>(this IMemory memory, out T[] value, IntPtr memoryAddress, int arrayLength, bool marshal = false)
+        public static void SafeRead<T>(this IMemory memory, IntPtr memoryAddress, out T[] value, int arrayLength, bool marshal = false)
         {
             int regionSize = StructArray.GetSize<T>(arrayLength, marshal);
 
@@ -170,7 +184,17 @@ namespace Reloaded.Memory.Sources
         */
 
         /* Write: By Value to By Reference */
+
+        /// <summary>
+        /// See <see cref="IMemory.Write{T}"/>
+        /// </summary>
+        [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
         public static void Write<T>    (this IMemory memory, IntPtr memoryAddress, T item, bool marshal = false) => memory.Write(memoryAddress, ref item, marshal);
+
+        /// <summary>
+        /// See <see cref="SafeWrite{T}(Reloaded.Memory.Sources.IMemory,System.IntPtr,ref T,bool)"/> />
+        /// </summary>
+        [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
         public static void SafeWrite<T>(this IMemory memory, IntPtr memoryAddress, T item, bool marshal = false) => memory.SafeWrite(memoryAddress, ref item, marshal);
 
         /* ChangePermission: Size Redirections */
@@ -178,11 +202,14 @@ namespace Reloaded.Memory.Sources
         /// <summary>
         /// Changes the page permissions for a specified combination of address and element from which to deduce size.
         /// </summary>
+        /// <param name="memory"></param>
         /// <param name="memoryAddress">The memory address for which to change page permissions for.</param>
         /// <param name="baseElement">The struct element from which the region size to change permissions for will be calculated.</param>
         /// <param name="newPermissions">The new permissions to set.</param>
+        /// <param name="marshalElement">Set to true to calculate the size of the struct after marshalling instead of before.</param>
         /// <returns>The old page permissions.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [ExcludeFromCodeCoverage] // Wrapper that simply lets pass with base element calculated with functions tested elsewhere, no logic.
         public static Kernel32.MEM_PROTECTION ChangePermission<T>(this IMemory memory, IntPtr memoryAddress, ref T baseElement, Kernel32.MEM_PROTECTION newPermissions, bool marshalElement = false)
                            => memory.ChangePermission(memoryAddress, Struct.GetSize<T>(marshalElement), newPermissions);
     }

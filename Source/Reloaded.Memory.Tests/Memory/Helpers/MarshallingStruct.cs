@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
 
-namespace Reloaded.Memory.Tests.Helpers
+namespace Reloaded.Memory.Tests.Memory.Helpers
 {
     /// <summary>
     /// Sample struct that could represent a file entry in an archive format.

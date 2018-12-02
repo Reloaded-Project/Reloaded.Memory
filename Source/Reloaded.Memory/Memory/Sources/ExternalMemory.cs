@@ -7,6 +7,9 @@ using Vanara.PInvoke;
 
 namespace Reloaded.Memory.Sources
 {
+    /// <summary>
+    /// Provides access to memory of another process on a Windows machine.
+    /// </summary>
     public unsafe class ExternalMemory : IMemory
     {
         /// <summary>
@@ -18,7 +21,7 @@ namespace Reloaded.Memory.Sources
         /// Contains the handle of the process used to read memory
         /// from and write memory to external process.
         /// </summary>
-        private IntPtr _processHandle;
+        private readonly IntPtr _processHandle;
         
         /*
              --------------
@@ -48,7 +51,7 @@ namespace Reloaded.Memory.Sources
             Read/Write Implementation
             -------------------------
         */
-
+        /// <inheritdoc />
         public void Read<T>(IntPtr memoryAddress, out T value, bool marshal = false)
         {
             int structSize = Struct.GetSize<T>(marshal);
@@ -63,7 +66,7 @@ namespace Reloaded.Memory.Sources
                     throw new MemoryException($"ReadProcessMemory failed to read {structSize} bytes of memory from {memoryAddress.ToString("X")}");
             }
         }
-
+        /// <inheritdoc />
         public void ReadRaw(IntPtr memoryAddress, out byte[] value, int length)
         {
             value = new byte[length];
@@ -75,7 +78,7 @@ namespace Reloaded.Memory.Sources
                     throw new MemoryException($"ReadProcessMemory failed to read {value.Length} bytes of memory from {memoryAddress.ToString("X")}");
             }
         }
-
+        /// <inheritdoc />
         public void Write<T>(IntPtr memoryAddress, ref T item, bool marshal = false)
         {
             byte[] bytes = Struct.GetBytes(ref item, marshal);
@@ -89,7 +92,7 @@ namespace Reloaded.Memory.Sources
             }
                 
         }
-
+        /// <inheritdoc />
         public void WriteRaw(IntPtr memoryAddress, byte[] data)
         {
             fixed (byte* bytePtr = data)
@@ -100,7 +103,7 @@ namespace Reloaded.Memory.Sources
                     throw new MemoryException($"WriteProcessMemory failed to write {data.Length} bytes of memory to {memoryAddress.ToString("X")}");
             }    
         }
-
+        /// <inheritdoc />
         public IntPtr Allocate(int length)
         {
             // Call VirtualAllocEx to allocate memory of fixed chosen size.
@@ -114,11 +117,11 @@ namespace Reloaded.Memory.Sources
             );
 
             if (returnAddress == IntPtr.Zero)
-                throw new AllocationFailedException($"Failed to allocate memory in external process: {length} bytes, {Kernel32.GetLastError()} last error.");                
+                throw new MemoryAllocationException($"Failed to allocate memory in external process: {length} bytes, {Kernel32.GetLastError()} last error.");                
 
             return returnAddress;
         }
-
+        /// <inheritdoc />
         public bool Free(IntPtr address)
         {
             return Kernel32.VirtualFreeEx(_processHandle, address, 0, Kernel32.MEM_ALLOCATION_TYPE.MEM_DECOMMIT | Kernel32.MEM_ALLOCATION_TYPE.MEM_RELEASE);
@@ -131,12 +134,14 @@ namespace Reloaded.Memory.Sources
         */
 
         /* Implementation */
+
+        /// <inheritdoc />
         public Kernel32.MEM_PROTECTION ChangePermission(IntPtr memoryAddress, int size, Kernel32.MEM_PROTECTION newPermissions)
         {
             bool result = Kernel32.VirtualProtectEx(_processHandle, memoryAddress, (uint)size, newPermissions, out Kernel32.MEM_PROTECTION oldPermissions);
 
             if (!result)
-                throw new PermissionChangeFailureException($"Unable to change permissions for the following memory address {memoryAddress.ToString("X")} of size {size} and permission {newPermissions.ToString()}");
+                throw new MemoryPermissionException($"Unable to change permissions for the following memory address {memoryAddress.ToString("X")} of size {size} and permission {newPermissions.ToString()}");
 
             return oldPermissions;
         }

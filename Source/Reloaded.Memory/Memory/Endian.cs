@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Reloaded.Memory
 {
+    /// <summary>
+    /// Provides various utilities for converting primitives and structures between endians.
+    /// </summary>
     public static class Endian
     {
         /// <summary>

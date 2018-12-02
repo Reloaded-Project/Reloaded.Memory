@@ -8,22 +8,22 @@ namespace Reloaded.Memory.Exceptions
 {
     /// <inheritdoc />
     [ExcludeFromCodeCoverage]
-    public class MemoryException : Exception
+    public class MemoryAllocationException : Exception
     {
         /// <inheritdoc />
-        public MemoryException()
+        public MemoryAllocationException()
         { }
 
         /// <inheritdoc />
-        public MemoryException(string message) : base(message)
+        public MemoryAllocationException(string message) : base(message)
         { }
 
         /// <inheritdoc />
-        public MemoryException(string message, Exception innerException) : base(message, innerException)
+        public MemoryAllocationException(string message, Exception innerException) : base(message, innerException)
         { }
 
         /// <inheritdoc />
-        protected MemoryException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected MemoryAllocationException(SerializationInfo info, StreamingContext context) : base(info, context)
         { }
     }
 }

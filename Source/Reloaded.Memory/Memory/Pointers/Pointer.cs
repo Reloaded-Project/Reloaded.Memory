@@ -56,47 +56,15 @@ namespace Reloaded.Memory.Pointers
         /// at which the value of type <typeparamref name="TStruct"/> is stored.
         /// </summary>
         /// <param name="address">The address of the pointer pointing to generic type {T}</param>
-        public Pointer(ulong address)
-        {
-            Address = (void*)address;
-        }
-
-        /// <summary>
-        /// Constructs a new instance of <see cref="Pointer{T}"/> given the address (pointer)
-        /// at which the value of type <typeparamref name="TStruct"/> is stored.
-        /// </summary>
-        /// <param name="address">The address of the pointer pointing to generic type {T}</param>
         /// <param name="marshalElements">If this is true; elements will be marshaled as they are read in and out from memory.</param>
-        public Pointer(ulong address, bool marshalElements)
+        /// <param name="memorySource">Specifies the source from which the pointer should be read/written.</param>
+        public Pointer(ulong address, bool marshalElements = false, IMemory memorySource = null)
         {
             Address = (void*)address;
             MarshalElements = marshalElements;
-        }
 
-        /// <summary>
-        /// Constructs a new instance of <see cref="Pointer{T}"/> given the address (pointer)
-        /// at which the value of type <typeparamref name="TStruct"/> is stored.
-        /// </summary>
-        /// <param name="address">The address of the pointer pointing to generic type {T}</param>
-        /// <param name="memorySource">Specifies the source from which the pointer should be read/written.</param>
-        public Pointer(ulong address, IMemory memorySource)
-        {
-            Address = (void*)address;
-            Source = memorySource;
-        }
-
-        /// <summary>
-        /// Constructs a new instance of <see cref="Pointer{T}"/> given the address (pointer)
-        /// at which the value of type <typeparamref name="TStruct"/> is stored.
-        /// </summary>
-        /// <param name="address">The address of the pointer pointing to generic type {T}</param>
-        /// <param name="marshalElements">If this is true; elements will be marshaled as they are read in and out from memory.</param>
-        /// <param name="memorySource">Specifies the source from which the pointer should be read/written.</param>
-        public Pointer(ulong address, bool marshalElements, IMemory memorySource)
-        {
-            Address = (void*)address;
-            MarshalElements = marshalElements;
-            Source = memorySource;
+            if (memorySource != null)
+                Source = memorySource;
         }
     }
 }

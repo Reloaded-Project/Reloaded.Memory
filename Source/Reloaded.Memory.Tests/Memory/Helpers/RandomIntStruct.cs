@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Reloaded.Memory.Tests.Helpers
+namespace Reloaded.Memory.Tests.Memory.Helpers
 {
     public struct RandomIntStruct
     {

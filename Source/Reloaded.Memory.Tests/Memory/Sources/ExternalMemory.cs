@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using Reloaded.Memory.Exceptions;
-using Reloaded.Memory.Tests.Helpers;
 using Xunit;
 
-namespace Reloaded.Memory.Tests.Sources
+namespace Reloaded.Memory.Tests.Memory.Sources
 {
     public class ExternalMemory
     {
@@ -18,7 +15,7 @@ namespace Reloaded.Memory.Tests.Sources
         {
             // Prepare
             Process helloWorldProcess = Process.Start("HelloWorld.exe");
-            Memory.Sources.ExternalMemory externalMemory = new Memory.Sources.ExternalMemory(helloWorldProcess);
+            Reloaded.Memory.Sources.ExternalMemory externalMemory = new Reloaded.Memory.Sources.ExternalMemory(helloWorldProcess);
 
             /* Start Test */
             Assert.Throws<MemoryException>(() => externalMemory.Read((IntPtr)(-1), out int _));

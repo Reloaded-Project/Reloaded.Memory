@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Xunit;
+﻿using Xunit;
 
-namespace Reloaded.Memory.Tests
+namespace Reloaded.Memory.Tests.Memory
 {
     public class Endian
     {
@@ -18,7 +15,7 @@ namespace Reloaded.Memory.Tests
             short input     = 0x7530;
             short expected  = 0x3075;
 
-            Memory.Endian.Reverse(ref input, out short swapped);
+            Reloaded.Memory.Endian.Reverse(ref input, out short swapped);
             Assert.Equal(expected, swapped);
         }
 
@@ -28,7 +25,7 @@ namespace Reloaded.Memory.Tests
             int input       = 0x11223344;
             int expected    = 0x44332211;
 
-            Memory.Endian.Reverse(ref input, out int swapped);
+            Reloaded.Memory.Endian.Reverse(ref input, out int swapped);
             Assert.Equal(expected, swapped);
         }
 
@@ -38,7 +35,7 @@ namespace Reloaded.Memory.Tests
             byte input      = 0x44;
             byte expected   = 0x44;
 
-            Memory.Endian.Reverse(ref input, out byte swapped);
+            Reloaded.Memory.Endian.Reverse(ref input, out byte swapped);
             Assert.Equal(expected, swapped);
         }
 
@@ -48,7 +45,7 @@ namespace Reloaded.Memory.Tests
             float input    = 5F;
             float expected = 5.748687e-41F;
 
-            Memory.Endian.Reverse(ref input, out float swapped);
+            Reloaded.Memory.Endian.Reverse(ref input, out float swapped);
             Assert.Equal(expected, swapped, 6);     // 6 = Minimum float precision.
         }
 
@@ -58,7 +55,7 @@ namespace Reloaded.Memory.Tests
             double input    = 5F;
             double expected = 2.56123630804102e-320F;
 
-            Memory.Endian.Reverse(ref input, out double swapped);
+            Reloaded.Memory.Endian.Reverse(ref input, out double swapped);
             Assert.Equal(expected, swapped, 15);    // 15 = Minimum double precision
         }
 
@@ -70,7 +67,7 @@ namespace Reloaded.Memory.Tests
             bool input      = true;
             bool expected   = true;
 
-            Memory.Endian.Reverse(ref input, out bool swapped);
+            Reloaded.Memory.Endian.Reverse(ref input, out bool swapped);
             Assert.Equal(expected, swapped);
         }
     }

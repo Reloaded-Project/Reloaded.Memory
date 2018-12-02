@@ -53,16 +53,17 @@ namespace Reloaded.Memory
         }
 
         /// <summary>
-        /// Converts a pointer/memory address to a specified structure or class type with explicit StructLayout attribute.
+        /// Converts a byte array to a specified structure or class type with explicit StructLayout attribute.
         /// </summary>
         /// <param name="value">Local variable to receive the read in struct array.</param>
         /// <param name="data">A byte array containing data from which to extract a structure from.</param>
         /// <param name="startIndex">The index in the byte array to read the element(s) from.</param>
         /// <param name="marshalElement">Set to true to marshal the element.</param>
-        public static void FromArray<T>(byte[] data, out T[] value, int startIndex = 0, bool marshalElement = false)
+        /// <param name="length">The amount of elements to read from the byte array.</param>
+        public static void FromArray<T>(byte[] data, out T[] value, int startIndex = 0, bool marshalElement = false, int length = 0)
         {
             int structSize = Struct.GetSize<T>(marshalElement);
-            int structureCount = (data.Length - startIndex) / structSize;
+            int structureCount = (length == 0) ? (data.Length - startIndex) / structSize : length;
             value = new T[structureCount];
 
             for (int x = 0; x < value.Length; x++)

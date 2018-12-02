@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Reloaded.Memory.Tests.Helpers
+namespace Reloaded.Memory.Tests.Memory.Helpers
 {
     public struct RandomByteArray
     {

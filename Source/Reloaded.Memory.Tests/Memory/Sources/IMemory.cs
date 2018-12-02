@@ -2,15 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.ExceptionServices;
-using System.Security;
 using Reloaded.Memory.Exceptions;
-using Reloaded.Memory.Sources;
-using Reloaded.Memory.Tests.Helpers;
+using Reloaded.Memory.Tests.Memory.Helpers;
 using Vanara.PInvoke;
 using Xunit;
 
-namespace Reloaded.Memory.Tests.Sources
+namespace Reloaded.Memory.Tests.Memory.Sources
 {
     /* Note: The tests in this can randomly fail. */
 
@@ -22,8 +19,8 @@ namespace Reloaded.Memory.Tests.Sources
     {
         private readonly List<object[]> _data = new List<object[]>
         {
-            new object[] { new Memory.Sources.Memory() },
-            new object[] { new Memory.Sources.ExternalMemory(Process.GetCurrentProcess()) }
+            new object[] { new Reloaded.Memory.Sources.Memory() },
+            new object[] { new Reloaded.Memory.Sources.ExternalMemory(Process.GetCurrentProcess()) }
         };
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -50,7 +47,7 @@ namespace Reloaded.Memory.Tests.Sources
         /// <param name="memorySource">Memory source to test allocation for.</param>
         [Theory]
         [ClassData(typeof(IMemoryGenerator))]
-        public void AllocateMemory(Memory.Sources.IMemory memorySource)
+        public void AllocateMemory(Reloaded.Memory.Sources.IMemory memorySource)
         {
             // Prepare
             IMemoryTools.SwapExternalMemorySource(ref memorySource, _helloWorldProcess);
@@ -67,7 +64,7 @@ namespace Reloaded.Memory.Tests.Sources
         /// <param name="memorySource">Memory source to test allocation for.</param>
         [Theory]
         [ClassData(typeof(IMemoryGenerator))]
-        public void ReadWritePrimitives(Memory.Sources.IMemory memorySource)
+        public void ReadWritePrimitives(Reloaded.Memory.Sources.IMemory memorySource)
         {
             // Prepare
             IMemoryTools.SwapExternalMemorySource(ref memorySource, _helloWorldProcess);
@@ -96,7 +93,7 @@ namespace Reloaded.Memory.Tests.Sources
         /// <param name="memorySource">Memory source to test allocation for.</param>
         [Theory]
         [ClassData(typeof(IMemoryGenerator))]
-        public void ReadWriteRawData(Memory.Sources.IMemory memorySource)
+        public void ReadWriteRawData(Reloaded.Memory.Sources.IMemory memorySource)
         {
             // Prepare
             int allocationSize = 0x100;
@@ -126,7 +123,7 @@ namespace Reloaded.Memory.Tests.Sources
         /// <param name="memorySource">Memory source to test allocation for.</param>
         [Theory]
         [ClassData(typeof(IMemoryGenerator))]
-        public void ReadWriteStructs(Memory.Sources.IMemory memorySource)
+        public void ReadWriteStructs(Reloaded.Memory.Sources.IMemory memorySource)
         {
             // Prepare
             IMemoryTools.SwapExternalMemorySource(ref memorySource, _helloWorldProcess);
@@ -155,7 +152,7 @@ namespace Reloaded.Memory.Tests.Sources
         /// <param name="memorySource">Memory source to test allocation for.</param>
         [Theory]
         [ClassData(typeof(IMemoryGenerator))]
-        public void ReadWriteWithMarshalling(Memory.Sources.IMemory memorySource)
+        public void ReadWriteWithMarshalling(Reloaded.Memory.Sources.IMemory memorySource)
         {
             // Prepare
             IMemoryTools.SwapExternalMemorySource(ref memorySource, _helloWorldProcess);
@@ -192,7 +189,7 @@ namespace Reloaded.Memory.Tests.Sources
         /// <param name="memorySource">Memory source to test allocation for.</param>
         [Theory]
         [ClassData(typeof(IMemoryGenerator))]
-        public void ChangePermissions(Memory.Sources.IMemory memorySource)
+        public void ChangePermissions(Reloaded.Memory.Sources.IMemory memorySource)
         {
             // Prepare
             IMemoryTools.SwapExternalMemorySource(ref memorySource, _helloWorldProcess);
@@ -200,16 +197,16 @@ namespace Reloaded.Memory.Tests.Sources
 
             /* Start Test */
 
-            // Run the function normally.
-            try   { memorySource.ChangePermission(pointer, 0x100, Kernel32.MEM_PROTECTION.PAGE_NOACCESS); }
-            catch (NotImplementedException) { } // ChangePermission is optional to implement
+            // Run the change permission function to deny read/write access.
+            try { memorySource.ChangePermission(pointer, 0x100, Kernel32.MEM_PROTECTION.PAGE_NOACCESS); }
+            catch (NotImplementedException) { return; } // ChangePermission is optional to implement
 
             // NETCore removed handling of Corrupted State Exceptions https://github.com/dotnet/coreclr/issues/9045
             // We cannot properly test the method.
 
             // Restore or NETCore execution engine will complain.
             try { memorySource.ChangePermission(pointer, 0x100, Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE); }
-            catch (NotImplementedException) { } // ChangePermission is optional to implement
+            catch (NotImplementedException) { return; } // ChangePermission is optional to implement
 
             // Cleanup 
             memorySource.Free(pointer);
@@ -221,14 +218,14 @@ namespace Reloaded.Memory.Tests.Sources
         /// <param name="memorySource">Memory source to test allocation for.</param>
         [Theory]
         [ClassData(typeof(IMemoryGenerator))]
-        public void ChangePermissionFail(Memory.Sources.IMemory memorySource)
+        public void ChangePermissionFail(Reloaded.Memory.Sources.IMemory memorySource)
         {
             /* Start Test */
 
-            // Run the function normally.
+            // Run the change permission function to deny read/write access.
             try { memorySource.ChangePermission((IntPtr)(-1), 0x100, Kernel32.MEM_PROTECTION.PAGE_NOACCESS); }
             catch (NotImplementedException)          { return; } // ChangePermission is optional to implement
-            catch (PermissionChangeFailureException) { return; } // Thrown as expected.
+            catch (MemoryPermissionException) { return; } // Thrown as expected.
 
             // Cleanup on fail.
             memorySource.ChangePermission((IntPtr)(-1), 0x100, Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);

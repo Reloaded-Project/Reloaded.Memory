@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Reloaded.Memory.Sources;
 
@@ -10,7 +11,7 @@ namespace Reloaded.Memory.Pointers
     /// Abstracts a native 'C' type array of a set size in memory to a more familiar interface.
     /// TStruct can be a primitive, a struct or a class with explicit StructLayout attribute.
     /// </summary>
-    public unsafe class FixedArrayPtr<TStruct> : IEnumerable<TStruct>
+    public unsafe class FixedArrayPtr<TStruct> : IEnumerable<TStruct>, IArrayPtr<TStruct>
     {
         /// <summary>
         /// Gets the pointer to the start of the data contained in the <see cref="FixedArrayPtr{T}"/>.
@@ -47,7 +48,7 @@ namespace Reloaded.Memory.Pointers
         /// </summary>
         /// <param name="value">The value to be received from the array.</param>
         /// <param name="index">The index in the array from which to receive the value.</param>
-        public void GetValue(out TStruct value, int index)
+        public void Get(out TStruct value, int index)
         {
             Source.Read((IntPtr)GetPointerToElement(index), out value, MarshalElements);
         }
@@ -57,7 +58,7 @@ namespace Reloaded.Memory.Pointers
         /// </summary>
         /// <param name="value">The value to be written.</param>
         /// <param name="index">The index in the array to which the value is to be written to.</param>
-        public void SetValue(ref TStruct value, int index)
+        public void Set(ref TStruct value, int index)
         {
             Source.Write((IntPtr)GetPointerToElement(index), ref value, MarshalElements);
         }
@@ -74,54 +75,16 @@ namespace Reloaded.Memory.Pointers
         /// </summary>
         /// <param name="address">The address of the first element of the structure array.</param>
         /// <param name="count">The amount of elements in the array structure in memory.</param>
-        public FixedArrayPtr(ulong address, int count)
-        {
-            Pointer = (void*)address;
-            Count = count;
-        }
-
-        /// <summary>
-        /// Constructs a new instance of <see cref="FixedArrayPtr{T}"/> given the address of the first element, 
-        /// and the number of elements that follow it.
-        /// </summary>
-        /// <param name="address">The address of the first element of the structure array.</param>
-        /// <param name="count">The amount of elements in the array structure in memory.</param>
         /// <param name="marshalElements">If this is set to true elements will be marshaled as they are read in and out from memory.</param>
-        public FixedArrayPtr(ulong address, int count, bool marshalElements)
+        /// <param name="source">Specifies the source from which the individual array elements should be read/written. This defaults to current process/local memory.</param>
+        public FixedArrayPtr(ulong address, int count, bool marshalElements = false, IMemory source = null)
         {
             Pointer = (void*)address;
             Count = count;
             MarshalElements = marshalElements;
-        }
 
-        /// <summary>
-        /// Constructs a new instance of <see cref="FixedArrayPtr{T}"/> given the address of the first element, 
-        /// and the number of elements that follow it.
-        /// </summary>
-        /// <param name="address">The address of the first element of the structure array.</param>
-        /// <param name="count">The amount of elements in the array structure in memory.</param>
-        /// <param name="source">Specifies the source from which the individual array elements should be read/written.</param>
-        public FixedArrayPtr(ulong address, int count, IMemory source)
-        {
-            Pointer = (void*)address;
-            Count = count;
-            Source = source;
-        }
-
-        /// <summary>
-        /// Constructs a new instance of <see cref="FixedArrayPtr{T}"/> given the address of the first element, 
-        /// and the number of elements that follow it.
-        /// </summary>
-        /// <param name="address">The address of the first element of the structure array.</param>
-        /// <param name="count">The amount of elements in the array structure in memory.</param>
-        /// <param name="marshalElements">If this is set to true elements will be marshaled as they are read in and out from memory.</param>
-        /// <param name="source">Specifies the source from which the individual array elements should be read/written.</param>
-        public FixedArrayPtr(ulong address, int count, bool marshalElements, IMemory source)
-        {
-            Pointer = (void*)address;
-            Count = count;
-            MarshalElements = marshalElements;
-            Source = source;
+            if (source != null)
+                Source = source;
         }
 
         /*
@@ -135,7 +98,7 @@ namespace Reloaded.Memory.Pointers
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public bool Contains(TStruct item) => IndexOf(item) != -1;
+        public bool Contains(ref TStruct item) => IndexOf(ref item) != -1;
 
         /// <summary>
         /// Searches for a specified item and returns the index of the item
@@ -143,11 +106,11 @@ namespace Reloaded.Memory.Pointers
         /// </summary>
         /// <param name="item">The item to search for in the array.</param>
         /// <returns>The index of the item, if present in the array.</returns>
-        public int IndexOf(TStruct item)
+        public int IndexOf(ref TStruct item)
         {
             for (int i = 0; i < Count; i++)
             {
-                this.GetValue(out TStruct value, i);
+                this.Get(out TStruct value, i);
                 if (value.Equals(item))
                     return i;
             }
@@ -156,24 +119,51 @@ namespace Reloaded.Memory.Pointers
         }
 
         /// <summary>
-        /// Copies all the elements of the passed in array to the <see cref="FixedArrayPtr{TStruct}"/> array.
+        /// Copies all the elements of the passed in sourceArray to the <see cref="FixedArrayPtr{TStruct}"/> array.
         /// </summary>
         /// <param name="sourceArray">The array from which to copy elements from.</param>
-        /// <param name="sourceArrayIndex">The array index in the source array copy elements from.</param>
-        /// <param name="sourceArrayCount">The amount of elements in the source array that should be copied.</param>
-        /// <param name="destinationIndex">The starting index into the <see cref="FixedArrayPtr{TStruct}"/> array to which elements should be copied to.</param>
-        public void CopyTo(TStruct[] sourceArray, int sourceArrayCount, int sourceArrayIndex = 0, int destinationIndex = 0)
+        /// <param name="length">The amount of elements in the source array that should be copied.</param>
+        /// <param name="sourceIndex">The array index in the source array copy elements from.</param>
+        /// <param name="destinationIndex">The starting index into the <see cref="FixedArrayPtr{TStruct}"/> to which elements should be copied to.</param>
+        public void CopyFrom(TStruct[] sourceArray, int length, int sourceIndex = 0, int destinationIndex = 0)
         {
-            // Basic exception handling.
-            int availableElements = Count - destinationIndex;
-            if (sourceArrayCount > availableElements)
-                throw new ArgumentException($"There is insufficient space in the current array to copy {sourceArrayCount} elements. ({sourceArrayCount} > {availableElements})");
+            // Available elements in this array.
+            int availableDestinationElements = this.Count - destinationIndex;
+            if (length > availableDestinationElements)
+                throw new ArgumentException($"There is insufficient space in the FixedArrayPtr to copy {length} elements. (Length: {length}, Available Elements: {availableDestinationElements})");
+
+            int availableSourceElements = sourceArray.Length - sourceIndex;
+            if (length > availableSourceElements)
+                throw new ArgumentException($"There is insufficient space in the sourceArray to copy {length} elements. (Length: {length}, Available Elements: {availableSourceElements})");
 
             // TODO: This method could be optimized if we can guarantee or make a check that the Source (IMemory) to which we are copying the memory TO is the current process.
-            for (int x = 0; x < sourceArrayCount; x++)
+            for (int x = 0; x < length; x++)
+                this.Set(ref sourceArray[sourceIndex + x], destinationIndex + x);
+        }
+
+        /// <summary>
+        /// Copies all the elements from the the <see cref="FixedArrayPtr{TStruct}"/> to the passed in sourceArray.
+        /// </summary>
+        /// <param name="destinationArray">The array from which to copy elements to.</param>
+        /// <param name="length">The amount of elements in to copy to sourceArray.</param>
+        /// <param name="sourceIndex">The array index in the <see cref="FixedArrayPtr{TStruct}"/> to copy elements from.</param>
+        /// <param name="destinationIndex">The starting index into the <see cref="FixedArrayPtr{TStruct}"/> array to which elements should be copied to.</param>
+        public void CopyTo(TStruct[] destinationArray, int length, int sourceIndex = 0, int destinationIndex = 0)
+        {
+            // Available elements in destinationArray.
+            int availableDestinationElements = destinationArray.Length - destinationIndex;
+            if (length > availableDestinationElements)
+                throw new ArgumentException($"There is insufficient space in the destination array to copy {length} elements. (Length: {length}, Available Elements: {availableDestinationElements})");
+
+            int availableSourceElements = this.Count - sourceIndex;
+            if (length > availableSourceElements)
+                throw new ArgumentException($"There are not enough elements in the current FixedArrayPointer. (Length: {length}, Available Elements: {availableSourceElements})");
+
+            // Copy manually.
+            for (int x = 0; x < length; x++)
             {
-                int thisArrayIndex = destinationIndex + x;
-                this.SetValue(ref sourceArray[sourceArrayIndex + x], thisArrayIndex);
+                this.Get(out var value, sourceIndex + x);
+                destinationArray[x + destinationIndex] = value;
             }
         }
 
@@ -197,6 +187,7 @@ namespace Reloaded.Memory.Pointers
         // ///////////////////////////////////////////
         // Implement IEnumerable to allow LINQ Queries
         // ///////////////////////////////////////////
+        /// <inheritdoc />
         public IEnumerator<TStruct> GetEnumerator() => new FixedArrayPtrEnumerator(this);
         IEnumerator IEnumerable.GetEnumerator()     => GetEnumerator();
 
@@ -206,19 +197,6 @@ namespace Reloaded.Memory.Pointers
         /// </summary>
         private class FixedArrayPtrEnumerator : IEnumerator<TStruct>
         {
-            /// <summary>
-            /// Gets the element in the collection at the current position of the enumerator.
-            /// </summary>
-            /// <returns>The element in the collection at the current position of the enumerator.</returns>
-            public TStruct Current
-            {
-                get
-                {
-                    _arrayPtr.GetValue(out TStruct value, _currentIndex);
-                    return value;
-                }
-            }
-
             /// <summary>
             /// Gets the element in the collection at the current position of the enumerator.
             /// </summary>
@@ -245,6 +223,19 @@ namespace Reloaded.Memory.Pointers
             }
 
             /// <summary>
+            /// Gets the element in the collection at the current position of the enumerator.
+            /// </summary>
+            /// <returns>The element in the collection at the current position of the enumerator.</returns>
+            public TStruct Current
+            {
+                get
+                {
+                    _arrayPtr.Get(out TStruct value, _currentIndex);
+                    return value;
+                }
+            }
+
+            /// <summary>
             /// Advances the enumerator cursor to the next element of the collection.
             /// </summary>
             /// <returns>
@@ -262,6 +253,7 @@ namespace Reloaded.Memory.Pointers
             /// <summary>
             /// Resets the current index and pointer to the defaults.
             /// </summary>
+            [ExcludeFromCodeCoverage] // Technically provided for COM interoperability but never used.
             public void Reset()
             {
                 _currentIndex = 0;

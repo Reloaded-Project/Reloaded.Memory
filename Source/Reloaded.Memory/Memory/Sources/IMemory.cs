@@ -4,6 +4,9 @@ using Vanara.PInvoke;
 
 namespace Reloaded.Memory.Sources
 {
+    /// <summary>
+    /// A simple interface that provides read/write access to arbitrary memory.
+    /// </summary>
     public interface IMemory
     {
         /// <summary>
@@ -19,10 +22,9 @@ namespace Reloaded.Memory.Sources
         /// <summary>
         /// Reads raw data from a specified memory address.
         /// </summary>
-        /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
         /// <param name="memoryAddress">The memory address to read from.</param>
         /// <param name="value">Local variable to receive the read in bytes.</param>
-        /// <param name="length">The amount of bytes to read starting from the <see cref="memoryAddress"/>.</param>
+        /// <param name="length">The amount of bytes to read starting from the memoryAddress.</param>
         /// <exception cref="MemoryException">Failed to read memory.</exception>
         void ReadRaw(IntPtr memoryAddress, out byte[] value, int length);
 
@@ -39,9 +41,8 @@ namespace Reloaded.Memory.Sources
         /// <summary>
         /// Writes raw data to a specified memory address.
         /// </summary>
-        /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
         /// <param name="memoryAddress">The memory address to read from.</param>
-        /// <param name="data">The bytes to write to <see cref="memoryAddress"/>.</param>
+        /// <param name="data">The bytes to write to memoryAddress.</param>
         /// <exception cref="MemoryException">Failed to write memory.</exception>
         void WriteRaw       (IntPtr memoryAddress, byte[] data);
 
@@ -51,7 +52,7 @@ namespace Reloaded.Memory.Sources
         /// </summary>
         /// <param name="length">Amount of bytes to be allocated.</param>
         /// <exception cref="NotImplementedException">Thrown if a deriving class does not implement this function.</exception>
-        /// <exception cref="AllocationFailedException">Failed to allocate memory.</exception>
+        /// <exception cref="MemoryAllocationException">Failed to allocate memory.</exception>
         /// <returns>Address to the newly allocated memory.</returns>
         IntPtr Allocate     (int length);
 
@@ -70,7 +71,7 @@ namespace Reloaded.Memory.Sources
         /// <param name="size">The region size for which to change permissions for.</param>
         /// <param name="newPermissions">The new permissions to set.</param>
         /// <exception cref="NotImplementedException">Thrown if a deriving class does not implement this function.</exception>
-        /// <exception cref="PermissionChangeFailureException">Failed to change permissions for the following memory address and size.</exception>
+        /// <exception cref="MemoryPermissionException">Failed to change permissions for the following memory address and size.</exception>
         /// <returns>The old page permissions.</returns>
         Kernel32.MEM_PROTECTION ChangePermission     (IntPtr memoryAddress, int size, Kernel32.MEM_PROTECTION newPermissions);
     }
