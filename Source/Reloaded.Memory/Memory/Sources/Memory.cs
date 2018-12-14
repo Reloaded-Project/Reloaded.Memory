@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
@@ -22,17 +22,20 @@ namespace Reloaded.Memory.Sources
             Read/Write Implementation
             -------------------------
         */
+
         /// <inheritdoc />
         public void    Read<T>(IntPtr memoryAddress, out T value, bool marshal = false)
         {
             value = marshal ? Marshal.PtrToStructure<T>(memoryAddress) : Unsafe.Read<T>((void*)memoryAddress);
         }
+
         /// <inheritdoc />
         public void    ReadRaw(IntPtr memoryAddress, out byte[] value, int length)
         {
             value = new byte[length];
             Marshal.Copy(memoryAddress, value, 0, value.Length);
         }
+
         /// <inheritdoc />
         public void    Write<T>(IntPtr memoryAddress, ref T item, bool marshal = false)
         {
@@ -41,11 +44,13 @@ namespace Reloaded.Memory.Sources
             else
                 Unsafe.Write((void*)memoryAddress, item);
         }
+
         /// <inheritdoc />
         public void    WriteRaw(IntPtr memoryAddress, byte[] data)
         {
             Marshal.Copy(data, 0, memoryAddress, data.Length);
         }
+
         /// <inheritdoc />
         public IntPtr  Allocate(int length)
         {
@@ -72,6 +77,7 @@ namespace Reloaded.Memory.Sources
 
             return returnAddress;
         }
+
         /// <inheritdoc />
         public bool    Free(IntPtr address)
         {

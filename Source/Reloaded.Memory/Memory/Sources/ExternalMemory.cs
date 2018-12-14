@@ -51,6 +51,7 @@ namespace Reloaded.Memory.Sources
             Read/Write Implementation
             -------------------------
         */
+
         /// <inheritdoc />
         public void Read<T>(IntPtr memoryAddress, out T value, bool marshal = false)
         {
@@ -66,6 +67,7 @@ namespace Reloaded.Memory.Sources
                     throw new MemoryException($"ReadProcessMemory failed to read {structSize} bytes of memory from {memoryAddress.ToString("X")}");
             }
         }
+
         /// <inheritdoc />
         public void ReadRaw(IntPtr memoryAddress, out byte[] value, int length)
         {
@@ -78,6 +80,7 @@ namespace Reloaded.Memory.Sources
                     throw new MemoryException($"ReadProcessMemory failed to read {value.Length} bytes of memory from {memoryAddress.ToString("X")}");
             }
         }
+
         /// <inheritdoc />
         public void Write<T>(IntPtr memoryAddress, ref T item, bool marshal = false)
         {
@@ -92,6 +95,7 @@ namespace Reloaded.Memory.Sources
             }
                 
         }
+
         /// <inheritdoc />
         public void WriteRaw(IntPtr memoryAddress, byte[] data)
         {
@@ -103,6 +107,7 @@ namespace Reloaded.Memory.Sources
                     throw new MemoryException($"WriteProcessMemory failed to write {data.Length} bytes of memory to {memoryAddress.ToString("X")}");
             }    
         }
+
         /// <inheritdoc />
         public IntPtr Allocate(int length)
         {
@@ -121,6 +126,7 @@ namespace Reloaded.Memory.Sources
 
             return returnAddress;
         }
+
         /// <inheritdoc />
         public bool Free(IntPtr address)
         {
