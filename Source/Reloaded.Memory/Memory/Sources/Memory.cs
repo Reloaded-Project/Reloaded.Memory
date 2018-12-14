@@ -68,7 +68,7 @@ namespace Reloaded.Memory.Sources
             (
                 IntPtr.Zero,
                 (uint)length,
-                Kernel32.MEM_ALLOCATION_TYPE.MEM_COMMIT | Kernel32.MEM_ALLOCATION_TYPE.MEM_RESERVE,
+                Kernel32.MEM_ALLOCATION_TYPE.MEM_COMMIT,
                 Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE
             );
 
@@ -81,7 +81,7 @@ namespace Reloaded.Memory.Sources
         /// <inheritdoc />
         public bool    Free(IntPtr address)
         {
-            Kernel32.VirtualFree(address, 0, Kernel32.MEM_ALLOCATION_TYPE.MEM_DECOMMIT | Kernel32.MEM_ALLOCATION_TYPE.MEM_RELEASE);
+            Kernel32.VirtualFree(address, 0, Kernel32.MEM_ALLOCATION_TYPE.MEM_RELEASE);
             return true;
         }
 
