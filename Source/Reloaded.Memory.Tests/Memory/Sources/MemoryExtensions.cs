@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Threading;
 using Reloaded.Memory.Pointers;
 using Reloaded.Memory.Sources;
 using Reloaded.Memory.Tests.Memory.Helpers;
@@ -14,15 +15,26 @@ namespace Reloaded.Memory.Tests.Memory.Sources
     {
         // Create dummy HelloWorld.exe
         private Process _helloWorldProcess;
-        public MemoryExtensions() { _helloWorldProcess = Process.Start("HelloWorld.exe"); }
+
+        public MemoryExtensions()
+        {
+            // Cleanup after possible dirty exit.
+            var processes = Process.GetProcessesByName("HelloWorld.exe");
+            foreach (var process in processes)
+            {
+                process.Kill();
+                process.Dispose();
+            }
+
+            _helloWorldProcess = Process.Start("HelloWorld.exe");
+        }
 
         // Dispose of HelloWorld.exe
         public void Dispose()
         {
-            _helloWorldProcess.Kill();
-            _helloWorldProcess.Dispose();
+            _helloWorldProcess?.Kill();
+            _helloWorldProcess?.Dispose();
         }
-
 
         /// <summary>
         /// Attempts to perform a read operation from a memory page/segment with no access rights.
@@ -33,16 +45,17 @@ namespace Reloaded.Memory.Tests.Memory.Sources
         public void SafeReadWrite(Reloaded.Memory.Sources.IMemory memorySource)
         {
             // Prepare
+            int structSize = Struct.GetSize<RandomIntStruct>();
             IMemoryTools.SwapExternalMemorySource(ref memorySource, _helloWorldProcess);
-            IntPtr pointer = memorySource.Allocate(Struct.GetSize<RandomIntStruct>());
+            IntPtr pointer = memorySource.Allocate(structSize);
 
             /* Start Test */
 
             // Generate random int struct to read/write to.
             var randomIntStruct = RandomIntStruct.BuildRandomStruct();
-
+            
             // Run the change permission function to deny read/write access.
-            try { memorySource.ChangePermission(pointer, Struct.GetSize<RandomIntStruct>(), Kernel32.MEM_PROTECTION.PAGE_NOACCESS); }
+            try { memorySource.ChangePermission(pointer, structSize, Kernel32.MEM_PROTECTION.PAGE_NOACCESS); }
             catch (NotImplementedException) { return; } // ChangePermission is optional to implement
 
             // Throws corrupted state exception if operations fail until restore.
@@ -50,7 +63,7 @@ namespace Reloaded.Memory.Tests.Memory.Sources
             memorySource.SafeRead(pointer , out RandomIntStruct randomIntStructCopy);
 
             // Restore or NETCore execution engine will complain.
-            try { memorySource.ChangePermission(pointer, Struct.GetSize<RandomIntStruct>(), Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE); }
+            try { memorySource.ChangePermission(pointer, structSize, Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE); }
             catch (NotImplementedException) { return; } // ChangePermission is optional to implement
 
             // Compare before exiting test.
@@ -108,7 +121,8 @@ namespace Reloaded.Memory.Tests.Memory.Sources
             // Prepare
             int arrayElements = 500;
             IMemoryTools.SwapExternalMemorySource(ref memorySource, _helloWorldProcess);
-            IntPtr pointer = memorySource.Allocate(Reloaded.Memory.StructArray.GetSize<RandomIntStruct>(arrayElements));
+            int arraySize = Reloaded.Memory.StructArray.GetSize<RandomIntStruct>(arrayElements);
+            IntPtr pointer = memorySource.Allocate(arraySize);
 
             /* Start Test */
 
@@ -118,7 +132,7 @@ namespace Reloaded.Memory.Tests.Memory.Sources
                 randomIntStructArray[x] = RandomIntStruct.BuildRandomStruct();
 
             // Run the change permission function to deny read/write access.
-            try { memorySource.ChangePermission(pointer, Reloaded.Memory.StructArray.GetSize<RandomIntStruct>(arrayElements), Kernel32.MEM_PROTECTION.PAGE_NOACCESS); }
+            try { memorySource.ChangePermission(pointer, arraySize, Kernel32.MEM_PROTECTION.PAGE_NOACCESS); }
             catch (NotImplementedException) { return; } // ChangePermission is optional to implement
 
             // Throws corrupted state exception if operations fail until restore.
@@ -126,7 +140,7 @@ namespace Reloaded.Memory.Tests.Memory.Sources
             memorySource.SafeRead(pointer, out RandomIntStruct[] randomIntStructArrayCopy, arrayElements);
 
             // Restore or NETCore execution engine will complain.
-            try { memorySource.ChangePermission(pointer, Reloaded.Memory.StructArray.GetSize<RandomIntStruct>(arrayElements), Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE); }
+            try { memorySource.ChangePermission(pointer, arraySize, Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE); }
             catch (NotImplementedException) { return; } // ChangePermission is optional to implement
 
             // Compare before exiting test.

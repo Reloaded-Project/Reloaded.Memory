@@ -10,7 +10,7 @@ namespace Reloaded.Memory.Tests.Memory.Pointers
 {
     public class FixedArrayPtr : IDisposable
     {
-        Reloaded.Memory.Sources.Memory _currentProcess = new Reloaded.Memory.Sources.Memory();
+        Reloaded.Memory.Sources.Memory _currentProcess;
         IntPtr _adventurePhysicsArray;
         FixedArrayPtr<AdventurePhysics> _fixedArrayPtr;
 
@@ -27,6 +27,7 @@ namespace Reloaded.Memory.Tests.Memory.Pointers
             // Read in the Sonic Adventure physics array from file, then copy over to self-allocated memory.
             byte[] bytes = File.ReadAllBytes("phys.bin");
 
+            _currentProcess = new Reloaded.Memory.Sources.Memory();
             _adventurePhysicsArray = _currentProcess.Allocate(bytes.Length);
             _currentProcess.WriteRaw(_adventurePhysicsArray, bytes);
             _fixedArrayPtr = new FixedArrayPtr<AdventurePhysics>((ulong)_adventurePhysicsArray, PhysicsArrayLength);

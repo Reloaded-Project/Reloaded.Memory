@@ -32,7 +32,19 @@ namespace Reloaded.Memory.Tests.Memory.Sources
     {
         // Create dummy HelloWorld.exe
         private Process _helloWorldProcess;
-        public IMemory() { _helloWorldProcess = Process.Start("HelloWorld.exe"); }
+
+        public IMemory()
+        {
+            // Cleanup after possible dirty exit.
+            var processes = Process.GetProcessesByName("HelloWorld.exe");
+            foreach (var process in processes)
+            {
+                process.Kill();
+                process.Dispose();
+            }
+
+            _helloWorldProcess = Process.Start("HelloWorld.exe");
+        }
 
         // Dispose of HelloWorld.exe
         public void Dispose()
