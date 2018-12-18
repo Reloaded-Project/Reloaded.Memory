@@ -52,24 +52,35 @@ IMemory externalMemory = new Memory();
 Of course, you can create your own custom implementations of `IMemory`.
 Additional functionality such as reading/writing arrays is available in the extension method `	MemoryExtensions` so make sure to include `using Reloaded.Memory.Sources`.
 
+tl;dr: `IMemory` is an interface that allows you to read from a memory source, e.g. `Memory` for current process, `ExternalMemory` for another process.
+
 ## Class Breakdown
-The following is a quick breakdown of the main classes you will probably find useful within the Reloaded.Memory library.
+The following is a quick breakdown of the main classes you will probably find useful within the `Reloaded.Memory` library:
 
 + **ArrayPtr**: Pointer to an array in arbitrary memory.
 + **FixedArrayPtr**: Pointer to an array with known length in arbitrary memory. (Allows for LINQ, foreach etc.)
 + **Pointer**: Managed abstraction to a pointer in arbitrary memory.
+
+All of these use the `IMemory` interface under the hood, which can be manually set.
+This means that you can e.g. have a pointer to a variable in another process.
+
+*In addition, the following utility classes are available:*
+
 + **Endian**: Utility method for swapping the endian of a specific variable.
-+ **Struct**: Struct utilities which allow converting structs to bytes, converting bytes to structs, getting size of structs etc.
-+ **StructArray**: Struct, but with arrays.
++ **Struct**: Allows converting structs to bytes, converting bytes to structs, getting size of structs, writing struct to pointer etc.
++ **StructArray**: Array support for the `Struct` utility class. (The functions in `Struct`, but with arrays)
 
 Pretty much this is all you need to know.
-Play around with the classes yourself and discover what you can do.
+
+Play around with the classes yourself and discover what you can do. Everything below is extra.
 
 ## Source Code Samples
 
 These are small extracts of code originally taken from a Reloaded Mod Loader Memory Manipulation example mod, largely unmodified aside from adjusting to changes in the API. 
 
 They are heavily commented and originally served as a tutorial for the library; I kept the comments intact and slightly modified them as they may or may not still be useful.
+
+While they are tailored to novice programmers with little experience; they also describe some of the design decisions of the library for the more experienced hackers/programmers, such as why the `out` parameters are used in reading memory.
 
 You can see these code samples, replicated in the `Reloaded.Memory.Examples` project in the solution.
 
