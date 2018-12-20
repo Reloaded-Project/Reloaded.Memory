@@ -10,6 +10,10 @@
 	<a href="https://codecov.io/gh/Reloaded-Project/Reloaded.Memory">
 		<img src="https://codecov.io/gh/Reloaded-Project/Reloaded.Memory/branch/master/graph/badge.svg" alt="Coverage" />
 	</a>
+	<!-- NuGet -->
+	<a href="https://www.nuget.org/packages/Reloaded.Memory">
+		<img src="https://img.shields.io/nuget/v/Reloaded.Memory.svg" alt="NuGet" />
+	</a>
 	<!-- Build Status -->
 	<a href="https://ci.appveyor.com/project/sewer56lol/reloaded-memory">
 		<img src="https://ci.appveyor.com/api/projects/status/qlks2pma4lrr6c4f?svg=true" alt="Build Status" />
