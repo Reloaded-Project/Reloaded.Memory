@@ -12,7 +12,7 @@
     <RepositoryUrl></RepositoryUrl>
     <RepositoryType></RepositoryType>
     <Description>A fully featured C# memory editing of primitive or generic struct types in either current or an external process.</Description>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>Sewer56</Authors>
     <Company />
     <Product>Project Reloaded</Product>
