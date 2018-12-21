@@ -1,6 +1,5 @@
 ﻿using System;
 using Reloaded.Memory.Exceptions;
-using Vanara.PInvoke;
 
 namespace Reloaded.Memory.Sources
 {
@@ -73,6 +72,6 @@ namespace Reloaded.Memory.Sources
         /// <exception cref="NotImplementedException">Thrown if a deriving class does not implement this function.</exception>
         /// <exception cref="MemoryPermissionException">Failed to change permissions for the following memory address and size.</exception>
         /// <returns>The old page permissions.</returns>
-        Kernel32.MEM_PROTECTION ChangePermission     (IntPtr memoryAddress, int size, Kernel32.MEM_PROTECTION newPermissions);
+        Kernel32.Kernel32.MEM_PROTECTION ChangePermission     (IntPtr memoryAddress, int size, Kernel32.Kernel32.MEM_PROTECTION newPermissions);
     }
 }

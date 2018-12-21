@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using Vanara.PInvoke;
 
 namespace Reloaded.Memory.Sources
 {
@@ -65,7 +64,7 @@ namespace Reloaded.Memory.Sources
         {
             int structSize = Struct.GetSize<T>(marshal);
 
-            var oldProtection = memory.ChangePermission(memoryAddress, structSize, Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
+            var oldProtection = memory.ChangePermission(memoryAddress, structSize, Kernel32.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
             memory.Read(memoryAddress, out value, marshal);
             memory.ChangePermission(memoryAddress, structSize, oldProtection);
         }
@@ -79,7 +78,7 @@ namespace Reloaded.Memory.Sources
         /// <param name="length">The amount of bytes to read from the executable.</param>
         public static void SafeReadRaw(this IMemory memory, IntPtr memoryAddress, out byte[] value,  int length)
         {
-            var oldProtection = memory.ChangePermission(memoryAddress, length, Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
+            var oldProtection = memory.ChangePermission(memoryAddress, length, Kernel32.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
 
             value = new byte[length];
             memory.ReadRaw(memoryAddress, out value, length);
@@ -100,7 +99,7 @@ namespace Reloaded.Memory.Sources
         {
             int regionSize = StructArray.GetSize<T>(arrayLength, marshal);
 
-            var oldProtection = memory.ChangePermission(memoryAddress, regionSize, Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
+            var oldProtection = memory.ChangePermission(memoryAddress, regionSize, Kernel32.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
             memory.Read(memoryAddress, out value, arrayLength, marshal);
             memory.ChangePermission(memoryAddress, regionSize, oldProtection);
         }
@@ -137,7 +136,7 @@ namespace Reloaded.Memory.Sources
         {
             int memorySize = Struct.GetSize<T>(marshal);
 
-            var oldProtection = memory.ChangePermission(memoryAddress, memorySize, Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
+            var oldProtection = memory.ChangePermission(memoryAddress, memorySize, Kernel32.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
             memory.Write(memoryAddress, ref item, marshal);
             memory.ChangePermission(memoryAddress, memorySize, oldProtection);
         }
@@ -150,7 +149,7 @@ namespace Reloaded.Memory.Sources
         /// <param name="data">The data to write to the specified address.</param>
         public static void SafeWriteRaw(this IMemory memory, IntPtr memoryAddress, byte[] data)
         {
-            var oldProtection = memory.ChangePermission(memoryAddress, data.Length, Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
+            var oldProtection = memory.ChangePermission(memoryAddress, data.Length, Kernel32.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
             memory.WriteRaw(memoryAddress, data);
             memory.ChangePermission(memoryAddress, data.Length, oldProtection);
         }
@@ -167,7 +166,7 @@ namespace Reloaded.Memory.Sources
         {
             int regionSize = StructArray.GetSize<T>(items.Length);
 
-            var oldProtection = memory.ChangePermission(memoryAddress, regionSize, Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
+            var oldProtection = memory.ChangePermission(memoryAddress, regionSize, Kernel32.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
             memory.Write(memoryAddress, items, marshal);
             memory.ChangePermission(memoryAddress, regionSize, oldProtection);
         }
@@ -210,7 +209,7 @@ namespace Reloaded.Memory.Sources
         /// <returns>The old page permissions.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [ExcludeFromCodeCoverage] // Wrapper that simply lets pass with base element calculated with functions tested elsewhere, no logic.
-        public static Kernel32.MEM_PROTECTION ChangePermission<T>(this IMemory memory, IntPtr memoryAddress, ref T baseElement, Kernel32.MEM_PROTECTION newPermissions, bool marshalElement = false)
+        public static Kernel32.Kernel32.MEM_PROTECTION ChangePermission<T>(this IMemory memory, IntPtr memoryAddress, ref T baseElement, Kernel32.Kernel32.MEM_PROTECTION newPermissions, bool marshalElement = false)
                            => memory.ChangePermission(memoryAddress, Struct.GetSize<T>(marshalElement), newPermissions);
     }
 }

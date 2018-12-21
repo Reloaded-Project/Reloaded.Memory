@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Reloaded.Memory.Exceptions;
 using Reloaded.Memory.Tests.Memory.Helpers;
-using Vanara.PInvoke;
 using Xunit;
 
 namespace Reloaded.Memory.Tests.Memory.Sources
@@ -210,14 +209,14 @@ namespace Reloaded.Memory.Tests.Memory.Sources
             /* Start Test */
 
             // Run the change permission function to deny read/write access.
-            try { memorySource.ChangePermission(pointer, 0x100, Kernel32.MEM_PROTECTION.PAGE_NOACCESS); }
+            try { memorySource.ChangePermission(pointer, 0x100, Kernel32.Kernel32.MEM_PROTECTION.PAGE_NOACCESS); }
             catch (NotImplementedException) { return; } // ChangePermission is optional to implement
 
             // NETCore removed handling of Corrupted State Exceptions https://github.com/dotnet/coreclr/issues/9045
             // We cannot properly test the method.
 
             // Restore or NETCore execution engine will complain.
-            try { memorySource.ChangePermission(pointer, 0x100, Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE); }
+            try { memorySource.ChangePermission(pointer, 0x100, Kernel32.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE); }
             catch (NotImplementedException) { return; } // ChangePermission is optional to implement
 
             // Cleanup 
@@ -235,12 +234,12 @@ namespace Reloaded.Memory.Tests.Memory.Sources
             /* Start Test */
 
             // Run the change permission function to deny read/write access.
-            try { memorySource.ChangePermission((IntPtr)(-1), 0x100, Kernel32.MEM_PROTECTION.PAGE_NOACCESS); }
+            try { memorySource.ChangePermission((IntPtr)(-1), 0x100, Kernel32.Kernel32.MEM_PROTECTION.PAGE_NOACCESS); }
             catch (NotImplementedException)          { return; } // ChangePermission is optional to implement
             catch (MemoryPermissionException) { return; } // Thrown as expected.
 
             // Cleanup on fail.
-            memorySource.ChangePermission((IntPtr)(-1), 0x100, Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
+            memorySource.ChangePermission((IntPtr)(-1), 0x100, Kernel32.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
             Assert.True(false, "This method should throw CannotChangePermissionsException");
         }
     }

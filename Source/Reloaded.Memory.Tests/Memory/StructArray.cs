@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using Reloaded.Memory.Pointers;
 using Reloaded.Memory.Tests.Memory.Helpers;
 using Xunit;
 

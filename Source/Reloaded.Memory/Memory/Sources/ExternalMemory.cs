@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+using System.Runtime.InteropServices;
 using Reloaded.Memory.Exceptions;
-using Vanara.PInvoke;
 
 namespace Reloaded.Memory.Sources
 {
@@ -60,7 +58,7 @@ namespace Reloaded.Memory.Sources
 
             fixed (byte* bufferPtr = buffer)
             {
-                bool succeeded = Kernel32.ReadProcessMemory(_processHandle, memoryAddress, (IntPtr)bufferPtr, (uint)structSize, out _);
+                bool succeeded = Kernel32.Kernel32.ReadProcessMemory(_processHandle, memoryAddress, (IntPtr)bufferPtr, (UIntPtr) structSize, out _);
                 Struct.FromPtr((IntPtr)bufferPtr, out value, _localMemory.Read, marshal);
 
                 if (!succeeded)
@@ -74,7 +72,7 @@ namespace Reloaded.Memory.Sources
             value = new byte[length];
             fixed (byte* bufferPtr = value)
             {
-                bool succeeded = Kernel32.ReadProcessMemory(_processHandle, memoryAddress, (IntPtr)bufferPtr, (uint)value.Length, out _);
+                bool succeeded = Kernel32.Kernel32.ReadProcessMemory(_processHandle, memoryAddress, (IntPtr)bufferPtr, (UIntPtr) value.Length, out _);
 
                 if (!succeeded)
                     throw new MemoryException($"ReadProcessMemory failed to read {value.Length} bytes of memory from {memoryAddress.ToString("X")}");
@@ -88,7 +86,7 @@ namespace Reloaded.Memory.Sources
 
             fixed (byte* bytePtr = bytes)
             {
-                bool succeeded = Kernel32.WriteProcessMemory(_processHandle, memoryAddress, (IntPtr)bytePtr, (uint)bytes.Length, out _);
+                bool succeeded = Kernel32.Kernel32.WriteProcessMemory(_processHandle, memoryAddress, (IntPtr)bytePtr, (UIntPtr) bytes.Length, out _);
 
                 if (!succeeded)
                     throw new MemoryException($"WriteProcessMemory failed to write {bytes.Length} bytes of memory to {memoryAddress.ToString("X")}");
@@ -101,7 +99,7 @@ namespace Reloaded.Memory.Sources
         {
             fixed (byte* bytePtr = data)
             {
-                bool succeeded = Kernel32.WriteProcessMemory(_processHandle, memoryAddress, (IntPtr)bytePtr, (uint)data.Length, out _);
+                bool succeeded = Kernel32.Kernel32.WriteProcessMemory(_processHandle, memoryAddress, (IntPtr)bytePtr, (UIntPtr) data.Length, out _);
 
                 if (!succeeded)
                     throw new MemoryException($"WriteProcessMemory failed to write {data.Length} bytes of memory to {memoryAddress.ToString("X")}");
@@ -112,17 +110,17 @@ namespace Reloaded.Memory.Sources
         public IntPtr Allocate(int length)
         {
             // Call VirtualAllocEx to allocate memory of fixed chosen size.
-            IntPtr returnAddress = Kernel32.VirtualAllocEx
+            IntPtr returnAddress = Kernel32.Kernel32.VirtualAllocEx
             (
                 _processHandle,
                 IntPtr.Zero,
-                (uint)length,
-                Kernel32.MEM_ALLOCATION_TYPE.MEM_COMMIT | Kernel32.MEM_ALLOCATION_TYPE.MEM_RESERVE,
-                Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE
+                (UIntPtr) length,
+                Kernel32.Kernel32.MEM_ALLOCATION_TYPE.MEM_COMMIT | Kernel32.Kernel32.MEM_ALLOCATION_TYPE.MEM_RESERVE,
+                Kernel32.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE
             );
 
             if (returnAddress == IntPtr.Zero)
-                throw new MemoryAllocationException($"Failed to allocate memory in external process: {length} bytes, {Kernel32.GetLastError()} last error.");                
+                throw new MemoryAllocationException($"Failed to allocate memory in external process: {length} bytes, {Marshal.GetLastWin32Error()} last error.");                
 
             return returnAddress;
         }
@@ -130,7 +128,7 @@ namespace Reloaded.Memory.Sources
         /// <inheritdoc />
         public bool Free(IntPtr address)
         {
-            return Kernel32.VirtualFreeEx(_processHandle, address, 0, Kernel32.MEM_ALLOCATION_TYPE.MEM_RELEASE);
+            return Kernel32.Kernel32.VirtualFreeEx(_processHandle, address, (UIntPtr) 0, Kernel32.Kernel32.MEM_ALLOCATION_TYPE.MEM_RELEASE);
         }
 
         /*
@@ -142,9 +140,9 @@ namespace Reloaded.Memory.Sources
         /* Implementation */
 
         /// <inheritdoc />
-        public Kernel32.MEM_PROTECTION ChangePermission(IntPtr memoryAddress, int size, Kernel32.MEM_PROTECTION newPermissions)
+        public Kernel32.Kernel32.MEM_PROTECTION ChangePermission(IntPtr memoryAddress, int size, Kernel32.Kernel32.MEM_PROTECTION newPermissions)
         {
-            bool result = Kernel32.VirtualProtectEx(_processHandle, memoryAddress, (uint)size, newPermissions, out Kernel32.MEM_PROTECTION oldPermissions);
+            bool result = Kernel32.Kernel32.VirtualProtectEx(_processHandle, memoryAddress, (UIntPtr) size, newPermissions, out Kernel32.Kernel32.MEM_PROTECTION oldPermissions);
 
             if (!result)
                 throw new MemoryPermissionException($"Unable to change permissions for the following memory address {memoryAddress.ToString("X")} of size {size} and permission {newPermissions.ToString()}");

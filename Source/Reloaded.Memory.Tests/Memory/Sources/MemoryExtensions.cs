@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
-using System.Threading;
-using Reloaded.Memory.Pointers;
 using Reloaded.Memory.Sources;
 using Reloaded.Memory.Tests.Memory.Helpers;
-using Vanara.PInvoke;
 using Xunit;
 
 namespace Reloaded.Memory.Tests.Memory.Sources
@@ -55,7 +50,7 @@ namespace Reloaded.Memory.Tests.Memory.Sources
             var randomIntStruct = RandomIntStruct.BuildRandomStruct();
             
             // Run the change permission function to deny read/write access.
-            try { memorySource.ChangePermission(pointer, structSize, Kernel32.MEM_PROTECTION.PAGE_NOACCESS); }
+            try { memorySource.ChangePermission(pointer, structSize, Kernel32.Kernel32.MEM_PROTECTION.PAGE_NOACCESS); }
             catch (NotImplementedException) { return; } // ChangePermission is optional to implement
 
             // Throws corrupted state exception if operations fail until restore.
@@ -63,7 +58,7 @@ namespace Reloaded.Memory.Tests.Memory.Sources
             memorySource.SafeRead(pointer , out RandomIntStruct randomIntStructCopy);
 
             // Restore or NETCore execution engine will complain.
-            try { memorySource.ChangePermission(pointer, structSize, Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE); }
+            try { memorySource.ChangePermission(pointer, structSize, Kernel32.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE); }
             catch (NotImplementedException) { return; } // ChangePermission is optional to implement
 
             // Compare before exiting test.
@@ -92,7 +87,7 @@ namespace Reloaded.Memory.Tests.Memory.Sources
             var randomByteArray = RandomByteArray.GenerateRandomByteArray(arrayElements);
 
             // Run the change permission function to deny read/write access.
-            try { memorySource.ChangePermission(pointer, arrayElements, Kernel32.MEM_PROTECTION.PAGE_NOACCESS); }
+            try { memorySource.ChangePermission(pointer, arrayElements, Kernel32.Kernel32.MEM_PROTECTION.PAGE_NOACCESS); }
             catch (NotImplementedException) { return; } // ChangePermission is optional to implement
 
             // Throws corrupted state exception if operations fail until restore.
@@ -100,7 +95,7 @@ namespace Reloaded.Memory.Tests.Memory.Sources
             memorySource.SafeReadRaw (pointer, out byte[] randomByteArrayCopy, randomByteArray.Array.Length);
 
             // Restore or NETCore execution engine will complain.
-            try { memorySource.ChangePermission(pointer, arrayElements, Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE); }
+            try { memorySource.ChangePermission(pointer, arrayElements, Kernel32.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE); }
             catch (NotImplementedException) { return; } // ChangePermission is optional to implement
 
             // Compare before exiting test.
@@ -132,7 +127,7 @@ namespace Reloaded.Memory.Tests.Memory.Sources
                 randomIntStructArray[x] = RandomIntStruct.BuildRandomStruct();
 
             // Run the change permission function to deny read/write access.
-            try { memorySource.ChangePermission(pointer, arraySize, Kernel32.MEM_PROTECTION.PAGE_NOACCESS); }
+            try { memorySource.ChangePermission(pointer, arraySize, Kernel32.Kernel32.MEM_PROTECTION.PAGE_NOACCESS); }
             catch (NotImplementedException) { return; } // ChangePermission is optional to implement
 
             // Throws corrupted state exception if operations fail until restore.
@@ -140,7 +135,7 @@ namespace Reloaded.Memory.Tests.Memory.Sources
             memorySource.SafeRead(pointer, out RandomIntStruct[] randomIntStructArrayCopy, arrayElements);
 
             // Restore or NETCore execution engine will complain.
-            try { memorySource.ChangePermission(pointer, arraySize, Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE); }
+            try { memorySource.ChangePermission(pointer, arraySize, Kernel32.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE); }
             catch (NotImplementedException) { return; } // ChangePermission is optional to implement
 
             // Compare before exiting test.

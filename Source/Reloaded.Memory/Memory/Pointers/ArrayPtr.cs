@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.CompilerServices;
 using Reloaded.Memory.Sources;
 
 namespace Reloaded.Memory.Pointers
