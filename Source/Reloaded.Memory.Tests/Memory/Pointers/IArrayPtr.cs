@@ -72,6 +72,10 @@ namespace Reloaded.Memory.Tests.Memory.Pointers
             adventurePhysicsPointer.Get(out var firstElement , 0);
             adventurePhysicsPointer.Get(out var secondElement, 1);
 
+            // Check Indexer overloads.
+            Assert.Equal(firstElement, adventurePhysicsPointer[0]);
+            Assert.Equal(secondElement, adventurePhysicsPointer[1]);
+
             Assert.NotEqual(firstElement, secondElement);           // First two elements should not be equal. If they are, change your test data.
 
             // Increment pointer by 1 and get first element (true second element).
@@ -99,6 +103,10 @@ namespace Reloaded.Memory.Tests.Memory.Pointers
             adventurePhysicsPointer.Get(out var firstElement, 0);
             adventurePhysicsPointer.Get(out var secondElement, 1);
 
+            // Check Indexer overloads.
+            Assert.Equal(firstElement, adventurePhysicsPointer[0]);
+            Assert.Equal(secondElement, adventurePhysicsPointer[1]);
+
             // Confirm not equal.
             Assert.NotEqual(firstElement, secondElement);           // First two elements should not be equal. If they are, change your test data.
 
@@ -108,6 +116,13 @@ namespace Reloaded.Memory.Tests.Memory.Pointers
 
             Assert.NotEqual(secondElement, newSecondElement);
             Assert.Equal   (firstElement , newSecondElement);
+
+            // Set original element with Index setter.
+            adventurePhysicsPointer[1] = secondElement;
+            var restoredSecondelement = adventurePhysicsPointer[1];
+
+            Assert.Equal(secondElement, restoredSecondelement);
+            Assert.NotEqual(secondElement, firstElement);
 
             // Restore
             adventurePhysicsPointer.Set(ref secondElement, 1);

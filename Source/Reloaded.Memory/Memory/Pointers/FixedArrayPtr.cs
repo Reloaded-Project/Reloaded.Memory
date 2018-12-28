@@ -33,8 +33,7 @@ namespace Reloaded.Memory.Pointers
         /// Contains the size of the entire array, in bytes.
         /// </summary>
         public int ArraySize => Struct.GetSize<TStruct>(MarshalElements) * Count;
-
-        [ExcludeFromCodeCoverage]
+        
         public TStruct this[int index]
         {
             get
