@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Reloaded.Memory.Sources;
 
 namespace Reloaded.Memory.Pointers
@@ -22,6 +23,17 @@ namespace Reloaded.Memory.Pointers
 
         /// <inheritdoc />
         public int      ElementSize         => Struct.GetSize<TStruct>(MarshalElements);
+
+        [ExcludeFromCodeCoverage]
+        public TStruct this[int index]
+        {
+            get
+            {
+                Get(out TStruct value, index);
+                return value;
+            }
+            set => Set(ref value, index);
+        }
 
         /// <inheritdoc />
         public void Get(out TStruct value, int index)

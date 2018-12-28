@@ -12,51 +12,46 @@ namespace Reloaded.Memory.Pointers
     /// </summary>
     public unsafe class FixedArrayPtr<TStruct> : IEnumerable<TStruct>, IArrayPtr<TStruct>
     {
-        /// <summary>
-        /// Gets the pointer to the start of the data contained in the <see cref="FixedArrayPtr{T}"/>.
-        /// </summary>
+        /// <inheritdoc />
         public void* Pointer { get; set; }
+
+        /// <inheritdoc />
+        public bool MarshalElements { get; set; }
+
+        /// <inheritdoc />
+        public IMemory Source { get; set; } = new Sources.Memory();
+
+        /// <inheritdoc />
+        public int ElementSize => Struct.GetSize<TStruct>(MarshalElements);
 
         /// <summary>
         /// The number of elements contained in the <see cref="FixedArrayPtr{T}"/>.
         /// </summary>
         public int Count { get; set; }
-
-        /// <summary>
-        /// If this is true; elements will be marshaled as they are read in and out from memory.
-        /// </summary>
-        public bool MarshalElements { get; set; }
-
-        /// <summary>
-        /// The source where memory will be read/written.
-        /// </summary>
-        public IMemory Source { get; set; } = new Sources.Memory();
-
-        /// <summary>
-        /// Size of a single element in the array, in bytes.
-        /// </summary>
-        public int ElementSize => Struct.GetSize<TStruct>(MarshalElements);
-
+        
         /// <summary>
         /// Contains the size of the entire array, in bytes.
         /// </summary>
         public int ArraySize => Struct.GetSize<TStruct>(MarshalElements) * Count;
 
-        /// <summary>
-        /// Gets the value of an item at a specific index.
-        /// </summary>
-        /// <param name="value">The value to be received from the array.</param>
-        /// <param name="index">The index in the array from which to receive the value.</param>
+        [ExcludeFromCodeCoverage]
+        public TStruct this[int index]
+        {
+            get
+            {
+                Get(out TStruct value, index);
+                return value;
+            }
+            set => Set(ref value, index);
+        }
+
+        /// <inheritdoc />
         public void Get(out TStruct value, int index)
         {
             Source.Read((IntPtr)GetPointerToElement(index), out value, MarshalElements);
         }
 
-        /// <summary>
-        /// Sets the value of an item at a specific index.
-        /// </summary>
-        /// <param name="value">The value to be written.</param>
-        /// <param name="index">The index in the array to which the value is to be written to.</param>
+        /// <inheritdoc />
         public void Set(ref TStruct value, int index)
         {
             Source.Write((IntPtr)GetPointerToElement(index), ref value, MarshalElements);
@@ -166,14 +161,7 @@ namespace Reloaded.Memory.Pointers
             }
         }
 
-        /// <summary>
-        /// Gets the pointer to the element at the given index.
-        /// </summary>
-        /// <param name="index">The index to retrieve a pointer for.</param>
-        /// <returns>
-        ///     Pointer to the requested element at index.
-        ///     -1 if the element is not part of the collection.
-        /// </returns>
+        /// <inheritdoc />
         public void* GetPointerToElement(int index)
         {
             // Do not throw, throwing exceptions makes for some very ugly code on other side.

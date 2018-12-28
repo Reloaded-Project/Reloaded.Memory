@@ -48,5 +48,7 @@ namespace Reloaded.Memory.Pointers
         /// <param name="value">The value to be written.</param>
         /// <param name="index">The index in the array to which the value is to be written to.</param>
         void Set(ref TStruct value, int index);
+
+        TStruct this[int index] { get; set; }
     }
 }

@@ -21,6 +21,7 @@ Fun fact: There is a project called `Reloaded.Memory.Example` in the solution, w
 - [Table of Contents](#table-of-contents)
 - [Prologue](#prologue)
 - [Class Breakdown](#class-breakdown)
+- [Small Performance Note](#small-performance-note)
 - [Source Code Samples](#source-code-samples)
   - [Sample: Reading/Writing Primitives](#sample-readingwriting-primitives)
   - [Sample: Reading/Writing Structs](#sample-readingwriting-structs)
@@ -28,6 +29,7 @@ Fun fact: There is a project called `Reloaded.Memory.Example` in the solution, w
   - [Sample: Struct Array](#sample-struct-array)
   - [Sample: Marshalling](#sample-marshalling)
   - [Sample: Struct & StructArray Utility Classes](#sample-struct-structarray-utility-classes)
+
 
 ## Prologue
 Project-Reloaded, also known as Reloaded 3.X (in terms of mod loader versions) exposes an interface named `IMemory` that can be used to perform memory manipulation actions.
@@ -73,6 +75,12 @@ This means that you can e.g. have a pointer to a variable in another process.
 Pretty much this is all you need to know.
 
 Play around with the classes yourself and discover what you can do. Everything below is extra.
+
+## Small Performance Note
+
+At the current moment, **ArrayPtr** and **FixedArrayPtr** offer both an indexer `[]` and `Get` + `Set` methods for reading and/or writing data.
+It should be noted, that due to reduced copying, the `Get` + `Set` methods are technically faster than the indexer in performance.
+That said, the difference extremely miniscule and would not be noticed even in benchmarks unless you run many thousands of read/write calls in a loop; it is an optional micro optimization you may wish to make though in certain applications.
 
 ## Source Code Samples
 
