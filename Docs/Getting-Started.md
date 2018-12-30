@@ -13,7 +13,11 @@
 
 The following is a small, quick, non-exhaustive resource to help you get started with the *Reloaded.Memory* library - providing an introduction to writing code using the library. This serves as a guide to help you get going, covering the basics and essentials.
 
-Fun fact: There is a project called `Reloaded.Memory.Example` in the solution, which is a mini mirror of this guide.
+## Pre-Prologue: Adding Reloaded.Memory to your project.
+1.  Open/Create project in Visual Studio.
+2.  Right-click your project within the `Solution Explorer` and select `Manage NuGet Packages`.
+3.  Search for `Reloaded.Memory`.
+4.  Install the package.
 
 ## Table of Contents
 - [Page Information](#page-information)
@@ -29,7 +33,6 @@ Fun fact: There is a project called `Reloaded.Memory.Example` in the solution, w
   - [Sample: Struct Array](#sample-struct-array)
   - [Sample: Marshalling](#sample-marshalling)
   - [Sample: Struct & StructArray Utility Classes](#sample-struct-structarray-utility-classes)
-
 
 ## Prologue
 Project-Reloaded, also known as Reloaded 3.X (in terms of mod loader versions) exposes an interface named `IMemory` that can be used to perform memory manipulation actions.
