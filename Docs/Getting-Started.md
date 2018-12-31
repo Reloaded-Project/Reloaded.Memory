@@ -69,11 +69,12 @@ The following is a quick breakdown of the main classes you will probably find us
 All of these use the `IMemory` interface under the hood, which can be manually set.
 This means that you can e.g. have a pointer to a variable in another process.
 
-*In addition, the following utility classes are available:*
+*In addition, the following helper and utility classes are available:*
 
 + **Endian**: Utility method for swapping the endian of a specific variable.
 + **Struct**: Allows converting structs to bytes, converting bytes to structs, getting size of structs, writing struct to pointer etc.
 + **StructArray**: Array support for the `Struct` utility class. (The functions in `Struct`, but with arrays)
++ **CircularBuffer**: A stream-like buffer where once you reach the end of the buffer, it loops back over to the beginning.
 
 Pretty much this is all you need to know.
 
