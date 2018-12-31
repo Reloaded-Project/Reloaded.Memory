@@ -4,6 +4,7 @@ using System.Security;
 
 namespace Reloaded.Memory.Kernel32
 {
+    /// <summary/>
     public static class Kernel32
     {
         /// <summary>Reads data from an area of memory in a specified process. The entire area to be read must be accessible or the operation fails.</summary>

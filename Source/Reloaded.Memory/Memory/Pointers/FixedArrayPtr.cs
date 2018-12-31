@@ -34,6 +34,7 @@ namespace Reloaded.Memory.Pointers
         /// </summary>
         public int ArraySize => Struct.GetSize<TStruct>(MarshalElements) * Count;
         
+        /// <summary/>
         public TStruct this[int index]
         {
             get

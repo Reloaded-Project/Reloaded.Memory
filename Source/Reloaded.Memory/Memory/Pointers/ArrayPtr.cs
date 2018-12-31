@@ -24,6 +24,7 @@ namespace Reloaded.Memory.Pointers
         /// <inheritdoc />
         public int      ElementSize         => Struct.GetSize<TStruct>(MarshalElements);
         
+        /// <summary/>
         public TStruct this[int index]
         {
             get
