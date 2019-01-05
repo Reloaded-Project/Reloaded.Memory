@@ -50,6 +50,13 @@ namespace Reloaded.Memory.Utilities
             Address     = source.Allocate(Size);
         }
 
+        /// <summary>
+        /// Destroys the current class instance.
+        /// </summary>
+        ~CircularBuffer()
+        {
+            Dispose();
+        }
 
         /* Public Interface */
 
