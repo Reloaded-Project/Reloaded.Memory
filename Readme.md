@@ -37,7 +37,7 @@ This is not a true feature set, rather a list of ideas as to what you can do/sho
 
 The following below are links aimed to help you get started with the library, they cover the basics of use:
 
-+ [Getting Started](https://github.com/Reloaded-Project/Reloaded.Memory/blob/master/Docs/Getting-Started.md)
++ [Getting Started](Docs/Getting-Started.md)
 
 For extra ideas of how to use the library, you may always take a look at `Reloaded.Memory.Tests`, the test suite for the main library.
 
