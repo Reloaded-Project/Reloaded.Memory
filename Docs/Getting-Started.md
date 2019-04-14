@@ -35,7 +35,7 @@ The following is a small, quick, non-exhaustive resource to help you get started
   - [Sample: Struct & StructArray Utility Classes](#sample-struct-structarray-utility-classes)
 
 ## Prologue
-Project-Reloaded, also known as Reloaded 3.X (in terms of mod loader versions) exposes an interface named `IMemory` that can be used to perform memory manipulation actions.
+Project-Reloaded exposes an interface named `IMemory` that can be used to perform memory manipulation actions.
 
 The interface `IMemory` specifically is an interface designed to provide enhanced read/write access to *arbitrary memory*; "arbitrary memory" simply meaning *based on implementation*.
 
