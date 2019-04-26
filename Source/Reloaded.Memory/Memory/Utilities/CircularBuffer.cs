@@ -137,6 +137,7 @@ namespace Reloaded.Memory.Utilities
         public void Dispose()
         {
             Source.Free(Address);
+            GC.SuppressFinalize(this);
         }
     }
 }
