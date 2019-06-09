@@ -52,6 +52,7 @@ namespace Reloaded.Memory.Streams
         /// <param name="bufferSize">
         ///     The size of the buffer.
         ///     Benchmarking suggests 65536 to be an optimal value for <see cref="FileStream"/> and 512/2048 optimal for <see cref="MemoryStream"/>.
+        ///     Note: With the exception of <see cref="ReadBytes"/>, you may only use <see cref="Read{T}(out T)"/> for structs smaller than the buffer size.
         /// </param>
         public BufferedStreamReader(Stream stream, int bufferSize)
         {
