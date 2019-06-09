@@ -13,8 +13,8 @@ namespace Reloaded.Memory.Benchmark
             //BenchmarkRunner.Run<Memory.Streams.Integers.MemoryStream>();
             //BenchmarkRunner.Run<Memory.Streams.Integers.UnrealisticMarshallingOverhead>();
 
-            BenchmarkRunner.Run<Memory.Streams.MediumStruct.FileStream>();
-            //BenchmarkRunner.Run<Memory.Streams.MediumStruct.MemoryStream>();
+            //BenchmarkRunner.Run<Memory.Streams.MediumStruct.FileStream>();
+            BenchmarkRunner.Run<Memory.Streams.MediumStruct.MemoryStream>();
             //BenchmarkRunner.Run<Memory.Streams.MediumStruct.UnrealisticMarshallingOverhead>();
         }
     }

@@ -50,7 +50,7 @@ namespace Reloaded.Memory.Benchmark.Memory.Streams.MediumStruct
         }
 
         /* Bench for Waitmarks */
-        //[Benchmark]
+        [Benchmark]
         public Quadnode BinaryReader()
         {
             using (var fileStream = _generator.GetFileStream())

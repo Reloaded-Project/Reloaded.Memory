@@ -15,7 +15,7 @@ namespace Reloaded.Memory.Benchmark.Memory.Streams.SmallStruct
         [Params(100)]
         public int TotalDataMB { get; set; }
 
-        [Params(4096)]
+        [Params(2048)]
         public int BufferSize { get; set; }
 
         /* Constructor/Destructor */

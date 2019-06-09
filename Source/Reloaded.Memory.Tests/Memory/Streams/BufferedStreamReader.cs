@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Reloaded.Memory.Shared.Generator;
 using Reloaded.Memory.Shared.Structs;
 using Reloaded.Memory.Tests.Memory.Helpers;
@@ -170,6 +171,39 @@ namespace Reloaded.Memory.Tests.Memory.Streams
                 reader.Seek(bytesSeek, SeekOrigin.End);
                 reader.Read(out RandomIntStruct endValue);
                 Assert.Equal(_randomIntStructGenerator.Structs[_randomIntStructGenerator.Structs.Length - structsSkip], endValue);
+            }
+        }
+
+        [Fact]
+        public void ReadBytes()
+        {
+            // Subarray utility class.
+            T[] SubArray<T>(T[] data, int index, int length)
+            {
+                T[] result = new T[length];
+                Array.Copy(data, index, result, 0, length);
+                return result;
+            }
+
+            // Test which alternates between reading middle of bytes and sequential array entries.
+            using (var memoryStream = _randomIntegerGenerator.GetMemoryStream())
+            {
+                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, 4096);
+                int halfwayPoint = _randomIntegerGenerator.Bytes.Length / 2;
+                int byteCount = 200;
+                int iterations = 5;
+
+                for (int x = 0; x < iterations; x++)
+                {
+                    // Read real.
+                    reader.Read(out int value, true);
+                    Assert.Equal(_randomIntegerGenerator.Structs[x], value);
+
+                    // Read middle of array.
+                    byte[] actual = reader.ReadBytes(halfwayPoint, byteCount);
+                    byte[] expected = SubArray(_randomIntegerGenerator.Bytes, halfwayPoint, byteCount);
+                    Assert.Equal(expected, actual);
+                }
             }
         }
     }

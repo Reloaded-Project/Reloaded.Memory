@@ -51,7 +51,7 @@ namespace Reloaded.Memory.Streams
         /// <param name="stream">The stream to add buffering capabilities to.</param>
         /// <param name="bufferSize">
         ///     The size of the buffer.
-        ///     If the underlying stream already has a buffer (e.g. FileStream), it is recommended to set a similar size.
+        ///     Benchmarking suggests 65536 to be an optimal value for <see cref="FileStream"/> and 512/2048 optimal for <see cref="MemoryStream"/>.
         /// </param>
         public BufferedStreamReader(Stream stream, int bufferSize)
         {
@@ -97,6 +97,28 @@ namespace Reloaded.Memory.Streams
                 long relativeOffset = seekTarget - Position();
                 RelativeSeek(relativeOffset);
             }
+        }
+
+        /// <summary>
+        /// Reads a specified amount of bytes at a specific offset from the underlying stream without
+        /// resetting the buffers or advancing the read pointer.
+        ///
+        /// Note: This method is intended only for reading of large size raw data e.g. compressed file data in an archive.
+        ///       No optimizations are performed for this action.
+        /// </summary>
+        /// <param name="offset">The offset of the data from the start of the stream.</param>
+        /// <param name="count">The amount of bytes to read.</param>
+        public byte[] ReadBytes(long offset, int count)
+        {
+            long originalPosition = _stream.Position;
+
+            _stream.Position = offset;
+            byte[] output = new byte[count];
+            _stream.Read(output, 0, count);
+
+            _stream.Position = originalPosition;
+
+            return output;
         }
 
         /// <summary>
