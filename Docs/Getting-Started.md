@@ -22,10 +22,10 @@ The following is a small, quick, non-exhaustive resource to help you get started
 ## Table of Contents
 - [Prologue](#prologue)
 - [Class Breakdown](#class-breakdown)
-- [Performance Notes & Limitations](#performance-notes---limitations)
-  * [ArrayPtr & FixedArrayPtr](#arrayptr---fixedarrayptr)
-  * [BufferedStreamReader: Buffer Size](#bufferedstreamreader--buffer-size)
-  * [BufferedStreamReader: Benchmarks](#bufferedstreamreader--benchmarks)
+- [Performance Notes & Limitations](#performance-notes--limitations)
+  * [ArrayPtr & FixedArrayPtr](#arrayptr--fixedarrayptr)
+  * [BufferedStreamReader: Buffer Size](#bufferedstreamreader-buffer-size)
+  * [BufferedStreamReader: Benchmarks](#bufferedstreamreader-benchmarks)
     + [FileStream](#filestream)
     + [MemoryStream](#memorystream)
 
@@ -94,23 +94,23 @@ Tested on 9th of June 2019 using an Intel i7 4790k @ 4.5GHz and Crucial MX300 75
 
 #### FileStream
 **100MB of Integers (4 bytes)**
-![](/Images/Benchmarks/FileStream/Int.png)
+![](./Images/Benchmarks/FileStream/Int.png)
 
 **100MB of Small Structs (8 bytes)**
-![](/Images/Benchmarks/FileStream/ShortStruct.png)
+![](./Images/Benchmarks/FileStream/ShortStruct.png)
 
 **100MB of Medium Structs (32 bytes)**
-![](/Images/Benchmarks/FileStream/Quadnode.png)
+![](./Images/Benchmarks/FileStream/Quadnode.png)
 
 #### MemoryStream
 **100MB of Integers (4 bytes)**
-![](/Images/Benchmarks/MemoryStream/Int.png)
+![](./Images/Benchmarks/MemoryStream/Int.png)
 
 **100MB of Small Structs (8 bytes)**
-![](/Images/Benchmarks/MemoryStream/ShortStruct.png)
+![](./Images/Benchmarks/MemoryStream/ShortStruct.png)
 
 **100MB of Medium Structs (32 bytes)**
-![](/Images/Benchmarks/MemoryStream/Quadnode.png)
+![](./Images/Benchmarks/MemoryStream/Quadnode.png)
 
 
 
