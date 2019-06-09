@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Reloaded.Memory.Tests.Memory.Helpers
+namespace Reloaded.Memory.Shared.Structs
 {
     public struct RandomByteArray
     {

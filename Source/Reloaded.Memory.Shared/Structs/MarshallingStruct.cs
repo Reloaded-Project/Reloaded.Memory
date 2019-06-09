@@ -2,7 +2,7 @@
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace Reloaded.Memory.Tests.Memory.Helpers
+namespace Reloaded.Memory.Shared.Structs
 {
     /// <summary>
     /// Sample struct that could represent a file entry in an archive format.
@@ -10,6 +10,8 @@ namespace Reloaded.Memory.Tests.Memory.Helpers
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct MarshallingStruct
     {
+        public static Random Random = new Random();
+
         /// <summary>
         /// An inline array of characters, would represent a file name.
         /// </summary>
@@ -34,8 +36,8 @@ namespace Reloaded.Memory.Tests.Memory.Helpers
         {
             MarshallingStruct marshallingStruct;
             marshallingStruct.Name = GetRandomString();
-            marshallingStruct.CompressedSize = new Random().Next();
-            marshallingStruct.UncompressedFileSize = new Random().Next();
+            marshallingStruct.CompressedSize = Random.Next();
+            marshallingStruct.UncompressedFileSize = Random.Next();
             return marshallingStruct;
         }
 

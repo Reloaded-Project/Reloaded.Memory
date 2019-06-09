@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Reloaded.Memory.Shared.Structs;
 using Reloaded.Memory.Tests.Memory.Helpers;
 using Xunit;
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Reloaded.Memory.Shared.Structs;
 using Reloaded.Memory.Sources;
 using Reloaded.Memory.Tests.Memory.Helpers;
 using Xunit;

@@ -80,6 +80,7 @@ namespace Reloaded.Memory
         /// <param name="marshalElement">Set to true to marshal the element.</param>
         /// <param name="value">Local variable to receive the read in struct.</param>
         /// <param name="readFunction">A function that reads data from memory given a pointer, type and marshal option.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void FromPtr<T>(IntPtr pointer, out T value, MemoryExtensions.ReadFunction<T> readFunction, bool marshalElement = false) => readFunction(pointer, out value, marshalElement);
 
         /// <summary>
@@ -89,6 +90,7 @@ namespace Reloaded.Memory
         /// <param name="data">A byte array containing data from which to extract a structure from.</param>
         /// <param name="startIndex">The index in the byte array to read the element from.</param>
         /// <param name="marshalElement">Set to true to marshal the element.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void FromArray<T>(byte[] data, out T value, int startIndex = 0, bool marshalElement = false)
         {
             fixed (byte* dataPtr = data)
@@ -101,6 +103,7 @@ namespace Reloaded.Memory
         /// Returns the size of a specific primitive or struct type.
         /// </summary>
         /// <param name="marshalElement">If set to true; will return the size of an element after marshalling.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int GetSize<T>(bool marshalElement = false)
         {
             return marshalElement ? Marshal.SizeOf<T>() : Unsafe.SizeOf<T>();

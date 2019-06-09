@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace Reloaded.Memory
 {
@@ -76,6 +77,7 @@ namespace Reloaded.Memory
         /// </summary>
         /// <param name="marshalElement">If set to true; will return the size of an element after marshalling.</param>
         /// <param name="elementCount">The number of array elements present.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int GetSize<T>(int elementCount, bool marshalElement = false)
         {
             return Struct.GetSize<T>(marshalElement) * elementCount;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Reloaded.Memory.Pointers;
+using Reloaded.Memory.Shared.Structs;
 using Reloaded.Memory.Tests.Memory.Helpers;
 using Xunit;
 

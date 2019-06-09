@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Reloaded.Memory.Tests.Memory.Helpers
+namespace Reloaded.Memory.Shared.Structs
 {
     /// <summary>
     /// A structure representing the physics data layout for Sonic Adventure, Sonic Adventure DX, Sonic Adventure 2,

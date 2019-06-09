@@ -1,9 +1,11 @@
 ﻿using System;
 
-namespace Reloaded.Memory.Tests.Memory.Helpers
+namespace Reloaded.Memory.Shared.Structs
 {
     public struct RandomIntStruct
     {
+        public static Random Random = new Random();
+
         public byte A;
         public short B;
         public int C;
@@ -11,9 +13,9 @@ namespace Reloaded.Memory.Tests.Memory.Helpers
         public static RandomIntStruct BuildRandomStruct()
         {
             RandomIntStruct randomIntStruct;
-            randomIntStruct.A = (byte)new Random().Next(byte.MinValue, byte.MaxValue);
-            randomIntStruct.B = (short)new Random().Next(short.MinValue, short.MaxValue);
-            randomIntStruct.C = (int)new Random().Next(int.MinValue, int.MaxValue);
+            randomIntStruct.A = (byte)Random.Next(byte.MinValue, byte.MaxValue);
+            randomIntStruct.B = (short)Random.Next(short.MinValue, short.MaxValue);
+            randomIntStruct.C = (int)Random.Next(int.MinValue, int.MaxValue);
             return randomIntStruct;
         }
 

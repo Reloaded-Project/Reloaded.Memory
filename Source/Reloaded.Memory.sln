@@ -1,13 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.136
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28917.182
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Memory.Tests", "Reloaded.Memory.Tests\Reloaded.Memory.Tests.csproj", "{7F503240-976D-44EF-9DCB-5C491EDB8A04}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Memory", "Reloaded.Memory\Reloaded.Memory.csproj", "{63205E76-CB23-4EA8-B58B-71A911EF3788}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloaded.Memory.Example", "Reloaded.Memory.Example\Reloaded.Memory.Example.csproj", "{5D9694D1-D5BF-4896-A35D-D7B54A90A074}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Memory.Example", "Reloaded.Memory.Example\Reloaded.Memory.Example.csproj", "{5D9694D1-D5BF-4896-A35D-D7B54A90A074}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloaded.Memory.Benchmark", "Reloaded.Memory.Benchmark\Reloaded.Memory.Benchmark.csproj", "{788F2EF2-E647-4A21-BB61-4997401300FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloaded.Memory.Shared", "Reloaded.Memory.Shared\Reloaded.Memory.Shared.csproj", "{8BE2D622-C04A-4E48-849A-1976C2F8B659}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{5D9694D1-D5BF-4896-A35D-D7B54A90A074}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D9694D1-D5BF-4896-A35D-D7B54A90A074}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D9694D1-D5BF-4896-A35D-D7B54A90A074}.Release|Any CPU.Build.0 = Release|Any CPU
+		{788F2EF2-E647-4A21-BB61-4997401300FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{788F2EF2-E647-4A21-BB61-4997401300FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{788F2EF2-E647-4A21-BB61-4997401300FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{788F2EF2-E647-4A21-BB61-4997401300FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BE2D622-C04A-4E48-849A-1976C2F8B659}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BE2D622-C04A-4E48-849A-1976C2F8B659}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BE2D622-C04A-4E48-849A-1976C2F8B659}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BE2D622-C04A-4E48-849A-1976C2F8B659}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

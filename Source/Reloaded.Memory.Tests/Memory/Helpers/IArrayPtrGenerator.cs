@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Reloaded.Memory.Shared.Structs;
 
 namespace Reloaded.Memory.Tests.Memory.Helpers
 {

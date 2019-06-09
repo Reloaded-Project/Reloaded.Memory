@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Reloaded.Memory.Exceptions;
+using Reloaded.Memory.Shared.Structs;
 using Reloaded.Memory.Tests.Memory.Helpers;
 using Xunit;
 
