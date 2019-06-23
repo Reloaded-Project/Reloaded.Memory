@@ -226,8 +226,8 @@ namespace Reloaded.Memory.Streams
                 // Convert negative to positive: offset * -1
                 if (offset * -1 <= _bufferOffset)
                 {
-                    _bufferOffset -= (int)offset;
-                    _bufferedBytesRemaining += (int)offset;
+                    _bufferOffset += (int)offset;
+                    _bufferedBytesRemaining -= (int)offset;
                     return true;
                 }
             }

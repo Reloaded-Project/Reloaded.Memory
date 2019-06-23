@@ -154,7 +154,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
         public void SeekBeginAndEndOutsideBuffer(int bufferSize)
         {
             using (var memoryStream = _randomIntStructGenerator.GetMemoryStream())
-            {
+            {   
                 var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
 
                 // Structs skipped each seek and amount of bytes seeked.
@@ -171,6 +171,26 @@ namespace Reloaded.Memory.Tests.Memory.Streams
                 reader.Seek(bytesSeek, SeekOrigin.End);
                 reader.Read(out RandomIntStruct endValue);
                 Assert.Equal(_randomIntStructGenerator.Structs[_randomIntStructGenerator.Structs.Length - structsSkip], endValue);
+            }
+        }
+
+        [Fact]
+        public void SeekBackwards()
+        {
+            using (var memoryStream = _randomIntStructGenerator.GetMemoryStream())
+            {
+                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, Struct.GetSize<RandomIntStruct>() * 4);
+
+                // Structs skipped each seek and amount of bytes seeked.
+                int sizeOfStruct = Struct.GetSize<RandomIntStruct>();
+
+                for (int x = 0; x < _randomIntStructGenerator.Structs.Length; x++)
+                {
+                    reader.Read(out RandomIntStruct firstRead);
+                    reader.Seek(-sizeOfStruct, SeekOrigin.Current);
+                    reader.Read(out RandomIntStruct secondRead);
+                    Assert.Equal(firstRead, secondRead);
+                }
             }
         }
 
