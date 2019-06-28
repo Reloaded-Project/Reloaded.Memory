@@ -60,7 +60,7 @@ namespace Reloaded.Memory.Sources
         /// <param name="memoryAddress">The memory address to read from.</param>
         /// <param name="value">Local variable to receive the read in struct.</param>
         /// <param name="marshal">Set this to true to enable struct marshalling.</param>
-        public static void SafeRead<T>(this IMemory memory, IntPtr memoryAddress, out T value,  bool marshal = false)
+        public static void SafeRead<T>(this IMemory memory, IntPtr memoryAddress, out T value, bool marshal)
         {
             int structSize = Struct.GetSize<T>(marshal);
 
@@ -70,13 +70,30 @@ namespace Reloaded.Memory.Sources
         }
 
         /// <summary>
+        /// Changes memory permissions to ensure memory can be read and reads a generic type from a specified memory address.
+        /// </summary>
+        /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <param name="memory"></param>
+        /// <param name="memoryAddress">The memory address to read from.</param>
+        /// <param name="value">Local variable to receive the read in struct.</param>
+        public static void SafeRead<T>(this IMemory memory, IntPtr memoryAddress, out T value) where T : unmanaged
+        {
+            int structSize = Struct.GetSize<T>();
+
+            var oldProtection = memory.ChangePermission(memoryAddress, structSize, Kernel32.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
+            memory.Read(memoryAddress, out value);
+            memory.ChangePermission(memoryAddress, structSize, oldProtection);
+        }
+
+
+        /// <summary>
         /// Changes memory permissions to ensure memory can be read and reads bytes from a specified memory address.
         /// </summary>
         /// <param name="memory"></param>
         /// <param name="memoryAddress">The memory address to read from.</param>
         /// <param name="value">Local variable to receive the read in bytes.</param>
         /// <param name="length">The amount of bytes to read from the executable.</param>
-        public static void SafeReadRaw(this IMemory memory, IntPtr memoryAddress, out byte[] value,  int length)
+        public static void SafeReadRaw(this IMemory memory, IntPtr memoryAddress, out byte[] value, int length)
         {
             var oldProtection = memory.ChangePermission(memoryAddress, length, Kernel32.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
 
@@ -132,12 +149,28 @@ namespace Reloaded.Memory.Sources
         /// <param name="memoryAddress">The memory address to write to.</param>
         /// <param name="item">The items to write to the address.</param>
         /// <param name="marshal">Set this to true to enable struct marshalling.</param>
-        public static void SafeWrite<T>(this IMemory memory, IntPtr memoryAddress, ref T item, bool marshal = false)
+        public static void SafeWrite<T>(this IMemory memory, IntPtr memoryAddress, ref T item, bool marshal)
         {
             int memorySize = Struct.GetSize<T>(marshal);
 
             var oldProtection = memory.ChangePermission(memoryAddress, memorySize, Kernel32.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
             memory.Write(memoryAddress, ref item, marshal);
+            memory.ChangePermission(memoryAddress, memorySize, oldProtection);
+        }
+
+        /// <summary>
+        /// Changes memory permissions to ensure memory can be written and writes a generic type to a specified memory address.
+        /// </summary>
+        /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <param name="memory"></param>
+        /// <param name="memoryAddress">The memory address to write to.</param>
+        /// <param name="item">The items to write to the address.</param>
+        public static void SafeWrite<T>(this IMemory memory, IntPtr memoryAddress, ref T item) where T : unmanaged
+        {
+            int memorySize = Struct.GetSize<T>();
+
+            var oldProtection = memory.ChangePermission(memoryAddress, memorySize, Kernel32.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
+            memory.Write(memoryAddress, ref item);
             memory.ChangePermission(memoryAddress, memorySize, oldProtection);
         }
 
@@ -164,7 +197,7 @@ namespace Reloaded.Memory.Sources
         /// <param name="marshal">Set this to true to enable struct marshalling.</param>
         public static void SafeWrite<T>(this IMemory memory, IntPtr memoryAddress, T[] items, bool marshal = false)
         {
-            int regionSize = StructArray.GetSize<T>(items.Length);
+            int regionSize = StructArray.GetSize<T>(items.Length, marshal);
 
             var oldProtection = memory.ChangePermission(memoryAddress, regionSize, Kernel32.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
             memory.Write(memoryAddress, items, marshal);

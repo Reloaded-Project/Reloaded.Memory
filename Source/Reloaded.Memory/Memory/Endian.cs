@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Buffers.Binary;
+using System.Runtime.CompilerServices;
 
 namespace Reloaded.Memory
 {
@@ -12,14 +14,22 @@ namespace Reloaded.Memory
         /// </summary>
         /// <param name="type">The individual value to be byte reversed.</param>
         /// <param name="swapped">The output variable to receive the swapped out value.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Reverse<T>(ref T type, out T swapped) where T : unmanaged
         {
-            // Declare an array for storing the data.
-            byte[] data = Struct.GetBytes(ref type);
-            Array.Reverse(data);
+            swapped = type;
+            Reverse(ref swapped);
+        }
 
-            // Use this base object for the storage of the value we are retrieving.
-            Struct.FromArray<T>(data, out swapped);
+        /// <summary>
+        /// Reverses the endian of a primitive value such as int, short, float, double etc. (Not including structs).
+        /// </summary>
+        /// <param name="type">The individual value to be byte reversed. The value will be modified directly.</param>
+        public static unsafe void Reverse<T>(ref T type) where T : unmanaged
+        {
+            byte* bytes = (byte*)Unsafe.AsPointer(ref type);
+            var byteSpan = new Span<byte>(bytes, sizeof(T));
+            byteSpan.Reverse();
         }
     }
 }

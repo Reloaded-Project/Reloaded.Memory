@@ -79,8 +79,13 @@ Play around with the classes yourself and discover what you can do. Everything b
 ## Performance Notes & Limitations
 
 ### ArrayPtr & FixedArrayPtr
-
 **ArrayPtr** and **FixedArrayPtr** offer both an indexer `[]` and `Get` + `Set` methods for reading and/or writing data. Due to reduced copying, the `Get` + `Set` methods are technically faster than the indexer in performance by a miniscule margin.
+
+### Struct Methods
+Micro-optimization: The `ToPtr` and `FromPtr` method sets from `Reloaded.Memory.Struct` are provided as convenience only. To squeeze maximum performance, consider using implementations of `IMemory` instead.
+
+### Marshalling Overloads
+Micro-optimization: If you are working with unmanaged structures or types, the overloads without `marshalElement` (whether to marshal the element) will perform better.
 
 ### BufferedStreamReader: Buffer Size
 Benchmarking suggests the optimal buffer size for `BufferedStreamReader` to be 65536 for reading from an underlying `FileStream` and 512-2048 for `MemoryStream`.

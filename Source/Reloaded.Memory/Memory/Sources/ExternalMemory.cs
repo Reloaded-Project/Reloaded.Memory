@@ -51,7 +51,23 @@ namespace Reloaded.Memory.Sources
         */
 
         /// <inheritdoc />
-        public void Read<T>(IntPtr memoryAddress, out T value, bool marshal = false)
+        public void Read<T>(IntPtr memoryAddress, out T value) where T : unmanaged
+        {
+            int structSize = Struct.GetSize<T>();
+            byte[] buffer = new byte[structSize];
+
+            fixed (byte* bufferPtr = buffer)
+            {
+                bool succeeded = Kernel32.Kernel32.ReadProcessMemory(_processHandle, memoryAddress, (IntPtr)bufferPtr, (UIntPtr)structSize, out _);
+                if (!succeeded)
+                    throw new MemoryException($"ReadProcessMemory failed to read {structSize} bytes of memory from {memoryAddress.ToString("X")}");
+
+                _localMemory.Read((IntPtr)bufferPtr, out value);
+            }
+        }
+
+        /// <inheritdoc />
+        public void Read<T>(IntPtr memoryAddress, out T value, bool marshal)
         {
             int structSize = Struct.GetSize<T>(marshal);
             byte[] buffer  = new byte[structSize];
@@ -59,10 +75,10 @@ namespace Reloaded.Memory.Sources
             fixed (byte* bufferPtr = buffer)
             {
                 bool succeeded = Kernel32.Kernel32.ReadProcessMemory(_processHandle, memoryAddress, (IntPtr)bufferPtr, (UIntPtr) structSize, out _);
-                Struct.FromPtr((IntPtr)bufferPtr, out value, _localMemory.Read, marshal);
-
                 if (!succeeded)
                     throw new MemoryException($"ReadProcessMemory failed to read {structSize} bytes of memory from {memoryAddress.ToString("X")}");
+
+                _localMemory.Read((IntPtr)bufferPtr, out value, marshal);
             }
         }
 
@@ -80,7 +96,21 @@ namespace Reloaded.Memory.Sources
         }
 
         /// <inheritdoc />
-        public void Write<T>(IntPtr memoryAddress, ref T item, bool marshal = false)
+        public void Write<T>(IntPtr memoryAddress, ref T item) where T : unmanaged
+        {
+            byte[] bytes = Struct.GetBytes(ref item);
+
+            fixed (byte* bytePtr = bytes)
+            {
+                bool succeeded = Kernel32.Kernel32.WriteProcessMemory(_processHandle, memoryAddress, (IntPtr)bytePtr, (UIntPtr)bytes.Length, out _);
+
+                if (!succeeded)
+                    throw new MemoryException($"WriteProcessMemory failed to write {bytes.Length} bytes of memory to {memoryAddress.ToString("X")}");
+            }
+        }
+
+        /// <inheritdoc />
+        public void Write<T>(IntPtr memoryAddress, ref T item, bool marshal)
         {
             byte[] bytes = Struct.GetBytes(ref item, marshal);
 
@@ -91,7 +121,6 @@ namespace Reloaded.Memory.Sources
                 if (!succeeded)
                     throw new MemoryException($"WriteProcessMemory failed to write {bytes.Length} bytes of memory to {memoryAddress.ToString("X")}");
             }
-                
         }
 
         /// <inheritdoc />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Reloaded.Memory.Sources;
 
 namespace Reloaded.Memory.Utilities
@@ -53,6 +54,7 @@ namespace Reloaded.Memory.Utilities
         /// <summary>
         /// Destroys the current class instance.
         /// </summary>
+        [ExcludeFromCodeCoverage]
         ~CircularBuffer()
         {
             Dispose();

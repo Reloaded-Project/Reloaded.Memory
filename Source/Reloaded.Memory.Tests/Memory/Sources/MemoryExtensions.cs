@@ -55,15 +55,25 @@ namespace Reloaded.Memory.Tests.Memory.Sources
             catch (NotImplementedException) { return; } // ChangePermission is optional to implement
 
             // Throws corrupted state exception if operations fail until restore.
+            memorySource.SafeWrite(pointer, ref randomIntStruct, false);
+            memorySource.SafeRead(pointer, out RandomIntStruct randomIntStructOldOverload, false);
+            memorySource.SafeRead(pointer, out RandomIntStruct randomIntStructNewOverload);
+            Assert.Equal(randomIntStructOldOverload, randomIntStructNewOverload);
+
+            // New overloads in 1.4.0
             memorySource.SafeWrite(pointer, ref randomIntStruct);
-            memorySource.SafeRead(pointer , out RandomIntStruct randomIntStructCopy);
+            memorySource.SafeRead(pointer, out randomIntStructOldOverload, false);
+            memorySource.SafeRead(pointer, out randomIntStructNewOverload);
+            Assert.Equal(randomIntStructOldOverload, randomIntStructNewOverload);
+
+            // We test both read functions against each write function.
 
             // Restore or NETCore execution engine will complain.
             try { memorySource.ChangePermission(pointer, structSize, Kernel32.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE); }
             catch (NotImplementedException) { return; } // ChangePermission is optional to implement
 
             // Compare before exiting test.
-            Assert.Equal(randomIntStruct, randomIntStructCopy);
+            Assert.Equal(randomIntStruct, randomIntStructNewOverload);
 
             // Cleanup 
             memorySource.Free(pointer);

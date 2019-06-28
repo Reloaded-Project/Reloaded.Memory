@@ -14,9 +14,18 @@ namespace Reloaded.Memory.Sources
         /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
         /// <param name="memoryAddress">The memory address to read from.</param>
         /// <param name="value">Local variable to receive the read in struct.</param>
+        /// <exception cref="MemoryException">Failed to read memory.</exception>
+        void Read<T>       (IntPtr memoryAddress, out T value) where T : unmanaged;
+
+        /// <summary>
+        /// Reads a generic type from a specified memory address.
+        /// </summary>
+        /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <param name="memoryAddress">The memory address to read from.</param>
+        /// <param name="value">Local variable to receive the read in struct.</param>
         /// <param name="marshal">Set this to true to enable struct marshalling.</param>
         /// <exception cref="MemoryException">Failed to read memory.</exception>
-        void Read<T>       (IntPtr memoryAddress, out T value, bool marshal = false);
+        void Read<T>        (IntPtr memoryAddress, out T value, bool marshal);
 
         /// <summary>
         /// Reads raw data from a specified memory address.
@@ -25,7 +34,16 @@ namespace Reloaded.Memory.Sources
         /// <param name="value">Local variable to receive the read in bytes.</param>
         /// <param name="length">The amount of bytes to read starting from the memoryAddress.</param>
         /// <exception cref="MemoryException">Failed to read memory.</exception>
-        void ReadRaw(IntPtr memoryAddress, out byte[] value, int length);
+        void ReadRaw        (IntPtr memoryAddress, out byte[] value, int length);
+
+        /// <summary>
+        /// Writes a generic type to a specified memory address.
+        /// </summary>
+        /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <param name="memoryAddress">The memory address to write to.</param>
+        /// <param name="item">The item to write to the address.</param>
+        /// <exception cref="MemoryException">Failed to write memory.</exception>
+        void Write<T>       (IntPtr memoryAddress, ref T item) where T : unmanaged;
 
         /// <summary>
         /// Writes a generic type to a specified memory address.
@@ -35,7 +53,7 @@ namespace Reloaded.Memory.Sources
         /// <param name="item">The item to write to the address.</param>
         /// <param name="marshal">Set this to true to enable struct marshalling.</param>
         /// <exception cref="MemoryException">Failed to write memory.</exception>
-        void Write<T>       (IntPtr memoryAddress, ref T item, bool marshal = false);
+        void Write<T>       (IntPtr memoryAddress, ref T item, bool marshal);
 
         /// <summary>
         /// Writes raw data to a specified memory address.

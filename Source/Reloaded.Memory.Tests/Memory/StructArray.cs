@@ -53,13 +53,17 @@ namespace Reloaded.Memory.Tests.Memory
                 randomIntegers[x] = RandomIntStruct.BuildRandomStruct();
 
             // Convert integer struct to bytes.
-            byte[] bytes = Reloaded.Memory.StructArray.GetBytes(randomIntegers);
+            // "New" and "Old" refer to original and optimized code paths. "New" is a micro-optimized path since 1.4.0. 
+            byte[] bytesUnmanagedNew = Reloaded.Memory.StructArray.GetBytes(randomIntegers);
+            byte[] bytesUnmanagedOriginal = Reloaded.Memory.StructArray.GetBytes(randomIntegers, false);
 
             // From bytes back to struct array.
-            Reloaded.Memory.StructArray.FromArray(bytes, out RandomIntStruct[] randomIntegersCopy);
+            Reloaded.Memory.StructArray.FromArray(bytesUnmanagedNew, out RandomIntStruct[] newRandomIntegersCopy);
+            Reloaded.Memory.StructArray.FromArray(bytesUnmanagedOriginal, out RandomIntStruct[] oldRandomIntegersCopy, false);
 
             // Compare both arrays.
-            Assert.Equal(randomIntegers, randomIntegersCopy);
+            Assert.Equal(randomIntegers, newRandomIntegersCopy);
+            Assert.Equal(randomIntegers, oldRandomIntegersCopy);
         }
 
         /// <summary>

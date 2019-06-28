@@ -20,7 +20,13 @@ namespace Reloaded.Memory.Sources
         */
 
         /// <inheritdoc />
-        public void    Read<T>(IntPtr memoryAddress, out T value, bool marshal = false)
+        public void Read<T>(IntPtr memoryAddress, out T value) where T : unmanaged
+        {
+            value = Unsafe.Read<T>((void*)memoryAddress);
+        }
+
+        /// <inheritdoc />
+        public void    Read<T>(IntPtr memoryAddress, out T value, bool marshal)
         {
             value = marshal ? Marshal.PtrToStructure<T>(memoryAddress) : Unsafe.Read<T>((void*)memoryAddress);
         }
@@ -33,7 +39,13 @@ namespace Reloaded.Memory.Sources
         }
 
         /// <inheritdoc />
-        public void    Write<T>(IntPtr memoryAddress, ref T item, bool marshal = false)
+        public void Write<T>(IntPtr memoryAddress, ref T item) where T : unmanaged
+        {
+            Unsafe.Write((void*)memoryAddress, item);
+        }
+
+        /// <inheritdoc />
+        public void    Write<T>(IntPtr memoryAddress, ref T item, bool marshal)
         {
             if (marshal)
                 Marshal.StructureToPtr(item, memoryAddress, false);

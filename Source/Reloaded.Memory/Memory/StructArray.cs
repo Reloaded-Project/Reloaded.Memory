@@ -53,12 +53,13 @@ namespace Reloaded.Memory
         /// <summary>
         /// Converts a byte array to a specified structure or class type with explicit StructLayout attribute.
         /// </summary>
-        /// <param name="value">Local variable to receive the read in struct array.</param>
         /// <param name="data">A byte array containing data from which to extract a structure from.</param>
-        /// <param name="startIndex">The index in the byte array to read the element(s) from.</param>
+        /// <param name="value">Local variable to receive the read in struct array.</param>
         /// <param name="marshalElement">Set to true to marshal the element.</param>
         /// <param name="length">The amount of elements to read from the byte array.</param>
-        public static void FromArray<T>(byte[] data, out T[] value, int startIndex = 0, bool marshalElement = false, int length = 0)
+        /// <param name="startIndex">The index in the byte array to read the element(s) from.</param>
+        public static void FromArray<T>(byte[] data, out T[] value, bool marshalElement, int length = 0,
+            int startIndex = 0)
         {
             int structSize = Struct.GetSize<T>(marshalElement);
             int structureCount = (length == 0) ? (data.Length - startIndex) / structSize : length;
@@ -67,7 +68,28 @@ namespace Reloaded.Memory
             for (int x = 0; x < value.Length; x++)
             {
                 int offset = startIndex + (structSize * x);
-                Struct.FromArray<T>(data, out T result, offset, marshalElement);
+                Struct.FromArray<T>(data, out T result, marshalElement, offset);
+                value[x] = result;
+            }
+        }
+
+        /// <summary>
+        /// Converts a byte array to a specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
+        /// <param name="value">Local variable to receive the read in struct array.</param>
+        /// <param name="data">A byte array containing data from which to extract a structure from.</param>
+        /// <param name="startIndex">The index in the byte array to read the element(s) from.</param>
+        /// <param name="length">The amount of elements to read from the byte array.</param>
+        public static void FromArray<T>(byte[] data, out T[] value, int startIndex = 0, int length = 0) where T : unmanaged
+        {
+            int structSize = Struct.GetSize<T>();
+            int structureCount = (length == 0) ? (data.Length - startIndex) / structSize : length;
+            value = new T[structureCount];
+
+            for (int x = 0; x < value.Length; x++)
+            {
+                int offset = startIndex + (structSize * x);
+                Struct.FromArray<T>(data, out T result, offset);
                 value[x] = result;
             }
         }
@@ -78,9 +100,19 @@ namespace Reloaded.Memory
         /// <param name="marshalElement">If set to true; will return the size of an element after marshalling.</param>
         /// <param name="elementCount">The number of array elements present.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int GetSize<T>(int elementCount, bool marshalElement = false)
+        public static int GetSize<T>(int elementCount, bool marshalElement)
         {
             return Struct.GetSize<T>(marshalElement) * elementCount;
+        }
+
+        /// <summary>
+        /// Returns the size of a specific primitive or struct type.
+        /// </summary>
+        /// <param name="elementCount">The number of array elements present.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int GetSize<T>(int elementCount) where T : unmanaged
+        {
+            return Struct.GetSize<T>() * elementCount;
         }
 
         /// <summary>
@@ -88,7 +120,22 @@ namespace Reloaded.Memory
         /// </summary>
         /// <param name="items">The item to convert into a byte array.</param>
         /// <param name="marshalElements">Set to true to marshal the item(s).</param>
-        public static byte[] GetBytes<T>(T[] items, bool marshalElements = false)
+        public static byte[] GetBytes<T>(T[] items, bool marshalElements)
+        {
+            int totalSize = GetSize<T>(items.Length, marshalElements);
+            List<byte> array = new List<byte>(totalSize);
+
+            for (int x = 0; x < items.Length; x++)
+                array.AddRange(Struct.GetBytes(ref items[x], marshalElements));
+
+            return array.ToArray();
+        }
+
+        /// <summary>
+        /// Creates a byte array from specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
+        /// <param name="items">The item to convert into a byte array.</param>
+        public static byte[] GetBytes<T>(T[] items) where T : unmanaged
         {
             int totalSize = GetSize<T>(items.Length);
             List<byte> array = new List<byte>(totalSize);

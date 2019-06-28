@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Reloaded.Memory.Sources;
+using MemoryExtensions = Reloaded.Memory.Sources.MemoryExtensions;
 
 namespace Reloaded.Memory
 {
@@ -58,6 +59,7 @@ namespace Reloaded.Memory
         /// <param name="value">Local variable to receive the read in struct.</param>
         /// <param name="marshalElement">Set to true to marshal the element.</param>
         [ExcludeFromCodeCoverage] // Proxy Overload (Source.Read cannot be set default)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void FromPtr<T>(IntPtr pointer, out T value, bool marshalElement = false) => FromPtr(pointer, out value, Source.Read<T>, marshalElement);
 
 
@@ -86,17 +88,31 @@ namespace Reloaded.Memory
         /// <summary>
         /// Converts a byte array to a specified structure or class type with explicit StructLayout attribute.
         /// </summary>
-        /// <param name="value">Local variable to receive the read in struct.</param>
         /// <param name="data">A byte array containing data from which to extract a structure from.</param>
-        /// <param name="startIndex">The index in the byte array to read the element from.</param>
+        /// <param name="value">Local variable to receive the read in struct.</param>
         /// <param name="marshalElement">Set to true to marshal the element.</param>
+        /// <param name="startIndex">The index in the byte array to read the element from.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void FromArray<T>(byte[] data, out T value, int startIndex = 0, bool marshalElement = false)
+        public static void FromArray<T>(byte[] data, out T value, bool marshalElement, int startIndex = 0)
         {
             fixed (byte* dataPtr = data)
             {
-                FromPtr((IntPtr)(&dataPtr[startIndex]), out value, _thisProcessMemory.Read, marshalElement);
+                _thisProcessMemory.Read((IntPtr)(&dataPtr[startIndex]), out value, marshalElement);
             }
+        }
+
+        /// <summary>
+        /// Converts a byte array to a specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
+        /// <param name="value">Local variable to receive the read in struct.</param>
+        /// <param name="data">A byte array containing data from which to extract a structure from.</param>
+        /// <param name="startIndex">The index in the byte array to read the element from.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void FromArray<T>(byte[] data, out T value, int startIndex = 0) where T : unmanaged
+        {
+            ref byte arrayPtr = ref data[startIndex];
+            T* tPtr = (T*)Unsafe.AsPointer(ref arrayPtr);
+            value = *tPtr;
         }
 
         /// <summary>
@@ -104,9 +120,34 @@ namespace Reloaded.Memory
         /// </summary>
         /// <param name="marshalElement">If set to true; will return the size of an element after marshalling.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int GetSize<T>(bool marshalElement = false)
+        public static int GetSize<T>(bool marshalElement)
         {
             return marshalElement ? Marshal.SizeOf<T>() : Unsafe.SizeOf<T>();
+        }
+
+        /// <summary>
+        /// Returns the size of a specific primitive or struct type.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int GetSize<T>() where T : unmanaged
+        {
+            return Unsafe.SizeOf<T>();
+        }
+
+        /// <summary>
+        /// Creates a byte array from specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
+        /// <param name="item">The item to convert into a byte array.</param>
+        public static byte[] GetBytes<T>(ref T item) where T : unmanaged
+        {
+            int size = sizeof(T);
+            byte[] array = new byte[size];
+
+            ref byte firstElement = ref array[0];
+            T* tPtr = (T*)Unsafe.AsPointer(ref firstElement);
+            *tPtr = item;
+
+            return array;
         }
 
         /// <summary>
@@ -114,14 +155,14 @@ namespace Reloaded.Memory
         /// </summary>
         /// <param name="item">The item to convert into a byte array.</param>
         /// <param name="marshalElement">Set to true to marshal the element.</param>
-        public static byte[] GetBytes<T>(ref T item, bool marshalElement = false)
+        public static byte[] GetBytes<T>(ref T item, bool marshalElement)
         {
-            int size     = GetSize<T>(marshalElement);
+            int size = GetSize<T>(marshalElement);
             byte[] array = new byte[size];
 
             fixed (byte* arrayPtr = array)
             {
-                ToPtr((IntPtr)arrayPtr, ref item, _thisProcessMemory.Write, marshalElement);
+                _thisProcessMemory.Write((IntPtr)arrayPtr, ref item, marshalElement);
             }
 
             return array;
