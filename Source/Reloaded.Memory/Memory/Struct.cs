@@ -110,9 +110,8 @@ namespace Reloaded.Memory
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void FromArray<T>(byte[] data, out T value, int startIndex = 0) where T : unmanaged
         {
-            ref byte arrayPtr = ref data[startIndex];
-            T* tPtr = (T*)Unsafe.AsPointer(ref arrayPtr);
-            value = *tPtr;
+            var arraySpan = new Span<byte>(data, startIndex, data.Length - startIndex);
+            value = MemoryMarshal.Read<T>(arraySpan);
         }
 
         /// <summary>
@@ -143,9 +142,8 @@ namespace Reloaded.Memory
             int size = sizeof(T);
             byte[] array = new byte[size];
 
-            ref byte firstElement = ref array[0];
-            T* tPtr = (T*)Unsafe.AsPointer(ref firstElement);
-            *tPtr = item;
+            var arraySpan = new Span<byte>(array);
+            MemoryMarshal.Write(arraySpan, ref item);
 
             return array;
         }
