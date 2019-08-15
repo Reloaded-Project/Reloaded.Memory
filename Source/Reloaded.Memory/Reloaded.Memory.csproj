@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>
@@ -16,7 +16,7 @@
     <RepositoryUrl></RepositoryUrl>
     <RepositoryType></RepositoryType>
     <Description>A fully featured C# memory editing library supporting reading/writing primitive or generic struct types in either current or an external process.</Description>
-    <Version>1.4.1</Version>
+    <Version>1.5.0</Version>
     <Authors>Sewer56</Authors>
     <Company />
     <Product>Project Reloaded</Product>

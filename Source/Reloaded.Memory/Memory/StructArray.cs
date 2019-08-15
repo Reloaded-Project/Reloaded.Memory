@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace Reloaded.Memory
 {
@@ -91,6 +92,25 @@ namespace Reloaded.Memory
                 int offset = startIndex + (structSize * x);
                 Struct.FromArray<T>(data, out T result, offset);
                 value[x] = result;
+            }
+        }
+
+        /// <summary>
+        /// Converts a span to a specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
+        /// <param name="value">Local variable to receive the read in struct array.</param>
+        /// <param name="data">A byte array containing data from which to extract a structure from.</param>
+        /// <param name="length">The amount of elements to read from the span.</param>
+        public static void FromArray<T>(Span<byte> data, out T[] value, int length = 0) where T : unmanaged
+        {
+            int structSize     = Struct.GetSize<T>();
+            int structureCount = (length == 0) ? (data.Length) / structSize : length;
+            value              = new T[structureCount];
+
+            for (int x = 0; x < value.Length; x++)
+            {
+                Struct.FromArray<T>(data, out value[x]);
+                data = data.Slice(structSize);
             }
         }
 

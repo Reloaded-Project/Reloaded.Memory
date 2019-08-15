@@ -61,9 +61,13 @@ namespace Reloaded.Memory.Tests.Memory
             Reloaded.Memory.StructArray.FromArray(bytesUnmanagedNew, out RandomIntStruct[] newRandomIntegersCopy);
             Reloaded.Memory.StructArray.FromArray(bytesUnmanagedOriginal, out RandomIntStruct[] oldRandomIntegersCopy, false);
 
+            // From span back to struct array.
+            Reloaded.Memory.StructArray.FromArray(new Span<byte>(bytesUnmanagedNew), out RandomIntStruct[] newSpanRandomIntegersCopy);
+
             // Compare both arrays.
             Assert.Equal(randomIntegers, newRandomIntegersCopy);
             Assert.Equal(randomIntegers, oldRandomIntegersCopy);
+            Assert.Equal(randomIntegers, newSpanRandomIntegersCopy);
         }
 
         /// <summary>

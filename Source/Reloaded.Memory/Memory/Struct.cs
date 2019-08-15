@@ -115,6 +115,17 @@ namespace Reloaded.Memory
         }
 
         /// <summary>
+        /// Converts a span to a specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
+        /// <param name="value">Local variable to receive the read in struct.</param>
+        /// <param name="data">A byte array containing data from which to extract a structure from.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void FromArray<T>(Span<byte> data, out T value) where T : unmanaged
+        {
+            value = MemoryMarshal.Read<T>(data);
+        }
+
+        /// <summary>
         /// Returns the size of a specific primitive or struct type.
         /// </summary>
         /// <param name="marshalElement">If set to true; will return the size of an element after marshalling.</param>
