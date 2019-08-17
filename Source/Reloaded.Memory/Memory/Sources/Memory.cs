@@ -10,8 +10,14 @@ namespace Reloaded.Memory.Sources
     {
         /// <summary>
         /// Allows you to access the memory for the currently running process.
+        /// (Alias for <see cref="Instance"/>)
         /// </summary>
-        public static Memory CurrentProcess { get; } = new Memory();
+        public static Memory CurrentProcess => Instance;
+
+        /// <summary>
+        /// Allows you to access the memory for the currently running process.
+        /// </summary>
+        public static Memory Instance { get; } = new Memory();
 
         /*
             -------------------------
