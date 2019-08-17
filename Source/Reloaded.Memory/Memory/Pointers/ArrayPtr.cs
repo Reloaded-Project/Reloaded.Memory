@@ -8,7 +8,7 @@ namespace Reloaded.Memory.Pointers
     /// Abstracts a native 'C' type array of unknown size in memory to a more familiar interface.
     /// TStruct can be a primitive, a struct or a class with explicit StructLayout attribute.
     /// </summary>
-    public unsafe class ArrayPtr<TStruct> : IArrayPtr<TStruct>
+    public unsafe struct ArrayPtr<TStruct> : IArrayPtr<TStruct>
     {
         /* See IArrayPtr for member definitions. */
         
@@ -19,7 +19,7 @@ namespace Reloaded.Memory.Pointers
         public bool     MarshalElements     { get; set; }
 
         /// <inheritdoc />
-        public IMemory  Source              { get; set; } = new Sources.Memory();
+        public IMemory  Source              { get; set; }
 
         /// <inheritdoc />
         public int      ElementSize         => Struct.GetSize<TStruct>(MarshalElements);
@@ -66,8 +66,7 @@ namespace Reloaded.Memory.Pointers
             Pointer = (void*)address;
             MarshalElements = marshalElements;
 
-            if (source != null)
-                Source = source;
+            Source = source ?? Sources.Memory.CurrentProcess;
         }
 
         /*

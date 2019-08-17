@@ -9,7 +9,7 @@ namespace Reloaded.Memory.Pointers
     /// TStruct can be a primitive, a struct or a class with explicit StructLayout attribute.
     /// </summary>
     /// <typeparam name="TStruct">Value type to hold a reference to.</typeparam>
-    public unsafe class Pointer<TStruct>
+    public unsafe struct Pointer<TStruct>
     {
         /// <summary>
         /// Gets the pointer to the value.
@@ -24,7 +24,8 @@ namespace Reloaded.Memory.Pointers
         /// <summary>
         /// The source where memory will be read/written to/from.
         /// </summary>
-        public IMemory Source { get; set; } = new Sources.Memory();
+        public IMemory Source { get; set; }
+
         /// <summary>
         /// Gets the value at the address where the current pointer points to.
         /// </summary>
@@ -37,7 +38,6 @@ namespace Reloaded.Memory.Pointers
         /// <summary>
         /// Gets the value at the address where the current pointer points to.
         /// </summary>
-        /// <param name="value"></param>
         public void GetValue(out TStruct value)
         {
             Source.Read((IntPtr)Address, out value, MarshalElements);
@@ -77,8 +77,7 @@ namespace Reloaded.Memory.Pointers
             Address = (void*)address;
             MarshalElements = marshalElements;
 
-            if (memorySource != null)
-                Source = memorySource;
+            Source = memorySource ?? Sources.Memory.CurrentProcess;
         }
     }
 }
