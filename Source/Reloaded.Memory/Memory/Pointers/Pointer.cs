@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using Reloaded.Memory.Sources;
 
 namespace Reloaded.Memory.Pointers
@@ -29,6 +30,7 @@ namespace Reloaded.Memory.Pointers
         /// <summary>
         /// Gets the value at the address where the current pointer points to.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public TStruct GetValue()
         {
             Source.Read<TStruct>((IntPtr)Address, out var value, MarshalElements);
@@ -38,6 +40,7 @@ namespace Reloaded.Memory.Pointers
         /// <summary>
         /// Gets the value at the address where the current pointer points to.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void GetValue(out TStruct value)
         {
             Source.Read((IntPtr)Address, out value, MarshalElements);
@@ -46,6 +49,7 @@ namespace Reloaded.Memory.Pointers
         /// <summary>
         /// Sets the value where the current pointer is pointing to.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetValue(TStruct value)
         {
             Source.Write((IntPtr)Address, ref value, MarshalElements);
@@ -54,6 +58,7 @@ namespace Reloaded.Memory.Pointers
         /// <summary>
         /// Sets the value where the current pointer is pointing to.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetValue(ref TStruct value)
         {
             Source.Write((IntPtr)Address, ref value, MarshalElements);

@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using Reloaded.Memory.Sources;
 
 namespace Reloaded.Memory.Pointers
@@ -23,7 +24,7 @@ namespace Reloaded.Memory.Pointers
 
         /// <inheritdoc />
         public int      ElementSize         => Struct.GetSize<TStruct>(MarshalElements);
-        
+
         /// <summary/>
         public TStruct this[int index]
         {
@@ -36,12 +37,14 @@ namespace Reloaded.Memory.Pointers
         }
 
         /// <inheritdoc />
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Get(out TStruct value, int index)
         {
             Source.Read((IntPtr)GetPointerToElement(index), out value, MarshalElements);
         }
 
         /// <inheritdoc />
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Set(ref TStruct value, int index)
         {
             Source.Write((IntPtr)GetPointerToElement(index), ref value, MarshalElements);
