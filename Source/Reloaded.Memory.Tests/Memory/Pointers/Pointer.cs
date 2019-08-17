@@ -16,13 +16,19 @@ namespace Reloaded.Memory.Tests.Memory.Pointers
             // Change value normally and try picking up new change.
             number = 10;
             numberPtr.GetValue(out int numberCopy);
+            var otherNumberCopy = numberPtr.GetValue();
 
             Assert.Equal(number, numberCopy);
+            Assert.Equal(number, otherNumberCopy);
 
             // Change value via Pointer class and try picking up change.
             int newValue = 15;
             numberPtr.SetValue(ref newValue);
             Assert.Equal(newValue, number);
+
+            int otherNewValue = 25;
+            numberPtr.SetValue(otherNewValue);
+            Assert.Equal(otherNewValue, number);
         }
     }
 }

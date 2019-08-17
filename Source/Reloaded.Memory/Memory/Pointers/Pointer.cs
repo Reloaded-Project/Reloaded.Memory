@@ -25,6 +25,14 @@ namespace Reloaded.Memory.Pointers
         /// The source where memory will be read/written to/from.
         /// </summary>
         public IMemory Source { get; set; } = new Sources.Memory();
+        /// <summary>
+        /// Gets the value at the address where the current pointer points to.
+        /// </summary>
+        public TStruct GetValue()
+        {
+            Source.Read<TStruct>((IntPtr)Address, out var value, MarshalElements);
+            return value;
+        }
 
         /// <summary>
         /// Gets the value at the address where the current pointer points to.
@@ -38,7 +46,14 @@ namespace Reloaded.Memory.Pointers
         /// <summary>
         /// Sets the value where the current pointer is pointing to.
         /// </summary>
-        /// <param name="value"></param>
+        public void SetValue(TStruct value)
+        {
+            Source.Write((IntPtr)Address, ref value, MarshalElements);
+        }
+
+        /// <summary>
+        /// Sets the value where the current pointer is pointing to.
+        /// </summary>
         public void SetValue(ref TStruct value)
         {
             Source.Write((IntPtr)Address, ref value, MarshalElements);
