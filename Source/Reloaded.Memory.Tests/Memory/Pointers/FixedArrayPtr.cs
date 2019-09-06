@@ -57,7 +57,7 @@ namespace Reloaded.Memory.Tests.Memory.Pointers
             {
                 int randomIndex = randomNumberGenerator.Next(0, _fixedArrayPtr.Count);
                 _fixedArrayPtr.Get(out var adventurePhysics, randomIndex);
-                Assert.True(_fixedArrayPtr.Contains(ref adventurePhysics));
+                Assert.True(_fixedArrayPtr.Contains(adventurePhysics));
             }
 
         }
@@ -84,12 +84,12 @@ namespace Reloaded.Memory.Tests.Memory.Pointers
             {
                 int randomIndex = randomNumberGenerator.Next(0, arrayPtr.Count);
                 arrayPtr.Get(out var value, randomIndex);
-                Assert.Equal(randomIndex, arrayPtr.IndexOf(ref value));
+                Assert.Equal(randomIndex, arrayPtr.IndexOf(value));
             }
 
             // Test nonexisting item.
             int notInArray = upperBound + 1;
-            Assert.Equal(-1, arrayPtr.IndexOf(ref notInArray));
+            Assert.Equal(-1, arrayPtr.IndexOf(notInArray));
 
             // Cleanup
             _currentProcess.Free(ptr);

@@ -1,0 +1,68 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Text;
+
+namespace Reloaded.Memory.Pointers
+{
+    /// <summary>
+    /// Utility class which provides the ability to use a pointer of varying depth level as a by
+    /// reference variable.
+    /// </summary>
+    public unsafe struct RefPointer<TStruct> where TStruct : unmanaged
+    {
+        /// <summary>
+        /// The first pointer.
+        /// </summary>
+        public TStruct* Address { get; set; }
+
+        /// <summary>
+        /// Number of required dereferences to meet target address.
+        /// </summary>
+        public int DepthLevel { get; set; }
+
+        /// <param name="address">Address of the pointer in memory.</param>
+        /// <param name="depthLevel">Depth level of the pointer/number of required dereferences to meet target address. 1 = void*, 2 = void**, 3 - void*** etc.</param>
+        public RefPointer(TStruct* address, int depthLevel)
+        {
+            Address = address;
+            DepthLevel = depthLevel;
+        }
+
+        /// <summary>
+        /// Attempts to dereference the pointer, returning the innermost pointer level as a ref type.
+        /// If at any point along the way, the pointed to address is null, the method fails.
+        /// </summary>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ref TStruct TryDereference(out bool success)
+        {
+            TStruct* currentAddress = Address;
+            success = false;
+
+            if (currentAddress == (TStruct*) 0)
+                return ref Create(currentAddress);
+
+            for (int x = 0; x < DepthLevel - 1; x++)
+            {
+                currentAddress = *(TStruct**)(currentAddress);
+                if (currentAddress == (TStruct*) 0)
+                    return ref Create(currentAddress);
+            }
+
+            success = true;
+            return ref Create(currentAddress);
+        }
+
+        /// <summary>
+        /// Converts a pointer into a by reference variable.
+        /// </summary>
+        /// <param name="pointer">Pointer to the unmanaged structure.</param>
+        /// <returns>A by reference variable for a given pointer.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ref TStruct Create(TStruct* pointer)
+        {
+            return ref Unsafe.AsRef<TStruct>(pointer);
+        }
+    }
+}

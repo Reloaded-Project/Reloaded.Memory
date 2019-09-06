@@ -10,6 +10,8 @@ namespace Reloaded.Memory.Pointers
     /// <summary>
     /// Abstracts a native 'C' type array of a set size in memory to a more familiar interface.
     /// TStruct can be a primitive, a struct or a class with explicit StructLayout attribute.
+    /// Note: This class is not safe/does not perform range checks.
+    /// It exists to provide additional functionality like LINQ which otherwise cannot be achieved without knowing amount of elements.
     /// </summary>
     public unsafe struct FixedArrayPtr<TStruct> : IEnumerable<TStruct>, IArrayPtr<TStruct>
     {
@@ -89,12 +91,29 @@ namespace Reloaded.Memory.Pointers
             --------------
         */
 
+
+
+        /// <summary>
+        /// Determines whether an element is in the <see cref="FixedArrayPtr{T}"/>.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public bool Contains(TStruct item) => Contains(ref item);
+
         /// <summary>
         /// Determines whether an element is in the <see cref="FixedArrayPtr{T}"/>.
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
         public bool Contains(ref TStruct item) => IndexOf(ref item) != -1;
+
+        /// <summary>
+        /// Searches for a specified item and returns the index of the item
+        /// if present.
+        /// </summary>
+        /// <param name="item">The item to search for in the array.</param>
+        /// <returns>The index of the item, if present in the array.</returns>
+        public int IndexOf(TStruct item) => IndexOf(ref item);
 
         /// <summary>
         /// Searches for a specified item and returns the index of the item
@@ -126,11 +145,11 @@ namespace Reloaded.Memory.Pointers
             // Available elements in this array.
             int availableDestinationElements = this.Count - destinationIndex;
             if (length > availableDestinationElements)
-                throw new ArgumentException($"There is insufficient space in the FixedArrayPtr to copy {length} elements. (Length: {length}, Available Elements: {availableDestinationElements})");
+                throw new ArgumentException($"There is insufficient space in the {nameof(FixedArrayPtr<TStruct>)} to copy {length} elements. (Length: {length}, Available Elements: {availableDestinationElements})");
 
             int availableSourceElements = sourceArray.Length - sourceIndex;
             if (length > availableSourceElements)
-                throw new ArgumentException($"There is insufficient space in the sourceArray to copy {length} elements. (Length: {length}, Available Elements: {availableSourceElements})");
+                throw new ArgumentException($"There is insufficient space in the {nameof(sourceArray)} to copy {length} elements. (Length: {length}, Available Elements: {availableSourceElements})");
 
             // TODO: This method could be optimized if we can guarantee or make a check that the Source (IMemory) to which we are copying the memory TO is the current process.
             for (int x = 0; x < length; x++)
@@ -149,11 +168,11 @@ namespace Reloaded.Memory.Pointers
             // Available elements in destinationArray.
             int availableDestinationElements = destinationArray.Length - destinationIndex;
             if (length > availableDestinationElements)
-                throw new ArgumentException($"There is insufficient space in the destination array to copy {length} elements. (Length: {length}, Available Elements: {availableDestinationElements})");
+                throw new ArgumentException($"There is insufficient space in the {nameof(destinationArray)} to copy {length} elements. (Length: {length}, Available Elements: {availableDestinationElements})");
 
             int availableSourceElements = this.Count - sourceIndex;
             if (length > availableSourceElements)
-                throw new ArgumentException($"There are not enough elements in the current FixedArrayPointer. (Length: {length}, Available Elements: {availableSourceElements})");
+                throw new ArgumentException($"There are not enough elements in the current {nameof(FixedArrayPtr<TStruct>)}. (Length: {length}, Available Elements: {availableSourceElements})");
 
             // Copy manually.
             for (int x = 0; x < length; x++)
