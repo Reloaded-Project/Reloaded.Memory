@@ -58,8 +58,11 @@ tl;dr: `IMemory` is an interface that allows you to read from a memory source, e
 The following is a quick breakdown of the main classes you will probably find useful within the `Reloaded.Memory` library:
 
 + **ArrayPtr**: Pointer to an array in arbitrary memory.
++ **RefArrayPtr**: Version of `ArrayPtr` that returns elements by reference.
 + **FixedArrayPtr**: Pointer to an array with known length in arbitrary memory. (Allows for LINQ, foreach etc.)
++ **RefFixedArrayPtr:** A `RefArrayPtr` with known length exposing additional functionality such as copy to, copy from etc.
 + **Pointer**: Managed abstraction to a pointer in arbitrary memory.
++ **RefPointer:** Managed abstraction to a pointer in arbitrary memory that returns the pointed value by reference.
 
 All of these use the `IMemory` interface under the hood, which can be manually set.
 This means that you can e.g. have a pointer to a variable in another process.
@@ -71,6 +74,8 @@ This means that you can e.g. have a pointer to a variable in another process.
 + **StructArray**: Array support for the `Struct` utility class. (The functions in `Struct`, but with arrays)
 + **CircularBuffer**: A stream-like buffer where once you reach the end of the buffer, it loops back over to the beginning.
 + **BufferedStreamReader**: A custom unsafe BinaryReader operating over `Stream` classes tuned for performance supporting generics (structs), marshalling and buffering.
++ **Pinnable<T>**: Class that allows for the pinning of unmanaged blittable types in memory for interop with unmanaged code.
++ **PinnableDisposable<T>:** A `Pinnable` that automatically disposes the pinned object when disposed.
 
 Pretty much this is all you need to know.
 
