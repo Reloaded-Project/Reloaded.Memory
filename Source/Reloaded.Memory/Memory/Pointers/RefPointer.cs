@@ -33,6 +33,29 @@ namespace Reloaded.Memory.Pointers
         /// Attempts to dereference the pointer, returning the innermost pointer level as a ref type.
         /// If at any point along the way, the pointed to address is null, the method fails.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool TryDereference(ref TStruct value)
+        {
+            TStruct* currentAddress = Address;
+
+            if (currentAddress == (TStruct*) 0)
+                return false;
+
+            for (int x = 0; x < DepthLevel - 1; x++)
+            {
+                currentAddress = *(TStruct**)(currentAddress);
+                if (currentAddress == (TStruct*) 0)
+                    return false;
+            }
+
+            value = Create(currentAddress); // Lack of ref here is not a typo.
+            return true;
+        }
+
+        /// <summary>
+        /// Attempts to dereference the pointer, returning the innermost pointer level as a ref type.
+        /// If at any point along the way, the pointed to address is null, the method fails.
+        /// </summary>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ref TStruct TryDereference(out bool success)
