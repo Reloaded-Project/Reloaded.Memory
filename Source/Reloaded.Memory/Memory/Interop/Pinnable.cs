@@ -26,32 +26,31 @@ namespace Reloaded.Memory.Interop
 
         // Handle keeping the object pinned. 
         private GCHandle _handle;
-        private T _value;
 
         /* Constructor/Destructor */
+
+        // Note: GCHandle.Alloc causes boxing(due to conversion to object), meaning our item is stored on the heap.
+        // This means that for value types, we do not need to store them explicitly.
 
         /// <inheritdoc />
         public Pinnable(T[] value)
         {
-            _value  = value[0];
-            _handle = GCHandle.Alloc(_value, GCHandleType.Pinned);
-            Pointer = (T*)_handle.AddrOfPinnedObject();
+            _handle = GCHandle.Alloc(value, GCHandleType.Pinned);
+            Pointer = (T*) _handle.AddrOfPinnedObject();
         }
 
         /// <inheritdoc />
         public Pinnable(T value)
         {
-            _value  = value;
-            _handle = GCHandle.Alloc(_value, GCHandleType.Pinned);
+            _handle = GCHandle.Alloc(value, GCHandleType.Pinned);
             Pointer = (T*) _handle.AddrOfPinnedObject();
         }
 
         /// <inheritdoc />
         public Pinnable(ref T value)
         {
-            _value  = value;
-            _handle = GCHandle.Alloc(_value, GCHandleType.Pinned);
-            Pointer = (T* )_handle.AddrOfPinnedObject();
+            _handle = GCHandle.Alloc(value, GCHandleType.Pinned);
+            Pointer = (T*) _handle.AddrOfPinnedObject();
         }
 
         /// <summary>Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</summary>
