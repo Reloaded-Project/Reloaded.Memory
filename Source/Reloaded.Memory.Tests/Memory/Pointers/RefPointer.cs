@@ -28,6 +28,23 @@ namespace Reloaded.Memory.Tests.Memory.Pointers
         }
 
         [Fact]
+        public unsafe void TryDereferenceRawPointer()
+        {
+            int number = 1;
+            int* numberPtr = &number;
+            int** numberPtrPtr = &numberPtr;
+
+            var refPointer = new Reloaded.Memory.Pointers.RefPointer<int>((int*)numberPtrPtr, 2);
+            for (int x = 0; x < 100; x++)
+            {
+                bool success = refPointer.TryDereference(out int* value);
+                *value = x;
+                Assert.True(success);
+                Assert.Equal(number, *value);
+            }
+        }
+
+        [Fact]
         public unsafe void ReadMultiLevelPointer()
         {
             int number = 1;
