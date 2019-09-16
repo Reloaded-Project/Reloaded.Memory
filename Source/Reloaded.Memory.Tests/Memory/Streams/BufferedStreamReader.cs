@@ -60,6 +60,49 @@ namespace Reloaded.Memory.Tests.Memory.Streams
         [Theory]
         [InlineData(AlignedBufferSize)]
         [InlineData(MisalignedBufferSize)]
+        public void ReadAllElementsBigEndian(int bufferSize)
+        {
+            // Int Structs: Complex
+            using (var memoryStream = _randomIntStructGenerator.GetMemoryStream())
+            {
+                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                for (int x = 0; x < _randomIntStructGenerator.Structs.Length; x++)
+                {
+                    reader.ReadBigEndianStruct(out RandomIntStruct value);
+
+                    var notExpected = _randomIntStructGenerator.Structs[x];
+                    var expected = _randomIntStructGenerator.Structs[x];
+                    expected.SwapEndian();
+
+                    Assert.Equal(expected, value);
+                    if (! expected.Equals(notExpected))
+                        Assert.NotEqual(notExpected, value);
+                }
+            }
+
+            // Integers: Primitive
+            using (var memoryStream = _randomIntegerGenerator.GetMemoryStream())
+            {
+                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                for (int x = 0; x < _randomIntegerGenerator.Structs.Length; x++)
+                {
+                    reader.ReadBigEndianPrimitive(out int value);
+
+                    var notExpected = _randomIntegerGenerator.Structs[x];
+                    var expected    = _randomIntegerGenerator.Structs[x];
+                    Reloaded.Memory.Endian.Reverse(ref expected);
+
+                    Assert.Equal(expected, value);
+                    if (expected != notExpected)
+                        Assert.NotEqual(_randomIntegerGenerator.Structs[x], value);
+                }
+            }
+        }
+
+        /* Read back all structs and compare. */
+        [Theory]
+        [InlineData(AlignedBufferSize)]
+        [InlineData(MisalignedBufferSize)]
         public void ReadAllElementsManaged(int bufferSize)
         {
             // Int Structs: Complex

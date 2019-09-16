@@ -16,7 +16,7 @@
     <RepositoryUrl></RepositoryUrl>
     <RepositoryType></RepositoryType>
     <Description>A fully featured C# memory editing library supporting reading/writing primitive or generic struct types in either current or an external process.</Description>
-    <Version>2.3.0</Version>
+    <Version>2.4.0</Version>
     <Authors>Sewer56</Authors>
     <Company />
     <Product>Project Reloaded</Product>

@@ -123,17 +123,16 @@ namespace Reloaded.Memory.Streams
         }
 
         /// <summary>
-        /// Reads a managed or unmanaged generic type from the array.
+        /// Reads a managed or unmanaged generic type from the stream.
         /// Note: For performance recommend using other overload if reading unmanaged type (i.e. marshal = false)
         /// </summary>
         /// <param name="value">The value to output.</param>
         /// <param name="marshal">Set to true to perform marshalling on the value being read, else false.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Read<T>(out T value, bool marshal)
         {
             int size = Struct.GetSize<T>(marshal);
-
-            if (!CanRead(size))
-                ReFillBuffer();
+            ReFillIfNecessary(size);
 
             _memory.Read(_gcHandlePtr + _bufferOffset, out value, marshal);
 
@@ -142,17 +141,51 @@ namespace Reloaded.Memory.Streams
         }
 
         /// <summary>
-        /// Reads an unmanaged, generic type from the array.
+        /// Reads an unmanaged, generic type from the stream.
         /// </summary>
         /// <param name="value">The value to output.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe void Read<T>(out T value) where T : unmanaged
         {
             int size = sizeof(T);
-
-            if (!CanRead(size))
-                ReFillBuffer();
+            ReFillIfNecessary(size);
 
             value = *(T*)(_gcHandlePtr + _bufferOffset);
+
+            _bufferOffset += size;
+            _bufferedBytesRemaining -= size;
+        }
+
+        /// <summary>
+        /// Reads an unmanaged primitive from the stream, swapping the endian of the output.
+        /// </summary>
+        /// <param name="value">The value to output.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe void ReadBigEndianPrimitive<T>(out T value) where T : unmanaged
+        {
+            int size = sizeof(T);
+            ReFillIfNecessary(size);
+
+            value = *(T*)(_gcHandlePtr + _bufferOffset);
+            Endian.Reverse(ref value);
+
+            _bufferOffset += size;
+            _bufferedBytesRemaining -= size;
+        }
+
+        /// <summary>
+        /// Reads an unmanaged struct from the stream, swapping the endian of the output.
+        /// The structure read should implement the <see cref="IEndianReversible"/> interface.
+        /// </summary>
+        /// <param name="value">The value to output.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe void ReadBigEndianStruct<T>(out T value) where T : unmanaged, IEndianReversible
+        {
+            int size = sizeof(T);
+            ReFillIfNecessary(size);
+
+            value = *(T*)(_gcHandlePtr + _bufferOffset);
+            value.SwapEndian();
 
             _bufferOffset += size;
             _bufferedBytesRemaining -= size;
@@ -170,9 +203,20 @@ namespace Reloaded.Memory.Streams
         }
 
         /// <summary>
+        /// Refills the remainder of the buffer if the current buffer cannot handle the given amount of bytes.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void ReFillIfNecessary(int size)
+        {
+            if (!CanRead(size))
+                ReFillBuffer();
+        }
+
+        /// <summary>
         /// Refills the remainder of the buffer.
         /// i.e. Preserves data to still be read (<see cref="_bufferedBytesRemaining"/>) and reads enough data to fill rest of buffer.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void ReFillBuffer()
         {
             // Rewind stream by amount of bytes remaining and read new data.
@@ -183,6 +227,7 @@ namespace Reloaded.Memory.Streams
         /// <summary>
         /// Fills the buffer with new data.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void FillBuffer()
         {
             _bufferedBytesRemaining = _stream.Read(_buffer, 0, _bufferSize);

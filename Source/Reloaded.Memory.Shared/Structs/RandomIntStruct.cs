@@ -2,7 +2,7 @@
 
 namespace Reloaded.Memory.Shared.Structs
 {
-    public struct RandomIntStruct
+    public struct RandomIntStruct : IEndianReversible
     {
         public static Random Random = new Random();
 
@@ -45,6 +45,12 @@ namespace Reloaded.Memory.Shared.Structs
                 hashCode = (hashCode * 397) ^ C;
                 return hashCode;
             }
+        }
+
+        public void SwapEndian()
+        {
+            Endian.Reverse(ref B);
+            Endian.Reverse(ref C);
         }
     }
 }
