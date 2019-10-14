@@ -111,5 +111,8 @@ namespace Reloaded.Memory.Pointers
         {
             return ref Unsafe.AsRef<TStruct>(pointer);
         }
+
+        /// <summary/>
+        public static implicit operator RefPointer<TStruct>(BlittablePointer<TStruct> operand) => new RefPointer<TStruct>(operand.Pointer, 1);
     }
 }
