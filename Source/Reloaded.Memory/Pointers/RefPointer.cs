@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
+﻿using System.Runtime.CompilerServices;
 
 namespace Reloaded.Memory.Pointers
 {
@@ -33,7 +30,6 @@ namespace Reloaded.Memory.Pointers
         /// Attempts to dereference the pointer, returning the innermost pointer level as a ref type.
         /// If at any point along the way, the pointed to address is null, the method fails.
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryDereference(ref TStruct value)
         {
             TStruct* currentAddress = Address;
@@ -56,7 +52,6 @@ namespace Reloaded.Memory.Pointers
         /// Attempts to dereference the pointer, returning the innermost pointer as a pointer.
         /// If at any point along the way, the pointed to address is null, the method fails.
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryDereference(out TStruct* value)
         {
             TStruct* currentAddress = Address;
@@ -81,7 +76,6 @@ namespace Reloaded.Memory.Pointers
         /// If at any point along the way, the pointed to address is null, the method fails.
         /// </summary>
         /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ref TStruct TryDereference(out bool success)
         {
             TStruct* currentAddress = Address;
@@ -106,11 +100,7 @@ namespace Reloaded.Memory.Pointers
         /// </summary>
         /// <param name="pointer">Pointer to the unmanaged structure.</param>
         /// <returns>A by reference variable for a given pointer.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ref TStruct Create(TStruct* pointer)
-        {
-            return ref Unsafe.AsRef<TStruct>(pointer);
-        }
+        public static ref TStruct Create(TStruct* pointer) => ref Unsafe.AsRef<TStruct>(pointer);
 
         /// <summary/>
         public static implicit operator RefPointer<TStruct>(BlittablePointer<TStruct> operand) => new RefPointer<TStruct>(operand.Pointer, 1);
