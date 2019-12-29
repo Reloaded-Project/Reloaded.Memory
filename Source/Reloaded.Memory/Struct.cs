@@ -148,6 +148,23 @@ namespace Reloaded.Memory
         /// Creates a byte array from specified structure or class type with explicit StructLayout attribute.
         /// </summary>
         /// <param name="item">The item to convert into a byte array.</param>
+        [ExcludeFromCodeCoverage]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte[] GetBytes<T>(T item) where T : unmanaged => GetBytes(ref item);
+
+        /// <summary>
+        /// Creates a byte array from specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
+        /// <param name="item">The item to convert into a byte array.</param>
+        /// <param name="marshalElement">Set to true to marshal the element.</param>
+        [ExcludeFromCodeCoverage]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte[] GetBytes<T>(T item, bool marshalElement) => GetBytes(ref item, marshalElement);
+
+        /// <summary>
+        /// Creates a byte array from specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
+        /// <param name="item">The item to convert into a byte array.</param>
         public static byte[] GetBytes<T>(ref T item) where T : unmanaged
         {
             int size = sizeof(T);
