@@ -68,7 +68,7 @@ namespace Reloaded.Memory.Tests.Memory.Pointers
         [Fact]
         public unsafe void UseEnumerator()
         {
-            int[] numbers = { 0, 0, 0, 0, 0, 0, 0, 0 };
+            int[] numbers = { 0, 2, 3, 5, 7, 8, 88, 442 };
             fixed (int* numbersPtr = numbers)
             {
                 var arrayPtr = new FixedArrayPtr<int>((ulong) numbersPtr, numbers.Length);
