@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Reloaded.Memory.Pointers;
 using Reloaded.Memory.Shared.Structs;
 using Reloaded.Memory.Tests.Memory.Helpers;
@@ -59,7 +60,23 @@ namespace Reloaded.Memory.Tests.Memory.Pointers
                 _fixedArrayPtr.Get(out var adventurePhysics, randomIndex);
                 Assert.True(_fixedArrayPtr.Contains(adventurePhysics));
             }
+        }
 
+        /// <summary>
+        /// Checks whether the enumerator returns all values.
+        /// </summary>
+        [Fact]
+        public unsafe void UseEnumerator()
+        {
+            int[] numbers = { 0, 0, 0, 0, 0, 0, 0, 0 };
+            fixed (int* numbersPtr = numbers)
+            {
+                var arrayPtr = new FixedArrayPtr<int>((ulong) numbersPtr, numbers.Length);
+                var numbersFromEnumerator = arrayPtr.Select(x => x).ToArray();
+
+                Assert.Equal(numbers.Length, numbersFromEnumerator.Length);
+                Assert.Equal(numbers, numbersFromEnumerator);
+            }
         }
 
         /// <summary>

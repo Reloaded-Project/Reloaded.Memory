@@ -219,7 +219,7 @@ namespace Reloaded.Memory.Pointers
             /// <summary>
             /// Contains the index of the current element being enumerated.
             /// </summary>
-            private int _currentIndex = 0;
+            private int _currentIndex = -1;
 
             /// <summary>
             /// Constructor for the custom enumerator.
@@ -264,7 +264,7 @@ namespace Reloaded.Memory.Pointers
             [ExcludeFromCodeCoverage] // Technically provided for COM interoperability but never used.
             public void Reset()
             {
-                _currentIndex = 0;
+                _currentIndex = -1;
             }
 
             /// <inheritdoc />
