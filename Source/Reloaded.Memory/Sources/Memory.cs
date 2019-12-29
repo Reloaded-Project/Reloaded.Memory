@@ -32,13 +32,13 @@ namespace Reloaded.Memory.Sources
         }
 
         /// <inheritdoc />
-        public void    Read<T>(IntPtr memoryAddress, out T value, bool marshal)
+        public void Read<T>(IntPtr memoryAddress, out T value, bool marshal)
         {
             value = marshal ? Marshal.PtrToStructure<T>(memoryAddress) : Unsafe.Read<T>((void*)memoryAddress);
         }
 
         /// <inheritdoc />
-        public void    ReadRaw(IntPtr memoryAddress, out byte[] value, int length)
+        public void ReadRaw(IntPtr memoryAddress, out byte[] value, int length)
         {
             value = new byte[length];
             Marshal.Copy(memoryAddress, value, 0, value.Length);
@@ -51,7 +51,7 @@ namespace Reloaded.Memory.Sources
         }
 
         /// <inheritdoc />
-        public void    Write<T>(IntPtr memoryAddress, ref T item, bool marshal)
+        public void Write<T>(IntPtr memoryAddress, ref T item, bool marshal)
         {
             if (marshal)
                 Marshal.StructureToPtr(item, memoryAddress, false);
@@ -60,13 +60,13 @@ namespace Reloaded.Memory.Sources
         }
 
         /// <inheritdoc />
-        public void    WriteRaw(IntPtr memoryAddress, byte[] data)
+        public void WriteRaw(IntPtr memoryAddress, byte[] data)
         {
             Marshal.Copy(data, 0, memoryAddress, data.Length);
         }
 
         /// <inheritdoc />
-        public IntPtr  Allocate(int length)
+        public IntPtr Allocate(int length)
         {
             // DO NOT USE Marshal.AllocHGlobal (GlobalAlloc)
             // Using AllocHGlobal will allocate our memory in a page that may be shared with other content; 
