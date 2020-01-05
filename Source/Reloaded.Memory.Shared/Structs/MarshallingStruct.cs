@@ -28,6 +28,7 @@ namespace Reloaded.Memory.Shared.Structs
         /// </summary>
         public int CompressedSize;
 
+
         /// <summary>
         /// Creates a randomized instance of this struct.
         /// </summary>

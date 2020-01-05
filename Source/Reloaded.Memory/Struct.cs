@@ -93,7 +93,7 @@ namespace Reloaded.Memory
         /// <param name="marshalElement">Set to true to marshal the element.</param>
         /// <param name="startIndex">The index in the byte array to read the element from.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void FromArray<T>(byte[] data, out T value, bool marshalElement, int startIndex = 0)
+        public static void FromArray<T>(byte[] data, out T value, bool marshalElement = true, int startIndex = 0)
         {
             fixed (byte* dataPtr = data)
             {
