@@ -28,6 +28,12 @@ namespace Reloaded.Memory.Streams
         /* Properties (Written as methods to force inlining). */
 
         /// <summary>
+        /// Gets the stream this class was instantiated with.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Stream BaseStream() { return _stream; }
+
+        /// <summary>
         /// Gets the remaining number of bytes that are currently buffered.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
