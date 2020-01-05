@@ -74,6 +74,7 @@ This means that you can e.g. have a pointer to a variable in another process.
 + **StructArray**: Array support for the `Struct` utility class. (The functions in `Struct`, but with arrays)
 + **CircularBuffer**: A stream-like buffer where once you reach the end of the buffer, it loops back over to the beginning.
 + **BufferedStreamReader**: A custom unsafe BinaryReader operating over `Stream` classes tuned for performance supporting generics (structs), marshalling and buffering.
++ **ExtendedMemoryStream**: An extension class for MemoryStream that supports appending of generic types as well as padding the stream.
 + **Pinnable<T>**: Class that allows for the pinning of unmanaged blittable types in memory for interop with unmanaged code.
 + **PinnableDisposable<T>:** A `Pinnable` that automatically disposes the pinned object when disposed.
 
