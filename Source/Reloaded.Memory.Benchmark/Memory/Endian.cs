@@ -93,7 +93,7 @@ namespace Reloaded.Memory.Benchmark.Memory
         {
             byte[] data = Reloaded.Memory.Struct.GetBytes(ref type);
             Array.Reverse(data);
-            Reloaded.Memory.Struct.FromArray<T>(data, out swapped);
+            Reloaded.Memory.Struct.FromArray<T>(data, out swapped, false);
         }
     }
 }
