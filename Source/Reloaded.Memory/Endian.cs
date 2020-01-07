@@ -9,6 +9,8 @@ namespace Reloaded.Memory
     /// </summary>
     public static class Endian
     {
+        #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte Reverse(byte value) => BinaryPrimitives.ReverseEndianness(value);
 
@@ -32,6 +34,8 @@ namespace Reloaded.Memory
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong Reverse(ulong value) => BinaryPrimitives.ReverseEndianness(value);
+
+        #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Reverses the endian of a primitive value such as int, short, float, double etc. (Not including structs).
