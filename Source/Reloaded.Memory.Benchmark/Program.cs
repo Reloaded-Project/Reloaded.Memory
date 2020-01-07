@@ -18,8 +18,8 @@ namespace Reloaded.Memory.Benchmark
             //BenchmarkRunner.Run<Memory.Streams.MediumStruct.MemoryStream>();
             //BenchmarkRunner.Run<Memory.Streams.MediumStruct.UnrealisticMarshallingOverhead>();
 
-            //BenchmarkRunner.Run<Memory.Endian>();
-            BenchmarkRunner.Run<Memory.StructGetBytes>();
+            BenchmarkRunner.Run<Memory.Endian>();
+            //BenchmarkRunner.Run<Memory.StructGetBytes>();
         }
     }
 }

@@ -12,7 +12,20 @@ namespace Reloaded.Memory.Benchmark.Memory
         public int Iterations { get; set; } = 10000;
 
         [Benchmark]
-        public short NewReverseEndianShort()
+        public short IntrinsicReverseEndianShort()
+        {
+            short random = 0x28FB;
+            short swapped = 0;
+            for (int x = 0; x < Iterations; x++)
+            {
+                random = Reloaded.Memory.Endian.Reverse(random);
+            }
+
+            return swapped;
+        }
+
+        [Benchmark]
+        public short GenericReverseEndianShort()
         {
             short random = 0x28FB;
             short swapped = 0;
@@ -25,7 +38,7 @@ namespace Reloaded.Memory.Benchmark.Memory
         }
 
         [Benchmark]
-        public short OldReverseEndianShort()
+        public short OldGenericReverseEndianShort()
         {
             short random = 0x28FB;
             short swapped = 0;
@@ -38,7 +51,20 @@ namespace Reloaded.Memory.Benchmark.Memory
         }
 
         [Benchmark]
-        public int NewReverseEndianInt()
+        public int IntrinsicReverseEndianInt()
+        {
+            int random = 0x11223344;
+            int swapped = 0;
+            for (int x = 0; x < Iterations; x++)
+            {
+                random = Reloaded.Memory.Endian.Reverse(random);
+            }
+
+            return swapped;
+        }
+
+        [Benchmark]
+        public int GenericReverseEndianInt()
         {
             int random = 0x11223344;
             int swapped = 0;
@@ -51,7 +77,7 @@ namespace Reloaded.Memory.Benchmark.Memory
         }
 
         [Benchmark]
-        public int OldReverseEndianInt()
+        public int OldGenericReverseEndianInt()
         {
             int random = 0x11223344;
             int swapped = 0;
@@ -64,7 +90,20 @@ namespace Reloaded.Memory.Benchmark.Memory
         }
 
         [Benchmark]
-        public long NewReverseEndianLong()
+        public long IntrinsicReverseEndianLong()
+        {
+            long random = 0x1122334455667788;
+            long swapped = 0;
+            for (int x = 0; x < Iterations; x++)
+            {
+                random = Reloaded.Memory.Endian.Reverse(random);
+            }
+
+            return swapped;
+        }
+
+        [Benchmark]
+        public long GenericReverseEndianLong()
         {
             long random = 0x1122334455667788;
             long swapped = 0;
@@ -77,7 +116,7 @@ namespace Reloaded.Memory.Benchmark.Memory
         }
 
         [Benchmark]
-        public long OldReverseEndianLong()
+        public long OldGenericReverseEndianLong()
         {
             long random = 0x1122334455667788;
             long swapped = 0;

@@ -9,6 +9,30 @@ namespace Reloaded.Memory
     /// </summary>
     public static class Endian
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte Reverse(byte value) => BinaryPrimitives.ReverseEndianness(value);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static sbyte Reverse(sbyte value) => BinaryPrimitives.ReverseEndianness(value);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static short Reverse(short value) => BinaryPrimitives.ReverseEndianness(value);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ushort Reverse(ushort value) => BinaryPrimitives.ReverseEndianness(value);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int Reverse(int value) => BinaryPrimitives.ReverseEndianness(value);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static uint Reverse(uint value) => BinaryPrimitives.ReverseEndianness(value);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static long Reverse(long value) => BinaryPrimitives.ReverseEndianness(value);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ulong Reverse(ulong value) => BinaryPrimitives.ReverseEndianness(value);
+
         /// <summary>
         /// Reverses the endian of a primitive value such as int, short, float, double etc. (Not including structs).
         /// </summary>
