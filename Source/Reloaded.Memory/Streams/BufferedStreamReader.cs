@@ -163,6 +163,74 @@ namespace Reloaded.Memory.Streams
         }
 
         /// <summary>
+        /// Reads a managed or unmanaged generic type from the stream.
+        /// Note: For performance recommend using other overload if reading unmanaged type (i.e. marshal = false)
+        /// </summary>
+        /// <param name="marshal">Set to true to perform marshalling on the value being read, else false.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T Read<T>(bool marshal)
+        {
+            Read(out T value, marshal);
+            return value;
+        }
+
+        /// <summary>
+        /// Reads an unmanaged, generic type from the stream.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe T Read<T>() where T : unmanaged
+        {
+            Read(out T value);
+            return value;
+        }
+
+        /// <summary>
+        /// Reads a managed or unmanaged generic type from the stream without incrementing the position.
+        /// Note: For performance recommend using other overload if reading unmanaged type (i.e. marshal = false)
+        /// </summary>
+        /// <param name="value">The value to output.</param>
+        /// <param name="marshal">Set to true to perform marshalling on the value being read, else false.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Peek<T>(out T value, bool marshal)
+        {
+            ReFillIfNecessary(Struct.GetSize<T>(marshal));
+            _memory.Read(_gcHandlePtr + _bufferOffset, out value, marshal);
+        }
+
+        /// <summary>
+        /// Reads an unmanaged, generic type from the stream without incrementing the position.
+        /// </summary>
+        /// <param name="value">The value to output.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe void Peek<T>(out T value) where T : unmanaged
+        {
+            ReFillIfNecessary(sizeof(T));
+            value = *(T*)(_gcHandlePtr + _bufferOffset);
+        }
+
+        /// <summary>
+        /// Reads a managed or unmanaged generic type from the stream without incrementing the position.
+        /// Note: For performance recommend using other overload if reading unmanaged type (i.e. marshal = false)
+        /// </summary>
+        /// <param name="marshal">Set to true to perform marshalling on the value being read, else false.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T Peek<T>(bool marshal)
+        {
+            Peek(out T value, marshal);
+            return value;
+        }
+
+        /// <summary>
+        /// Reads an unmanaged, generic type from the stream without incrementing the position.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe T Peek<T>() where T : unmanaged
+        {
+            Peek(out T value);
+            return value;
+        }
+
+        /// <summary>
         /// Reads an unmanaged primitive from the stream, swapping the endian of the output.
         /// </summary>
         /// <param name="value">The value to output.</param>
@@ -195,6 +263,75 @@ namespace Reloaded.Memory.Streams
 
             _bufferOffset += size;
             _bufferedBytesRemaining -= size;
+        }
+
+        /// <summary>
+        /// Reads an unmanaged primitive from the stream, swapping the endian of the output.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe T ReadBigEndianPrimitive<T>() where T : unmanaged
+        {
+            ReadBigEndianPrimitive(out T value);
+            return value;
+        }
+
+        /// <summary>
+        /// Reads an unmanaged struct from the stream, swapping the endian of the output.
+        /// The structure read should implement the <see cref="IEndianReversible"/> interface.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe T ReadBigEndianStruct<T>() where T : unmanaged, IEndianReversible
+        {
+            ReadBigEndianStruct<T>(out T value);
+            return value;
+        }
+
+        /// <summary>
+        /// Reads an unmanaged primitive from the stream, swapping the endian of the output without incrementing the position.
+        /// </summary>
+        /// <param name="value">The value to output.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe void PeekBigEndianPrimitive<T>(out T value) where T : unmanaged
+        {
+            ReFillIfNecessary(sizeof(T));
+
+            value = *(T*)(_gcHandlePtr + _bufferOffset);
+            Endian.Reverse(ref value);
+        }
+
+        /// <summary>
+        /// Reads an unmanaged struct from the stream, swapping the endian of the output without incrementing the position.
+        /// The structure read should implement the <see cref="IEndianReversible"/> interface.
+        /// </summary>
+        /// <param name="value">The value to output.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe void PeekBigEndianStruct<T>(out T value) where T : unmanaged, IEndianReversible
+        {
+            ReFillIfNecessary(sizeof(T));
+
+            value = *(T*)(_gcHandlePtr + _bufferOffset);
+            value.SwapEndian();
+        }
+
+        /// <summary>
+        /// Reads an unmanaged primitive from the stream, swapping the endian of the output without incrementing the position.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe T PeekBigEndianPrimitive<T>() where T : unmanaged
+        {
+            PeekBigEndianPrimitive(out T value);
+            return value;
+        }
+
+        /// <summary>
+        /// Reads an unmanaged struct from the stream, swapping the endian of the output without incrementing the position.
+        /// The structure read should implement the <see cref="IEndianReversible"/> interface.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe T PeekBigEndianStruct<T>() where T : unmanaged, IEndianReversible
+        {
+            PeekBigEndianStruct(out T value);
+            return value;
         }
 
         /// <summary>

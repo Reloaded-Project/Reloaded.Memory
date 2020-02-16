@@ -56,6 +56,70 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             }
         }
 
+        [Theory]
+        [InlineData(AlignedBufferSize)]
+        [InlineData(MisalignedBufferSize)]
+        public void PeekAllElements(int bufferSize)
+        {
+            // Int Structs: Complex
+            using (var memoryStream = _randomIntStructGenerator.GetMemoryStream())
+            {
+                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                for (int x = 0; x < _randomIntStructGenerator.Structs.Length; x++)
+                {
+                    reader.Peek(out RandomIntStruct expected);
+                    reader.Read(out RandomIntStruct actual);
+                    Assert.Equal(expected, actual);
+                    Assert.Equal(_randomIntStructGenerator.Structs[x], actual);
+                }
+            }
+
+            // Integers: Primitive
+            using (var memoryStream = _randomIntegerGenerator.GetMemoryStream())
+            {
+                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                for (int x = 0; x < _randomIntegerGenerator.Structs.Length; x++)
+                {
+                    reader.Peek(out int expected);
+                    reader.Read(out int actual);
+                    Assert.Equal(expected, actual);
+                    Assert.Equal(_randomIntegerGenerator.Structs[x], actual);
+                }
+            }
+        }
+
+        [Theory]
+        [InlineData(AlignedBufferSize)]
+        [InlineData(MisalignedBufferSize)]
+        public void PeekAllElementsOverload(int bufferSize)
+        {
+            // Int Structs: Complex
+            using (var memoryStream = _randomIntStructGenerator.GetMemoryStream())
+            {
+                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                for (int x = 0; x < _randomIntStructGenerator.Structs.Length; x++)
+                {
+                    var expected = reader.Peek<RandomIntStruct>();
+                    var actual   = reader.Read<RandomIntStruct>();
+                    Assert.Equal(expected, actual);
+                    Assert.Equal(_randomIntStructGenerator.Structs[x], actual);
+                }
+            }
+
+            // Integers: Primitive
+            using (var memoryStream = _randomIntegerGenerator.GetMemoryStream())
+            {
+                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                for (int x = 0; x < _randomIntegerGenerator.Structs.Length; x++)
+                {
+                    var expected    = reader.Peek<int>();
+                    var actual      = reader.Read<int>();
+                    Assert.Equal(expected, actual);
+                    Assert.Equal(_randomIntegerGenerator.Structs[x], actual);
+                }
+            }
+        }
+
         /* Read back all structs and compare. */
         [Theory]
         [InlineData(AlignedBufferSize)]
@@ -99,6 +163,98 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             }
         }
 
+        [Theory]
+        [InlineData(AlignedBufferSize)]
+        [InlineData(MisalignedBufferSize)]
+        public void PeekAllElementsBigEndian(int bufferSize)
+        {
+            // Int Structs: Complex
+            using (var memoryStream = _randomIntStructGenerator.GetMemoryStream())
+            {
+                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                for (int x = 0; x < _randomIntStructGenerator.Structs.Length; x++)
+                {
+                    reader.PeekBigEndianStruct(out RandomIntStruct peek);
+                    reader.ReadBigEndianStruct(out RandomIntStruct actual);
+                    Assert.Equal(peek, actual);
+
+                    var notExpected = _randomIntStructGenerator.Structs[x];
+                    var expected    = _randomIntStructGenerator.Structs[x];
+                    expected.SwapEndian();
+
+                    Assert.Equal(expected, actual);
+                    if (!expected.Equals(notExpected))
+                        Assert.NotEqual(notExpected, actual);
+                }
+            }
+
+            // Integers: Primitive
+            using (var memoryStream = _randomIntegerGenerator.GetMemoryStream())
+            {
+                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                for (int x = 0; x < _randomIntegerGenerator.Structs.Length; x++)
+                {
+                    reader.PeekBigEndianPrimitive(out int peek);
+                    reader.ReadBigEndianPrimitive(out int actual);
+                    Assert.Equal(peek, actual);
+
+                    var notExpected = _randomIntegerGenerator.Structs[x];
+                    var expected    = _randomIntegerGenerator.Structs[x];
+                    Reloaded.Memory.Endian.Reverse(ref expected);
+
+                    Assert.Equal(expected, actual);
+                    if (expected != notExpected)
+                        Assert.NotEqual(_randomIntegerGenerator.Structs[x], actual);
+                }
+            }
+        }
+
+        [Theory]
+        [InlineData(AlignedBufferSize)]
+        [InlineData(MisalignedBufferSize)]
+        public void PeekAllElementsBigEndianOverload(int bufferSize)
+        {
+            // Int Structs: Complex
+            using (var memoryStream = _randomIntStructGenerator.GetMemoryStream())
+            {
+                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                for (int x = 0; x < _randomIntStructGenerator.Structs.Length; x++)
+                {
+                    var peek    = reader.PeekBigEndianStruct<RandomIntStruct>();
+                    var actual  = reader.ReadBigEndianStruct<RandomIntStruct>();
+                    Assert.Equal(peek, actual);
+
+                    var notExpected = _randomIntStructGenerator.Structs[x];
+                    var expected = _randomIntStructGenerator.Structs[x];
+                    expected.SwapEndian();
+
+                    Assert.Equal(expected, actual);
+                    if (!expected.Equals(notExpected))
+                        Assert.NotEqual(notExpected, actual);
+                }
+            }
+
+            // Integers: Primitive
+            using (var memoryStream = _randomIntegerGenerator.GetMemoryStream())
+            {
+                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                for (int x = 0; x < _randomIntegerGenerator.Structs.Length; x++)
+                {
+                    var peek    = reader.PeekBigEndianPrimitive<int>();
+                    var actual  = reader.ReadBigEndianPrimitive<int>();
+                    Assert.Equal(peek, actual);
+
+                    var notExpected = _randomIntegerGenerator.Structs[x];
+                    var expected = _randomIntegerGenerator.Structs[x];
+                    Reloaded.Memory.Endian.Reverse(ref expected);
+
+                    Assert.Equal(expected, actual);
+                    if (expected != notExpected)
+                        Assert.NotEqual(_randomIntegerGenerator.Structs[x], actual);
+                }
+            }
+        }
+
         /* Read back all structs and compare. */
         [Theory]
         [InlineData(AlignedBufferSize)]
@@ -124,6 +280,68 @@ namespace Reloaded.Memory.Tests.Memory.Streams
                 {
                     reader.Read(out int value, true);
                     Assert.Equal(_randomIntegerGenerator.Structs[x], value);
+                }
+            }
+        }
+
+        [Theory]
+        [InlineData(AlignedBufferSize)]
+        [InlineData(MisalignedBufferSize)]
+        public void PeekAllElementsManaged(int bufferSize)
+        {
+            // Int Structs: Complex
+            using (var memoryStream = _randomIntStructGenerator.GetMemoryStream())
+            {
+                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                for (int x = 0; x < _randomIntStructGenerator.Structs.Length; x++)
+                {
+                    reader.Peek(out RandomIntStruct expected, true);
+                    reader.Read(out RandomIntStruct actual, true);
+                    Assert.Equal(expected, actual);
+                    Assert.Equal(_randomIntStructGenerator.Structs[x], actual);
+                }
+            }
+
+            // Integers: Primitive
+            using (var memoryStream = _randomIntegerGenerator.GetMemoryStream())
+            {
+                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                for (int x = 0; x < _randomIntegerGenerator.Structs.Length; x++)
+                {
+                    reader.Read(out int value, true);
+                    Assert.Equal(_randomIntegerGenerator.Structs[x], value);
+                }
+            }
+        }
+
+        [Theory]
+        [InlineData(AlignedBufferSize)]
+        [InlineData(MisalignedBufferSize)]
+        public void PeekAllElementsManagedOverload(int bufferSize)
+        {
+            // Int Structs: Complex
+            using (var memoryStream = _randomIntStructGenerator.GetMemoryStream())
+            {
+                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                for (int x = 0; x < _randomIntStructGenerator.Structs.Length; x++)
+                {
+                    var expected    = reader.Peek<RandomIntStruct>(true);
+                    var actual      = reader.Read<RandomIntStruct>(true);
+                    Assert.Equal(expected, actual);
+                    Assert.Equal(_randomIntStructGenerator.Structs[x], actual);
+                }
+            }
+
+            // Integers: Primitive
+            using (var memoryStream = _randomIntegerGenerator.GetMemoryStream())
+            {
+                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                for (int x = 0; x < _randomIntegerGenerator.Structs.Length; x++)
+                {
+                    var expected = reader.Peek<int>(true);
+                    var actual   = reader.Read<int>(true);
+                    Assert.Equal(expected, actual);
+                    Assert.Equal(_randomIntegerGenerator.Structs[x], actual);
                 }
             }
         }
