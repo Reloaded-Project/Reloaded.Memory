@@ -57,6 +57,7 @@ namespace Reloaded.Memory.Streams.Readers
         public void Dispose()
         {
             Reader?.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
