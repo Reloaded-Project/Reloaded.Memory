@@ -6,7 +6,6 @@ namespace Reloaded.Memory.Streams.Readers
     /// <summary>
     /// A version of <see cref="EndianStreamReader"/> that reads data in Little Endian mode.
     /// </summary>
-    [ExcludeFromCodeCoverage]
     public partial class LittleEndianStreamReader : EndianStreamReader
     {
         /// <summary>

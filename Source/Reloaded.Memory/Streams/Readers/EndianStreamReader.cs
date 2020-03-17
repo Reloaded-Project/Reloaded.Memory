@@ -8,7 +8,6 @@ namespace Reloaded.Memory.Streams.Readers
     /// <summary>
     /// An abstract class that abstracts <see cref="BufferedStreamReader"/>, allowing for individual implementations for each endian.
     /// </summary>
-    [ExcludeFromCodeCoverage]
     public abstract partial class EndianStreamReader : IDisposable
     {
         /// <summary>
@@ -21,24 +20,28 @@ namespace Reloaded.Memory.Streams.Readers
         /// <summary>
         /// Gets the stream this class was instantiated with.
         /// </summary>
+        [ExcludeFromCodeCoverage]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Stream BaseStream() => Reader.BaseStream();
 
         /// <summary>
         /// Gets the remaining number of bytes that are currently buffered.
         /// </summary>
+        [ExcludeFromCodeCoverage]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int BufferBytesAvailable() => Reader.BufferBytesAvailable();
 
         /// <summary>
         /// Gets the total size of the current buffered data at this moment in time.
         /// </summary>
+        [ExcludeFromCodeCoverage]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int CurrentBufferSize() => Reader.CurrentBufferSize();
 
         /// <summary>
         /// The current position of the buffer.
         /// </summary>
+        [ExcludeFromCodeCoverage]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public long Position() => Reader.Position();
 

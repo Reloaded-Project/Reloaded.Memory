@@ -11,7 +11,6 @@ namespace Reloaded.Memory.Streams.Writers
     /// <summary>
     /// An abstract class that abstracts <see cref="EndianMemoryStream"/>, allowing for individual implementations for each endian.
     /// </summary>
-    [ExcludeFromCodeCoverage]
     public abstract partial class EndianMemoryStream : IDisposable
     {
         /// <summary>

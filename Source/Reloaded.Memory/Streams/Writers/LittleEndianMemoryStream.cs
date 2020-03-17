@@ -10,7 +10,6 @@ namespace Reloaded.Memory.Streams.Writers
     /// <summary>
     /// A version of <see cref="EndianMemoryStream"/> that writes data in Little Endian mode.
     /// </summary>
-    [ExcludeFromCodeCoverage]
     public partial class LittleEndianMemoryStream : EndianMemoryStream
     {
         /// <inheritdoc />

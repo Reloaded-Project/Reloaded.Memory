@@ -12,7 +12,6 @@ namespace Reloaded.Memory.Streams.Writers
     /// <summary>
     /// A version of <see cref="EndianMemoryStream"/> that writes data in Big Endian mode.
     /// </summary>
-    [ExcludeFromCodeCoverage]
     public partial class BigEndianMemoryStream : EndianMemoryStream
     {
         /// <inheritdoc />
