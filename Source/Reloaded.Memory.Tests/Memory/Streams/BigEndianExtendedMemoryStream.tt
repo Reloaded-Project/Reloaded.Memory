@@ -36,7 +36,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             using (var extendedStream = new BigEndianMemoryStream(new Reloaded.Memory.Streams.ExtendedMemoryStream()))
             {
                 extendedStream.Write(integers);
-                Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<<#=type#>>(extendedStream.Stream.ToArray(), out var newStructs);
+                Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<<#=type#>>(extendedStream.ToArray(), out var newStructs);
 
                 Assert.Equal(integers, newStructs);
             };

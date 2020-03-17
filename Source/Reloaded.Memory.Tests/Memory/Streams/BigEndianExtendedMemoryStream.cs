@@ -23,7 +23,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             using (var extendedStream = new BigEndianMemoryStream(new Reloaded.Memory.Streams.ExtendedMemoryStream()))
             {
                 extendedStream.Write(integers);
-                Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<Int16>(extendedStream.Stream.ToArray(), out var newStructs);
+                Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<Int16>(extendedStream.ToArray(), out var newStructs);
 
                 Assert.Equal(integers, newStructs);
             };
@@ -38,7 +38,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             using (var extendedStream = new BigEndianMemoryStream(new Reloaded.Memory.Streams.ExtendedMemoryStream()))
             {
                 extendedStream.Write(integers);
-                Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<UInt16>(extendedStream.Stream.ToArray(), out var newStructs);
+                Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<UInt16>(extendedStream.ToArray(), out var newStructs);
 
                 Assert.Equal(integers, newStructs);
             };
@@ -53,7 +53,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             using (var extendedStream = new BigEndianMemoryStream(new Reloaded.Memory.Streams.ExtendedMemoryStream()))
             {
                 extendedStream.Write(integers);
-                Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<Int32>(extendedStream.Stream.ToArray(), out var newStructs);
+                Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<Int32>(extendedStream.ToArray(), out var newStructs);
 
                 Assert.Equal(integers, newStructs);
             };
@@ -68,7 +68,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             using (var extendedStream = new BigEndianMemoryStream(new Reloaded.Memory.Streams.ExtendedMemoryStream()))
             {
                 extendedStream.Write(integers);
-                Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<UInt32>(extendedStream.Stream.ToArray(), out var newStructs);
+                Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<UInt32>(extendedStream.ToArray(), out var newStructs);
 
                 Assert.Equal(integers, newStructs);
             };
@@ -83,7 +83,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             using (var extendedStream = new BigEndianMemoryStream(new Reloaded.Memory.Streams.ExtendedMemoryStream()))
             {
                 extendedStream.Write(integers);
-                Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<Int64>(extendedStream.Stream.ToArray(), out var newStructs);
+                Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<Int64>(extendedStream.ToArray(), out var newStructs);
 
                 Assert.Equal(integers, newStructs);
             };
@@ -98,7 +98,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             using (var extendedStream = new BigEndianMemoryStream(new Reloaded.Memory.Streams.ExtendedMemoryStream()))
             {
                 extendedStream.Write(integers);
-                Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<UInt64>(extendedStream.Stream.ToArray(), out var newStructs);
+                Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<UInt64>(extendedStream.ToArray(), out var newStructs);
 
                 Assert.Equal(integers, newStructs);
             };

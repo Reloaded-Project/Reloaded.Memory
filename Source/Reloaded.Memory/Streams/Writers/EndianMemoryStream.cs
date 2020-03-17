@@ -62,5 +62,11 @@ namespace Reloaded.Memory.Streams.Writers
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public abstract void Write<T>(T structure) where T : unmanaged;
+
+        /// <summary>
+        /// Converts the underlying stream to an array.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public byte[] ToArray() => Stream.ToArray();
     }
 }

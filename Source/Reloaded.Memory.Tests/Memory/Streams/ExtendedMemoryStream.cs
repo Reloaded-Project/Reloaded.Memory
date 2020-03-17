@@ -20,7 +20,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             using (var extendedStream = new LittleEndianMemoryStream(new Reloaded.Memory.Streams.ExtendedMemoryStream()))
             {
                 extendedStream.Write(intStructs);
-                Reloaded.Memory.StructArray.FromArray<RandomIntStruct>(extendedStream.Stream.ToArray(), out var newStructs);
+                Reloaded.Memory.StructArray.FromArray<RandomIntStruct>(extendedStream.ToArray(), out var newStructs);
 
                 Assert.Equal(intStructs, newStructs);
             };
@@ -36,7 +36,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             using (var extendedStream = new BigEndianMemoryStream(new Reloaded.Memory.Streams.ExtendedMemoryStream()))
             {
                 extendedStream.WriteStruct(intStructs);
-                Reloaded.Memory.StructArray.FromArrayBigEndianStruct<RandomIntStruct>(extendedStream.Stream.ToArray(), out var newStructs);
+                Reloaded.Memory.StructArray.FromArrayBigEndianStruct<RandomIntStruct>(extendedStream.ToArray(), out var newStructs);
 
                 Assert.Equal(intStructs, newStructs);
             };
@@ -53,7 +53,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             using (var extendedStream = new BigEndianMemoryStream(new Reloaded.Memory.Streams.ExtendedMemoryStream()))
             {
                 extendedStream.Write(integers);
-                Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<int>(extendedStream.Stream.ToArray(), out var newStructs);
+                Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<int>(extendedStream.ToArray(), out var newStructs);
 
                 Assert.Equal(integers, newStructs);
             };
@@ -70,7 +70,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             using (var extendedStream = new LittleEndianMemoryStream(new Reloaded.Memory.Streams.ExtendedMemoryStream()))
             {
                 extendedStream.Write(marshallingStructs);
-                Reloaded.Memory.StructArray.FromArray<MarshallingStruct>(extendedStream.Stream.ToArray(), out var newStructs, true);
+                Reloaded.Memory.StructArray.FromArray<MarshallingStruct>(extendedStream.ToArray(), out var newStructs, true);
                 Assert.Equal(marshallingStructs, newStructs);
             };
         }
@@ -91,7 +91,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             using (var extendedStream = new LittleEndianMemoryStream(new Reloaded.Memory.Streams.ExtendedMemoryStream()))
             {
                 extendedStream.Write(marshallingStruct);
-                Struct.FromArray<MarshallingStruct>(extendedStream.Stream.ToArray(), out var newStruct);
+                Struct.FromArray<MarshallingStruct>(extendedStream.ToArray(), out var newStruct);
                 Assert.Equal(marshallingStruct, newStruct);
             };
         }
@@ -112,7 +112,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             using (var extendedStream = new LittleEndianMemoryStream(new Reloaded.Memory.Streams.ExtendedMemoryStream()))
             {
                 extendedStream.Write(randomIntStruct);
-                Struct.FromArray<RandomIntStruct>(extendedStream.Stream.ToArray(), out var newStruct, 0);
+                Struct.FromArray<RandomIntStruct>(extendedStream.ToArray(), out var newStruct, 0);
                 Assert.Equal(randomIntStruct, newStruct);
             };
         }
