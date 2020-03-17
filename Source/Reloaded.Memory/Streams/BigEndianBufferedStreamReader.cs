@@ -19,7 +19,7 @@ namespace Reloaded.Memory.Streams
             ReFillIfNecessary(size);
 
             value = *(Int16*)(_gcHandlePtr + _bufferOffset);
-            value = Endian.Reverse(value);
+            value = Memory.Endian.Reverse(value);
 
             _bufferOffset += size;
             _bufferedBytesRemaining -= size;
@@ -45,7 +45,7 @@ namespace Reloaded.Memory.Streams
             ReFillIfNecessary(sizeof(Int16));
 
             value = *(Int16*)(_gcHandlePtr + _bufferOffset);
-            value = Endian.Reverse(value);
+            value = Memory.Endian.Reverse(value);
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Reloaded.Memory.Streams
             ReFillIfNecessary(size);
 
             value = *(UInt16*)(_gcHandlePtr + _bufferOffset);
-            value = Endian.Reverse(value);
+            value = Memory.Endian.Reverse(value);
 
             _bufferOffset += size;
             _bufferedBytesRemaining -= size;
@@ -96,7 +96,7 @@ namespace Reloaded.Memory.Streams
             ReFillIfNecessary(sizeof(UInt16));
 
             value = *(UInt16*)(_gcHandlePtr + _bufferOffset);
-            value = Endian.Reverse(value);
+            value = Memory.Endian.Reverse(value);
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace Reloaded.Memory.Streams
             ReFillIfNecessary(size);
 
             value = *(Int32*)(_gcHandlePtr + _bufferOffset);
-            value = Endian.Reverse(value);
+            value = Memory.Endian.Reverse(value);
 
             _bufferOffset += size;
             _bufferedBytesRemaining -= size;
@@ -147,7 +147,7 @@ namespace Reloaded.Memory.Streams
             ReFillIfNecessary(sizeof(Int32));
 
             value = *(Int32*)(_gcHandlePtr + _bufferOffset);
-            value = Endian.Reverse(value);
+            value = Memory.Endian.Reverse(value);
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace Reloaded.Memory.Streams
             ReFillIfNecessary(size);
 
             value = *(UInt32*)(_gcHandlePtr + _bufferOffset);
-            value = Endian.Reverse(value);
+            value = Memory.Endian.Reverse(value);
 
             _bufferOffset += size;
             _bufferedBytesRemaining -= size;
@@ -198,7 +198,7 @@ namespace Reloaded.Memory.Streams
             ReFillIfNecessary(sizeof(UInt32));
 
             value = *(UInt32*)(_gcHandlePtr + _bufferOffset);
-            value = Endian.Reverse(value);
+            value = Memory.Endian.Reverse(value);
         }
 
         /// <summary>
@@ -223,7 +223,7 @@ namespace Reloaded.Memory.Streams
             ReFillIfNecessary(size);
 
             value = *(Int64*)(_gcHandlePtr + _bufferOffset);
-            value = Endian.Reverse(value);
+            value = Memory.Endian.Reverse(value);
 
             _bufferOffset += size;
             _bufferedBytesRemaining -= size;
@@ -249,7 +249,7 @@ namespace Reloaded.Memory.Streams
             ReFillIfNecessary(sizeof(Int64));
 
             value = *(Int64*)(_gcHandlePtr + _bufferOffset);
-            value = Endian.Reverse(value);
+            value = Memory.Endian.Reverse(value);
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace Reloaded.Memory.Streams
             ReFillIfNecessary(size);
 
             value = *(UInt64*)(_gcHandlePtr + _bufferOffset);
-            value = Endian.Reverse(value);
+            value = Memory.Endian.Reverse(value);
 
             _bufferOffset += size;
             _bufferedBytesRemaining -= size;
@@ -300,7 +300,7 @@ namespace Reloaded.Memory.Streams
             ReFillIfNecessary(sizeof(UInt64));
 
             value = *(UInt64*)(_gcHandlePtr + _bufferOffset);
-            value = Endian.Reverse(value);
+            value = Memory.Endian.Reverse(value);
         }
 
         /// <summary>

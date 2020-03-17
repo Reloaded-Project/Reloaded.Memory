@@ -17,7 +17,7 @@
     <RepositoryUrl></RepositoryUrl>
     <RepositoryType></RepositoryType>
     <Description>A fully featured C# memory editing library supporting reading/writing primitive or generic struct types in either current or an external process.</Description>
-    <Version>2.11.0</Version>
+    <Version>2.12.0</Version>
     <Authors>Sewer56</Authors>
     <Company />
     <Product>Project Reloaded</Product>
@@ -50,6 +50,16 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>BigEndianBufferedStreamReader.tt</DependentUpon>
     </None>
+    <None Include="Streams\Readers\Templates\BigEndianStreamReader.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BigEndianStreamReader.tt</DependentUpon>
+    </None>
+    <None Include="Streams\Readers\Templates\EndianStreamReader.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EndianStreamReader.tt</DependentUpon>
+    </None>
     <None Include="Utilities\BigEndianExtendedMemoryStream.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -61,6 +71,18 @@
     <None Update="Streams\BigEndianBufferedStreamReader.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>BigEndianBufferedStreamReader.cs</LastGenOutput>
+    </None>
+    <None Update="Streams\Readers\Templates\LittleEndianStreamReader.tt">
+      <LastGenOutput>LittleEndianStreamReader.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="Streams\Readers\Templates\BigEndianStreamReader.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BigEndianStreamReader.cs</LastGenOutput>
+    </None>
+    <None Update="Streams\Readers\Templates\EndianStreamReader.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EndianStreamReader.cs</LastGenOutput>
     </None>
     <None Update="Utilities\BigEndianExtendedMemoryStream.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -77,6 +99,21 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>BigEndianBufferedStreamReader.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Streams\Readers\Templates\BigEndianStreamReader.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BigEndianStreamReader.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Streams\Readers\Templates\EndianStreamReader.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EndianStreamReader.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Streams\Readers\Templates\LittleEndianStreamReader.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LittleEndianStreamReader.tt</DependentUpon>
     </Compile>
     <Compile Update="Utilities\BigEndianExtendedMemoryStream.cs">
       <DesignTime>True</DesignTime>

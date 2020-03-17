@@ -1,0 +1,63 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+
+<# 
+    string[] types = { "Int16", "UInt16", "Int32", "UInt32", "Int64", "UInt64" };
+#>
+
+using System;
+using System.Runtime.CompilerServices;
+
+namespace Reloaded.Memory.Streams.Readers
+{
+    /// <summary>
+    /// An abstract class that abstracts <see cref="BufferedStreamReader"/>, allowing for individual implementations for each endian.
+    /// </summary>
+    public abstract partial class EndianStreamReader
+    {
+
+<#
+		foreach (var type in types)
+		{
+#>
+        /// <summary>
+        /// Reads an unmanaged, generic type from the stream.
+        /// </summary>
+        /// <param name="value">The value to output.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public abstract unsafe void Read(out <#=type#> value);
+
+		/// <summary>
+        /// Reads an unmanaged, generic type from the stream.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public abstract unsafe <#=type#> Read<#=type#>();
+
+		/// <summary>
+        /// Reads an unmanaged, generic type from the stream without incrementing the position.
+        /// </summary>
+        /// <param name="value">The value to output.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public abstract unsafe void Peek(out <#=type#> value);
+
+        /// <summary>
+        /// Reads an unmanaged, generic type from the stream without incrementing the position.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public abstract unsafe <#=type#> Peek<#=type#>();
+<#
+		}
+#>
+        
+
+
+
+
+
+
+    }
+}

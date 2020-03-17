@@ -241,7 +241,7 @@ namespace Reloaded.Memory.Streams
             ReFillIfNecessary(size);
 
             value = *(T*)(_gcHandlePtr + _bufferOffset);
-            Endian.Reverse(ref value);
+            Memory.Endian.Reverse(ref value);
 
             _bufferOffset += size;
             _bufferedBytesRemaining -= size;
@@ -296,7 +296,7 @@ namespace Reloaded.Memory.Streams
             ReFillIfNecessary(sizeof(T));
 
             value = *(T*)(_gcHandlePtr + _bufferOffset);
-            Endian.Reverse(ref value);
+            Memory.Endian.Reverse(ref value);
         }
 
         /// <summary>
