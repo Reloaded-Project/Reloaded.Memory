@@ -11,7 +11,7 @@ namespace Reloaded.Memory.Streams
     ///
     /// Limitation: Class cannot read structs larger than buffer size. This is not checked for!
     /// </summary>
-    public class BufferedStreamReader : IDisposable
+    public partial class BufferedStreamReader : IDisposable
     {
         private readonly Stream _stream;
         private readonly byte[] _buffer;

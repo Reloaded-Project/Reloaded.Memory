@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Reloaded.Memory.Utilities
@@ -8,7 +9,7 @@ namespace Reloaded.Memory.Utilities
     /// <summary>
     /// An extended version of the <see cref="MemoryStream"/> class that allows you to directly add generic structs to the stream.
     /// </summary>
-    public class ExtendedMemoryStream : MemoryStream
+    public partial class ExtendedMemoryStream : MemoryStream
     {
         /// <inheritdoc />
         public ExtendedMemoryStream() { }
@@ -62,27 +63,32 @@ namespace Reloaded.Memory.Utilities
         /// <summary>
         /// Appends an unmanaged structure onto the <see cref="MemoryStream"/> and advances the position.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Write<T>(T[] structure) where T : unmanaged => Write(StructArray.GetBytes(structure));
 
         /// <summary>
         /// Appends an managed/marshalled structure onto the <see cref="MemoryStream"/> and advances the position.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Write<T>(T[] structure, bool marshalStructure = true) => Write(StructArray.GetBytes(structure, marshalStructure));
 
         /// <summary>
         /// Appends an unmanaged structure onto the <see cref="MemoryStream"/> and advances the position.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Write<T>(T structure) where T : unmanaged => Write(Struct.GetBytes(structure));
 
         /// <summary>
         /// Appends a managed/marshalled structure onto the given <see cref="MemoryStream"/> and advances the position.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Write<T>(T structure, bool marshalStructure = true) => Write(Struct.GetBytes(structure, marshalStructure));
 
         /// <summary>
         /// Appends bytes onto the given <see cref="MemoryStream"/> and advances the position.
         /// </summary>
         public void Write(byte[] data) => Write(data, 0, data.Length);
+
 
         private static int RoundUp(int number, int multiple)
         {

@@ -17,7 +17,7 @@
     <RepositoryUrl></RepositoryUrl>
     <RepositoryType></RepositoryType>
     <Description>A fully featured C# memory editing library supporting reading/writing primitive or generic struct types in either current or an external process.</Description>
-    <Version>2.10.0</Version>
+    <Version>2.11.0</Version>
     <Authors>Sewer56</Authors>
     <Company />
     <Product>Project Reloaded</Product>
@@ -45,6 +45,44 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+    <None Include="Streams\BigEndianBufferedStreamReader.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BigEndianBufferedStreamReader.tt</DependentUpon>
+    </None>
+    <None Include="Utilities\BigEndianExtendedMemoryStream.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BigEndianExtendedMemoryStream.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Streams\BigEndianBufferedStreamReader.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BigEndianBufferedStreamReader.cs</LastGenOutput>
+    </None>
+    <None Update="Utilities\BigEndianExtendedMemoryStream.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BigEndianExtendedMemoryStream.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Streams\BigEndianBufferedStreamReader.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BigEndianBufferedStreamReader.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Utilities\BigEndianExtendedMemoryStream.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BigEndianExtendedMemoryStream.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>
