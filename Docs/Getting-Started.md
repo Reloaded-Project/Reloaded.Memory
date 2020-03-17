@@ -20,14 +20,22 @@ The following is a small, quick, non-exhaustive resource to help you get started
 4.  Install the package.
 
 ## Table of Contents
+- [Table of Contents](#table-of-contents)
 - [Prologue](#prologue)
 - [Class Breakdown](#class-breakdown)
+  - [Memory Read/Write](#memory-readwrite)
+  - [Memory Utilities](#memory-utilities)
+  - [Streams](#streams)
 - [Performance Notes & Limitations](#performance-notes--limitations)
-  * [ArrayPtr & FixedArrayPtr](#arrayptr--fixedarrayptr)
-  * [BufferedStreamReader: Buffer Size](#bufferedstreamreader-buffer-size)
-  * [BufferedStreamReader: Benchmarks](#bufferedstreamreader-benchmarks)
-    + [FileStream](#filestream)
-    + [MemoryStream](#memorystream)
+  - [ArrayPtr & FixedArrayPtr](#arrayptr--fixedarrayptr)
+  - [Struct Methods](#struct-methods)
+  - [Marshalling Overloads](#marshalling-overloads)
+  - [Endian Swapping](#endian-swapping)
+  - [BufferedStreamReader: Buffer Size](#bufferedstreamreader-buffer-size)
+  - [BufferedStreamReader: Benchmarks](#bufferedstreamreader-benchmarks)
+    - [FileStream](#filestream)
+    - [MemoryStream](#memorystream)
+- [Additional Source Code Samples](#additional-source-code-samples)
 
 ## Prologue
 Project-Reloaded exposes an interface named `IMemory` that can be used to perform memory manipulation actions.
@@ -57,6 +65,7 @@ tl;dr: `IMemory` is an interface that allows you to read from a memory source, e
 ## Class Breakdown
 The following is a quick breakdown of the main classes you will probably find useful within the `Reloaded.Memory` library:
 
+### Memory Read/Write
 + **ArrayPtr**: Pointer to an array in arbitrary memory.
 + **RefArrayPtr**: Version of `ArrayPtr` that returns elements by reference.
 + **FixedArrayPtr**: Pointer to an array with known length in arbitrary memory. (Allows for LINQ, foreach etc.)
@@ -67,20 +76,20 @@ The following is a quick breakdown of the main classes you will probably find us
 All of these use the `IMemory` interface under the hood, which can be manually set.
 This means that you can e.g. have a pointer to a variable in another process.
 
-*In addition, the following helper and utility classes are available:*
-
+### Memory Utilities
 + **Endian**: Utility method for swapping the endian of a specific variable.
 + **Struct**: Allows converting structs to bytes, converting bytes to structs, getting size of structs, writing struct to pointer etc.
 + **StructArray**: Array support for the `Struct` utility class. (The functions in `Struct`, but with arrays)
 + **CircularBuffer**: A stream-like buffer where once you reach the end of the buffer, it loops back over to the beginning.
-+ **BufferedStreamReader**: A custom unsafe BinaryReader operating over `Stream` classes tuned for performance supporting generics (structs), marshalling and buffering.
-+ **ExtendedMemoryStream**: An extension class for MemoryStream that supports appending of generic types as well as padding the stream.
+*In addition, the following helper and utility classes are available:*
 + **Pinnable<T>**: Class that allows for the pinning of unmanaged blittable types in memory for interop with unmanaged code.
 + **PinnableDisposable<T>:** A `Pinnable` that automatically disposes the pinned object when disposed.
 
-Pretty much this is all you need to know.
-
-Play around with the classes yourself and discover what you can do. Everything below is extra.
+### Streams
++ **BufferedStreamReader**: A custom unsafe BinaryReader operating over `Stream` classes tuned for performance supporting generics (structs), marshalling and buffering.
+  + Additional utility classes: `BigEndianStreamReader`, `LittleEndianStreamReader`.
++ **ExtendedMemoryStream**: An extension class for MemoryStream that supports appending of generic types as well as padding the stream.
+  + Additional utility classes: `BigEndianMemoryStream`, `LittleEndianMemoryStream`.
 
 ## Performance Notes & Limitations
 
@@ -92,6 +101,21 @@ Micro-optimization: The `ToPtr` and `FromPtr` method sets from `Reloaded.Memory.
 
 ### Marshalling Overloads
 Micro-optimization: If you are working with unmanaged structures or types, the overloads without `marshalElement` (whether to marshal the element) will perform better.
+
+### Endian Swapping
+When working with Big Endian, consider using non-generic methods, as the generic method for swapping the Endian is slower.
+
+e.g. Consider using:
+```csharp
+value = Endian.Reverse(value);
+```
+
+Instead of:
+```csharp
+Endian.Reverse(ref value);
+```
+
+This also applies to other classes such as streams.
 
 ### BufferedStreamReader: Buffer Size
 Benchmarking suggests the optimal buffer size for `BufferedStreamReader` to be 65536 for reading from an underlying `FileStream` and 512-2048 for `MemoryStream`.
