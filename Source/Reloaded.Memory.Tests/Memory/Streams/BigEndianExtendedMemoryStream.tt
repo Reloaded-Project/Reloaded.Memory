@@ -15,9 +15,10 @@ using System.IO;
 using Reloaded.Memory.Shared.Generator;
 using Reloaded.Memory.Shared.Structs;
 using Reloaded.Memory.Tests.Memory.Helpers;
+using Reloaded.Memory.Streams.Writers;
 using Xunit;
 
-namespace Reloaded.Memory.Tests.Memory.Utilities
+namespace Reloaded.Memory.Tests.Memory.Streams
 {
     public partial class ExtendedMemoryStream
     {
@@ -32,10 +33,10 @@ namespace Reloaded.Memory.Tests.Memory.Utilities
         public void WriteBigEndian<#=type#>Array()
         {
             var integers = new Random<#=type#>Generator(1).Structs;
-            using (var extendedStream = new Reloaded.Memory.Utilities.ExtendedMemoryStream())
+            using (var extendedStream = new BigEndianMemoryStream(new Reloaded.Memory.Streams.ExtendedMemoryStream()))
             {
-                extendedStream.WriteBigEndianPrimitive(integers);
-                Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<<#=type#>>(extendedStream.ToArray(), out var newStructs);
+                extendedStream.Write(integers);
+                Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<<#=type#>>(extendedStream.Stream.ToArray(), out var newStructs);
 
                 Assert.Equal(integers, newStructs);
             };

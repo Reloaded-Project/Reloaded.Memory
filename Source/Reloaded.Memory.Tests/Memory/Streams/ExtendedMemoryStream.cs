@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using Reloaded.Memory.Shared.Generator;
 using Reloaded.Memory.Shared.Structs;
+using Reloaded.Memory.Streams.Writers;
 using Xunit;
 
-namespace Reloaded.Memory.Tests.Memory.Utilities
+namespace Reloaded.Memory.Tests.Memory.Streams
 {
     public partial class ExtendedMemoryStream
     {
@@ -16,10 +17,10 @@ namespace Reloaded.Memory.Tests.Memory.Utilities
         public void WriteStructArray()
         {
             var intStructs = new RandomIntStructGenerator(1).Structs;
-            using (var extendedStream = new Reloaded.Memory.Utilities.ExtendedMemoryStream())
+            using (var extendedStream = new LittleEndianMemoryStream(new Reloaded.Memory.Streams.ExtendedMemoryStream()))
             {
                 extendedStream.Write(intStructs);
-                Reloaded.Memory.StructArray.FromArray<RandomIntStruct>(extendedStream.ToArray(), out var newStructs);
+                Reloaded.Memory.StructArray.FromArray<RandomIntStruct>(extendedStream.Stream.ToArray(), out var newStructs);
 
                 Assert.Equal(intStructs, newStructs);
             };
@@ -32,10 +33,10 @@ namespace Reloaded.Memory.Tests.Memory.Utilities
         public void WriteBigEndianStructArray()
         {
             var intStructs = new RandomIntStructGenerator(1).Structs;
-            using (var extendedStream = new Reloaded.Memory.Utilities.ExtendedMemoryStream())
+            using (var extendedStream = new BigEndianMemoryStream(new Reloaded.Memory.Streams.ExtendedMemoryStream()))
             {
-                extendedStream.WriteBigEndianStruct(intStructs);
-                Reloaded.Memory.StructArray.FromArrayBigEndianStruct<RandomIntStruct>(extendedStream.ToArray(), out var newStructs);
+                extendedStream.WriteStruct(intStructs);
+                Reloaded.Memory.StructArray.FromArrayBigEndianStruct<RandomIntStruct>(extendedStream.Stream.ToArray(), out var newStructs);
 
                 Assert.Equal(intStructs, newStructs);
             };
@@ -49,10 +50,10 @@ namespace Reloaded.Memory.Tests.Memory.Utilities
         public void WriteBigEndianPrimitiveArray()
         {
             var integers = new RandomInt32Generator(1).Structs;
-            using (var extendedStream = new Reloaded.Memory.Utilities.ExtendedMemoryStream())
+            using (var extendedStream = new BigEndianMemoryStream(new Reloaded.Memory.Streams.ExtendedMemoryStream()))
             {
-                extendedStream.WriteBigEndianPrimitive(integers);
-                Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<int>(extendedStream.ToArray(), out var newStructs);
+                extendedStream.Write(integers);
+                Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<int>(extendedStream.Stream.ToArray(), out var newStructs);
 
                 Assert.Equal(integers, newStructs);
             };
@@ -66,10 +67,10 @@ namespace Reloaded.Memory.Tests.Memory.Utilities
         {
             var marshallingStructs = new RandomMarshallingStructGenerator(1).Structs;
 
-            using (var extendedStream = new Reloaded.Memory.Utilities.ExtendedMemoryStream())
+            using (var extendedStream = new LittleEndianMemoryStream(new Reloaded.Memory.Streams.ExtendedMemoryStream()))
             {
                 extendedStream.Write(marshallingStructs);
-                Reloaded.Memory.StructArray.FromArray<MarshallingStruct>(extendedStream.ToArray(), out var newStructs, true);
+                Reloaded.Memory.StructArray.FromArray<MarshallingStruct>(extendedStream.Stream.ToArray(), out var newStructs, true);
                 Assert.Equal(marshallingStructs, newStructs);
             };
         }
@@ -87,10 +88,10 @@ namespace Reloaded.Memory.Tests.Memory.Utilities
                 UncompressedFileSize = 942
             };
 
-            using (var extendedStream = new Reloaded.Memory.Utilities.ExtendedMemoryStream())
+            using (var extendedStream = new LittleEndianMemoryStream(new Reloaded.Memory.Streams.ExtendedMemoryStream()))
             {
                 extendedStream.Write(marshallingStruct);
-                Struct.FromArray<MarshallingStruct>(extendedStream.ToArray(), out var newStruct);
+                Struct.FromArray<MarshallingStruct>(extendedStream.Stream.ToArray(), out var newStruct);
                 Assert.Equal(marshallingStruct, newStruct);
             };
         }
@@ -108,10 +109,10 @@ namespace Reloaded.Memory.Tests.Memory.Utilities
                 C = 4214
             };
 
-            using (var extendedStream = new Reloaded.Memory.Utilities.ExtendedMemoryStream())
+            using (var extendedStream = new LittleEndianMemoryStream(new Reloaded.Memory.Streams.ExtendedMemoryStream()))
             {
                 extendedStream.Write(randomIntStruct);
-                Struct.FromArray<RandomIntStruct>(extendedStream.ToArray(), out var newStruct, 0);
+                Struct.FromArray<RandomIntStruct>(extendedStream.Stream.ToArray(), out var newStruct, 0);
                 Assert.Equal(randomIntStruct, newStruct);
             };
         }
@@ -122,7 +123,7 @@ namespace Reloaded.Memory.Tests.Memory.Utilities
         [Fact]
         public void AddPadding()
         {
-            using (var extendedStream = new Reloaded.Memory.Utilities.ExtendedMemoryStream())
+            using (var extendedStream = new Reloaded.Memory.Streams.ExtendedMemoryStream())
             {
                 extendedStream.Write((int) 0x0);
                 extendedStream.AddPadding(2048);
@@ -137,7 +138,7 @@ namespace Reloaded.Memory.Tests.Memory.Utilities
         [Fact]
         public void AddPaddingCustomValue()
         {
-            using (var extendedStream = new Reloaded.Memory.Utilities.ExtendedMemoryStream())
+            using (var extendedStream = new Reloaded.Memory.Streams.ExtendedMemoryStream())
             {
                 extendedStream.Write((int)0x0);
                 extendedStream.AddPadding(0x44, 2048);
@@ -155,7 +156,7 @@ namespace Reloaded.Memory.Tests.Memory.Utilities
         [Fact]
         public void DoNotPadIfAligned()
         {
-            using (var extendedStream = new Reloaded.Memory.Utilities.ExtendedMemoryStream())
+            using (var extendedStream = new Reloaded.Memory.Streams.ExtendedMemoryStream())
             {
                 extendedStream.Write((int) 0x0);
                 extendedStream.AddPadding(sizeof(int));

@@ -1,0 +1,38 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+
+<# 
+    string[] types = { "Int16", "UInt16", "Int32", "UInt32", "Int64", "UInt64" };
+#>
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Runtime.CompilerServices;
+using System.Text;
+using Reloaded.Memory.Utilities;
+
+namespace Reloaded.Memory.Streams.Writers
+{
+    public abstract partial class EndianMemoryStream
+    {
+
+<#
+	foreach (var type in types)
+	{
+#>
+		/// <summary>
+        /// Appends bytes onto the given <see cref="MemoryStream"/> and advances the position.
+        /// </summary>
+        public abstract void Write<#=type#>(<#=type#> data);
+
+<#
+	}
+#>
+    }
+}

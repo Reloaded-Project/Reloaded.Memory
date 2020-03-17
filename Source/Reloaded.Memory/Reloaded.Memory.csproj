@@ -17,7 +17,7 @@
     <RepositoryUrl></RepositoryUrl>
     <RepositoryType></RepositoryType>
     <Description>A fully featured C# memory editing library supporting reading/writing primitive or generic struct types in either current or an external process.</Description>
-    <Version>2.12.0</Version>
+    <Version>3.0.0</Version>
     <Authors>Sewer56</Authors>
     <Company />
     <Product>Project Reloaded</Product>
@@ -60,10 +60,25 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>EndianStreamReader.tt</DependentUpon>
     </None>
-    <None Include="Utilities\BigEndianExtendedMemoryStream.cs">
+    <None Include="Streams\Writers\Templates\BigEndianMemoryStream.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BigEndianMemoryStream.tt</DependentUpon>
+    </None>
+    <None Include="Streams\Writers\Templates\EndianMemoryStream.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EndianMemoryStream.tt</DependentUpon>
+    </None>
+    <None Include="Streams\BigEndianExtendedMemoryStream.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>BigEndianExtendedMemoryStream.tt</DependentUpon>
+    </None>
+    <None Include="Streams\Writers\Templates\LittleEndianMemoryStream.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LittleEndianMemoryStream.tt</DependentUpon>
     </None>
   </ItemGroup>
 
@@ -84,9 +99,21 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EndianStreamReader.cs</LastGenOutput>
     </None>
-    <None Update="Utilities\BigEndianExtendedMemoryStream.tt">
+    <None Update="Streams\Writers\Templates\BigEndianMemoryStream.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BigEndianMemoryStream.cs</LastGenOutput>
+    </None>
+    <None Update="Streams\Writers\Templates\EndianMemoryStream.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EndianMemoryStream.cs</LastGenOutput>
+    </None>
+    <None Update="Streams\BigEndianExtendedMemoryStream.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>BigEndianExtendedMemoryStream.cs</LastGenOutput>
+    </None>
+    <None Update="Streams\Writers\Templates\LittleEndianMemoryStream.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>LittleEndianMemoryStream.cs</LastGenOutput>
     </None>
   </ItemGroup>
 
@@ -115,10 +142,25 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>LittleEndianStreamReader.tt</DependentUpon>
     </Compile>
-    <Compile Update="Utilities\BigEndianExtendedMemoryStream.cs">
+    <Compile Update="Streams\Writers\Templates\BigEndianMemoryStream.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BigEndianMemoryStream.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Streams\Writers\Templates\EndianMemoryStream.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EndianMemoryStream.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Streams\BigEndianExtendedMemoryStream.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>BigEndianExtendedMemoryStream.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Streams\Writers\Templates\LittleEndianMemoryStream.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LittleEndianMemoryStream.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Runtime.CompilerServices;
-using System.Text;
 
-namespace Reloaded.Memory.Utilities
+namespace Reloaded.Memory.Streams
 {
     /// <summary>
     /// An extended version of the <see cref="MemoryStream"/> class that allows you to directly add generic structs to the stream.
@@ -112,6 +109,7 @@ namespace Reloaded.Memory.Utilities
         /// <summary>
         /// Appends an unmanaged structure onto the <see cref="MemoryStream"/> and advances the position.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void WriteBigEndianPrimitive<T>(T structure) where T : unmanaged
         {
             Endian.Reverse(ref structure);
@@ -121,6 +119,7 @@ namespace Reloaded.Memory.Utilities
         /// <summary>
         /// Appends a managed/marshalled structure onto the given <see cref="MemoryStream"/> and advances the position.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void WriteBigEndianStruct<T>(T structure) where T : unmanaged, IEndianReversible
         {
             structure.SwapEndian();

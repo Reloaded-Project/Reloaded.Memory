@@ -44,7 +44,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>BigEndianBufferedStreamReader.tt</DependentUpon>
     </None>
-    <None Include="Memory\Utilities\BigEndianExtendedMemoryStream.cs">
+    <None Include="Memory\Streams\BigEndianExtendedMemoryStream.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>BigEndianExtendedMemoryStream.tt</DependentUpon>
@@ -62,7 +62,7 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>BigEndianBufferedStreamReader.cs</LastGenOutput>
     </None>
-    <None Update="Memory\Utilities\BigEndianExtendedMemoryStream.tt">
+    <None Update="Memory\Streams\BigEndianExtendedMemoryStream.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>BigEndianExtendedMemoryStream.cs</LastGenOutput>
     </None>
@@ -84,7 +84,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>BigEndianBufferedStreamReader.tt</DependentUpon>
     </Compile>
-    <Compile Update="Memory\Utilities\BigEndianExtendedMemoryStream.cs">
+    <Compile Update="Memory\Streams\BigEndianExtendedMemoryStream.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>BigEndianExtendedMemoryStream.tt</DependentUpon>

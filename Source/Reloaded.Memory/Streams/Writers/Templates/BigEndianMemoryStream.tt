@@ -1,0 +1,42 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+
+<# 
+    string[] types = { "Int16", "UInt16", "Int32", "UInt32", "Int64", "UInt64" };
+#>
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text;
+using System.IO;
+using Reloaded.Memory.Streams.Readers;
+using Reloaded.Memory.Utilities;
+
+namespace Reloaded.Memory.Streams.Writers
+{
+    /// <summary>
+    /// A version of <see cref="EndianMemoryStream"/> that writes data in Big Endian mode.
+    /// </summary>
+    public partial class BigEndianMemoryStream : EndianMemoryStream
+    {
+    
+<#
+	foreach (var type in types)
+	{
+#>
+		/// <summary>
+        /// Appends bytes onto the given <see cref="MemoryStream"/> and advances the position.
+        /// </summary>
+        public override void Write<#=type#>(<#=type#> data) => Stream.WriteBigEndianPrimitive(data);
+
+<#
+	}
+#>
+
+    }
+}
