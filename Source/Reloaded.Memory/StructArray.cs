@@ -115,6 +115,60 @@ namespace Reloaded.Memory
         }
 
         /// <summary>
+        /// Converts a byte array to a specified Big Endian primitive.
+        /// </summary>
+        /// <param name="value">Local variable to receive the read in struct array.</param>
+        /// <param name="data">A byte array containing data from which to extract a structure from.</param>
+        /// <param name="startIndex">The index in the byte array to read the element(s) from.</param>
+        /// <param name="length">The amount of elements to read from the byte array.</param>
+        public static void FromArrayBigEndianPrimitive<T>(byte[] data, out T[] value, int startIndex = 0, int length = 0) where T : unmanaged
+        {
+            FromArray(data, out value, startIndex, length);
+            for (int x = 0; x < value.Length; x++)
+                Endian.Reverse(ref value[x], out value[x]);
+        }
+
+        /// <summary>
+        /// Converts a span to a specified Big Endian primitive.
+        /// </summary>
+        /// <param name="value">Local variable to receive the read in struct array.</param>
+        /// <param name="data">A byte array containing data from which to extract a structure from.</param>
+        /// <param name="length">The amount of elements to read from the span.</param>
+        public static void FromArrayBigEndianPrimitive<T>(Span<byte> data, out T[] value, int length = 0) where T : unmanaged
+        {
+            FromArray(data, out value, length);
+            for (int x = 0; x < value.Length; x++)
+                Endian.Reverse(ref value[x], out value[x]);
+        }
+
+        /// <summary>
+        /// Converts a byte array to a specified Big Endian structure or class type with explicit StructLayout attribute and <see cref="IEndianReversible"/>.
+        /// </summary>
+        /// <param name="value">Local variable to receive the read in struct array.</param>
+        /// <param name="data">A byte array containing data from which to extract a structure from.</param>
+        /// <param name="startIndex">The index in the byte array to read the element(s) from.</param>
+        /// <param name="length">The amount of elements to read from the byte array.</param>
+        public static void FromArrayBigEndianStruct<T>(byte[] data, out T[] value, int startIndex = 0, int length = 0) where T : unmanaged, IEndianReversible
+        {
+            FromArray(data, out value, startIndex, length);
+            for (int x = 0; x < value.Length; x++)
+                value[x].SwapEndian();
+        }
+
+        /// <summary>
+        /// Converts a span to a specified Big Endian structure or class type with explicit StructLayout attribute and <see cref="IEndianReversible"/>..
+        /// </summary>
+        /// <param name="value">Local variable to receive the read in struct array.</param>
+        /// <param name="data">A byte array containing data from which to extract a structure from.</param>
+        /// <param name="length">The amount of elements to read from the span.</param>
+        public static void FromArrayBigEndianStruct<T>(Span<byte> data, out T[] value, int length = 0) where T : unmanaged, IEndianReversible
+        {
+            FromArray(data, out value, length);
+            for (int x = 0; x < value.Length; x++)
+                value[x].SwapEndian();
+        }
+
+        /// <summary>
         /// Returns the size of a specific primitive or struct type.
         /// </summary>
         /// <param name="marshalElement">If set to true; will return the size of an element after marshalling.</param>

@@ -151,42 +151,5 @@ namespace Reloaded.Memory.Utilities
 			foreach (var structure in structures) 
 				WriteBigEndianPrimitive(structure);
         }
-        /// <summary>
-        /// Appends an unmanaged structure onto the <see cref="MemoryStream"/> and advances the position.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void WriteBigEndianPrimitive<T>(T[] structures) where T : unmanaged
-        {
-            foreach (var structure in structures) 
-                WriteBigEndianPrimitive(structure);
-        }
-
-        /// <summary>
-        /// Appends an managed/marshalled structure onto the <see cref="MemoryStream"/> and advances the position.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void WriteBigEndianStruct<T>(T[] structures) where T : unmanaged, IEndianReversible
-        {
-            foreach (var structure in structures)
-                WriteBigEndianStruct(structure);
-        }
-
-        /// <summary>
-        /// Appends an unmanaged structure onto the <see cref="MemoryStream"/> and advances the position.
-        /// </summary>
-        public void WriteBigEndianPrimitive<T>(T structure) where T : unmanaged
-        {
-            Endian.Reverse(ref structure);
-            Write(Struct.GetBytes(structure));
-        }
-
-        /// <summary>
-        /// Appends a managed/marshalled structure onto the given <see cref="MemoryStream"/> and advances the position.
-        /// </summary>
-        public void WriteBigEndianStruct<T>(T structure) where T : unmanaged, IEndianReversible
-        {
-            structure.SwapEndian();
-            Write(Struct.GetBytes(structure));
-        }
     }
 }

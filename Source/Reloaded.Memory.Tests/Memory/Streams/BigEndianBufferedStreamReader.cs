@@ -1,10 +1,10 @@
 ﻿
 
 using System;
-using System.IO;
+using System.Collections.Generic;
+using System.Text;
 using Reloaded.Memory.Shared.Generator;
 using Reloaded.Memory.Shared.Structs;
-using Reloaded.Memory.Tests.Memory.Helpers;
 using Xunit;
 
 namespace Reloaded.Memory.Tests.Memory.Streams
