@@ -16,6 +16,7 @@ namespace Reloaded.Memory.Shared.Generator
         /* Target size of buffers for testing. */
         public Byte[] Structs { get; set; }
         public byte[] Bytes { get; set; }
+        private bool _fileInDisk = false;
 
         /* Construction/Destruction */
         public RandomByteGenerator(int megabytes)
@@ -28,22 +29,32 @@ namespace Reloaded.Memory.Shared.Generator
                 Structs[x] = (Byte)NextRandom(Byte.MinValue, Byte.MaxValue);
 
             Bytes = StructArray.GetBytes(Structs);
-            File.WriteAllBytes(TestFileName, Bytes);
         }
 
         public System.IO.FileStream GetFileStream()
         {
+			WriteFileToDisk();
             return new System.IO.FileStream(TestFileName, FileMode.Open);
         }
 
         public System.IO.FileStream GetFileStreamWithBufferSize(int bufferSize)
         {
+			WriteFileToDisk();
             return new System.IO.FileStream(TestFileName, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize);
         }
 
         public System.IO.MemoryStream GetMemoryStream()
         {
             return new System.IO.MemoryStream(Bytes);
+        }
+
+        private void WriteFileToDisk() 
+        {
+			if (! _fileInDisk) 
+            {
+				File.WriteAllBytes(TestFileName, Bytes);
+				_fileInDisk = true;
+            }
         }
 
 		private int NextRandom(int minimum, int maximum)
@@ -77,6 +88,7 @@ namespace Reloaded.Memory.Shared.Generator
         /* Target size of buffers for testing. */
         public SByte[] Structs { get; set; }
         public byte[] Bytes { get; set; }
+        private bool _fileInDisk = false;
 
         /* Construction/Destruction */
         public RandomSByteGenerator(int megabytes)
@@ -89,22 +101,32 @@ namespace Reloaded.Memory.Shared.Generator
                 Structs[x] = (SByte)NextRandom(SByte.MinValue, SByte.MaxValue);
 
             Bytes = StructArray.GetBytes(Structs);
-            File.WriteAllBytes(TestFileName, Bytes);
         }
 
         public System.IO.FileStream GetFileStream()
         {
+			WriteFileToDisk();
             return new System.IO.FileStream(TestFileName, FileMode.Open);
         }
 
         public System.IO.FileStream GetFileStreamWithBufferSize(int bufferSize)
         {
+			WriteFileToDisk();
             return new System.IO.FileStream(TestFileName, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize);
         }
 
         public System.IO.MemoryStream GetMemoryStream()
         {
             return new System.IO.MemoryStream(Bytes);
+        }
+
+        private void WriteFileToDisk() 
+        {
+			if (! _fileInDisk) 
+            {
+				File.WriteAllBytes(TestFileName, Bytes);
+				_fileInDisk = true;
+            }
         }
 
 		private int NextRandom(int minimum, int maximum)
@@ -138,6 +160,7 @@ namespace Reloaded.Memory.Shared.Generator
         /* Target size of buffers for testing. */
         public Int16[] Structs { get; set; }
         public byte[] Bytes { get; set; }
+        private bool _fileInDisk = false;
 
         /* Construction/Destruction */
         public RandomInt16Generator(int megabytes)
@@ -150,22 +173,32 @@ namespace Reloaded.Memory.Shared.Generator
                 Structs[x] = (Int16)NextRandom(Int16.MinValue, Int16.MaxValue);
 
             Bytes = StructArray.GetBytes(Structs);
-            File.WriteAllBytes(TestFileName, Bytes);
         }
 
         public System.IO.FileStream GetFileStream()
         {
+			WriteFileToDisk();
             return new System.IO.FileStream(TestFileName, FileMode.Open);
         }
 
         public System.IO.FileStream GetFileStreamWithBufferSize(int bufferSize)
         {
+			WriteFileToDisk();
             return new System.IO.FileStream(TestFileName, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize);
         }
 
         public System.IO.MemoryStream GetMemoryStream()
         {
             return new System.IO.MemoryStream(Bytes);
+        }
+
+        private void WriteFileToDisk() 
+        {
+			if (! _fileInDisk) 
+            {
+				File.WriteAllBytes(TestFileName, Bytes);
+				_fileInDisk = true;
+            }
         }
 
 		private int NextRandom(int minimum, int maximum)
@@ -199,6 +232,7 @@ namespace Reloaded.Memory.Shared.Generator
         /* Target size of buffers for testing. */
         public UInt16[] Structs { get; set; }
         public byte[] Bytes { get; set; }
+        private bool _fileInDisk = false;
 
         /* Construction/Destruction */
         public RandomUInt16Generator(int megabytes)
@@ -211,22 +245,32 @@ namespace Reloaded.Memory.Shared.Generator
                 Structs[x] = (UInt16)NextRandom(UInt16.MinValue, UInt16.MaxValue);
 
             Bytes = StructArray.GetBytes(Structs);
-            File.WriteAllBytes(TestFileName, Bytes);
         }
 
         public System.IO.FileStream GetFileStream()
         {
+			WriteFileToDisk();
             return new System.IO.FileStream(TestFileName, FileMode.Open);
         }
 
         public System.IO.FileStream GetFileStreamWithBufferSize(int bufferSize)
         {
+			WriteFileToDisk();
             return new System.IO.FileStream(TestFileName, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize);
         }
 
         public System.IO.MemoryStream GetMemoryStream()
         {
             return new System.IO.MemoryStream(Bytes);
+        }
+
+        private void WriteFileToDisk() 
+        {
+			if (! _fileInDisk) 
+            {
+				File.WriteAllBytes(TestFileName, Bytes);
+				_fileInDisk = true;
+            }
         }
 
 		private int NextRandom(int minimum, int maximum)
@@ -260,6 +304,7 @@ namespace Reloaded.Memory.Shared.Generator
         /* Target size of buffers for testing. */
         public Int32[] Structs { get; set; }
         public byte[] Bytes { get; set; }
+        private bool _fileInDisk = false;
 
         /* Construction/Destruction */
         public RandomInt32Generator(int megabytes)
@@ -272,22 +317,32 @@ namespace Reloaded.Memory.Shared.Generator
                 Structs[x] = (Int32)NextRandom(Int32.MinValue, Int32.MaxValue);
 
             Bytes = StructArray.GetBytes(Structs);
-            File.WriteAllBytes(TestFileName, Bytes);
         }
 
         public System.IO.FileStream GetFileStream()
         {
+			WriteFileToDisk();
             return new System.IO.FileStream(TestFileName, FileMode.Open);
         }
 
         public System.IO.FileStream GetFileStreamWithBufferSize(int bufferSize)
         {
+			WriteFileToDisk();
             return new System.IO.FileStream(TestFileName, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize);
         }
 
         public System.IO.MemoryStream GetMemoryStream()
         {
             return new System.IO.MemoryStream(Bytes);
+        }
+
+        private void WriteFileToDisk() 
+        {
+			if (! _fileInDisk) 
+            {
+				File.WriteAllBytes(TestFileName, Bytes);
+				_fileInDisk = true;
+            }
         }
 
 		private int NextRandom(int minimum, int maximum)
@@ -321,6 +376,7 @@ namespace Reloaded.Memory.Shared.Generator
         /* Target size of buffers for testing. */
         public UInt32[] Structs { get; set; }
         public byte[] Bytes { get; set; }
+        private bool _fileInDisk = false;
 
         /* Construction/Destruction */
         public RandomUInt32Generator(int megabytes)
@@ -333,22 +389,32 @@ namespace Reloaded.Memory.Shared.Generator
                 Structs[x] = (UInt32)NextRandom(UInt32.MinValue, UInt32.MaxValue);
 
             Bytes = StructArray.GetBytes(Structs);
-            File.WriteAllBytes(TestFileName, Bytes);
         }
 
         public System.IO.FileStream GetFileStream()
         {
+			WriteFileToDisk();
             return new System.IO.FileStream(TestFileName, FileMode.Open);
         }
 
         public System.IO.FileStream GetFileStreamWithBufferSize(int bufferSize)
         {
+			WriteFileToDisk();
             return new System.IO.FileStream(TestFileName, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize);
         }
 
         public System.IO.MemoryStream GetMemoryStream()
         {
             return new System.IO.MemoryStream(Bytes);
+        }
+
+        private void WriteFileToDisk() 
+        {
+			if (! _fileInDisk) 
+            {
+				File.WriteAllBytes(TestFileName, Bytes);
+				_fileInDisk = true;
+            }
         }
 
 		private int NextRandom(int minimum, int maximum)
@@ -382,6 +448,7 @@ namespace Reloaded.Memory.Shared.Generator
         /* Target size of buffers for testing. */
         public Int64[] Structs { get; set; }
         public byte[] Bytes { get; set; }
+        private bool _fileInDisk = false;
 
         /* Construction/Destruction */
         public RandomInt64Generator(int megabytes)
@@ -394,22 +461,32 @@ namespace Reloaded.Memory.Shared.Generator
                 Structs[x] = (Int64)NextRandom(Int64.MinValue, Int64.MaxValue);
 
             Bytes = StructArray.GetBytes(Structs);
-            File.WriteAllBytes(TestFileName, Bytes);
         }
 
         public System.IO.FileStream GetFileStream()
         {
+			WriteFileToDisk();
             return new System.IO.FileStream(TestFileName, FileMode.Open);
         }
 
         public System.IO.FileStream GetFileStreamWithBufferSize(int bufferSize)
         {
+			WriteFileToDisk();
             return new System.IO.FileStream(TestFileName, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize);
         }
 
         public System.IO.MemoryStream GetMemoryStream()
         {
             return new System.IO.MemoryStream(Bytes);
+        }
+
+        private void WriteFileToDisk() 
+        {
+			if (! _fileInDisk) 
+            {
+				File.WriteAllBytes(TestFileName, Bytes);
+				_fileInDisk = true;
+            }
         }
 
 		private int NextRandom(int minimum, int maximum)
@@ -443,6 +520,7 @@ namespace Reloaded.Memory.Shared.Generator
         /* Target size of buffers for testing. */
         public UInt64[] Structs { get; set; }
         public byte[] Bytes { get; set; }
+        private bool _fileInDisk = false;
 
         /* Construction/Destruction */
         public RandomUInt64Generator(int megabytes)
@@ -455,22 +533,32 @@ namespace Reloaded.Memory.Shared.Generator
                 Structs[x] = (UInt64)NextRandom(UInt64.MinValue, UInt64.MaxValue);
 
             Bytes = StructArray.GetBytes(Structs);
-            File.WriteAllBytes(TestFileName, Bytes);
         }
 
         public System.IO.FileStream GetFileStream()
         {
+			WriteFileToDisk();
             return new System.IO.FileStream(TestFileName, FileMode.Open);
         }
 
         public System.IO.FileStream GetFileStreamWithBufferSize(int bufferSize)
         {
+			WriteFileToDisk();
             return new System.IO.FileStream(TestFileName, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize);
         }
 
         public System.IO.MemoryStream GetMemoryStream()
         {
             return new System.IO.MemoryStream(Bytes);
+        }
+
+        private void WriteFileToDisk() 
+        {
+			if (! _fileInDisk) 
+            {
+				File.WriteAllBytes(TestFileName, Bytes);
+				_fileInDisk = true;
+            }
         }
 
 		private int NextRandom(int minimum, int maximum)
