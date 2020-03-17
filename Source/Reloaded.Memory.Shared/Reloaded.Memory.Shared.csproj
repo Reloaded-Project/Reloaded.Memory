@@ -5,7 +5,34 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Generator\RandomPrimitiveGenerator.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RandomPrimitiveGenerator.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Reloaded.Memory\Reloaded.Memory.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Generator\RandomPrimitiveGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>RandomPrimitiveGenerator.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Generator\RandomPrimitiveGenerator.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RandomPrimitiveGenerator.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

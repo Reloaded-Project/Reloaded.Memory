@@ -7,24 +7,24 @@ using Xunit;
 
 namespace Reloaded.Memory.Tests.Memory.Streams
 {
-    public class BufferedStreamReader
+    public partial class BufferedStreamReader
     {
         /* Target size of buffers for testing. */
         public const int AlignedBufferSize = 128;
         public const int MisalignedBufferSize = 129;
 
         /* Amount of randomized data in megabytes. */
-        public const int StructBytesMB = 10;
+        public const int StructBytesMB = 1;
 
         /* Test Data */
         private RandomIntStructGenerator _randomIntStructGenerator;
-        private RandomIntegerGenerator _randomIntegerGenerator;
+        private RandomInt32Generator _randomIntegerGenerator;
 
         /* Construction/Destruction */
         public BufferedStreamReader()
         {
             _randomIntStructGenerator = new RandomIntStructGenerator(StructBytesMB);
-            _randomIntegerGenerator = new RandomIntegerGenerator(StructBytesMB);
+            _randomIntegerGenerator = new RandomInt32Generator(StructBytesMB);
         }
 
         /* Read back all structs and compare. */

@@ -39,11 +39,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Memory\Streams\BigEndianBufferedStreamReader.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BigEndianBufferedStreamReader.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="HelloWorld.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="HelloWorldCore.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Memory\Streams\BigEndianBufferedStreamReader.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BigEndianBufferedStreamReader.cs</LastGenOutput>
     </None>
     <None Update="phys.bin">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -51,6 +63,18 @@
     <None Update="xunit.runner.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Memory\Streams\BigEndianBufferedStreamReader.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BigEndianBufferedStreamReader.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

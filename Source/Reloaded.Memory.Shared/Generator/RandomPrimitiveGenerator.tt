@@ -1,0 +1,84 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+
+<# 
+    string[] types = { "Byte", "SByte", "Int16", "UInt16", "Int32", "UInt32", "Int64", "UInt64" };
+#>
+
+using System;
+using System.IO;
+
+namespace Reloaded.Memory.Shared.Generator
+{
+<#
+			foreach (var type in types)
+			{
+#>  
+	public class Random<#=type#>Generator
+    {
+        /* Amount of randomized data in Megabytes. */
+        public const string TestFileName = "<#=type#>s.bin";
+        private static Random _random = new Random();
+        private static byte[] _randomBuffer = new byte[8];
+
+        /* Target size of buffers for testing. */
+        public <#=type#>[] Structs { get; set; }
+        public byte[] Bytes { get; set; }
+
+        /* Construction/Destruction */
+        public Random<#=type#>Generator(int megabytes)
+        {
+            int totalBytes = Mathematics.MegaBytesToBytes(megabytes);
+            int structs = Mathematics.BytesToStructCount<<#=type#>>(totalBytes);
+            Structs = new <#=type#>[structs];
+
+            for (int x = 0; x < structs; x++)
+                Structs[x] = (<#=type#>)NextRandom(<#=type#>.MinValue, <#=type#>.MaxValue);
+
+            Bytes = StructArray.GetBytes(Structs);
+            File.WriteAllBytes(TestFileName, Bytes);
+        }
+
+        public System.IO.FileStream GetFileStream()
+        {
+            return new System.IO.FileStream(TestFileName, FileMode.Open);
+        }
+
+        public System.IO.FileStream GetFileStreamWithBufferSize(int bufferSize)
+        {
+            return new System.IO.FileStream(TestFileName, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize);
+        }
+
+        public System.IO.MemoryStream GetMemoryStream()
+        {
+            return new System.IO.MemoryStream(Bytes);
+        }
+
+		private int NextRandom(int minimum, int maximum)
+        {
+			return _random.Next(minimum, maximum);
+        }
+
+		private long NextRandom(long minimum, long maximum)
+        {
+			_random.NextBytes(_randomBuffer);
+            Struct.FromArray(_randomBuffer, out long longRand, 0);
+			return (Math.Abs(longRand % (maximum - minimum)) + minimum);
+        }
+
+		private ulong NextRandom(ulong minimum, ulong maximum)
+        {
+			_random.NextBytes(_randomBuffer);
+            Struct.FromArray(_randomBuffer, out ulong longRand, 0);
+			return (longRand % (maximum - minimum)) + minimum;
+        }
+    }
+
+<#
+            } 
+#>
+}

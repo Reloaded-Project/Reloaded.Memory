@@ -10,7 +10,7 @@ namespace Reloaded.Memory.Benchmark.Memory.Streams.Integers
     [CoreJob]
     public class MemoryStream
     {
-        private RandomIntegerGenerator _generator;
+        private RandomInt32Generator _generator;
 
         [Params(100)]
         public int TotalDataMB { get; set; }
@@ -22,7 +22,7 @@ namespace Reloaded.Memory.Benchmark.Memory.Streams.Integers
         [GlobalSetup]
         public void Setup()
         {
-            _generator = new RandomIntegerGenerator(TotalDataMB);
+            _generator = new RandomInt32Generator(TotalDataMB);
         }
 
         /* Create */

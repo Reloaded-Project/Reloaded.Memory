@@ -1,0 +1,105 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+
+<# 
+    string[] types = { "Int16", "UInt16", "Int32", "UInt32", "Int64", "UInt64" };
+#>
+
+using System;
+using System.IO;
+using Reloaded.Memory.Shared.Generator;
+using Reloaded.Memory.Shared.Structs;
+using Reloaded.Memory.Tests.Memory.Helpers;
+using Xunit;
+
+namespace Reloaded.Memory.Tests.Memory.Streams
+{
+    public partial class BufferedStreamReader
+    {
+<#
+		foreach (var type in types)
+		{
+#>
+		Random<#=type#>Generator _random<#=type#>Generator = new Random<#=type#>Generator(StructBytesMB);
+
+        [Theory]
+        [InlineData(AlignedBufferSize)]
+        [InlineData(MisalignedBufferSize)]
+        public void ReadAllElementsBigEndian<#=type#>(int bufferSize)
+        {
+            using (var memoryStream = _random<#=type#>Generator.GetMemoryStream())
+            {
+                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                for (int x = 0; x < _random<#=type#>Generator.Structs.Length; x++)
+                {
+                    reader.ReadBigEndianPrimitive(out <#=type#> value);
+
+                    var notExpected = _random<#=type#>Generator.Structs[x];
+                    var expected    = _random<#=type#>Generator.Structs[x];
+                    expected = Reloaded.Memory.Endian.Reverse(expected);
+
+                    Assert.Equal(expected, value);
+                    if (expected != notExpected)
+                        Assert.NotEqual(_random<#=type#>Generator.Structs[x], value);
+                }
+            }
+        }
+
+        [Theory]
+        [InlineData(AlignedBufferSize)]
+        [InlineData(MisalignedBufferSize)]
+        public void PeekAllElementsBigEndian<#=type#>(int bufferSize)
+        {
+            using (var memoryStream = _random<#=type#>Generator.GetMemoryStream())
+            {
+                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                for (int x = 0; x < _random<#=type#>Generator.Structs.Length; x++)
+                {
+                    reader.PeekBigEndianPrimitive(out <#=type#> peek);
+                    reader.ReadBigEndianPrimitive(out <#=type#> actual);
+                    Assert.Equal(peek, actual);
+
+                    var notExpected = _random<#=type#>Generator.Structs[x];
+                    var expected    = _random<#=type#>Generator.Structs[x];
+                    expected = Reloaded.Memory.Endian.Reverse(expected);
+
+                    Assert.Equal(expected, actual);
+                    if (expected != notExpected)
+                        Assert.NotEqual(_random<#=type#>Generator.Structs[x], actual);
+                }
+            }
+        }
+
+        [Theory]
+        [InlineData(AlignedBufferSize)]
+        [InlineData(MisalignedBufferSize)]
+        public void PeekAllElementsBigEndianOverload<#=type#>(int bufferSize)
+        {
+            using (var memoryStream = _random<#=type#>Generator.GetMemoryStream())
+            {
+                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                for (int x = 0; x < _random<#=type#>Generator.Structs.Length; x++)
+                {
+                    var peek    = reader.PeekBigEndianPrimitive<<#=type#>>();
+                    var actual  = reader.ReadBigEndianPrimitive<<#=type#>>();
+                    Assert.Equal(peek, actual);
+
+                    var notExpected = _random<#=type#>Generator.Structs[x];
+                    var expected = _random<#=type#>Generator.Structs[x];
+                    expected = Reloaded.Memory.Endian.Reverse(expected);
+
+                    Assert.Equal(expected, actual);
+                    if (expected != notExpected)
+                        Assert.NotEqual(_random<#=type#>Generator.Structs[x], actual);
+                }
+            }
+        }
+<#
+		}
+#>
+    }
+}
