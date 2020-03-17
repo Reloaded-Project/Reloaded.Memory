@@ -32,6 +32,9 @@ This is not a true feature set, rather a list of ideas as to what you can do/sho
 + Convert *generic* structures to *byte[]*, convert *byte[]* into *generic* structures.
 + *Allocate*, *Free*, *Change Permissions* of regions of memory in current or another process.
 + Use LINQ over structure arrays in memory of current or another process. 
++ High performance generic stream implementations, including big endian support.
++ Utility classes, e.g. Circular Buffers.
+
 
 ## Documentation
 
