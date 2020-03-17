@@ -2,6 +2,7 @@
 using System.IO;
 using Reloaded.Memory.Shared.Generator;
 using Reloaded.Memory.Shared.Structs;
+using Reloaded.Memory.Streams.Readers;
 using Reloaded.Memory.Tests.Memory.Helpers;
 using Xunit;
 
@@ -36,7 +37,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             // Int Structs: Complex
             using (var memoryStream = _randomIntStructGenerator.GetMemoryStream())
             {
-                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                var reader = new LittleEndianStreamReader(new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize));
                 for (int x = 0; x < _randomIntStructGenerator.Structs.Length; x++)
                 {
                     reader.Read(out RandomIntStruct value);
@@ -47,7 +48,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             // Integers: Primitive
             using (var memoryStream = _randomIntegerGenerator.GetMemoryStream())
             {
-                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                var reader = new LittleEndianStreamReader(new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize));
                 for (int x = 0; x < _randomIntegerGenerator.Structs.Length; x++)
                 {
                     reader.Read(out int value);
@@ -64,7 +65,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             // Int Structs: Complex
             using (var memoryStream = _randomIntStructGenerator.GetMemoryStream())
             {
-                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                var reader = new LittleEndianStreamReader(new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize));
                 for (int x = 0; x < _randomIntStructGenerator.Structs.Length; x++)
                 {
                     reader.Peek(out RandomIntStruct expected);
@@ -77,7 +78,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             // Integers: Primitive
             using (var memoryStream = _randomIntegerGenerator.GetMemoryStream())
             {
-                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                var reader = new LittleEndianStreamReader(new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize));
                 for (int x = 0; x < _randomIntegerGenerator.Structs.Length; x++)
                 {
                     reader.Peek(out int expected);
@@ -96,7 +97,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             // Int Structs: Complex
             using (var memoryStream = _randomIntStructGenerator.GetMemoryStream())
             {
-                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                var reader = new LittleEndianStreamReader(new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize));
                 for (int x = 0; x < _randomIntStructGenerator.Structs.Length; x++)
                 {
                     var expected = reader.Peek<RandomIntStruct>();
@@ -109,7 +110,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             // Integers: Primitive
             using (var memoryStream = _randomIntegerGenerator.GetMemoryStream())
             {
-                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                var reader = new LittleEndianStreamReader(new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize));
                 for (int x = 0; x < _randomIntegerGenerator.Structs.Length; x++)
                 {
                     var expected    = reader.Peek<int>();
@@ -129,10 +130,10 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             // Int Structs: Complex
             using (var memoryStream = _randomIntStructGenerator.GetMemoryStream())
             {
-                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                var reader = new BigEndianStreamReader(new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize));
                 for (int x = 0; x < _randomIntStructGenerator.Structs.Length; x++)
                 {
-                    reader.ReadBigEndianStruct(out RandomIntStruct value);
+                    reader.ReadStruct(out RandomIntStruct value);
 
                     var notExpected = _randomIntStructGenerator.Structs[x];
                     var expected = _randomIntStructGenerator.Structs[x];
@@ -147,10 +148,10 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             // Integers: Primitive
             using (var memoryStream = _randomIntegerGenerator.GetMemoryStream())
             {
-                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                var reader = new BigEndianStreamReader(new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize));
                 for (int x = 0; x < _randomIntegerGenerator.Structs.Length; x++)
                 {
-                    reader.ReadBigEndianPrimitive(out int value);
+                    reader.Read(out int value);
 
                     var notExpected = _randomIntegerGenerator.Structs[x];
                     var expected    = _randomIntegerGenerator.Structs[x];
@@ -171,11 +172,11 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             // Int Structs: Complex
             using (var memoryStream = _randomIntStructGenerator.GetMemoryStream())
             {
-                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                var reader = new BigEndianStreamReader(new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize));
                 for (int x = 0; x < _randomIntStructGenerator.Structs.Length; x++)
                 {
-                    reader.PeekBigEndianStruct(out RandomIntStruct peek);
-                    reader.ReadBigEndianStruct(out RandomIntStruct actual);
+                    reader.PeekStruct(out RandomIntStruct peek);
+                    reader.ReadStruct(out RandomIntStruct actual);
                     Assert.Equal(peek, actual);
 
                     var notExpected = _randomIntStructGenerator.Structs[x];
@@ -191,11 +192,11 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             // Integers: Primitive
             using (var memoryStream = _randomIntegerGenerator.GetMemoryStream())
             {
-                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                var reader = new BigEndianStreamReader(new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize));
                 for (int x = 0; x < _randomIntegerGenerator.Structs.Length; x++)
                 {
-                    reader.PeekBigEndianPrimitive(out int peek);
-                    reader.ReadBigEndianPrimitive(out int actual);
+                    reader.Peek(out int peek);
+                    reader.Read(out int actual);
                     Assert.Equal(peek, actual);
 
                     var notExpected = _randomIntegerGenerator.Structs[x];
@@ -217,11 +218,11 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             // Int Structs: Complex
             using (var memoryStream = _randomIntStructGenerator.GetMemoryStream())
             {
-                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                var reader = new BigEndianStreamReader(new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize));
                 for (int x = 0; x < _randomIntStructGenerator.Structs.Length; x++)
                 {
-                    var peek    = reader.PeekBigEndianStruct<RandomIntStruct>();
-                    var actual  = reader.ReadBigEndianStruct<RandomIntStruct>();
+                    var peek    = reader.PeekStruct<RandomIntStruct>();
+                    var actual  = reader.ReadStruct<RandomIntStruct>();
                     Assert.Equal(peek, actual);
 
                     var notExpected = _randomIntStructGenerator.Structs[x];
@@ -237,11 +238,11 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             // Integers: Primitive
             using (var memoryStream = _randomIntegerGenerator.GetMemoryStream())
             {
-                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                var reader = new BigEndianStreamReader(new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize));
                 for (int x = 0; x < _randomIntegerGenerator.Structs.Length; x++)
                 {
-                    var peek    = reader.PeekBigEndianPrimitive<int>();
-                    var actual  = reader.ReadBigEndianPrimitive<int>();
+                    var peek    = reader.Peek<int>();
+                    var actual  = reader.Read<int>();
                     Assert.Equal(peek, actual);
 
                     var notExpected = _randomIntegerGenerator.Structs[x];
@@ -264,7 +265,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             // Int Structs: Complex
             using (var memoryStream = _randomIntStructGenerator.GetMemoryStream())
             {
-                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                var reader = new LittleEndianStreamReader(new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize));
                 for (int x = 0; x < _randomIntStructGenerator.Structs.Length; x++)
                 {
                     reader.Read(out RandomIntStruct value, true);
@@ -292,7 +293,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             // Int Structs: Complex
             using (var memoryStream = _randomIntStructGenerator.GetMemoryStream())
             {
-                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                var reader = new LittleEndianStreamReader(new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize));
                 for (int x = 0; x < _randomIntStructGenerator.Structs.Length; x++)
                 {
                     reader.Peek(out RandomIntStruct expected, true);
@@ -305,7 +306,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             // Integers: Primitive
             using (var memoryStream = _randomIntegerGenerator.GetMemoryStream())
             {
-                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                var reader = new LittleEndianStreamReader(new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize));
                 for (int x = 0; x < _randomIntegerGenerator.Structs.Length; x++)
                 {
                     reader.Read(out int value, true);
@@ -322,7 +323,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             // Int Structs: Complex
             using (var memoryStream = _randomIntStructGenerator.GetMemoryStream())
             {
-                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                var reader = new LittleEndianStreamReader(new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize));
                 for (int x = 0; x < _randomIntStructGenerator.Structs.Length; x++)
                 {
                     var expected    = reader.Peek<RandomIntStruct>(true);
@@ -335,7 +336,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             // Integers: Primitive
             using (var memoryStream = _randomIntegerGenerator.GetMemoryStream())
             {
-                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                var reader = new LittleEndianStreamReader(new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize));
                 for (int x = 0; x < _randomIntegerGenerator.Structs.Length; x++)
                 {
                     var expected = reader.Peek<int>(true);
