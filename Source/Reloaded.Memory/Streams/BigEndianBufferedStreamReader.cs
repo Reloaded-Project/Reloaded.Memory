@@ -9,108 +9,6 @@ namespace Reloaded.Memory.Streams
     {
         
         /// <summary>
-        /// Reads an unmanaged Byte from the stream, swapping the endian of the output.
-        /// </summary>
-        /// <param name="value">The value to output.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe void ReadBigEndianPrimitive(out Byte value)
-        {
-            int size = sizeof(Byte);
-            ReFillIfNecessary(size);
-
-            value = *(Byte*)(_gcHandlePtr + _bufferOffset);
-            value = Endian.Reverse(value);
-
-            _bufferOffset += size;
-            _bufferedBytesRemaining -= size;
-        }
-
-        /// <summary>
-		/// Reads an unmanaged Byte from the stream, swapping the endian of the output.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe Byte ReadBigEndianPrimitiveByte()
-        {
-            ReadBigEndianPrimitive(out Byte value);
-            return value;
-        }
-
-		/// <summary>
-        /// Reads an unmanaged  Byte from the stream, swapping the endian of the output without incrementing the position.
-        /// </summary>
-        /// <param name="value">The value to output.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe void PeekBigEndianPrimitive(out Byte value)
-        {
-            ReFillIfNecessary(sizeof( Byte));
-
-            value = *(Byte*)(_gcHandlePtr + _bufferOffset);
-            value = Endian.Reverse(value);
-        }
-
-        /// <summary>
-        /// Reads an unmanaged  Byte from the stream, swapping the endian of the output without incrementing the position.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe Byte PeekBigEndianPrimitiveByte()
-        {
-            PeekBigEndianPrimitive(out  Byte value);
-            return value;
-        }
-
-        
-        /// <summary>
-        /// Reads an unmanaged SByte from the stream, swapping the endian of the output.
-        /// </summary>
-        /// <param name="value">The value to output.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe void ReadBigEndianPrimitive(out SByte value)
-        {
-            int size = sizeof(SByte);
-            ReFillIfNecessary(size);
-
-            value = *(SByte*)(_gcHandlePtr + _bufferOffset);
-            value = Endian.Reverse(value);
-
-            _bufferOffset += size;
-            _bufferedBytesRemaining -= size;
-        }
-
-        /// <summary>
-		/// Reads an unmanaged SByte from the stream, swapping the endian of the output.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe SByte ReadBigEndianPrimitiveSByte()
-        {
-            ReadBigEndianPrimitive(out SByte value);
-            return value;
-        }
-
-		/// <summary>
-        /// Reads an unmanaged  SByte from the stream, swapping the endian of the output without incrementing the position.
-        /// </summary>
-        /// <param name="value">The value to output.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe void PeekBigEndianPrimitive(out SByte value)
-        {
-            ReFillIfNecessary(sizeof( SByte));
-
-            value = *(SByte*)(_gcHandlePtr + _bufferOffset);
-            value = Endian.Reverse(value);
-        }
-
-        /// <summary>
-        /// Reads an unmanaged  SByte from the stream, swapping the endian of the output without incrementing the position.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe SByte PeekBigEndianPrimitiveSByte()
-        {
-            PeekBigEndianPrimitive(out  SByte value);
-            return value;
-        }
-
-        
-        /// <summary>
         /// Reads an unmanaged Int16 from the stream, swapping the endian of the output.
         /// </summary>
         /// <param name="value">The value to output.</param>
@@ -144,7 +42,7 @@ namespace Reloaded.Memory.Streams
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe void PeekBigEndianPrimitive(out Int16 value)
         {
-            ReFillIfNecessary(sizeof( Int16));
+            ReFillIfNecessary(sizeof(Int16));
 
             value = *(Int16*)(_gcHandlePtr + _bufferOffset);
             value = Endian.Reverse(value);
@@ -156,7 +54,7 @@ namespace Reloaded.Memory.Streams
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe Int16 PeekBigEndianPrimitiveInt16()
         {
-            PeekBigEndianPrimitive(out  Int16 value);
+            PeekBigEndianPrimitive(out Int16 value);
             return value;
         }
 
@@ -195,7 +93,7 @@ namespace Reloaded.Memory.Streams
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe void PeekBigEndianPrimitive(out UInt16 value)
         {
-            ReFillIfNecessary(sizeof( UInt16));
+            ReFillIfNecessary(sizeof(UInt16));
 
             value = *(UInt16*)(_gcHandlePtr + _bufferOffset);
             value = Endian.Reverse(value);
@@ -207,7 +105,7 @@ namespace Reloaded.Memory.Streams
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe UInt16 PeekBigEndianPrimitiveUInt16()
         {
-            PeekBigEndianPrimitive(out  UInt16 value);
+            PeekBigEndianPrimitive(out UInt16 value);
             return value;
         }
 
@@ -246,7 +144,7 @@ namespace Reloaded.Memory.Streams
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe void PeekBigEndianPrimitive(out Int32 value)
         {
-            ReFillIfNecessary(sizeof( Int32));
+            ReFillIfNecessary(sizeof(Int32));
 
             value = *(Int32*)(_gcHandlePtr + _bufferOffset);
             value = Endian.Reverse(value);
@@ -258,7 +156,7 @@ namespace Reloaded.Memory.Streams
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe Int32 PeekBigEndianPrimitiveInt32()
         {
-            PeekBigEndianPrimitive(out  Int32 value);
+            PeekBigEndianPrimitive(out Int32 value);
             return value;
         }
 
@@ -297,7 +195,7 @@ namespace Reloaded.Memory.Streams
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe void PeekBigEndianPrimitive(out UInt32 value)
         {
-            ReFillIfNecessary(sizeof( UInt32));
+            ReFillIfNecessary(sizeof(UInt32));
 
             value = *(UInt32*)(_gcHandlePtr + _bufferOffset);
             value = Endian.Reverse(value);
@@ -309,7 +207,7 @@ namespace Reloaded.Memory.Streams
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe UInt32 PeekBigEndianPrimitiveUInt32()
         {
-            PeekBigEndianPrimitive(out  UInt32 value);
+            PeekBigEndianPrimitive(out UInt32 value);
             return value;
         }
 
@@ -348,7 +246,7 @@ namespace Reloaded.Memory.Streams
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe void PeekBigEndianPrimitive(out Int64 value)
         {
-            ReFillIfNecessary(sizeof( Int64));
+            ReFillIfNecessary(sizeof(Int64));
 
             value = *(Int64*)(_gcHandlePtr + _bufferOffset);
             value = Endian.Reverse(value);
@@ -360,7 +258,7 @@ namespace Reloaded.Memory.Streams
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe Int64 PeekBigEndianPrimitiveInt64()
         {
-            PeekBigEndianPrimitive(out  Int64 value);
+            PeekBigEndianPrimitive(out Int64 value);
             return value;
         }
 
@@ -399,7 +297,7 @@ namespace Reloaded.Memory.Streams
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe void PeekBigEndianPrimitive(out UInt64 value)
         {
-            ReFillIfNecessary(sizeof( UInt64));
+            ReFillIfNecessary(sizeof(UInt64));
 
             value = *(UInt64*)(_gcHandlePtr + _bufferOffset);
             value = Endian.Reverse(value);
@@ -411,7 +309,7 @@ namespace Reloaded.Memory.Streams
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe UInt64 PeekBigEndianPrimitiveUInt64()
         {
-            PeekBigEndianPrimitive(out  UInt64 value);
+            PeekBigEndianPrimitive(out UInt64 value);
             return value;
         }
 

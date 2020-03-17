@@ -6,7 +6,7 @@
 <#@ output extension=".cs" #>
 
 <# 
-    string[] types = { "Byte", "SByte", "Int16", "UInt16", "Int32", "UInt32", "Int64", "UInt64" };
+    string[] types = { "Int16", "UInt16", "Int32", "UInt32", "Int64", "UInt64" };
 #>
 
 using System;
@@ -43,7 +43,7 @@ namespace Reloaded.Memory.Streams
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe <#= type #> ReadBigEndianPrimitive<#= type #>()
         {
-            ReadBigEndianPrimitive(out <#= type #> value);
+            ReadBigEndianPrimitive(out <#=type#> value);
             return value;
         }
 
@@ -54,7 +54,7 @@ namespace Reloaded.Memory.Streams
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe void PeekBigEndianPrimitive(out <#= type #> value)
         {
-            ReFillIfNecessary(sizeof( <#= type #>));
+            ReFillIfNecessary(sizeof(<#=type#>));
 
             value = *(<#= type #>*)(_gcHandlePtr + _bufferOffset);
             value = Endian.Reverse(value);
@@ -66,7 +66,7 @@ namespace Reloaded.Memory.Streams
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe <#= type #> PeekBigEndianPrimitive<#= type #>()
         {
-            PeekBigEndianPrimitive(out  <#= type #> value);
+            PeekBigEndianPrimitive(out <#=type#> value);
             return value;
         }
 
