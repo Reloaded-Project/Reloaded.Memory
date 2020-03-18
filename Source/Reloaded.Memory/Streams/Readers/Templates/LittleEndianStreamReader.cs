@@ -99,5 +99,35 @@ namespace Reloaded.Memory.Streams.Readers
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override unsafe UInt64 PeekUInt64() => Reader.Peek<UInt64>();
+		/// <inheritdoc />
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override unsafe void Read(out Single value) => value = Reader.Read<Single>();
+
+		/// <inheritdoc />
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override unsafe Single ReadSingle() => Reader.Read<Single>();
+
+		/// <inheritdoc />
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override unsafe void Peek(out Single value) => value = Reader.Peek<Single>();
+
+        /// <inheritdoc />
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override unsafe Single PeekSingle() => Reader.Peek<Single>();
+		/// <inheritdoc />
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override unsafe void Read(out Double value) => value = Reader.Read<Double>();
+
+		/// <inheritdoc />
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override unsafe Double ReadDouble() => Reader.Read<Double>();
+
+		/// <inheritdoc />
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override unsafe void Peek(out Double value) => value = Reader.Peek<Double>();
+
+        /// <inheritdoc />
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override unsafe Double PeekDouble() => Reader.Peek<Double>();
 	}
 }

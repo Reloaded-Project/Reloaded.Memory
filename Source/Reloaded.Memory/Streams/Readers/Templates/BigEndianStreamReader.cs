@@ -99,5 +99,35 @@ namespace Reloaded.Memory.Streams.Readers
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override unsafe UInt64 PeekUInt64() => Reader.PeekBigEndianPrimitiveUInt64();
+		/// <inheritdoc />
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override unsafe void Read(out Single value) => value = Reader.ReadBigEndianPrimitiveSingle();
+
+		/// <inheritdoc />
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override unsafe Single ReadSingle() => Reader.ReadBigEndianPrimitiveSingle();
+
+		/// <inheritdoc />
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override unsafe void Peek(out Single value) => value = Reader.PeekBigEndianPrimitiveSingle();
+
+        /// <inheritdoc />
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override unsafe Single PeekSingle() => Reader.PeekBigEndianPrimitiveSingle();
+		/// <inheritdoc />
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override unsafe void Read(out Double value) => value = Reader.ReadBigEndianPrimitiveDouble();
+
+		/// <inheritdoc />
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override unsafe Double ReadDouble() => Reader.ReadBigEndianPrimitiveDouble();
+
+		/// <inheritdoc />
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override unsafe void Peek(out Double value) => value = Reader.PeekBigEndianPrimitiveDouble();
+
+        /// <inheritdoc />
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override unsafe Double PeekDouble() => Reader.PeekBigEndianPrimitiveDouble();
 	}
 }

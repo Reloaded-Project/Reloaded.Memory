@@ -455,5 +455,153 @@ namespace Reloaded.Memory.Tests.Memory.Streams
                 }
             }
         }
+		RandomSingleGenerator _randomSingleGenerator = new RandomSingleGenerator(StructBytesMB);
+
+        [Theory]
+        [InlineData(AlignedBufferSize)]
+        [InlineData(MisalignedBufferSize)]
+        public void ReadAllElementsBigEndianSingle(int bufferSize)
+        {
+            using (var memoryStream = _randomSingleGenerator.GetMemoryStream())
+            {
+                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                for (int x = 0; x < _randomSingleGenerator.Structs.Length; x++)
+                {
+                    reader.ReadBigEndianPrimitive(out Single value);
+
+                    var notExpected = _randomSingleGenerator.Structs[x];
+                    var expected    = _randomSingleGenerator.Structs[x];
+                    expected = Reloaded.Memory.Endian.Reverse(expected);
+
+                    Assert.Equal(expected, value);
+                    if (expected != notExpected)
+                        Assert.NotEqual(_randomSingleGenerator.Structs[x], value);
+                }
+            }
+        }
+
+        [Theory]
+        [InlineData(AlignedBufferSize)]
+        [InlineData(MisalignedBufferSize)]
+        public void PeekAllElementsBigEndianSingle(int bufferSize)
+        {
+            using (var memoryStream = _randomSingleGenerator.GetMemoryStream())
+            {
+                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                for (int x = 0; x < _randomSingleGenerator.Structs.Length; x++)
+                {
+                    reader.PeekBigEndianPrimitive(out Single peek);
+                    reader.ReadBigEndianPrimitive(out Single actual);
+                    Assert.Equal(peek, actual);
+
+                    var notExpected = _randomSingleGenerator.Structs[x];
+                    var expected    = _randomSingleGenerator.Structs[x];
+                    expected = Reloaded.Memory.Endian.Reverse(expected);
+
+                    Assert.Equal(expected, actual);
+                    if (expected != notExpected)
+                        Assert.NotEqual(_randomSingleGenerator.Structs[x], actual);
+                }
+            }
+        }
+
+        [Theory]
+        [InlineData(AlignedBufferSize)]
+        [InlineData(MisalignedBufferSize)]
+        public void PeekAllElementsBigEndianOverloadSingle(int bufferSize)
+        {
+            using (var memoryStream = _randomSingleGenerator.GetMemoryStream())
+            {
+                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                for (int x = 0; x < _randomSingleGenerator.Structs.Length; x++)
+                {
+                    var peek    = reader.PeekBigEndianPrimitive<Single>();
+                    var actual  = reader.ReadBigEndianPrimitive<Single>();
+                    Assert.Equal(peek, actual);
+
+                    var notExpected = _randomSingleGenerator.Structs[x];
+                    var expected = _randomSingleGenerator.Structs[x];
+                    expected = Reloaded.Memory.Endian.Reverse(expected);
+
+                    Assert.Equal(expected, actual);
+                    if (expected != notExpected)
+                        Assert.NotEqual(_randomSingleGenerator.Structs[x], actual);
+                }
+            }
+        }
+		RandomDoubleGenerator _randomDoubleGenerator = new RandomDoubleGenerator(StructBytesMB);
+
+        [Theory]
+        [InlineData(AlignedBufferSize)]
+        [InlineData(MisalignedBufferSize)]
+        public void ReadAllElementsBigEndianDouble(int bufferSize)
+        {
+            using (var memoryStream = _randomDoubleGenerator.GetMemoryStream())
+            {
+                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                for (int x = 0; x < _randomDoubleGenerator.Structs.Length; x++)
+                {
+                    reader.ReadBigEndianPrimitive(out Double value);
+
+                    var notExpected = _randomDoubleGenerator.Structs[x];
+                    var expected    = _randomDoubleGenerator.Structs[x];
+                    expected = Reloaded.Memory.Endian.Reverse(expected);
+
+                    Assert.Equal(expected, value);
+                    if (expected != notExpected)
+                        Assert.NotEqual(_randomDoubleGenerator.Structs[x], value);
+                }
+            }
+        }
+
+        [Theory]
+        [InlineData(AlignedBufferSize)]
+        [InlineData(MisalignedBufferSize)]
+        public void PeekAllElementsBigEndianDouble(int bufferSize)
+        {
+            using (var memoryStream = _randomDoubleGenerator.GetMemoryStream())
+            {
+                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                for (int x = 0; x < _randomDoubleGenerator.Structs.Length; x++)
+                {
+                    reader.PeekBigEndianPrimitive(out Double peek);
+                    reader.ReadBigEndianPrimitive(out Double actual);
+                    Assert.Equal(peek, actual);
+
+                    var notExpected = _randomDoubleGenerator.Structs[x];
+                    var expected    = _randomDoubleGenerator.Structs[x];
+                    expected = Reloaded.Memory.Endian.Reverse(expected);
+
+                    Assert.Equal(expected, actual);
+                    if (expected != notExpected)
+                        Assert.NotEqual(_randomDoubleGenerator.Structs[x], actual);
+                }
+            }
+        }
+
+        [Theory]
+        [InlineData(AlignedBufferSize)]
+        [InlineData(MisalignedBufferSize)]
+        public void PeekAllElementsBigEndianOverloadDouble(int bufferSize)
+        {
+            using (var memoryStream = _randomDoubleGenerator.GetMemoryStream())
+            {
+                var reader = new Reloaded.Memory.Streams.BufferedStreamReader(memoryStream, bufferSize);
+                for (int x = 0; x < _randomDoubleGenerator.Structs.Length; x++)
+                {
+                    var peek    = reader.PeekBigEndianPrimitive<Double>();
+                    var actual  = reader.ReadBigEndianPrimitive<Double>();
+                    Assert.Equal(peek, actual);
+
+                    var notExpected = _randomDoubleGenerator.Structs[x];
+                    var expected = _randomDoubleGenerator.Structs[x];
+                    expected = Reloaded.Memory.Endian.Reverse(expected);
+
+                    Assert.Equal(expected, actual);
+                    if (expected != notExpected)
+                        Assert.NotEqual(_randomDoubleGenerator.Structs[x], actual);
+                }
+            }
+        }
     }
 }

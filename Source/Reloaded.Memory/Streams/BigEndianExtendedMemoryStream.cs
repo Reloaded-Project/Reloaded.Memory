@@ -151,5 +151,41 @@ namespace Reloaded.Memory.Streams
 			foreach (var structure in structures) 
 				WriteBigEndianPrimitive(structure);
         }
+        
+		/// <summary>
+        /// Appends a Big Endian float onto the <see cref="MemoryStream"/> and advances the position.
+        /// </summary>
+        public void WriteBigEndianPrimitive(float structure)
+        {
+            structure = Endian.Reverse(structure);
+            Write(Struct.GetBytes(structure));
+        }
+
+		/// <summary>
+        /// Appends an array of Big Endian float(s) onto the <see cref="MemoryStream"/> and advances the position.
+        /// </summary>
+        public void WriteBigEndianPrimitive(float[] structures)
+        {
+			foreach (var structure in structures) 
+				WriteBigEndianPrimitive(structure);
+        }
+        
+		/// <summary>
+        /// Appends a Big Endian double onto the <see cref="MemoryStream"/> and advances the position.
+        /// </summary>
+        public void WriteBigEndianPrimitive(double structure)
+        {
+            structure = Endian.Reverse(structure);
+            Write(Struct.GetBytes(structure));
+        }
+
+		/// <summary>
+        /// Appends an array of Big Endian double(s) onto the <see cref="MemoryStream"/> and advances the position.
+        /// </summary>
+        public void WriteBigEndianPrimitive(double[] structures)
+        {
+			foreach (var structure in structures) 
+				WriteBigEndianPrimitive(structure);
+        }
     }
 }

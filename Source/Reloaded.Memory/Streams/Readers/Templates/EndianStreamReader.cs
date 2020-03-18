@@ -161,6 +161,56 @@ namespace Reloaded.Memory.Streams.Readers
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public abstract unsafe UInt64 PeekUInt64();
+        /// <summary>
+        /// Reads an unmanaged, generic type from the stream.
+        /// </summary>
+        /// <param name="value">The value to output.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public abstract unsafe void Read(out Single value);
+
+		/// <summary>
+        /// Reads an unmanaged, generic type from the stream.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public abstract unsafe Single ReadSingle();
+
+		/// <summary>
+        /// Reads an unmanaged, generic type from the stream without incrementing the position.
+        /// </summary>
+        /// <param name="value">The value to output.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public abstract unsafe void Peek(out Single value);
+
+        /// <summary>
+        /// Reads an unmanaged, generic type from the stream without incrementing the position.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public abstract unsafe Single PeekSingle();
+        /// <summary>
+        /// Reads an unmanaged, generic type from the stream.
+        /// </summary>
+        /// <param name="value">The value to output.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public abstract unsafe void Read(out Double value);
+
+		/// <summary>
+        /// Reads an unmanaged, generic type from the stream.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public abstract unsafe Double ReadDouble();
+
+		/// <summary>
+        /// Reads an unmanaged, generic type from the stream without incrementing the position.
+        /// </summary>
+        /// <param name="value">The value to output.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public abstract unsafe void Peek(out Double value);
+
+        /// <summary>
+        /// Reads an unmanaged, generic type from the stream without incrementing the position.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public abstract unsafe Double PeekDouble();
         
 
 

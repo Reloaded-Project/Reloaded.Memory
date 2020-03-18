@@ -6,7 +6,7 @@
 <#@ output extension=".cs" #>
 
 <# 
-    string[] types = { "Byte", "SByte", "Int16", "UInt16", "Int32", "UInt32", "Int64", "UInt64" };
+    string[] types = { "Byte", "SByte", "Int16", "UInt16", "Int32", "UInt32", "Int64", "UInt64", "Single", "Double" };
 #>
 
 using System;
@@ -86,6 +86,13 @@ namespace Reloaded.Memory.Shared.Generator
 			_random.NextBytes(_randomBuffer);
             Struct.FromArray(_randomBuffer, out ulong longRand, 0);
 			return (longRand % (maximum - minimum)) + minimum;
+        }
+
+        private double NextRandom(double minimum, double maximum)
+        {
+			_random.NextBytes(_randomBuffer);
+            Struct.FromArray(_randomBuffer, out long longRand, 0);
+			return (double)(Math.Abs(longRand % (maximum - minimum)) + minimum);
         }
     }
 

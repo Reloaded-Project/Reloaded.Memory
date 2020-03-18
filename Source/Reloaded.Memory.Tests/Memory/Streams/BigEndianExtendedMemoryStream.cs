@@ -103,6 +103,36 @@ namespace Reloaded.Memory.Tests.Memory.Streams
                 Assert.Equal(integers, newStructs);
             };
         }
+        /// <summary>
+        /// Checks if the stream can write simple Big Endian primitives.
+        /// </summary>
+        [Fact]
+        public void WriteBigEndianSingleArray()
+        {
+            var integers = new RandomSingleGenerator(1).Structs;
+            using (var extendedStream = new BigEndianMemoryStream(new Reloaded.Memory.Streams.ExtendedMemoryStream()))
+            {
+                extendedStream.Write(integers);
+                Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<Single>(extendedStream.ToArray(), out var newStructs);
+
+                Assert.Equal(integers, newStructs);
+            };
+        }
+        /// <summary>
+        /// Checks if the stream can write simple Big Endian primitives.
+        /// </summary>
+        [Fact]
+        public void WriteBigEndianDoubleArray()
+        {
+            var integers = new RandomDoubleGenerator(1).Structs;
+            using (var extendedStream = new BigEndianMemoryStream(new Reloaded.Memory.Streams.ExtendedMemoryStream()))
+            {
+                extendedStream.Write(integers);
+                Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<Double>(extendedStream.ToArray(), out var newStructs);
+
+                Assert.Equal(integers, newStructs);
+            };
+        }
 
     }
 }

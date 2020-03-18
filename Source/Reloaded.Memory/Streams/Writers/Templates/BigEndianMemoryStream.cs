@@ -46,6 +46,16 @@ namespace Reloaded.Memory.Streams.Writers
         /// </summary>
         public override void WriteUInt64(UInt64 data) => Stream.WriteBigEndianPrimitive(data);
 
+		/// <summary>
+        /// Appends bytes onto the given <see cref="MemoryStream"/> and advances the position.
+        /// </summary>
+        public override void WriteSingle(Single data) => Stream.WriteBigEndianPrimitive(data);
+
+		/// <summary>
+        /// Appends bytes onto the given <see cref="MemoryStream"/> and advances the position.
+        /// </summary>
+        public override void WriteDouble(Double data) => Stream.WriteBigEndianPrimitive(data);
+
 
     }
 }

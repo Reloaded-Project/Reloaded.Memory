@@ -313,5 +313,107 @@ namespace Reloaded.Memory.Streams
             return value;
         }
 
+        
+        /// <summary>
+        /// Reads an unmanaged Single from the stream, swapping the endian of the output.
+        /// </summary>
+        /// <param name="value">The value to output.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe void ReadBigEndianPrimitive(out Single value)
+        {
+            int size = sizeof(Single);
+            ReFillIfNecessary(size);
+
+            value = *(Single*)(_gcHandlePtr + _bufferOffset);
+            value = Memory.Endian.Reverse(value);
+
+            _bufferOffset += size;
+            _bufferedBytesRemaining -= size;
+        }
+
+        /// <summary>
+		/// Reads an unmanaged Single from the stream, swapping the endian of the output.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe Single ReadBigEndianPrimitiveSingle()
+        {
+            ReadBigEndianPrimitive(out Single value);
+            return value;
+        }
+
+		/// <summary>
+        /// Reads an unmanaged  Single from the stream, swapping the endian of the output without incrementing the position.
+        /// </summary>
+        /// <param name="value">The value to output.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe void PeekBigEndianPrimitive(out Single value)
+        {
+            ReFillIfNecessary(sizeof(Single));
+
+            value = *(Single*)(_gcHandlePtr + _bufferOffset);
+            value = Memory.Endian.Reverse(value);
+        }
+
+        /// <summary>
+        /// Reads an unmanaged  Single from the stream, swapping the endian of the output without incrementing the position.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe Single PeekBigEndianPrimitiveSingle()
+        {
+            PeekBigEndianPrimitive(out Single value);
+            return value;
+        }
+
+        
+        /// <summary>
+        /// Reads an unmanaged Double from the stream, swapping the endian of the output.
+        /// </summary>
+        /// <param name="value">The value to output.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe void ReadBigEndianPrimitive(out Double value)
+        {
+            int size = sizeof(Double);
+            ReFillIfNecessary(size);
+
+            value = *(Double*)(_gcHandlePtr + _bufferOffset);
+            value = Memory.Endian.Reverse(value);
+
+            _bufferOffset += size;
+            _bufferedBytesRemaining -= size;
+        }
+
+        /// <summary>
+		/// Reads an unmanaged Double from the stream, swapping the endian of the output.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe Double ReadBigEndianPrimitiveDouble()
+        {
+            ReadBigEndianPrimitive(out Double value);
+            return value;
+        }
+
+		/// <summary>
+        /// Reads an unmanaged  Double from the stream, swapping the endian of the output without incrementing the position.
+        /// </summary>
+        /// <param name="value">The value to output.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe void PeekBigEndianPrimitive(out Double value)
+        {
+            ReFillIfNecessary(sizeof(Double));
+
+            value = *(Double*)(_gcHandlePtr + _bufferOffset);
+            value = Memory.Endian.Reverse(value);
+        }
+
+        /// <summary>
+        /// Reads an unmanaged  Double from the stream, swapping the endian of the output without incrementing the position.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe Double PeekBigEndianPrimitiveDouble()
+        {
+            PeekBigEndianPrimitive(out Double value);
+            return value;
+        }
+
     }
 }

@@ -75,6 +75,13 @@ namespace Reloaded.Memory.Shared.Generator
             Struct.FromArray(_randomBuffer, out ulong longRand, 0);
 			return (longRand % (maximum - minimum)) + minimum;
         }
+
+        private double NextRandom(double minimum, double maximum)
+        {
+			_random.NextBytes(_randomBuffer);
+            Struct.FromArray(_randomBuffer, out long longRand, 0);
+			return (double)(Math.Abs(longRand % (maximum - minimum)) + minimum);
+        }
     }
 
   
@@ -146,6 +153,13 @@ namespace Reloaded.Memory.Shared.Generator
 			_random.NextBytes(_randomBuffer);
             Struct.FromArray(_randomBuffer, out ulong longRand, 0);
 			return (longRand % (maximum - minimum)) + minimum;
+        }
+
+        private double NextRandom(double minimum, double maximum)
+        {
+			_random.NextBytes(_randomBuffer);
+            Struct.FromArray(_randomBuffer, out long longRand, 0);
+			return (double)(Math.Abs(longRand % (maximum - minimum)) + minimum);
         }
     }
 
@@ -219,6 +233,13 @@ namespace Reloaded.Memory.Shared.Generator
             Struct.FromArray(_randomBuffer, out ulong longRand, 0);
 			return (longRand % (maximum - minimum)) + minimum;
         }
+
+        private double NextRandom(double minimum, double maximum)
+        {
+			_random.NextBytes(_randomBuffer);
+            Struct.FromArray(_randomBuffer, out long longRand, 0);
+			return (double)(Math.Abs(longRand % (maximum - minimum)) + minimum);
+        }
     }
 
   
@@ -290,6 +311,13 @@ namespace Reloaded.Memory.Shared.Generator
 			_random.NextBytes(_randomBuffer);
             Struct.FromArray(_randomBuffer, out ulong longRand, 0);
 			return (longRand % (maximum - minimum)) + minimum;
+        }
+
+        private double NextRandom(double minimum, double maximum)
+        {
+			_random.NextBytes(_randomBuffer);
+            Struct.FromArray(_randomBuffer, out long longRand, 0);
+			return (double)(Math.Abs(longRand % (maximum - minimum)) + minimum);
         }
     }
 
@@ -363,6 +391,13 @@ namespace Reloaded.Memory.Shared.Generator
             Struct.FromArray(_randomBuffer, out ulong longRand, 0);
 			return (longRand % (maximum - minimum)) + minimum;
         }
+
+        private double NextRandom(double minimum, double maximum)
+        {
+			_random.NextBytes(_randomBuffer);
+            Struct.FromArray(_randomBuffer, out long longRand, 0);
+			return (double)(Math.Abs(longRand % (maximum - minimum)) + minimum);
+        }
     }
 
   
@@ -434,6 +469,13 @@ namespace Reloaded.Memory.Shared.Generator
 			_random.NextBytes(_randomBuffer);
             Struct.FromArray(_randomBuffer, out ulong longRand, 0);
 			return (longRand % (maximum - minimum)) + minimum;
+        }
+
+        private double NextRandom(double minimum, double maximum)
+        {
+			_random.NextBytes(_randomBuffer);
+            Struct.FromArray(_randomBuffer, out long longRand, 0);
+			return (double)(Math.Abs(longRand % (maximum - minimum)) + minimum);
         }
     }
 
@@ -507,6 +549,13 @@ namespace Reloaded.Memory.Shared.Generator
             Struct.FromArray(_randomBuffer, out ulong longRand, 0);
 			return (longRand % (maximum - minimum)) + minimum;
         }
+
+        private double NextRandom(double minimum, double maximum)
+        {
+			_random.NextBytes(_randomBuffer);
+            Struct.FromArray(_randomBuffer, out long longRand, 0);
+			return (double)(Math.Abs(longRand % (maximum - minimum)) + minimum);
+        }
     }
 
   
@@ -578,6 +627,171 @@ namespace Reloaded.Memory.Shared.Generator
 			_random.NextBytes(_randomBuffer);
             Struct.FromArray(_randomBuffer, out ulong longRand, 0);
 			return (longRand % (maximum - minimum)) + minimum;
+        }
+
+        private double NextRandom(double minimum, double maximum)
+        {
+			_random.NextBytes(_randomBuffer);
+            Struct.FromArray(_randomBuffer, out long longRand, 0);
+			return (double)(Math.Abs(longRand % (maximum - minimum)) + minimum);
+        }
+    }
+
+  
+	public class RandomSingleGenerator
+    {
+        /* Amount of randomized data in Megabytes. */
+        public const string TestFileName = "Singles.bin";
+        private static Random _random = new Random();
+        private static byte[] _randomBuffer = new byte[8];
+
+        /* Target size of buffers for testing. */
+        public Single[] Structs { get; set; }
+        public byte[] Bytes { get; set; }
+        private bool _fileInDisk = false;
+
+        /* Construction/Destruction */
+        public RandomSingleGenerator(int megabytes)
+        {
+            int totalBytes = Mathematics.MegaBytesToBytes(megabytes);
+            int structs = Mathematics.BytesToStructCount<Single>(totalBytes);
+            Structs = new Single[structs];
+
+            for (int x = 0; x < structs; x++)
+                Structs[x] = (Single)NextRandom(Single.MinValue, Single.MaxValue);
+
+            Bytes = StructArray.GetBytes(Structs);
+        }
+
+        public System.IO.FileStream GetFileStream()
+        {
+			WriteFileToDisk();
+            return new System.IO.FileStream(TestFileName, FileMode.Open);
+        }
+
+        public System.IO.FileStream GetFileStreamWithBufferSize(int bufferSize)
+        {
+			WriteFileToDisk();
+            return new System.IO.FileStream(TestFileName, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize);
+        }
+
+        public System.IO.MemoryStream GetMemoryStream()
+        {
+            return new System.IO.MemoryStream(Bytes);
+        }
+
+        private void WriteFileToDisk() 
+        {
+			if (! _fileInDisk) 
+            {
+				File.WriteAllBytes(TestFileName, Bytes);
+				_fileInDisk = true;
+            }
+        }
+
+		private int NextRandom(int minimum, int maximum)
+        {
+			return _random.Next(minimum, maximum);
+        }
+
+		private long NextRandom(long minimum, long maximum)
+        {
+			_random.NextBytes(_randomBuffer);
+            Struct.FromArray(_randomBuffer, out long longRand, 0);
+			return (Math.Abs(longRand % (maximum - minimum)) + minimum);
+        }
+
+		private ulong NextRandom(ulong minimum, ulong maximum)
+        {
+			_random.NextBytes(_randomBuffer);
+            Struct.FromArray(_randomBuffer, out ulong longRand, 0);
+			return (longRand % (maximum - minimum)) + minimum;
+        }
+
+        private double NextRandom(double minimum, double maximum)
+        {
+			_random.NextBytes(_randomBuffer);
+            Struct.FromArray(_randomBuffer, out long longRand, 0);
+			return (double)(Math.Abs(longRand % (maximum - minimum)) + minimum);
+        }
+    }
+
+  
+	public class RandomDoubleGenerator
+    {
+        /* Amount of randomized data in Megabytes. */
+        public const string TestFileName = "Doubles.bin";
+        private static Random _random = new Random();
+        private static byte[] _randomBuffer = new byte[8];
+
+        /* Target size of buffers for testing. */
+        public Double[] Structs { get; set; }
+        public byte[] Bytes { get; set; }
+        private bool _fileInDisk = false;
+
+        /* Construction/Destruction */
+        public RandomDoubleGenerator(int megabytes)
+        {
+            int totalBytes = Mathematics.MegaBytesToBytes(megabytes);
+            int structs = Mathematics.BytesToStructCount<Double>(totalBytes);
+            Structs = new Double[structs];
+
+            for (int x = 0; x < structs; x++)
+                Structs[x] = (Double)NextRandom(Double.MinValue, Double.MaxValue);
+
+            Bytes = StructArray.GetBytes(Structs);
+        }
+
+        public System.IO.FileStream GetFileStream()
+        {
+			WriteFileToDisk();
+            return new System.IO.FileStream(TestFileName, FileMode.Open);
+        }
+
+        public System.IO.FileStream GetFileStreamWithBufferSize(int bufferSize)
+        {
+			WriteFileToDisk();
+            return new System.IO.FileStream(TestFileName, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize);
+        }
+
+        public System.IO.MemoryStream GetMemoryStream()
+        {
+            return new System.IO.MemoryStream(Bytes);
+        }
+
+        private void WriteFileToDisk() 
+        {
+			if (! _fileInDisk) 
+            {
+				File.WriteAllBytes(TestFileName, Bytes);
+				_fileInDisk = true;
+            }
+        }
+
+		private int NextRandom(int minimum, int maximum)
+        {
+			return _random.Next(minimum, maximum);
+        }
+
+		private long NextRandom(long minimum, long maximum)
+        {
+			_random.NextBytes(_randomBuffer);
+            Struct.FromArray(_randomBuffer, out long longRand, 0);
+			return (Math.Abs(longRand % (maximum - minimum)) + minimum);
+        }
+
+		private ulong NextRandom(ulong minimum, ulong maximum)
+        {
+			_random.NextBytes(_randomBuffer);
+            Struct.FromArray(_randomBuffer, out ulong longRand, 0);
+			return (longRand % (maximum - minimum)) + minimum;
+        }
+
+        private double NextRandom(double minimum, double maximum)
+        {
+			_random.NextBytes(_randomBuffer);
+            Struct.FromArray(_randomBuffer, out long longRand, 0);
+			return (double)(Math.Abs(longRand % (maximum - minimum)) + minimum);
         }
     }
 

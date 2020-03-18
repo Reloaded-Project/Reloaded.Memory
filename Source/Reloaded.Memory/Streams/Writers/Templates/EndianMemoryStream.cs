@@ -43,5 +43,15 @@ namespace Reloaded.Memory.Streams.Writers
         /// </summary>
         public abstract void WriteUInt64(UInt64 data);
 
+		/// <summary>
+        /// Appends bytes onto the given <see cref="MemoryStream"/> and advances the position.
+        /// </summary>
+        public abstract void WriteSingle(Single data);
+
+		/// <summary>
+        /// Appends bytes onto the given <see cref="MemoryStream"/> and advances the position.
+        /// </summary>
+        public abstract void WriteDouble(Double data);
+
     }
 }

@@ -3,7 +3,7 @@
 <#@ output extension=".cs" #>
 
 <# 
-    string[] types = { "byte", "sbyte", "short", "ushort", "int", "uint", "long", "ulong" };
+    string[] types = { "byte", "sbyte", "short", "ushort", "int", "uint", "long", "ulong", "float", "double" };
 #>
 
 using System.IO;

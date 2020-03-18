@@ -51,6 +51,8 @@ namespace Reloaded.Memory.Streams
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public long Position() { return _stream.Position - _bufferedBytesRemaining; }
 
+        private BufferedStreamReader() { }
+
         /// <summary>
         /// Constructs a <see cref="BufferedStreamReader"/>.
         /// </summary>
