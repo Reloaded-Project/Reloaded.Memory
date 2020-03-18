@@ -51,8 +51,6 @@ namespace Reloaded.Memory.Streams
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public long Position() { return _stream.Position - _bufferedBytesRemaining; }
 
-        private BufferedStreamReader() { }
-
         /// <summary>
         /// Constructs a <see cref="BufferedStreamReader"/>.
         /// </summary>
@@ -82,7 +80,9 @@ namespace Reloaded.Memory.Streams
         /// <inheritdoc/>
         public void Dispose()
         {
-            _gcHandle.Free();
+            if (_gcHandle.IsAllocated)
+                _gcHandle.Free();
+
             GC.SuppressFinalize(this);
         }
 
