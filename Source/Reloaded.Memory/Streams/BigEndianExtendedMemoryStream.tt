@@ -8,6 +8,7 @@
 
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Reloaded.Memory.Streams
 {
@@ -20,6 +21,7 @@ namespace Reloaded.Memory.Streams
 		/// <summary>
         /// Appends a Big Endian <#= type #> onto the <see cref="MemoryStream"/> and advances the position.
         /// </summary>
+		[ExcludeFromCodeCoverage]
         public void WriteBigEndianPrimitive(<#= type #> structure)
         {
             structure = Endian.Reverse(structure);
@@ -29,6 +31,7 @@ namespace Reloaded.Memory.Streams
 		/// <summary>
         /// Appends an array of Big Endian <#= type #>(s) onto the <see cref="MemoryStream"/> and advances the position.
         /// </summary>
+		[ExcludeFromCodeCoverage]
         public void WriteBigEndianPrimitive(<#= type #>[] structures)
         {
 			foreach (var structure in structures) 

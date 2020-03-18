@@ -12,6 +12,7 @@
 
 using System;
 using System.Runtime.CompilerServices;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Reloaded.Memory.Streams.Readers
 {
@@ -23,18 +24,22 @@ namespace Reloaded.Memory.Streams.Readers
 		{
 #>
 		/// <inheritdoc />
+        [ExcludeFromCodeCoverage]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override unsafe void Read(out <#=type#> value) => value = Reader.ReadBigEndianPrimitive<#=type#>();
 
 		/// <inheritdoc />
+        [ExcludeFromCodeCoverage]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override unsafe <#=type#> Read<#=type#>() => Reader.ReadBigEndianPrimitive<#=type#>();
 
 		/// <inheritdoc />
+        [ExcludeFromCodeCoverage]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override unsafe void Peek(out <#=type#> value) => value = Reader.PeekBigEndianPrimitive<#=type#>();
 
         /// <inheritdoc />
+        [ExcludeFromCodeCoverage]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override unsafe <#=type#> Peek<#=type#>() => Reader.PeekBigEndianPrimitive<#=type#>();
 <#

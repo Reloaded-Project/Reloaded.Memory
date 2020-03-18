@@ -11,6 +11,7 @@
 
 using System;
 using System.Runtime.CompilerServices;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Reloaded.Memory.Streams
 {
@@ -25,6 +26,7 @@ namespace Reloaded.Memory.Streams
         /// </summary>
         /// <param name="value">The value to output.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[ExcludeFromCodeCoverage]
         public unsafe void ReadBigEndianPrimitive(out <#= type #> value)
         {
             int size = sizeof(<#= type #>);
@@ -41,6 +43,7 @@ namespace Reloaded.Memory.Streams
 		/// Reads an unmanaged <#= type #> from the stream, swapping the endian of the output.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[ExcludeFromCodeCoverage]
         public unsafe <#= type #> ReadBigEndianPrimitive<#= type #>()
         {
             ReadBigEndianPrimitive(out <#=type#> value);
@@ -52,6 +55,7 @@ namespace Reloaded.Memory.Streams
         /// </summary>
         /// <param name="value">The value to output.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[ExcludeFromCodeCoverage]
         public unsafe void PeekBigEndianPrimitive(out <#= type #> value)
         {
             ReFillIfNecessary(sizeof(<#=type#>));
@@ -64,6 +68,7 @@ namespace Reloaded.Memory.Streams
         /// Reads an unmanaged  <#= type #> from the stream, swapping the endian of the output without incrementing the position.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[ExcludeFromCodeCoverage]
         public unsafe <#= type #> PeekBigEndianPrimitive<#= type #>()
         {
             PeekBigEndianPrimitive(out <#=type#> value);

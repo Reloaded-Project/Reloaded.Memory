@@ -11,6 +11,7 @@
 
 using System;
 using System.Runtime.CompilerServices;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Reloaded.Memory.Streams.Readers
 {
@@ -28,12 +29,14 @@ namespace Reloaded.Memory.Streams.Readers
         /// Reads an unmanaged, generic type from the stream.
         /// </summary>
         /// <param name="value">The value to output.</param>
+        [ExcludeFromCodeCoverage]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public abstract unsafe void Read(out <#=type#> value);
 
 		/// <summary>
         /// Reads an unmanaged, generic type from the stream.
         /// </summary>
+        [ExcludeFromCodeCoverage]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public abstract unsafe <#=type#> Read<#=type#>();
 
@@ -41,12 +44,14 @@ namespace Reloaded.Memory.Streams.Readers
         /// Reads an unmanaged, generic type from the stream without incrementing the position.
         /// </summary>
         /// <param name="value">The value to output.</param>
+        [ExcludeFromCodeCoverage]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public abstract unsafe void Peek(out <#=type#> value);
 
         /// <summary>
         /// Reads an unmanaged, generic type from the stream without incrementing the position.
         /// </summary>
+        [ExcludeFromCodeCoverage]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public abstract unsafe <#=type#> Peek<#=type#>();
 <#

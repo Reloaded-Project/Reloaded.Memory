@@ -29,6 +29,7 @@ namespace Reloaded.Memory.Streams.Writers
 		/// <summary>
         /// Appends bytes onto the given <see cref="MemoryStream"/> and advances the position.
         /// </summary>
+        [ExcludeFromCodeCoverage]
         public abstract void Write<#=type#>(<#=type#> data);
 
 <#
