@@ -34,7 +34,7 @@ namespace Reloaded.Memory.Streams
         /// </summary>
         public void AddPadding(int alignment = 2048)
         {
-            var padding = RoundUp((int)Length, alignment) - Length;
+            var padding = RoundUp((int)Position, alignment) - Position;
             if (padding <= 0)
                 return;
 
@@ -46,7 +46,7 @@ namespace Reloaded.Memory.Streams
         /// </summary>
         public void AddPadding(byte value, int alignment = 2048)
         {
-            var padding = RoundUp((int)Length, alignment) - Length;
+            var padding = RoundUp((int)Position, alignment) - Position;
             if (padding <= 0)
                 return;
 
