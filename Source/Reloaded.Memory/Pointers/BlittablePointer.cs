@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Reloaded.Memory.Pointers
@@ -11,19 +12,22 @@ namespace Reloaded.Memory.Pointers
     /// </summary>
     public unsafe struct BlittablePointer<T> where T : unmanaged
     {
+        private IntPtr _value;
+
         /// <summary>
         /// The pointer to the value.
         /// </summary>
-        public T* Pointer { get; set; }
+        public T* Pointer 
+        {
+            get => (T*) _value;
+            set => _value = (IntPtr) value; 
+        }
 
         /// <summary>
         /// Creates a blittable pointer
         /// </summary>
         /// <param name="pointer"></param>
-        public BlittablePointer(T* pointer)
-        {
-            Pointer = pointer;
-        }
+        public BlittablePointer(T* pointer) => _value = (IntPtr)pointer;
 
         /// <summary>
         /// Converts this <see cref="BlittablePointer{T}"/> to a single level <see cref="RefPointer{TStruct}"/>.
@@ -33,7 +37,7 @@ namespace Reloaded.Memory.Pointers
         /// <summary>
         /// Converts this <see cref="BlittablePointer{T}"/> to a value reference.
         /// </summary>
-        public ref T AsReference() => ref RefPointer<T>.Create(Pointer); // Implicit Conversion
+        public ref T AsReference() => ref Unsafe.AsRef<T>(Pointer); // Implicit Conversion
 
         /// <summary/>
         public static implicit operator BlittablePointer<T>(T* operand) => new BlittablePointer<T>(operand);
