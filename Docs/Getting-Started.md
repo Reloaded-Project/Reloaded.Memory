@@ -72,6 +72,7 @@ The following is a quick breakdown of the main classes you will probably find us
 + **RefFixedArrayPtr:** A `RefArrayPtr` with known length exposing additional functionality such as copy to, copy from etc.
 + **Pointer**: Managed abstraction to a pointer in arbitrary memory.
 + **RefPointer:** Managed abstraction to a pointer in arbitrary memory that returns the pointed value by reference.
++ **BlittablePointer:** A pointer type with the same unmanaged representation. To be used with Generics where pointers are normally not permitted.
 
 All of these use the `IMemory` interface under the hood, which can be manually set.
 This means that you can e.g. have a pointer to a variable in another process.
