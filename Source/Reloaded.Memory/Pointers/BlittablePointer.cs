@@ -12,22 +12,16 @@ namespace Reloaded.Memory.Pointers
     /// </summary>
     public unsafe struct BlittablePointer<T> where T : unmanaged
     {
-        private IntPtr _value;
-
         /// <summary>
         /// The pointer to the value.
         /// </summary>
-        public T* Pointer 
-        {
-            get => (T*) _value;
-            set => _value = (IntPtr) value; 
-        }
+        public T* Pointer { get; set; }
 
         /// <summary>
         /// Creates a blittable pointer
         /// </summary>
         /// <param name="pointer"></param>
-        public BlittablePointer(T* pointer) => _value = (IntPtr)pointer;
+        public BlittablePointer(T* pointer) => Pointer = pointer;
 
         /// <summary>
         /// Converts this <see cref="BlittablePointer{T}"/> to a single level <see cref="RefPointer{TStruct}"/>.
