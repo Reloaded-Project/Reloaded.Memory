@@ -98,7 +98,7 @@ namespace Reloaded.Memory.Streams
             {
                 Span<byte> stack = stackalloc byte[sizeof(T)];
                 Struct.GetBytes(ref structure, stack);
-                base.Write(stack);
+                Write(stack);
             }
             else
             {
@@ -108,6 +108,16 @@ namespace Reloaded.Memory.Streams
             Write(Struct.GetBytes(structure));
 #endif
         }
+
+
+#if FEATURE_NATIVE_SPAN
+        /// <summary>
+        /// Writes the sequence of bytes contained in source into the current memory stream and advances the current position within this memory stream by the number of bytes written.
+        /// </summary>
+        /// <param name="source">A region of memory. This method copies the contents of this region to the current memory stream.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public new void Write(ReadOnlySpan<byte> source) => base.Write(source);
+#endif
 
         /// <summary>
         /// Appends a managed/marshalled structure onto the given <see cref="MemoryStream"/> and advances the position.
