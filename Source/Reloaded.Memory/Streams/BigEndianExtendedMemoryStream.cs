@@ -16,7 +16,7 @@ namespace Reloaded.Memory.Streams
         public void WriteBigEndianPrimitive(byte structure)
         {
             structure = Endian.Reverse(structure);
-            Write(Struct.GetBytes(structure));
+            Write(ref structure);
         }
 
 		/// <summary>
@@ -36,7 +36,7 @@ namespace Reloaded.Memory.Streams
         public void WriteBigEndianPrimitive(sbyte structure)
         {
             structure = Endian.Reverse(structure);
-            Write(Struct.GetBytes(structure));
+            Write(ref structure);
         }
 
 		/// <summary>
@@ -56,7 +56,7 @@ namespace Reloaded.Memory.Streams
         public void WriteBigEndianPrimitive(short structure)
         {
             structure = Endian.Reverse(structure);
-            Write(Struct.GetBytes(structure));
+            Write(ref structure);
         }
 
 		/// <summary>
@@ -76,7 +76,7 @@ namespace Reloaded.Memory.Streams
         public void WriteBigEndianPrimitive(ushort structure)
         {
             structure = Endian.Reverse(structure);
-            Write(Struct.GetBytes(structure));
+            Write(ref structure);
         }
 
 		/// <summary>
@@ -96,7 +96,7 @@ namespace Reloaded.Memory.Streams
         public void WriteBigEndianPrimitive(int structure)
         {
             structure = Endian.Reverse(structure);
-            Write(Struct.GetBytes(structure));
+            Write(ref structure);
         }
 
 		/// <summary>
@@ -116,7 +116,7 @@ namespace Reloaded.Memory.Streams
         public void WriteBigEndianPrimitive(uint structure)
         {
             structure = Endian.Reverse(structure);
-            Write(Struct.GetBytes(structure));
+            Write(ref structure);
         }
 
 		/// <summary>
@@ -136,7 +136,7 @@ namespace Reloaded.Memory.Streams
         public void WriteBigEndianPrimitive(long structure)
         {
             structure = Endian.Reverse(structure);
-            Write(Struct.GetBytes(structure));
+            Write(ref structure);
         }
 
 		/// <summary>
@@ -156,7 +156,7 @@ namespace Reloaded.Memory.Streams
         public void WriteBigEndianPrimitive(ulong structure)
         {
             structure = Endian.Reverse(structure);
-            Write(Struct.GetBytes(structure));
+            Write(ref structure);
         }
 
 		/// <summary>
@@ -176,7 +176,7 @@ namespace Reloaded.Memory.Streams
         public void WriteBigEndianPrimitive(float structure)
         {
             structure = Endian.Reverse(structure);
-            Write(Struct.GetBytes(structure));
+            Write(ref structure);
         }
 
 		/// <summary>
@@ -196,7 +196,7 @@ namespace Reloaded.Memory.Streams
         public void WriteBigEndianPrimitive(double structure)
         {
             structure = Endian.Reverse(structure);
-            Write(Struct.GetBytes(structure));
+            Write(ref structure);
         }
 
 		/// <summary>

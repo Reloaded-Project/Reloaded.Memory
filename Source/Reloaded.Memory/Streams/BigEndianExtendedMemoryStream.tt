@@ -25,7 +25,7 @@ namespace Reloaded.Memory.Streams
         public void WriteBigEndianPrimitive(<#= type #> structure)
         {
             structure = Endian.Reverse(structure);
-            Write(Struct.GetBytes(structure));
+            Write(ref structure);
         }
 
 		/// <summary>
