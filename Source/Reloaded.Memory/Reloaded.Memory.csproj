@@ -4,8 +4,7 @@
     <TargetFrameworks>
       netstandard2.1;
       netstandard2.0;
-      net452;
-      net47;
+      net5.0;
     </TargetFrameworks>
     <RootNamespace>Reloaded.Memory</RootNamespace>
     <LangVersion>preview</LangVersion>
@@ -17,12 +16,13 @@
     <RepositoryUrl></RepositoryUrl>
     <RepositoryType></RepositoryType>
     <Description>A fully featured C# memory editing library supporting reading/writing primitive or generic struct types in either current or an external process.</Description>
-    <Version>3.1.1</Version>
+    <Version>4.0.0</Version>
     <Authors>Sewer56</Authors>
     <Company />
     <Product>Project Reloaded</Product>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <DefineConstants Condition="'$(TargetFramework)' != 'netstandard2.0'">$(DefineConstants);FEATURE_NATIVE_SPAN</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -36,7 +36,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Memory" Version="4.5.3" Condition="'$(TargetFramework)' != 'netstandard2.1'" />
+    <PackageReference Include="System.Memory" Version="4.5.3" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
   </ItemGroup>
 
