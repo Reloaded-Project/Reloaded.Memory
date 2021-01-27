@@ -10,6 +10,8 @@ namespace Reloaded.Memory
     /// </summary>
     public static unsafe class StructArray
     {
+        private const int MaxStackLimit = 1024;
+
         /* Implementation */
 
         /// <summary>
@@ -196,13 +198,48 @@ namespace Reloaded.Memory
         /// <param name="marshalElements">Set to true to marshal the item(s).</param>
         public static byte[] GetBytes<T>(T[] items, bool marshalElements)
         {
-            int totalSize = GetSize<T>(items.Length, marshalElements);
-            List<byte> array = new List<byte>(totalSize);
+            int sizeOfItem  = Struct.GetSize<T>(marshalElements);
+            int totalSize   = sizeOfItem * items.Length;
+            var result      = new byte[totalSize];
+            GetBytes(items, marshalElements, result.AsSpan());
+            return result;
+        }
 
-            for (int x = 0; x < items.Length; x++)
-                array.AddRange(Struct.GetBytes(ref items[x], marshalElements));
+        /// <summary>
+        /// Creates a byte array from specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
+        /// <param name="items">The item to convert into a byte array.</param>
+        /// <param name="marshalElements">Set to true to marshal the item(s).</param>
+        /// <param name="buffer">The buffer to which write the bytes to.</param>
+        /// <returns>The passed in buffer sliced to include only the bytes obtained.</returns>
+        public static Span<byte> GetBytes<T>(T[] items, bool marshalElements, Span<byte> buffer)
+        {
+            int sizeOfItem = Struct.GetSize<T>(marshalElements);
+            int totalSize  = sizeOfItem * items.Length;
+            var resultSpan = buffer.Slice(0, totalSize);
 
-            return array.ToArray();
+            if (sizeOfItem < MaxStackLimit)
+            {
+                Span<byte> currentItem = stackalloc byte[sizeOfItem];
+                GetBytesInternal(currentItem, resultSpan);
+            }
+            else
+            {
+                Span<byte> currentItem = new byte[sizeOfItem];
+                GetBytesInternal(currentItem, resultSpan);
+            }
+
+            return resultSpan;
+
+            void GetBytesInternal(Span<byte> currentItem, Span<byte> span)
+            {
+                for (int x = 0; x < items.Length; x++)
+                {
+                    Struct.GetBytes(ref items[x], marshalElements, currentItem);
+                    currentItem.CopyTo(span);
+                    span = span.Slice(sizeOfItem);
+                }
+            }
         }
 
         /// <summary>
@@ -211,13 +248,45 @@ namespace Reloaded.Memory
         /// <param name="items">The item to convert into a byte array.</param>
         public static byte[] GetBytes<T>(T[] items) where T : unmanaged
         {
-            int totalSize = GetSize<T>(items.Length);
-            List<byte> array = new List<byte>(totalSize);
+            int totalSize   = GetSize<T>(items.Length);
+            var result      = new byte[totalSize];
+            GetBytes(items, result.AsSpan());
+            return result;
+        }
 
-            for (int x = 0; x < items.Length; x++)
-                array.AddRange(Struct.GetBytes(ref items[x]));
+        /// <summary>
+        /// Creates a byte array from specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
+        /// <param name="items">The item to convert into a byte array.</param>
+        /// <param name="buffer">The buffer to which write the bytes to.</param>
+        /// <returns>The passed in buffer sliced to include only the bytes obtained.</returns>
+        public static Span<byte> GetBytes<T>(T[] items, Span<byte> buffer) where T : unmanaged
+        {
+            int totalSize  = GetSize<T>(items.Length);
+            var resultSpan = buffer.Slice(0, totalSize);
 
-            return array.ToArray();
+            if (sizeof(T) < MaxStackLimit)
+            {
+                Span<byte> currentItem = stackalloc byte[sizeof(T)];
+                GetBytesInternal(currentItem, resultSpan);
+            }
+            else
+            {
+                Span<byte> currentItem = new byte[sizeof(T)];
+                GetBytesInternal(currentItem, resultSpan);
+            }
+
+            return resultSpan;
+
+            void GetBytesInternal(Span<byte> currentItem, Span<byte> span)
+            {
+                for (int x = 0; x < items.Length; x++)
+                {
+                    Struct.GetBytes(ref items[x], currentItem);
+                    currentItem.CopyTo(span);
+                    span = span.Slice(sizeof(T));
+                }
+            }
         }
     }
 }

@@ -21,11 +21,6 @@ namespace Reloaded.Memory
         /// </summary>
         public static IMemory Source { get; set; } = new Sources.Memory();
 
-        /// <summary>
-        /// Allows for access of memory of this individual process.
-        /// </summary>
-        private static IMemory _thisProcessMemory = new Sources.Memory();
-
         /* Redirections/Shorthands */
 
         /* ToPtr: Default Setting Shorthands */
@@ -97,7 +92,7 @@ namespace Reloaded.Memory
         {
             fixed (byte* dataPtr = data)
             {
-                _thisProcessMemory.Read((IntPtr)(&dataPtr[startIndex]), out value, marshalElement);
+                value = Marshal.PtrToStructure<T>((IntPtr)(&dataPtr[startIndex]));
             }
         }
 
@@ -156,6 +151,16 @@ namespace Reloaded.Memory
         /// Creates a byte array from specified structure or class type with explicit StructLayout attribute.
         /// </summary>
         /// <param name="item">The item to convert into a byte array.</param>
+        /// <param name="buffer">Buffer inside which the result is to be stored.</param>
+        /// <returns>Original span sliced to contain only the bytes of the struct.</returns>
+        [ExcludeFromCodeCoverage]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Span<byte> GetBytes<T>(T item, Span<byte> buffer) where T : unmanaged => GetBytes(ref item, buffer);
+
+        /// <summary>
+        /// Creates a byte array from specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
+        /// <param name="item">The item to convert into a byte array.</param>
         /// <param name="marshalElement">Set to true to marshal the element.</param>
         [ExcludeFromCodeCoverage]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -165,9 +170,20 @@ namespace Reloaded.Memory
         /// Creates a byte array from specified structure or class type with explicit StructLayout attribute.
         /// </summary>
         /// <param name="item">The item to convert into a byte array.</param>
+        /// <param name="marshalElement">Set to true to marshal the element.</param>
+        /// <param name="buffer">Buffer inside which the result is to be stored.</param>
+        /// <returns>Original span sliced to contain only the bytes of the struct.</returns>
+        [ExcludeFromCodeCoverage]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Span<byte> GetBytes<T>(T item, bool marshalElement, Span<byte> buffer) => GetBytes(ref item, marshalElement, buffer);
+
+        /// <summary>
+        /// Creates a byte array from specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
+        /// <param name="item">The item to convert into a byte array.</param>
         public static byte[] GetBytes<T>(ref T item) where T : unmanaged
         {
-            int size = sizeof(T);
+            int size     = sizeof(T);
             byte[] array = new byte[size];
 
             var arraySpan = new Span<byte>(array);
@@ -180,18 +196,42 @@ namespace Reloaded.Memory
         /// Creates a byte array from specified structure or class type with explicit StructLayout attribute.
         /// </summary>
         /// <param name="item">The item to convert into a byte array.</param>
+        /// <param name="buffer">Buffer inside which the result is to be stored.</param>
+        /// <returns>Original span sliced to contain only the bytes of the struct.</returns>
+        public static Span<byte> GetBytes<T>(ref T item, Span<byte> buffer) where T : unmanaged
+        {
+            MemoryMarshal.Write(buffer, ref item);
+            return buffer.Slice(0, sizeof(T));
+        }
+
+        /// <summary>
+        /// Creates a byte array from specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
+        /// <param name="item">The item to convert into a byte array.</param>
         /// <param name="marshalElement">Set to true to marshal the element.</param>
         public static byte[] GetBytes<T>(ref T item, bool marshalElement)
         {
-            int size = GetSize<T>(marshalElement);
+            int size     = GetSize<T>(marshalElement);
             byte[] array = new byte[size];
 
             fixed (byte* arrayPtr = array)
-            {
-                _thisProcessMemory.Write((IntPtr)arrayPtr, ref item, marshalElement);
-            }
+                Marshal.StructureToPtr(item, (IntPtr)arrayPtr, false);
 
             return array;
+        }
+
+        /// <summary>
+        /// Creates a byte array from specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
+        /// <param name="item">The item to convert into a byte array.</param>
+        /// <param name="marshalElement">Set to true to marshal the element.</param>
+        /// <param name="buffer">Buffer inside which the result is to be stored.</param>
+        public static Span<byte> GetBytes<T>(ref T item, bool marshalElement, Span<byte> buffer)
+        {
+            fixed (byte* arrayPtr = buffer)
+                Marshal.StructureToPtr(item, (IntPtr)arrayPtr, false);
+
+            return buffer.Slice(0, GetSize<T>(marshalElement));
         }
     }
 }
