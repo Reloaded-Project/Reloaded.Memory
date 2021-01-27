@@ -19,7 +19,7 @@ namespace Reloaded.Memory.Streams.Writers
         public override void Write<T>(T[] structure) => Stream.Write(structure);
 
         /// <inheritdoc />
-        public override void Write<T>(T structure) => Stream.Write(structure);
+        public override void Write<T>(T structure) => Stream.Write(ref structure);
 
         /// <summary>
         /// Appends an managed/marshalled structure onto the <see cref="MemoryStream"/> and advances the position.
@@ -31,6 +31,6 @@ namespace Reloaded.Memory.Streams.Writers
         /// Appends a managed/marshalled structure onto the given <see cref="MemoryStream"/> and advances the position.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Write<T>(T structure, bool marshalStructure = true) => Stream.Write(structure, marshalStructure);
+        public void Write<T>(T structure, bool marshalStructure = true) => Stream.Write(ref structure, marshalStructure);
     }
 }
