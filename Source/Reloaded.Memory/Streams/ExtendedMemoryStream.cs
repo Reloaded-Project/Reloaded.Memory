@@ -36,78 +36,36 @@ namespace Reloaded.Memory.Streams
         /// <summary>
         /// Pads the stream with 0x00 bytes until it is aligned.
         /// </summary>
-        public void AddPadding(int alignment = 2048)
-        {
-            var padding = RoundUp((int)Position, alignment) - Position;
-            if (padding <= 0)
-                return;
-
-            Write(new byte[padding], 0, (int)padding);
-        }
+        public void AddPadding(int alignment = 2048) => StreamExtensions.AddPadding(this, alignment);
 
         /// <summary>
         /// Pads the stream with <see cref="value"/> bytes until it is aligned.
         /// </summary>
-        public void AddPadding(byte value, int alignment = 2048)
-        {
-            var padding = RoundUp((int)Position, alignment) - Position;
-            if (padding <= 0)
-                return;
-
-            var bytes = new byte[padding];
-            for (int x = 0; x < bytes.Length; x++) 
-                bytes[x] = value;
-
-            Write(bytes, 0, (int)padding);
-        }
+        public void AddPadding(byte value, int alignment = 2048) => StreamExtensions.AddPadding(this, value, alignment);
 
         /// <summary>
         /// Appends an unmanaged structure onto the <see cref="MemoryStream"/> and advances the position.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Write<T>(T[] structure) where T : unmanaged
-        {
-            for (int x = 0; x < structure.Length; x++)
-                Write(ref structure[x]);
-        }
+        public void Write<T>(T[] structure) where T : unmanaged => StreamExtensions.Write(this, structure);
 
         /// <summary>
         /// Appends an managed/marshalled structure onto the <see cref="MemoryStream"/> and advances the position.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Write<T>(T[] structure, bool marshalStructure = true)
-        {
-            for (int x = 0; x < structure.Length; x++)
-                Write(ref structure[x], marshalStructure);
-        }
+        public void Write<T>(T[] structure, bool marshalStructure = true) => StreamExtensions.Write(this, structure, marshalStructure);
 
         /// <summary>
         /// Appends an unmanaged structure onto the <see cref="MemoryStream"/> and advances the position.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Write<T>(T structure) where T : unmanaged => Write(ref structure);
+        public void Write<T>(T structure) where T : unmanaged => StreamExtensions.Write(this, ref structure);
 
         /// <summary>
         /// Appends an unmanaged structure onto the <see cref="MemoryStream"/> and advances the position.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Write<T>(ref T structure) where T : unmanaged
-        {
-#if FEATURE_NATIVE_SPAN
-            if (sizeof(T) < MaxStackLimit)
-            {
-                Span<byte> stack = stackalloc byte[sizeof(T)];
-                Struct.GetBytes(ref structure, stack);
-                Write(stack);
-            }
-            else
-            {
-                Write(Struct.GetBytes(structure));
-            }
-#else
-            Write(Struct.GetBytes(structure));
-#endif
-        }
+        public void Write<T>(ref T structure) where T : unmanaged => StreamExtensions.Write(this, ref structure);
 
 
 #if FEATURE_NATIVE_SPAN
@@ -123,30 +81,13 @@ namespace Reloaded.Memory.Streams
         /// Appends a managed/marshalled structure onto the given <see cref="MemoryStream"/> and advances the position.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Write<T>(T structure, bool marshalStructure = true) => Write(ref structure, marshalStructure);
+        public void Write<T>(T structure, bool marshalStructure = true) => StreamExtensions.Write(this, ref structure, marshalStructure);
 
         /// <summary>
         /// Appends a managed/marshalled structure onto the given <see cref="MemoryStream"/> and advances the position.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Write<T>(ref T structure, bool marshalStructure = true)
-        {
-#if FEATURE_NATIVE_SPAN
-            var size = Struct.GetSize<T>(true);
-            if (size < MaxStackLimit)
-            {
-                Span<byte> stack = stackalloc byte[size];
-                Struct.GetBytes(ref structure, marshalStructure, stack);
-                base.Write(stack);
-            }
-            else
-            {
-                Write(Struct.GetBytes(structure, marshalStructure));
-            }
-#else
-            Write(Struct.GetBytes(structure, marshalStructure));
-#endif
-        }
+        public void Write<T>(ref T structure, bool marshalStructure = true) => StreamExtensions.Write(this, ref structure, marshalStructure);
 
         /// <summary>
         /// Appends bytes onto the given <see cref="MemoryStream"/> and advances the position.
@@ -157,52 +98,24 @@ namespace Reloaded.Memory.Streams
         /// Appends an unmanaged structure onto the <see cref="MemoryStream"/> and advances the position.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void WriteBigEndianPrimitive<T>(T[] structures) where T : unmanaged
-        {
-            for (var x = 0; x < structures.Length; x++)
-                WriteBigEndianPrimitive(structures[x]);
-        }
+        public void WriteBigEndianPrimitive<T>(T[] structures) where T : unmanaged => StreamExtensions.WriteBigEndianPrimitive(this, structures);
 
         /// <summary>
         /// Appends an managed/marshalled structure onto the <see cref="MemoryStream"/> and advances the position.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void WriteBigEndianStruct<T>(T[] structures) where T : unmanaged, IEndianReversible
-        {
-            for (var x = 0; x < structures.Length; x++)
-                WriteBigEndianStruct(structures[x]);
-        }
+        public void WriteBigEndianStruct<T>(T[] structures) where T : unmanaged, IEndianReversible => StreamExtensions.WriteBigEndianStruct(this, structures);
 
         /// <summary>
         /// Appends an unmanaged structure onto the <see cref="MemoryStream"/> and advances the position.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void WriteBigEndianPrimitive<T>(T structure) where T : unmanaged
-        {
-            Endian.Reverse(ref structure);
-            Write(ref structure);
-        }
+        public void WriteBigEndianPrimitive<T>(T structure) where T : unmanaged => StreamExtensions.WriteBigEndianPrimitive(this, structure);
 
         /// <summary>
         /// Appends a managed/marshalled structure onto the given <see cref="MemoryStream"/> and advances the position.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void WriteBigEndianStruct<T>(T structure) where T : unmanaged, IEndianReversible
-        {
-            structure.SwapEndian();
-            Write(ref structure);
-        }
-
-        private static int RoundUp(int number, int multiple)
-        {
-            if (multiple == 0)
-                return number;
-
-            int remainder = number % multiple;
-            if (remainder == 0)
-                return number;
-
-            return number + multiple - remainder;
-        }
+        public void WriteBigEndianStruct<T>(T structure) where T : unmanaged, IEndianReversible => StreamExtensions.WriteBigEndianStruct(this, structure);
     }
 }
