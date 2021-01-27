@@ -221,23 +221,24 @@ namespace Reloaded.Memory
             if (sizeOfItem < MaxStackLimit)
             {
                 Span<byte> currentItem = stackalloc byte[sizeOfItem];
-                GetBytesInternal(currentItem, resultSpan);
+                GetBytesInternal(items, sizeOfItem, marshalElements, currentItem, resultSpan);
             }
             else
             {
                 Span<byte> currentItem = new byte[sizeOfItem];
-                GetBytesInternal(currentItem, resultSpan);
+                GetBytesInternal(items, sizeOfItem, marshalElements, currentItem, resultSpan);
             }
 
             return resultSpan;
 
-            void GetBytesInternal(Span<byte> currentItem, Span<byte> span)
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            void GetBytesInternal(T[] items, int sizeOfItem, bool marshalElements, Span<byte> currentItem, Span<byte> resultSpan)
             {
                 for (int x = 0; x < items.Length; x++)
                 {
                     Struct.GetBytes(ref items[x], marshalElements, currentItem);
-                    currentItem.CopyTo(span);
-                    span = span.Slice(sizeOfItem);
+                    currentItem.CopyTo(resultSpan);
+                    resultSpan = resultSpan.Slice(sizeOfItem);
                 }
             }
         }
@@ -268,17 +269,18 @@ namespace Reloaded.Memory
             if (sizeof(T) < MaxStackLimit)
             {
                 Span<byte> currentItem = stackalloc byte[sizeof(T)];
-                GetBytesInternal(currentItem, resultSpan);
+                GetBytesInternal(items, currentItem, resultSpan);
             }
             else
             {
                 Span<byte> currentItem = new byte[sizeof(T)];
-                GetBytesInternal(currentItem, resultSpan);
+                GetBytesInternal(items, currentItem, resultSpan);
             }
 
             return resultSpan;
 
-            void GetBytesInternal(Span<byte> currentItem, Span<byte> span)
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            void GetBytesInternal(T[] items, Span<byte> currentItem, Span<byte> span)
             {
                 for (int x = 0; x < items.Length; x++)
                 {
