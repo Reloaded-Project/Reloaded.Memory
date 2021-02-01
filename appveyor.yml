@@ -10,7 +10,8 @@ init:
         Update-AppveyorBuild -Version "$env:APPVEYOR_REPO_TAG_NAME"
     }
 environment:
-  CODECOV_TOKEN: 89a901eb-b4fe-4e3d-af45-e3bbfb108776
+  CODECOV_TOKEN: 
+    secure: S3MfzYxzFnB3SM9ov23jr5+G7bhP//Pq2EgCN4CR+gZk4pKylFCS+sDh53V36wPs
 before_build:
 - ps: |-
     dotnet --version
@@ -19,6 +20,7 @@ after_build:
 - ps: |-
     if ($env:APPVEYOR_REPO_TAG -eq "true")
     {
+        echo $PWD
         $env:CHANGELOG_PATH = "CHANGELOG.MD"
         & npm install -g auto-changelog
         & auto-changelog --sort-commits date --hide-credit --template keepachangelog --commit-limit false --starting-version "$env:APPVEYOR_REPO_TAG_NAME" -o $env:CHANGELOG_PATH 
@@ -39,6 +41,8 @@ artifacts:
   name: Coverage Statistics
 - path: Source\Reloaded.Memory\bin\Release\*.nupkg
   name: Nuget Release Package
+- path: $(CHANGELOG_PATH)
+  name: Changelog
 deploy:
 - provider: GitHub
   description: $(CHANGELOG_TEXT)
