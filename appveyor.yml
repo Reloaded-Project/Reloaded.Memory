@@ -25,6 +25,7 @@ after_build:
         & npm install -g auto-changelog
         & auto-changelog --sort-commits date --hide-credit --template keepachangelog --commit-limit false --starting-version "$env:APPVEYOR_REPO_TAG_NAME" -o $env:CHANGELOG_PATH 
         $env:CHANGELOG_TEXT = Get-Content -Path $env:CHANGELOG_PATH -Raw
+        $env:CHANGELOG_TEXT = $env:CHANGELOG_TEXT -replace "\n", "`\n"
     }
 build:
   project: ./Source/Reloaded.Memory.sln
