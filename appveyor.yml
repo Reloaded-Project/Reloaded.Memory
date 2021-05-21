@@ -48,7 +48,7 @@ deploy:
 - provider: GitHub
   description: $(CHANGELOG_TEXT)
   auth_token:
-    secure: 8Lqo9jP/L0PP7rNCr/FOdV8fc13U3U4kmDY5n9RMajb70SnIjujZz9J4tSGb9rAk
+    secure: KIE52SHqQiB8hSxFTp3mHpua02x1enCDiFfiFbNlJw0S2AwNn6YoIPB75YMkCqc5
   artifact: Release Build, Nuget Release Package
   on:
     APPVEYOR_REPO_TAG: true
