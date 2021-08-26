@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Reloaded.Memory.Streams
@@ -77,7 +78,7 @@ namespace Reloaded.Memory.Streams
             if (sizeof(T) < MaxStackLimit)
             {
                 Span<byte> stack = stackalloc byte[sizeof(T)];
-                Struct.GetBytes(ref structure, stack);
+                MemoryMarshal.Write(stack, ref structure);
                 stream.Write(stack);
             }
             else
