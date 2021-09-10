@@ -35,5 +35,8 @@ namespace Reloaded.Memory.Pointers
 
         /// <summary/>
         public static implicit operator BlittablePointer<T>(T* operand) => new BlittablePointer<T>(operand);
+
+        /// <summary/>
+        public static implicit operator T*(BlittablePointer<T> operand) => operand.Pointer;
     }
 }
