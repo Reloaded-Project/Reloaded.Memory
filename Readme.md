@@ -15,8 +15,8 @@
 		<img src="https://img.shields.io/nuget/v/Reloaded.Memory.svg" alt="NuGet" />
 	</a>
 	<!-- Build Status -->
-	<a href="https://ci.appveyor.com/project/sewer56lol/reloaded-memory">
-		<img src="https://ci.appveyor.com/api/projects/status/qlks2pma4lrr6c4f?svg=true" alt="Build Status" />
+	<a href="https://github.com/Reloaded-Project/Reloaded.Memory/actions/workflows/build-and-publish.yml">
+		<img src="https://img.shields.io/github/workflow/status/Reloaded-Project/Reloaded.Memory/Build%20and%20Publish" alt="Build Status" />
 	</a>
 </div>
 
