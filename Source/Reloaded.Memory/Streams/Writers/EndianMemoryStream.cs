@@ -42,7 +42,7 @@ namespace Reloaded.Memory.Streams.Writers
         public void AddPadding(int alignment = 2048) => Stream.AddPadding(alignment);
 
         /// <summary>
-        /// Pads the stream with <see cref="value"/> bytes until it is aligned.
+        /// Pads the stream with <see paramref="value"/> bytes until it is aligned.
         /// </summary>
         public void AddPadding(byte value, int alignment = 2048) => Stream.AddPadding(value, alignment);
 

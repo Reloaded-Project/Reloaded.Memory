@@ -27,7 +27,7 @@ namespace Reloaded.Memory.Streams
         }
 
         /// <summary>
-        /// Pads the stream with <see cref="value"/> bytes until it is aligned.
+        /// Pads the stream with <see paramref="value"/> bytes until it is aligned.
         /// </summary>
         public static void AddPadding(this Stream stream, byte value, int alignment = 2048)
         {

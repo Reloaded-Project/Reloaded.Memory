@@ -21,12 +21,12 @@ namespace Reloaded.Memory.Sources
         /* Delegates */
 
         /// <summary>
-        /// See <see cref="IMemory.Read{T}"/>
+        /// See <see cref="IMemory.Read{T}(System.IntPtr,out T)"/>
         /// </summary>
         public delegate void ReadFunction<T> (IntPtr memoryAddress, out T value, bool marshal);
 
         /// <summary>
-        /// See <see cref="IMemory.Write{T}"/>
+        /// See <see cref="IMemory.Write{T}(System.IntPtr,ref T)"/>
         /// </summary>
         public delegate void WriteFunction<T>(IntPtr memoryAddress, ref T item, bool marshal);
 
