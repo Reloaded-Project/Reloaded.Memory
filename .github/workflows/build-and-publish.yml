@@ -58,7 +58,7 @@ jobs:
       
     - name: Test
       run: |
-           dotnet test ./Source/Reloaded.Memory.sln /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput="$env:CODE_COVERAGE_PATH" --% /p:Exclude=\"[Reloaded.Memory.Shared]*,[xunit.*]*\"
+           dotnet test ./Source/Reloaded.Memory.sln /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput="../../$env:CODE_COVERAGE_PATH" --% /p:Exclude=\"[Reloaded.Memory.Shared]*,[xunit.*]*\"
            
     - name: Codecov
         # You may pin to the exact commit or the version.
