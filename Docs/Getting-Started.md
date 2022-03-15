@@ -85,6 +85,7 @@ This means that you can e.g. have a pointer to a variable in another process.
 *In addition, the following helper and utility classes are available:*
 + **Pinnable<T>**: Class that allows for the pinning of unmanaged blittable types in memory for interop with unmanaged code.
 + **PinnableDisposable<T>:** A `Pinnable` that automatically disposes the pinned object when disposed.
++ **Blittable**: Utility class used for checking if .NET considers a type as blittable.
 
 ### Streams
 + **BufferedStreamReader**: A custom unsafe BinaryReader operating over `Stream` classes tuned for performance supporting generics (structs), marshalling and buffering.
