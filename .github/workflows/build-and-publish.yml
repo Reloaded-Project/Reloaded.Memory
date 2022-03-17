@@ -106,7 +106,7 @@ jobs:
         body_path: ${{ env.CHANGELOG_PATH }}
         # Newline-delimited list of path globs for asset files to upload
         files: |
-          ${{ env.RELOADED_HOOKS_NUPKG_GLOB }}
+          ${{ env.NUPKG_GLOB }}
           ${{ env.CHANGELOG_PATH }}
         
     - name: Upload to NuGet (on Tag)
