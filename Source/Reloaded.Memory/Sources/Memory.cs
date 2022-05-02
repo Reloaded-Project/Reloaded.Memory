@@ -40,7 +40,11 @@ namespace Reloaded.Memory.Sources
         /// <inheritdoc />
         public void ReadRaw(IntPtr memoryAddress, out byte[] value, int length)
         {
+#if NET5_0_OR_GREATER
+            value = GC.AllocateUninitializedArray<byte>(length, false);
+#else
             value = new byte[length];
+#endif
             Marshal.Copy(memoryAddress, value, 0, value.Length);
         }
 

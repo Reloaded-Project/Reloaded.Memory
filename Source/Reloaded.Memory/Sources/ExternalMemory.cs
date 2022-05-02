@@ -54,7 +54,11 @@ namespace Reloaded.Memory.Sources
         public void Read<T>(IntPtr memoryAddress, out T value) where T : unmanaged
         {
             int structSize = Struct.GetSize<T>();
+#if NET5_0_OR_GREATER
+            byte[] buffer = GC.AllocateUninitializedArray<byte>(structSize, false);
+#else
             byte[] buffer = new byte[structSize];
+#endif
 
             fixed (byte* bufferPtr = buffer)
             {
@@ -70,7 +74,11 @@ namespace Reloaded.Memory.Sources
         public void Read<T>(IntPtr memoryAddress, out T value, bool marshal)
         {
             int structSize = Struct.GetSize<T>(marshal);
-            byte[] buffer  = new byte[structSize];
+#if NET5_0_OR_GREATER
+            byte[] buffer = GC.AllocateUninitializedArray<byte>(structSize, false);
+#else
+            byte[] buffer = new byte[structSize];
+#endif
 
             fixed (byte* bufferPtr = buffer)
             {
@@ -85,7 +93,11 @@ namespace Reloaded.Memory.Sources
         /// <inheritdoc />
         public void ReadRaw(IntPtr memoryAddress, out byte[] value, int length)
         {
+#if NET5_0_OR_GREATER
+            value = GC.AllocateUninitializedArray<byte>(length, false);
+#else
             value = new byte[length];
+#endif
             fixed (byte* bufferPtr = value)
             {
                 bool succeeded = Kernel32.Kernel32.ReadProcessMemory(_processHandle, memoryAddress, (IntPtr)bufferPtr, (UIntPtr) value.Length, out _);
