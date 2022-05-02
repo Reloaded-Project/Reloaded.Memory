@@ -31,7 +31,10 @@ namespace Reloaded.Memory.Tests.Memory.Interop
             // Integers are on the heap, should be pinned by reference.
             for (int x = 0; x < integers.Length; x++)
             {
+                // in .NET 5 and later, array is copied to Pinned Object Heap.
+#if !NET5_0_OR_GREATER
                 integers[x] = 100 + x;
+#endif
                 Assert.Equal(integers[x], pinnable.Pointer[x]);
             }
 
