@@ -2,6 +2,7 @@
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Reloaded.Memory.Exceptions;
 
 namespace Reloaded.Memory.Streams
 {
@@ -122,9 +123,13 @@ namespace Reloaded.Memory.Streams
             long originalPosition = _stream.Position;
 
             _stream.Position = offset;
+#if NET5_0_OR_GREATER
+            byte[] output = GC.AllocateUninitializedArray<byte>(count, false);
+#else
             byte[] output = new byte[count];
+#endif
             if (!_stream.TryReadSafe(output))
-                throw new Exception("Could not read enough bytes from stream.");
+                BufferedStreamReaderException.Throw("Could not read enough bytes from stream.");
 
             _stream.Position = originalPosition;
 
@@ -137,6 +142,9 @@ namespace Reloaded.Memory.Streams
         /// </summary>
         /// <param name="value">The value to output.</param>
         /// <param name="marshal">Set to true to perform marshalling on the value being read, else false.</param>
+#if NET5_0_OR_GREATER
+        [SkipLocalsInit]
+#endif
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Read<T>(out T value, bool marshal)
         {
@@ -153,6 +161,9 @@ namespace Reloaded.Memory.Streams
         /// Reads an unmanaged, generic type from the stream.
         /// </summary>
         /// <param name="value">The value to output.</param>
+#if NET5_0_OR_GREATER
+        [SkipLocalsInit]
+#endif
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe void Read<T>(out T value) where T : unmanaged
         {
@@ -237,6 +248,9 @@ namespace Reloaded.Memory.Streams
         /// Reads an unmanaged primitive from the stream, swapping the endian of the output.
         /// </summary>
         /// <param name="value">The value to output.</param>
+#if NET5_0_OR_GREATER
+        [SkipLocalsInit]
+#endif
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe void ReadBigEndianPrimitive<T>(out T value) where T : unmanaged
         {
@@ -255,6 +269,9 @@ namespace Reloaded.Memory.Streams
         /// The structure read should implement the <see cref="IEndianReversible"/> interface.
         /// </summary>
         /// <param name="value">The value to output.</param>
+#if NET5_0_OR_GREATER
+        [SkipLocalsInit]
+#endif
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe void ReadBigEndianStruct<T>(out T value) where T : unmanaged, IEndianReversible
         {
