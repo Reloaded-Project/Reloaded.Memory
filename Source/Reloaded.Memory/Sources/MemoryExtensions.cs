@@ -46,7 +46,11 @@ namespace Reloaded.Memory.Sources
             IMemory oldSource = Struct.Source;
             Struct.Source = memory;
 
+#if NET5_0_OR_GREATER
+            value = GC.AllocateUninitializedArray<T>(arrayLength, false);
+#else
             value = new T[arrayLength];
+#endif
             StructArray.FromPtr(memoryAddress, out value, arrayLength, marshal);
 
             Struct.Source = oldSource;
@@ -97,7 +101,11 @@ namespace Reloaded.Memory.Sources
         {
             var oldProtection = memory.ChangePermission(memoryAddress, length, Kernel32.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
 
+#if NET5_0_OR_GREATER
+            value = GC.AllocateUninitializedArray<byte>(length, false);
+#else
             value = new byte[length];
+#endif
             memory.ReadRaw(memoryAddress, out value, length);
 
             memory.ChangePermission(memoryAddress, length, oldProtection);
