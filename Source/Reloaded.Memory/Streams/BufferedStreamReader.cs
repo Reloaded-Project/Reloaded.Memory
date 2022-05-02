@@ -123,7 +123,8 @@ namespace Reloaded.Memory.Streams
 
             _stream.Position = offset;
             byte[] output = new byte[count];
-            _stream.Read(output, 0, count);
+            if (!_stream.TryReadSafe(output))
+                throw new Exception("Could not read enough bytes from stream.");
 
             _stream.Position = originalPosition;
 

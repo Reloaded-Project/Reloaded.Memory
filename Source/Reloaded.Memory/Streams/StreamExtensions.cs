@@ -173,5 +173,30 @@ namespace Reloaded.Memory.Streams
             structure.SwapEndian();
             stream.Write(ref structure);
         }
+
+        /// <summary>
+        /// Reads a given number of bytes from a stream.
+        /// </summary>
+        /// <param name="stream">The stream to read the value from.</param>
+        /// <param name="result">The buffer to receive the bytes.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool TryReadSafe(this Stream stream, byte[] result)
+        {
+            int numBytesRead = 0;
+            int numBytesToRead = result.Length;
+
+            do
+            {
+                int bytesRead = stream.Read(result, numBytesRead, numBytesToRead);
+                if (bytesRead <= 0)
+                    return false;
+
+                numBytesRead += bytesRead;
+                numBytesToRead -= bytesRead;
+            }
+            while (numBytesRead < numBytesToRead);
+
+            return true;
+        }
     }
 }
