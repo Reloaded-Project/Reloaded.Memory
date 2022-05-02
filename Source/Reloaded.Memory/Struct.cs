@@ -181,14 +181,20 @@ namespace Reloaded.Memory
         /// Creates a byte array from specified structure or class type with explicit StructLayout attribute.
         /// </summary>
         /// <param name="item">The item to convert into a byte array.</param>
+#if NET5_0_OR_GREATER
+        [SkipLocalsInit]
+#endif
         public static byte[] GetBytes<T>(ref T item) where T : unmanaged
         {
             int size     = sizeof(T);
+#if NET5_0_OR_GREATER
+            byte[] array = GC.AllocateUninitializedArray<byte>(size, false);
+#else
             byte[] array = new byte[size];
+#endif
 
             var arraySpan = new Span<byte>(array);
             MemoryMarshal.Write(arraySpan, ref item);
-
             return array;
         }
 
@@ -209,10 +215,17 @@ namespace Reloaded.Memory
         /// </summary>
         /// <param name="item">The item to convert into a byte array.</param>
         /// <param name="marshalElement">Set to true to marshal the element.</param>
+#if NET5_0_OR_GREATER
+        [SkipLocalsInit]
+#endif
         public static byte[] GetBytes<T>(ref T item, bool marshalElement)
         {
             int size     = GetSize<T>(marshalElement);
+#if NET5_0_OR_GREATER
+            byte[] array = GC.AllocateUninitializedArray<byte>(size, false);
+#else
             byte[] array = new byte[size];
+#endif
 
             fixed (byte* arrayPtr = array)
                 Marshal.StructureToPtr(item, (IntPtr)arrayPtr, false);
