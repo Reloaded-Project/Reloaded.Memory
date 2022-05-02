@@ -35,7 +35,11 @@ namespace Reloaded.Memory.Streams
             if (padding <= 0)
                 return;
 
+#if NET5_0_OR_GREATER
+            var bytes = GC.AllocateUninitializedArray<byte>((int) padding);
+#else
             var bytes = new byte[padding];
+#endif
             for (int x = 0; x < bytes.Length; x++)
                 bytes[x] = value;
 
@@ -71,6 +75,9 @@ namespace Reloaded.Memory.Streams
         /// <summary>
         /// Appends an unmanaged structure onto the <see cref="MemoryStream"/> and advances the position.
         /// </summary>
+#if NET5_0_OR_GREATER
+        [SkipLocalsInit]
+#endif
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Write<T>(this Stream stream, ref T structure) where T : unmanaged
         {
@@ -99,6 +106,9 @@ namespace Reloaded.Memory.Streams
         /// <summary>
         /// Appends a managed/marshalled structure onto the given <see cref="MemoryStream"/> and advances the position.
         /// </summary>
+#if NET5_0_OR_GREATER
+        [SkipLocalsInit]
+#endif
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Write<T>(this Stream stream, ref T structure, bool marshalStructure = true)
         {
