@@ -25,7 +25,11 @@ namespace Reloaded.Memory
         public static void FromPtr<T>(IntPtr memoryAddress, out T[] value, int arrayLength, bool marshal = false)
         {
             int structSize = Struct.GetSize<T>(marshal);
+#if NET5_0_OR_GREATER
+            value = GC.AllocateUninitializedArray<T>(arrayLength, false);
+#else
             value = new T[arrayLength];
+#endif
 
             for (int x = 0; x < arrayLength; x++)
             {
@@ -87,7 +91,11 @@ namespace Reloaded.Memory
         {
             int structSize = Struct.GetSize<T>();
             int structureCount = (length == 0) ? (data.Length - startIndex) / structSize : length;
+#if NET5_0_OR_GREATER
+            value = GC.AllocateUninitializedArray<T>(structureCount, false);
+#else
             value = new T[structureCount];
+#endif
 
             for (int x = 0; x < value.Length; x++)
             {
@@ -107,7 +115,11 @@ namespace Reloaded.Memory
         {
             int structSize     = Struct.GetSize<T>();
             int structureCount = (length == 0) ? (data.Length) / structSize : length;
-            value              = new T[structureCount];
+#if NET5_0_OR_GREATER
+            value = GC.AllocateUninitializedArray<T>(structureCount, false);
+#else
+            value = new T[structureCount];
+#endif
 
             for (int x = 0; x < value.Length; x++)
             {
@@ -200,7 +212,11 @@ namespace Reloaded.Memory
         {
             int sizeOfItem  = Struct.GetSize<T>(marshalElements);
             int totalSize   = sizeOfItem * items.Length;
-            var result      = new byte[totalSize];
+#if NET5_0_OR_GREATER
+            var result = GC.AllocateUninitializedArray<byte>(totalSize, false);
+#else
+            var result = new byte[totalSize];
+#endif
             GetBytes(items, marshalElements, result.AsSpan());
             return result;
         }
@@ -250,7 +266,11 @@ namespace Reloaded.Memory
         public static byte[] GetBytes<T>(T[] items) where T : unmanaged
         {
             int totalSize   = GetSize<T>(items.Length);
-            var result      = new byte[totalSize];
+#if NET5_0_OR_GREATER
+            var result = GC.AllocateUninitializedArray<byte>(totalSize, false);
+#else
+            var result = new byte[totalSize];
+#endif
             GetBytes(items, result.AsSpan());
             return result;
         }
@@ -261,6 +281,9 @@ namespace Reloaded.Memory
         /// <param name="items">The item to convert into a byte array.</param>
         /// <param name="buffer">The buffer to which write the bytes to.</param>
         /// <returns>The passed in buffer sliced to include only the bytes obtained.</returns>
+#if NET5_0_OR_GREATER
+        [SkipLocalsInit]
+#endif
         public static Span<byte> GetBytes<T>(T[] items, Span<byte> buffer) where T : unmanaged
         {
             int totalSize  = GetSize<T>(items.Length);
