@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
+﻿using System.IO;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Reloaded.Memory.Streams.Writers
 {
@@ -14,6 +10,9 @@ namespace Reloaded.Memory.Streams.Writers
     {
         /// <inheritdoc />
         public LittleEndianMemoryStream(ExtendedMemoryStream stream) : base(stream) { }
+
+        /// <inheritdoc />
+        public LittleEndianMemoryStream(ExtendedMemoryStream stream, bool disposeUnderlyingStream = true) : base(stream, disposeUnderlyingStream) { }
 
         /// <inheritdoc />
         public override void Write<T>(T[] structure) => Stream.Write(structure);

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
 namespace Reloaded.Memory.Streams.Readers
 {
@@ -12,6 +11,11 @@ namespace Reloaded.Memory.Streams.Readers
         /// Constructs a <see cref="EndianStreamReader"/> given an existing stream reader.
         /// </summary>
         public BigEndianStreamReader(BufferedStreamReader streamReader) : base(streamReader) { }
+
+        /// <summary>
+        /// Constructs a <see cref="EndianStreamReader"/> given an existing stream reader.
+        /// </summary>
+        public BigEndianStreamReader(BufferedStreamReader streamReader, bool disposeUnderlyingStream = true) : base(streamReader, disposeUnderlyingStream) { }
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

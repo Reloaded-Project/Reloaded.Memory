@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.CompilerServices;
-using System.Text;
-using Reloaded.Memory.Utilities;
 
 namespace Reloaded.Memory.Streams.Writers
 {
@@ -19,9 +15,23 @@ namespace Reloaded.Memory.Streams.Writers
         public ExtendedMemoryStream Stream { get; private set; }
 
         /// <summary>
+        /// If this is set, the underlying stream will be disposed.
+        /// </summary>
+        public bool DisposeUnderlyingStream { get; private set; } = true;
+
+        /// <summary>
         /// Constructs a <see cref="EndianMemoryStream"/> given an existing stream.
         /// </summary>
         protected EndianMemoryStream(ExtendedMemoryStream stream) => Stream = stream;
+
+        /// <summary>
+        /// Constructs a <see cref="EndianMemoryStream"/> given an existing stream.
+        /// </summary>
+        protected EndianMemoryStream(ExtendedMemoryStream stream, bool disposeUnderlyingStream)
+        {
+            Stream = stream;
+            DisposeUnderlyingStream = disposeUnderlyingStream;
+        }
 
         /// <summary/>
         ~EndianMemoryStream()
@@ -32,7 +42,9 @@ namespace Reloaded.Memory.Streams.Writers
         /// <inheritdoc/>
         public void Dispose()
         {
-            Stream?.Dispose();
+            if (DisposeUnderlyingStream)
+                Stream?.Dispose();
+            
             GC.SuppressFinalize(this);
         }
 

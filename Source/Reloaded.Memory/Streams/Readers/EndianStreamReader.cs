@@ -15,6 +15,11 @@ namespace Reloaded.Memory.Streams.Readers
         /// </summary>
         public BufferedStreamReader Reader { get; private set; }
 
+        /// <summary>
+        /// If this is set, the underlying stream will be disposed.
+        /// </summary>
+        public bool DisposeUnderlyingStream { get; private set; } = true;
+
         /* Properties (Written as methods to force inlining). */
 
         /// <summary>
@@ -50,6 +55,15 @@ namespace Reloaded.Memory.Streams.Readers
         /// </summary>
         protected EndianStreamReader(BufferedStreamReader streamReader) => Reader = streamReader;
 
+        /// <summary>
+        /// Constructs a <see cref="EndianStreamReader"/> given an existing stream reader.
+        /// </summary>
+        protected EndianStreamReader(BufferedStreamReader streamReader, bool disposeUnderlyingStream)
+        {
+            Reader = streamReader;
+            DisposeUnderlyingStream = disposeUnderlyingStream;
+        }
+
         /// <summary/>
         ~EndianStreamReader()
         {
@@ -59,7 +73,9 @@ namespace Reloaded.Memory.Streams.Readers
         /// <inheritdoc/>
         public void Dispose()
         {
-            Reader?.Dispose();
+            if (DisposeUnderlyingStream)
+                Reader?.Dispose();
+            
             GC.SuppressFinalize(this);
         }
 

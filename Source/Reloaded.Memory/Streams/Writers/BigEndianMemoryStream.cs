@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
+﻿using System.IO;
 using System.Runtime.CompilerServices;
-using System.Text;
-using Reloaded.Memory.Streams.Readers;
-using Reloaded.Memory.Utilities;
 
 namespace Reloaded.Memory.Streams.Writers
 {
@@ -16,6 +10,9 @@ namespace Reloaded.Memory.Streams.Writers
     {
         /// <inheritdoc />
         public BigEndianMemoryStream(ExtendedMemoryStream stream) : base(stream) {}
+
+        /// <inheritdoc />
+        public BigEndianMemoryStream(ExtendedMemoryStream stream, bool disposeUnderlyingStream = true) : base(stream, disposeUnderlyingStream) { }
 
         /// <inheritdoc />
         public override void Write<T>(T[] structure) => Stream.WriteBigEndianPrimitive(structure);
