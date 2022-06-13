@@ -102,6 +102,13 @@ namespace Reloaded.Memory.Pointers
         /// <returns>A by reference variable for a given pointer.</returns>
         public static ref TStruct Create(TStruct* pointer) => ref Unsafe.AsRef<TStruct>(pointer);
 
+        /// <summary>
+        /// Converts a pointer into a by reference variable.
+        /// </summary>
+        /// <param name="pointer">Pointer to the unmanaged structure.</param>
+        /// <returns>A by reference variable for a given pointer.</returns>
+        public static ref TStruct Create(nint pointer) => ref Unsafe.AsRef<TStruct>((void*)pointer);
+
         /// <summary/>
         public static implicit operator RefPointer<TStruct>(BlittablePointer<TStruct> operand) => new RefPointer<TStruct>(operand.Pointer, 1);
     }
