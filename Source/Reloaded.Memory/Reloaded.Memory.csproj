@@ -31,7 +31,7 @@
 
   <ItemGroup>
     <PackageReference Include="System.Memory" Version="4.5.3" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" Condition="'$(TargetFramework)' != 'net5.0'" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" Condition="'$(TargetFramework)' != 'net5.0' Or '$(TargetFramework)' != 'net6.0'" />
   </ItemGroup>
 
   <ItemGroup>
