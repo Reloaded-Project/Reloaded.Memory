@@ -8,7 +8,7 @@ namespace Reloaded.Memory.Sources
     /// A generic extension class that extends <see cref="IMemory"/>.
     /// Provides various functions such as reading arrays.
     /// </summary>
-    public static unsafe class MemoryExtensions
+    public static class MemoryExtensions
     {
         /* All functions are documented in the IMemory interface. */
 
@@ -36,12 +36,13 @@ namespace Reloaded.Memory.Sources
         /// Reads a generic type array from a specified memory address.
         /// </summary>
         /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
         /// <param name="value">Local variable to receive the read in struct array.</param>
         /// <param name="memory"></param>
         /// <param name="memoryAddress">The memory address to read from.</param>
         /// <param name="arrayLength">The amount of array items to read.</param>
         /// <param name="marshal">Set this to true to enable struct marshalling.</param>
-        public static void Read<T>(this IMemory memory, IntPtr memoryAddress, out T[] value, int arrayLength, bool marshal = false)
+        public static void Read<TMemory, T>(this TMemory memory, IntPtr memoryAddress, out T[] value, int arrayLength, bool marshal = false) where TMemory : IMemory
         {
             IMemory oldSource = Struct.Source;
             Struct.Source = memory;
@@ -60,11 +61,12 @@ namespace Reloaded.Memory.Sources
         /// Changes memory permissions to ensure memory can be read and reads a generic type from a specified memory address.
         /// </summary>
         /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
         /// <param name="memory"></param>
         /// <param name="memoryAddress">The memory address to read from.</param>
         /// <param name="value">Local variable to receive the read in struct.</param>
         /// <param name="marshal">Set this to true to enable struct marshalling.</param>
-        public static void SafeRead<T>(this IMemory memory, IntPtr memoryAddress, out T value, bool marshal)
+        public static void SafeRead<TMemory, T>(this TMemory memory, IntPtr memoryAddress, out T value, bool marshal) where TMemory : IMemory
         {
             int structSize = Struct.GetSize<T>(marshal);
 
@@ -77,10 +79,11 @@ namespace Reloaded.Memory.Sources
         /// Changes memory permissions to ensure memory can be read and reads a generic type from a specified memory address.
         /// </summary>
         /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
         /// <param name="memory"></param>
         /// <param name="memoryAddress">The memory address to read from.</param>
         /// <param name="value">Local variable to receive the read in struct.</param>
-        public static void SafeRead<T>(this IMemory memory, IntPtr memoryAddress, out T value) where T : unmanaged
+        public static void SafeRead<TMemory, T>(this TMemory memory, IntPtr memoryAddress, out T value) where T : unmanaged where TMemory : IMemory
         {
             int structSize = Struct.GetSize<T>();
 
@@ -97,7 +100,7 @@ namespace Reloaded.Memory.Sources
         /// <param name="memoryAddress">The memory address to read from.</param>
         /// <param name="value">Local variable to receive the read in bytes.</param>
         /// <param name="length">The amount of bytes to read from the executable.</param>
-        public static void SafeReadRaw(this IMemory memory, IntPtr memoryAddress, out byte[] value, int length)
+        public static void SafeReadRaw<TMemory>(this TMemory memory, IntPtr memoryAddress, out byte[] value, int length) where TMemory : IMemory
         {
             var oldProtection = memory.ChangePermission(memoryAddress, length, Kernel32.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
 
@@ -115,12 +118,13 @@ namespace Reloaded.Memory.Sources
         /// Changes memory permissions to ensure memory can be read and reads a generic type array from a specified memory address.
         /// </summary>
         /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
         /// <param name="memory"></param>
         /// <param name="memoryAddress">The memory address to read from.</param>
         /// <param name="value">Local variable to receive the read in struct array.</param>
         /// <param name="arrayLength">The amount of array items to read.</param>
         /// <param name="marshal">Set this to true to enable struct marshalling.</param>
-        public static void SafeRead<T>(this IMemory memory, IntPtr memoryAddress, out T[] value, int arrayLength, bool marshal = false)
+        public static void SafeRead<TMemory, T>(this TMemory memory, IntPtr memoryAddress, out T[] value, int arrayLength, bool marshal = false) where TMemory : IMemory
         {
             int regionSize = StructArray.GetSize<T>(arrayLength, marshal);
 
@@ -135,11 +139,12 @@ namespace Reloaded.Memory.Sources
         /// Writes a generic type array to a specified memory address.
         /// </summary>
         /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
         /// <param name="memory"></param>
         /// <param name="memoryAddress">The memory address to write to.</param>
         /// <param name="items">The array of items to write to the address.</param>
         /// <param name="marshal">Set this to true to enable struct marshalling.</param>
-        public static void Write<T>(this IMemory memory, IntPtr memoryAddress, T[] items, bool marshal = false)
+        public static void Write<TMemory, T>(this TMemory memory, IntPtr memoryAddress, T[] items, bool marshal = false) where TMemory : IMemory
         {
             IMemory oldSource = Struct.Source;
             Struct.Source = memory;
@@ -153,11 +158,12 @@ namespace Reloaded.Memory.Sources
         /// Changes memory permissions to ensure memory can be written and writes a generic type to a specified memory address.
         /// </summary>
         /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
         /// <param name="memory"></param>
         /// <param name="memoryAddress">The memory address to write to.</param>
         /// <param name="item">The items to write to the address.</param>
         /// <param name="marshal">Set this to true to enable struct marshalling.</param>
-        public static void SafeWrite<T>(this IMemory memory, IntPtr memoryAddress, ref T item, bool marshal)
+        public static void SafeWrite<TMemory, T>(this TMemory memory, IntPtr memoryAddress, ref T item, bool marshal) where TMemory : IMemory
         {
             int memorySize = Struct.GetSize<T>(marshal);
 
@@ -170,10 +176,11 @@ namespace Reloaded.Memory.Sources
         /// Changes memory permissions to ensure memory can be written and writes a generic type to a specified memory address.
         /// </summary>
         /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
         /// <param name="memory"></param>
         /// <param name="memoryAddress">The memory address to write to.</param>
         /// <param name="item">The items to write to the address.</param>
-        public static void SafeWrite<T>(this IMemory memory, IntPtr memoryAddress, ref T item) where T : unmanaged
+        public static void SafeWrite<TMemory, T>(this TMemory memory, IntPtr memoryAddress, ref T item) where T : unmanaged where TMemory : IMemory
         {
             int memorySize = Struct.GetSize<T>();
 
@@ -185,10 +192,11 @@ namespace Reloaded.Memory.Sources
         /// <summary>
         /// Changes memory permissions to ensure memory can be written and writes a generic type to a specified memory address.
         /// </summary>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
         /// <param name="memory"></param>
         /// <param name="memoryAddress">The memory address to write to.</param>
         /// <param name="data">The data to write to the specified address.</param>
-        public static void SafeWriteRaw(this IMemory memory, IntPtr memoryAddress, byte[] data)
+        public static void SafeWriteRaw<TMemory>(this TMemory memory, IntPtr memoryAddress, byte[] data) where TMemory : IMemory
         {
             var oldProtection = memory.ChangePermission(memoryAddress, data.Length, Kernel32.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
             memory.WriteRaw(memoryAddress, data);
@@ -199,11 +207,12 @@ namespace Reloaded.Memory.Sources
         /// Changes memory permissions to ensure memory can be written and writes a generic type array to a specified memory address.
         /// </summary>
         /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
         /// <param name="memory"></param>
         /// <param name="memoryAddress">The memory address to write to.</param>
         /// <param name="items">The array of items to write to the address.</param>
         /// <param name="marshal">Set this to true to enable struct marshalling.</param>
-        public static void SafeWrite<T>(this IMemory memory, IntPtr memoryAddress, T[] items, bool marshal = false)
+        public static void SafeWrite<TMemory, T>(this TMemory memory, IntPtr memoryAddress, T[] items, bool marshal = false) where TMemory : IMemory
         {
             int regionSize = StructArray.GetSize<T>(items.Length, marshal);
 
@@ -229,11 +238,12 @@ namespace Reloaded.Memory.Sources
         /// Reads a generic type from a specified memory address.
         /// </summary>
         /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
         /// <param name="memory">Memory instance to read from.</param>
         /// <param name="memoryAddress">The memory address to read from.</param>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Read<T>(this IMemory memory, int memoryAddress) where T : unmanaged
+        public static T Read<TMemory, T>(this TMemory memory, int memoryAddress) where T : unmanaged where TMemory : IMemory
         {
             memory.Read<T>((IntPtr)memoryAddress, out var result);
             return result;
@@ -243,12 +253,13 @@ namespace Reloaded.Memory.Sources
         /// Reads a generic type from a specified memory address.
         /// </summary>
         /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
         /// <param name="memory">Memory instance to read from.</param>
         /// <param name="memoryAddress">The memory address to read from.</param>
         /// <param name="marshal">Set true to marshal memory, else false.</param>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Read<T>(this IMemory memory, int memoryAddress, bool marshal)
+        public static T Read<TMemory, T>(this TMemory memory, int memoryAddress, bool marshal) where TMemory : IMemory
         {
             memory.Read<T>((IntPtr)memoryAddress, out var result, marshal);
             return result;
@@ -258,11 +269,12 @@ namespace Reloaded.Memory.Sources
         /// Reads a generic type from a specified memory address.
         /// </summary>
         /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
         /// <param name="memory">Memory instance to read from.</param>
         /// <param name="memoryAddress">The memory address to read from.</param>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Read<T>(this IMemory memory, long memoryAddress) where T : unmanaged
+        public static T Read<TMemory, T>(this TMemory memory, long memoryAddress) where T : unmanaged where TMemory : IMemory
         {
             memory.Read<T>((IntPtr)memoryAddress, out var result);
             return result;
@@ -272,12 +284,13 @@ namespace Reloaded.Memory.Sources
         /// Reads a generic type from a specified memory address.
         /// </summary>
         /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
         /// <param name="memory">Memory instance to read from.</param>
         /// <param name="memoryAddress">The memory address to read from.</param>
         /// <param name="marshal">Set true to marshal memory, else false.</param>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Read<T>(this IMemory memory, long memoryAddress, bool marshal)
+        public static T Read<TMemory, T>(this TMemory memory, long memoryAddress, bool marshal) where TMemory : IMemory
         {
             memory.Read<T>((IntPtr)memoryAddress, out var result, marshal);
             return result;
@@ -289,11 +302,12 @@ namespace Reloaded.Memory.Sources
         /// Reads a generic type from a specified memory address.
         /// </summary>
         /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
         /// <param name="memory">Memory instance to read from.</param>
         /// <param name="memoryAddress">The memory address to read from.</param>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Read<T>(this IMemory memory, IntPtr memoryAddress) where T : unmanaged
+        public static T Read<TMemory, T>(this TMemory memory, IntPtr memoryAddress) where T : unmanaged where TMemory : IMemory
         {
             memory.Read<T>(memoryAddress, out var result);
             return result;
@@ -303,12 +317,13 @@ namespace Reloaded.Memory.Sources
         /// Reads a generic type from a specified memory address.
         /// </summary>
         /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
         /// <param name="memory">Memory instance to read from.</param>
         /// <param name="memoryAddress">The memory address to read from.</param>
         /// <param name="marshal">Set true to marshal memory, else false.</param>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Read<T>(this IMemory memory, IntPtr memoryAddress, bool marshal)
+        public static T Read<TMemory, T>(this TMemory memory, IntPtr memoryAddress, bool marshal) where TMemory : IMemory
         {
             memory.Read<T>(memoryAddress, out var result, marshal);
             return result;
@@ -320,57 +335,61 @@ namespace Reloaded.Memory.Sources
         /// Writes a generic type to a specified memory address.
         /// </summary>
         /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
         /// <param name="memory"></param>
         /// <param name="memoryAddress">The memory address to write to.</param>
         /// <param name="item">The item to write to the address.</param>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write<T>(this IMemory memory, int memoryAddress, T item) where T : unmanaged => memory.Write<T>((IntPtr)memoryAddress, ref item);
+        public static void Write<TMemory, T>(this TMemory memory, int memoryAddress, T item) where T : unmanaged where TMemory : IMemory => memory.Write<T>((IntPtr)memoryAddress, ref item);
 
         /// <summary>
         /// Writes a generic type to a specified memory address.
         /// </summary>
         /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
         /// <param name="memory"></param>
         /// <param name="memoryAddress">The memory address to write to.</param>
         /// <param name="item">The item to write to the address.</param>
         /// <param name="marshal">True to marshal the element, else false.</param>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
-        public static void Write<T>(this IMemory memory, int memoryAddress, T item, bool marshal = false) => memory.Write((IntPtr)memoryAddress, ref item, marshal);
+        public static void Write<TMemory, T>(this TMemory memory, int memoryAddress, T item, bool marshal = false) where TMemory : IMemory => memory.Write((IntPtr)memoryAddress, ref item, marshal);
 
         /// <summary>
-        /// See <see cref="SafeWrite{T}(Reloaded.Memory.Sources.IMemory,System.IntPtr,ref T,bool)"/> />
+        /// See <see cref="SafeWrite{TMemory, T}(TMemory,IntPtr,ref T,bool)"/> />
         /// </summary>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
-        public static void SafeWrite<T>(this IMemory memory, int memoryAddress, T item, bool marshal = false) => memory.SafeWrite((IntPtr)memoryAddress, ref item, marshal);
+        public static void SafeWrite<TMemory, T>(this TMemory memory, int memoryAddress, T item, bool marshal = false) where TMemory : IMemory => memory.SafeWrite((IntPtr)memoryAddress, ref item, marshal);
 
         /// <summary>
         /// Writes a generic type to a specified memory address.
         /// </summary>
         /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
         /// <param name="memory"></param>
         /// <param name="memoryAddress">The memory address to write to.</param>
         /// <param name="item">The item to write to the address.</param>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write<T>(this IMemory memory, long memoryAddress, T item) where T : unmanaged => memory.Write<T>((IntPtr)memoryAddress, ref item);
+        public static void Write<TMemory, T>(this TMemory memory, long memoryAddress, T item) where T : unmanaged where TMemory : IMemory => memory.Write<T>((IntPtr)memoryAddress, ref item);
 
         /// <summary>
         /// Writes a generic type to a specified memory address.
         /// </summary>
         /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
         /// <param name="memory"></param>
         /// <param name="memoryAddress">The memory address to write to.</param>
         /// <param name="item">The item to write to the address.</param>
         /// <param name="marshal">True to marshal the element, else false.</param>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
-        public static void Write<T>(this IMemory memory, long memoryAddress, T item, bool marshal = false) => memory.Write((IntPtr)memoryAddress, ref item, marshal);
+        public static void Write<TMemory, T>(this TMemory memory, long memoryAddress, T item, bool marshal = false) where TMemory : IMemory => memory.Write((IntPtr)memoryAddress, ref item, marshal);
 
         /// <summary>
-        /// See <see cref="SafeWrite{T}(Reloaded.Memory.Sources.IMemory,System.IntPtr,ref T,bool)"/> />
+        /// See <see cref="SafeWrite{TMemory,T}(TMemory,System.IntPtr,ref T,bool)"/> />
         /// </summary>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
-        public static void SafeWrite<T>(this IMemory memory, long memoryAddress, T item, bool marshal = false) => memory.SafeWrite((IntPtr)memoryAddress, ref item, marshal);
+        public static void SafeWrite<TMemory, T>(this TMemory memory, long memoryAddress, T item, bool marshal = false) where TMemory : IMemory => memory.SafeWrite((IntPtr)memoryAddress, ref item, marshal);
 
         /* Write: By Value to By Reference */
 
@@ -378,35 +397,39 @@ namespace Reloaded.Memory.Sources
         /// Writes a generic type to a specified memory address.
         /// </summary>
         /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
         /// <param name="memory"></param>
         /// <param name="memoryAddress">The memory address to write to.</param>
         /// <param name="item">The item to write to the address.</param>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write<T>(this IMemory memory, IntPtr memoryAddress, T item) where T : unmanaged => memory.Write<T>(memoryAddress, ref item);
+        public static void Write<TMemory, T>(this TMemory memory, IntPtr memoryAddress, T item) where T : unmanaged where TMemory : IMemory => memory.Write<T>(memoryAddress, ref item);
 
         /// <summary>
         /// Writes a generic type to a specified memory address.
         /// </summary>
         /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
         /// <param name="memory"></param>
         /// <param name="memoryAddress">The memory address to write to.</param>
         /// <param name="item">The item to write to the address.</param>
         /// <param name="marshal">True to marshal the element, else false.</param>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
-        public static void Write<T>(this IMemory memory, IntPtr memoryAddress, T item, bool marshal = false) => memory.Write(memoryAddress, ref item, marshal);
+        public static void Write<TMemory, T>(this TMemory memory, IntPtr memoryAddress, T item, bool marshal = false) where TMemory : IMemory => memory.Write(memoryAddress, ref item, marshal);
 
         /// <summary>
-        /// See <see cref="SafeWrite{T}(Reloaded.Memory.Sources.IMemory,System.IntPtr,ref T,bool)"/> />
+        /// See <see cref="SafeWrite{TMemory, T}(TMemory,IntPtr,ref T,bool)"/> />
         /// </summary>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
-        public static void SafeWrite<T>(this IMemory memory, IntPtr memoryAddress, T item, bool marshal = false) => memory.SafeWrite(memoryAddress, ref item, marshal);
+        public static void SafeWrite<TMemory, T>(this TMemory memory, IntPtr memoryAddress, T item, bool marshal = false) where TMemory : IMemory => memory.SafeWrite(memoryAddress, ref item, marshal);
 
         /* ChangePermission: Size Redirections */
 
         /// <summary>
         /// Changes the page permissions for a specified combination of address and element from which to deduce size.
         /// </summary>
+        /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
         /// <param name="memory"></param>
         /// <param name="memoryAddress">The memory address for which to change page permissions for.</param>
         /// <param name="baseElement">The struct element from which the region size to change permissions for will be calculated.</param>
@@ -415,7 +438,7 @@ namespace Reloaded.Memory.Sources
         /// <returns>The old page permissions.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [ExcludeFromCodeCoverage] // Wrapper that simply lets pass with base element calculated with functions tested elsewhere, no logic.
-        public static Kernel32.Kernel32.MEM_PROTECTION ChangePermission<T>(this IMemory memory, IntPtr memoryAddress, ref T baseElement, Kernel32.Kernel32.MEM_PROTECTION newPermissions, bool marshalElement = false)
-                           => memory.ChangePermission(memoryAddress, Struct.GetSize<T>(marshalElement), newPermissions);
+        public static Kernel32.Kernel32.MEM_PROTECTION ChangePermission<TMemory, T>(this TMemory memory, IntPtr memoryAddress, ref T baseElement, Kernel32.Kernel32.MEM_PROTECTION newPermissions, bool marshalElement = false) 
+            where TMemory : IMemory => memory.ChangePermission(memoryAddress, Struct.GetSize<T>(marshalElement), newPermissions);
     }
 }

@@ -20,7 +20,7 @@ namespace Reloaded.Memory.Example
             // You can find implementations such as Reloaded.Memory.Sources;
 
             // Get a new instance of "Memory" class implementing "IMemory", that provides access to current process' memory.
-            IMemory memory = Sources.Memory.CurrentProcess;      // Static/Preinitialized access to current process' memory.
+            var memory = Sources.Memory.CurrentProcess;     // Static/Preinitialized access to current process' memory.
 
             // Tutorial 0: Allocate/Free Memory
             IntPtr memoryLocation = memory.Allocate(65535); // Did you think it would be harder?
@@ -57,7 +57,7 @@ namespace Reloaded.Memory.Example
         /// </summary>
         /// <param name="memory">This object is used to perform memory read/write/free/allocate operations.</param>
         /// <param name="memoryLocation">Arbitrary location in memory where this tutorial will be held.</param>
-        private static void PrimitivesExample(IMemory memory, IntPtr memoryLocation)
+        private static void PrimitivesExample(Sources.Memory memory, IntPtr memoryLocation)
         {
             // You can use the Memory Option to write any arbitrary generic primitive to memory.
             // Here is an example:
@@ -72,7 +72,7 @@ namespace Reloaded.Memory.Example
             memory.Write(memoryLocation, leet);
 
             // But what if you instead wanted to write a short?
-            memory.Write<short>(memoryLocation, 1337);  // Implicit cast happens here.
+            memory.Write<Sources.Memory, short>(memoryLocation, 1337);  // Implicit cast happens here.
             memory.Write(memoryLocation, (short)1337);  // Explicit cast; will also write a short.
             memory.Write(memoryLocation, (short)leet);  // Explicit cast with variable.
 
