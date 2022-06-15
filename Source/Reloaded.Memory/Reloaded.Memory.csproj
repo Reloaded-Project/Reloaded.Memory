@@ -17,7 +17,7 @@
     <RepositoryUrl></RepositoryUrl>
     <RepositoryType></RepositoryType>
     <Description>A fully featured C# memory editing library supporting reading/writing primitive or generic struct types in either current or an external process.</Description>
-    <Version>6.1.0</Version>
+    <Version>6.1.1</Version>
     <Authors>Sewer56</Authors>
     <Company />
     <Product>Project Reloaded</Product>
@@ -31,7 +31,7 @@
 
   <ItemGroup>
     <PackageReference Include="System.Memory" Version="4.5.3" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" Condition="'$(TargetFramework)' != 'net5.0' Or '$(TargetFramework)' != 'net6.0'" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" Condition="'$(TargetFramework)' != 'net5.0' And '$(TargetFramework)' != 'net6.0'" />
   </ItemGroup>
 
   <ItemGroup>
