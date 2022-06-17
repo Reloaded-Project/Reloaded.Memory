@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
+#if NET5_0_OR_GREATER
+using System.Diagnostics.CodeAnalysis;
+#endif
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace Reloaded.Memory.Utilities
 {
@@ -14,7 +15,11 @@ namespace Reloaded.Memory.Utilities
         /// <summary>
         /// Returns true if a type is blittable, else false.
         /// </summary>
-        public static bool IsBlittable<T>()
+        public static bool IsBlittable<
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+        T>()
         {
             return IsBlittableCache<T>.Value;
         }
@@ -22,7 +27,14 @@ namespace Reloaded.Memory.Utilities
         /// <summary>
         /// Checks if a type is blittable.
         /// </summary>
-        public static bool IsBlittable(Type type)
+#if NET5_0_OR_GREATER
+        [UnconditionalSuppressMessage("ReflectionAnalysis", "IL2072", Justification = "Analyzer reflection skill issue in IsBlittable.")]
+#endif
+        public static bool IsBlittable(
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] 
+#endif
+            Type type)
         {
             if (type.IsArray)
             {
@@ -40,8 +52,12 @@ namespace Reloaded.Memory.Utilities
                 return false;
             }
         }
-
-        private static class IsBlittableCache<T>
+        
+        private static class IsBlittableCache<
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+        T>
         {
             public static readonly bool Value = IsBlittable(typeof(T));
         }

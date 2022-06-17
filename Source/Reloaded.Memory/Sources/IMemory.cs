@@ -1,4 +1,7 @@
 ﻿using System;
+#if NET5_0_OR_GREATER
+using System.Diagnostics.CodeAnalysis;
+#endif
 using Reloaded.Memory.Exceptions;
 
 namespace Reloaded.Memory.Sources
@@ -15,7 +18,7 @@ namespace Reloaded.Memory.Sources
         /// <param name="memoryAddress">The memory address to read from.</param>
         /// <param name="value">Local variable to receive the read in struct.</param>
         /// <exception cref="MemoryException">Failed to read memory.</exception>
-        void Read<T>       (IntPtr memoryAddress, out T value) where T : unmanaged;
+        void Read<T> (IntPtr memoryAddress, out T value) where T : unmanaged;
 
         /// <summary>
         /// Reads a generic type from a specified memory address.
@@ -25,7 +28,11 @@ namespace Reloaded.Memory.Sources
         /// <param name="value">Local variable to receive the read in struct.</param>
         /// <param name="marshal">Set this to true to enable struct marshalling.</param>
         /// <exception cref="MemoryException">Failed to read memory.</exception>
-        void Read<T>        (IntPtr memoryAddress, out T value, bool marshal);
+        void Read<
+#if NET5_0_OR_GREATER 
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+        T> (IntPtr memoryAddress, out T value, bool marshal);
 
         /// <summary>
         /// Reads raw data from a specified memory address.

@@ -13,7 +13,11 @@ namespace Reloaded.Memory.Pointers
     /// Note: This class is not safe/does not perform range checks.
     /// It exists to provide additional functionality like LINQ which otherwise cannot be achieved without knowing amount of elements.
     /// </summary>
-    public unsafe struct FixedArrayPtr<TStruct> : IEnumerable<TStruct>, IArrayPtr<TStruct>
+    public unsafe struct FixedArrayPtr<
+#if NET5_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+    TStruct> : IEnumerable<TStruct>, IArrayPtr<TStruct>
     {
         /// <inheritdoc />
         public void* Pointer { get; set; }

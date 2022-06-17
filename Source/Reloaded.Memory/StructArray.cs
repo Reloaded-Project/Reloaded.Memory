@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+#if NET5_0_OR_GREATER
+using System.Diagnostics.CodeAnalysis;
+#endif
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -22,7 +25,11 @@ namespace Reloaded.Memory
         /// <param name="value">Local variable to receive the read in struct array.</param>
         /// <param name="arrayLength">The number of items to read from memory.</param>
         /// <param name="marshal">Set to true to marshal the element.</param>
-        public static void FromPtr<T>(IntPtr memoryAddress, out T[] value, int arrayLength, bool marshal = false)
+        public static void FromPtr<
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+        T>(IntPtr memoryAddress, out T[] value, int arrayLength, bool marshal = false)
         {
             int structSize = Struct.GetSize<T>(marshal);
 #if NET5_0_OR_GREATER
@@ -65,7 +72,11 @@ namespace Reloaded.Memory
         /// <param name="marshalElement">Set to true to marshal the element.</param>
         /// <param name="length">The amount of elements to read from the byte array.</param>
         /// <param name="startIndex">The index in the byte array to read the element(s) from.</param>
-        public static void FromArray<T>(byte[] data, out T[] value, bool marshalElement, int length = 0,
+        public static void FromArray<
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+        T>(byte[] data, out T[] value, bool marshalElement, int length = 0,
             int startIndex = 0)
         {
             int structSize = Struct.GetSize<T>(marshalElement);
@@ -75,7 +86,7 @@ namespace Reloaded.Memory
             for (int x = 0; x < value.Length; x++)
             {
                 int offset = startIndex + (structSize * x);
-                Struct.FromArray<T>(data, out T result, marshalElement, offset);
+                Struct.FromArray(data, out T result, marshalElement, offset);
                 value[x] = result;
             }
         }

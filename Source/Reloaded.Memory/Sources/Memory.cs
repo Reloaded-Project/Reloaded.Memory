@@ -1,4 +1,7 @@
 ﻿using System;
+#if NET5_0_OR_GREATER
+using System.Diagnostics.CodeAnalysis;
+#endif
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Reloaded.Memory.Exceptions;
@@ -32,7 +35,11 @@ namespace Reloaded.Memory.Sources
         }
 
         /// <inheritdoc />
-        public void Read<T>(IntPtr memoryAddress, out T value, bool marshal)
+        public void Read<
+#if NET5_0_OR_GREATER 
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+        T>(IntPtr memoryAddress, out T value, bool marshal)
         {
             value = marshal ? Marshal.PtrToStructure<T>(memoryAddress) : Unsafe.Read<T>((void*)memoryAddress);
         }

@@ -1,4 +1,7 @@
 using System;
+#if NET5_0_OR_GREATER
+using System.Diagnostics.CodeAnalysis;
+#endif
 using System.Runtime.CompilerServices;
 using Reloaded.Memory.Sources;
 
@@ -10,7 +13,11 @@ namespace Reloaded.Memory.Pointers
     /// TStruct can be a primitive, a struct or a class with explicit StructLayout attribute.
     /// </summary>
     /// <typeparam name="TStruct">Value type to hold a reference to.</typeparam>
-    public unsafe struct Pointer<TStruct>
+    public unsafe struct Pointer<
+#if NET5_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+    TStruct>
     {
         /// <summary>
         /// Gets the pointer to the value.

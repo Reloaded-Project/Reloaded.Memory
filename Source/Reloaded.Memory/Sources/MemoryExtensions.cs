@@ -42,7 +42,11 @@ namespace Reloaded.Memory.Sources
         /// <param name="memoryAddress">The memory address to read from.</param>
         /// <param name="arrayLength">The amount of array items to read.</param>
         /// <param name="marshal">Set this to true to enable struct marshalling.</param>
-        public static void Read<TMemory, T>(this TMemory memory, IntPtr memoryAddress, out T[] value, int arrayLength, bool marshal = false) where TMemory : IMemory
+        public static void Read<TMemory,
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+        T>(this TMemory memory, IntPtr memoryAddress, out T[] value, int arrayLength, bool marshal = false) where TMemory : IMemory
         {
             IMemory oldSource = Struct.Source;
             Struct.Source = memory;
@@ -66,7 +70,11 @@ namespace Reloaded.Memory.Sources
         /// <param name="memoryAddress">The memory address to read from.</param>
         /// <param name="value">Local variable to receive the read in struct.</param>
         /// <param name="marshal">Set this to true to enable struct marshalling.</param>
-        public static void SafeRead<TMemory, T>(this TMemory memory, IntPtr memoryAddress, out T value, bool marshal) where TMemory : IMemory
+        public static void SafeRead<TMemory,
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+        T>(this TMemory memory, IntPtr memoryAddress, out T value, bool marshal) where TMemory : IMemory
         {
             int structSize = Struct.GetSize<T>(marshal);
 
@@ -124,7 +132,11 @@ namespace Reloaded.Memory.Sources
         /// <param name="value">Local variable to receive the read in struct array.</param>
         /// <param name="arrayLength">The amount of array items to read.</param>
         /// <param name="marshal">Set this to true to enable struct marshalling.</param>
-        public static void SafeRead<TMemory, T>(this TMemory memory, IntPtr memoryAddress, out T[] value, int arrayLength, bool marshal = false) where TMemory : IMemory
+        public static void SafeRead<TMemory,
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+        T>(this TMemory memory, IntPtr memoryAddress, out T[] value, int arrayLength, bool marshal = false) where TMemory : IMemory
         {
             int regionSize = StructArray.GetSize<T>(arrayLength, marshal);
 
@@ -259,7 +271,11 @@ namespace Reloaded.Memory.Sources
         /// <param name="marshal">Set true to marshal memory, else false.</param>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Read<TMemory, T>(this TMemory memory, int memoryAddress, bool marshal) where TMemory : IMemory
+        public static T Read<TMemory,
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+        T>(this TMemory memory, int memoryAddress, bool marshal) where TMemory : IMemory
         {
             memory.Read<T>((IntPtr)memoryAddress, out var result, marshal);
             return result;
@@ -290,7 +306,11 @@ namespace Reloaded.Memory.Sources
         /// <param name="marshal">Set true to marshal memory, else false.</param>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Read<TMemory, T>(this TMemory memory, long memoryAddress, bool marshal) where TMemory : IMemory
+        public static T Read<TMemory,
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+            T>(this TMemory memory, long memoryAddress, bool marshal) where TMemory : IMemory
         {
             memory.Read<T>((IntPtr)memoryAddress, out var result, marshal);
             return result;
@@ -323,7 +343,11 @@ namespace Reloaded.Memory.Sources
         /// <param name="marshal">Set true to marshal memory, else false.</param>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Read<TMemory, T>(this TMemory memory, IntPtr memoryAddress, bool marshal) where TMemory : IMemory
+        public static T Read<TMemory,
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+        T>(this TMemory memory, IntPtr memoryAddress, bool marshal) where TMemory : IMemory
         {
             memory.Read<T>(memoryAddress, out var result, marshal);
             return result;

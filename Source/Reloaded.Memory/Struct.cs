@@ -55,7 +55,11 @@ namespace Reloaded.Memory
         /// <param name="marshalElement">Set to true to marshal the element.</param>
         [ExcludeFromCodeCoverage] // Proxy Overload (Source.Read cannot be set default)
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void FromPtr<T>(IntPtr pointer, out T value, bool marshalElement = false) => FromPtr(pointer, out value, Source.Read<T>, marshalElement);
+        public static void FromPtr<
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+        T>(IntPtr pointer, out T value, bool marshalElement = false) => FromPtr(pointer, out value, Source.Read, marshalElement);
 
 
         /* Implementation */
@@ -88,7 +92,11 @@ namespace Reloaded.Memory
         /// <param name="marshalElement">Set to true to marshal the element.</param>
         /// <param name="startIndex">The index in the byte array to read the element from.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void FromArray<T>(byte[] data, out T value, bool marshalElement = true, int startIndex = 0)
+        public static void FromArray<
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+        T>(byte[] data, out T value, bool marshalElement = true, int startIndex = 0)
         {
             fixed (byte* dataPtr = data)
             {

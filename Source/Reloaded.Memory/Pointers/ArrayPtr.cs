@@ -1,5 +1,7 @@
 using System;
+#if NET5_0_OR_GREATER
 using System.Diagnostics.CodeAnalysis;
+#endif
 using System.Runtime.CompilerServices;
 using Reloaded.Memory.Sources;
 
@@ -9,7 +11,12 @@ namespace Reloaded.Memory.Pointers
     /// Abstracts a native 'C' type array of unknown size in memory to a more familiar interface.
     /// TStruct can be a primitive, a struct or a class with explicit StructLayout attribute.
     /// </summary>
-    public unsafe struct ArrayPtr<TStruct> : IArrayPtr<TStruct>
+
+    public unsafe struct ArrayPtr<
+#if NET5_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+    TStruct> : IArrayPtr<TStruct>
     {
         /* See IArrayPtr for member definitions. */
         

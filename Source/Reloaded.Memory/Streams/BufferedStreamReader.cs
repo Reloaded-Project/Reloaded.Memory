@@ -1,4 +1,7 @@
 ﻿using System;
+#if NET5_0_OR_GREATER
+using System.Diagnostics.CodeAnalysis;
+#endif
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -146,7 +149,11 @@ namespace Reloaded.Memory.Streams
         [SkipLocalsInit]
 #endif
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Read<T>(out T value, bool marshal)
+        public void Read<
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+        T>(out T value, bool marshal)
         {
             int size = Struct.GetSize<T>(marshal);
             ReFillIfNecessary(size);
@@ -182,7 +189,11 @@ namespace Reloaded.Memory.Streams
         /// </summary>
         /// <param name="marshal">Set to true to perform marshalling on the value being read, else false.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T Read<T>(bool marshal)
+        public T Read<
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+        T>(bool marshal)
         {
             Read(out T value, marshal);
             return value;
@@ -205,7 +216,11 @@ namespace Reloaded.Memory.Streams
         /// <param name="value">The value to output.</param>
         /// <param name="marshal">Set to true to perform marshalling on the value being read, else false.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Peek<T>(out T value, bool marshal)
+        public void Peek<
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+        T>(out T value, bool marshal)
         {
             ReFillIfNecessary(Struct.GetSize<T>(marshal));
             _memory.Read(_gcHandlePtr + _bufferOffset, out value, marshal);
@@ -228,7 +243,11 @@ namespace Reloaded.Memory.Streams
         /// </summary>
         /// <param name="marshal">Set to true to perform marshalling on the value being read, else false.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T Peek<T>(bool marshal)
+        public T Peek<
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+        T>(bool marshal)
         {
             Peek(out T value, marshal);
             return value;
