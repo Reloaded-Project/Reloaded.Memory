@@ -12,7 +12,7 @@ namespace Reloaded.Memory.Tests.Memory.Helpers
     public class IArrayPtrGenerator : IEnumerable<object[]>, IDisposable
     {
         public static Reloaded.Memory.Sources.Memory CurrentProcess = Reloaded.Memory.Sources.Memory.CurrentProcess;
-        public static IntPtr AdventurePhysicsArray;
+        public static nuint AdventurePhysicsArray;
 
         /// <summary>
         /// The amount of elements in phys.bin. When we go test <see cref="StructArray"/>, we will test for autodetection of this value.
@@ -32,8 +32,8 @@ namespace Reloaded.Memory.Tests.Memory.Helpers
 
             _data = new List<object[]>
             {
-                new object[] { new Reloaded.Memory.Pointers.ArrayPtr     <AdventurePhysics>((ulong) AdventurePhysicsArray, false, CurrentProcess) },
-                new object[] { new Reloaded.Memory.Pointers.FixedArrayPtr<AdventurePhysics>((ulong) AdventurePhysicsArray, 10, false, CurrentProcess) }
+                new object[] { new Reloaded.Memory.Pointers.ArrayPtr     <AdventurePhysics>(AdventurePhysicsArray, false, CurrentProcess) },
+                new object[] { new Reloaded.Memory.Pointers.FixedArrayPtr<AdventurePhysics>(AdventurePhysicsArray, 10, false, CurrentProcess) }
             };
         }
 

@@ -40,7 +40,7 @@ namespace Reloaded.Memory.Pointers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public TStruct GetValue()
         {
-            Source.Read<TStruct>((IntPtr)Address, out var value, MarshalElements);
+            Source.Read<TStruct>((nuint)Address, out var value, MarshalElements);
             return value;
         }
 
@@ -50,7 +50,7 @@ namespace Reloaded.Memory.Pointers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void GetValue(out TStruct value)
         {
-            Source.Read((IntPtr)Address, out value, MarshalElements);
+            Source.Read((nuint)Address, out value, MarshalElements);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Reloaded.Memory.Pointers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetValue(TStruct value)
         {
-            Source.Write((IntPtr)Address, ref value, MarshalElements);
+            Source.Write((nuint)Address, ref value, MarshalElements);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace Reloaded.Memory.Pointers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetValue(ref TStruct value)
         {
-            Source.Write((IntPtr)Address, ref value, MarshalElements);
+            Source.Write((nuint)Address, ref value, MarshalElements);
         }
 
         /*
@@ -84,7 +84,7 @@ namespace Reloaded.Memory.Pointers
         /// <param name="address">The address of the pointer pointing to generic type {T}</param>
         /// <param name="marshalElements">If this is true; elements will be marshaled as they are read in and out from memory.</param>
         /// <param name="memorySource">Specifies the source from which the pointer should be read/written.</param>
-        public Pointer(ulong address, bool marshalElements = false, IMemory memorySource = null)
+        public Pointer(nuint address, bool marshalElements = false, IMemory memorySource = null)
         {
             Address = (void*)address;
             MarshalElements = marshalElements;

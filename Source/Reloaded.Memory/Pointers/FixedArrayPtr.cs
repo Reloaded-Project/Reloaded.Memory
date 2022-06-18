@@ -56,14 +56,14 @@ namespace Reloaded.Memory.Pointers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Get(out TStruct value, int index)
         {
-            Source.Read((IntPtr)GetPointerToElement(index), out value, MarshalElements);
+            Source.Read((nuint)GetPointerToElement(index), out value, MarshalElements);
         }
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Set(ref TStruct value, int index)
         {
-            Source.Write((IntPtr)GetPointerToElement(index), ref value, MarshalElements);
+            Source.Write((nuint)GetPointerToElement(index), ref value, MarshalElements);
         }
 
         /*
@@ -80,7 +80,7 @@ namespace Reloaded.Memory.Pointers
         /// <param name="count">The amount of elements in the array structure in memory.</param>
         /// <param name="marshalElements">If this is set to true elements will be marshaled as they are read in and out from memory.</param>
         /// <param name="source">Specifies the source from which the individual array elements should be read/written. This defaults to current process/local memory.</param>
-        public FixedArrayPtr(ulong address, int count, bool marshalElements = false, IMemory source = null)
+        public FixedArrayPtr(nuint address, int count, bool marshalElements = false, IMemory source = null)
         {
             Pointer = (void*)address;
             Count = count;

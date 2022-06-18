@@ -29,7 +29,7 @@ namespace Reloaded.Memory.Sources
         */
 
         /// <inheritdoc />
-        public void Read<T>(IntPtr memoryAddress, out T value) where T : unmanaged
+        public void Read<T>(nuint memoryAddress, out T value) where T : unmanaged
         {
             value = Unsafe.Read<T>((void*)memoryAddress);
         }
@@ -39,45 +39,45 @@ namespace Reloaded.Memory.Sources
 #if NET5_0_OR_GREATER 
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 #endif
-        T>(IntPtr memoryAddress, out T value, bool marshal)
+        T>(nuint memoryAddress, out T value, bool marshal)
         {
-            value = marshal ? Marshal.PtrToStructure<T>(memoryAddress) : Unsafe.Read<T>((void*)memoryAddress);
+            value = marshal ? Marshal.PtrToStructure<T>(unchecked((nint)memoryAddress)) : Unsafe.Read<T>((void*)memoryAddress);
         }
 
         /// <inheritdoc />
-        public void ReadRaw(IntPtr memoryAddress, out byte[] value, int length)
+        public void ReadRaw(nuint memoryAddress, out byte[] value, int length)
         {
 #if NET5_0_OR_GREATER
             value = GC.AllocateUninitializedArray<byte>(length, false);
 #else
             value = new byte[length];
 #endif
-            Marshal.Copy(memoryAddress, value, 0, value.Length);
+            Marshal.Copy(unchecked((nint)memoryAddress), value, 0, value.Length);
         }
 
         /// <inheritdoc />
-        public void Write<T>(IntPtr memoryAddress, ref T item) where T : unmanaged
+        public void Write<T>(nuint memoryAddress, ref T item) where T : unmanaged
         {
             Unsafe.Write((void*)memoryAddress, item);
         }
 
         /// <inheritdoc />
-        public void Write<T>(IntPtr memoryAddress, ref T item, bool marshal)
+        public void Write<T>(nuint memoryAddress, ref T item, bool marshal)
         {
             if (marshal)
-                Marshal.StructureToPtr(item, memoryAddress, false);
+                Marshal.StructureToPtr(item, unchecked((nint)memoryAddress), false);
             else
                 Unsafe.Write((void*)memoryAddress, item);
         }
 
         /// <inheritdoc />
-        public void WriteRaw(IntPtr memoryAddress, byte[] data)
+        public void WriteRaw(nuint memoryAddress, byte[] data)
         {
-            Marshal.Copy(data, 0, memoryAddress, data.Length);
+            Marshal.Copy(data, 0, unchecked((nint)memoryAddress), data.Length);
         }
 
         /// <inheritdoc />
-        public IntPtr Allocate(int length)
+        public nuint Allocate(int length)
         {
             // DO NOT USE Marshal.AllocHGlobal (GlobalAlloc)
             // Using AllocHGlobal will allocate our memory in a page that may be shared with other content; 
@@ -89,22 +89,22 @@ namespace Reloaded.Memory.Sources
                 pages in the heap grant at least read and write access.
             */
 
-            IntPtr returnAddress = Kernel32.Kernel32.VirtualAlloc
+            nuint returnAddress = Kernel32.Kernel32.VirtualAlloc
             (
-                IntPtr.Zero,
+                UIntPtr.Zero,
                 (UIntPtr) length,
                 Kernel32.Kernel32.MEM_ALLOCATION_TYPE.MEM_COMMIT | Kernel32.Kernel32.MEM_ALLOCATION_TYPE.MEM_RESERVE,
                 Kernel32.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE
             );
 
-            if (returnAddress == IntPtr.Zero)
+            if (returnAddress == 0)
                 throw new MemoryAllocationException($"Failed to allocate memory in current process: {length} bytes, {Marshal.GetLastWin32Error()} last error.");
 
             return returnAddress;
         }
 
         /// <inheritdoc />
-        public bool    Free(IntPtr address)
+        public bool    Free(nuint address)
         {
             Kernel32.Kernel32.VirtualFree(address, (UIntPtr) 0, Kernel32.Kernel32.MEM_ALLOCATION_TYPE.MEM_RELEASE);
             return true;
@@ -117,12 +117,12 @@ namespace Reloaded.Memory.Sources
         */
 
         /// <inheritdoc />
-        public Kernel32.Kernel32.MEM_PROTECTION ChangePermission(IntPtr memoryAddress, int size, Kernel32.Kernel32.MEM_PROTECTION newPermissions)
+        public Kernel32.Kernel32.MEM_PROTECTION ChangePermission(nuint memoryAddress, int size, Kernel32.Kernel32.MEM_PROTECTION newPermissions)
         {
             bool result = Kernel32.Kernel32.VirtualProtect(memoryAddress, (UIntPtr) size, newPermissions, out Kernel32.Kernel32.MEM_PROTECTION oldPermissions);
 
             if (!result)
-                throw new MemoryPermissionException($"Unable to change permissions for the following memory address {memoryAddress.ToString("X")} of size {size} and permission {newPermissions.ToString()}");
+                throw new MemoryPermissionException($"Unable to change permissions for the following memory address {memoryAddress} of size {size} and permission {newPermissions}");
 
             return oldPermissions;
         }

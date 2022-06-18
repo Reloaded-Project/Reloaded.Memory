@@ -27,7 +27,7 @@ namespace Reloaded.Memory.Kernel32
         [SuppressUnmanagedCodeSecurity]
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool ReadProcessMemory([In] IntPtr hProcess, [In] IntPtr lpBaseAddress, IntPtr lpBuffer, UIntPtr nSize, out UIntPtr lpNumberOfBytesRead);
+        public static extern bool ReadProcessMemory([In] IntPtr hProcess, [In] UIntPtr lpBaseAddress, UIntPtr lpBuffer, UIntPtr nSize, out UIntPtr lpNumberOfBytesRead);
 
 
         /// <summary>Writes data to an area of memory in a specified process. The entire area to be written to must be accessible or the operation fails.</summary>
@@ -54,7 +54,7 @@ namespace Reloaded.Memory.Kernel32
         [SuppressUnmanagedCodeSecurity]
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool WriteProcessMemory([In] IntPtr hProcess, [In] IntPtr lpBaseAddress, [In] IntPtr lpBuffer, UIntPtr nSize, out UIntPtr lpNumberOfBytesWritten);
+        public static extern bool WriteProcessMemory([In] IntPtr hProcess, [In] UIntPtr lpBaseAddress, [In] UIntPtr lpBuffer, UIntPtr nSize, out UIntPtr lpNumberOfBytesWritten);
 
 
 
@@ -184,7 +184,7 @@ namespace Reloaded.Memory.Kernel32
         /// </returns>
         [SuppressUnmanagedCodeSecurity]
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr VirtualAllocEx([In] IntPtr hProcess, [In] IntPtr lpAddress, UIntPtr dwSize, MEM_ALLOCATION_TYPE flAllocationType, Kernel32.MEM_PROTECTION flProtect);
+        public static extern nuint VirtualAllocEx([In] IntPtr hProcess, [In] UIntPtr lpAddress, UIntPtr dwSize, MEM_ALLOCATION_TYPE flAllocationType, Kernel32.MEM_PROTECTION flProtect);
 
 
         /// <summary>Releases, decommits, or releases and decommits a region of memory within the virtual address space of a specified process.</summary>
@@ -248,7 +248,7 @@ namespace Reloaded.Memory.Kernel32
         [SuppressUnmanagedCodeSecurity]
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool VirtualFreeEx([In] IntPtr hProcess, [In] IntPtr lpAddress, UIntPtr dwSize, MEM_ALLOCATION_TYPE dwFreeType);
+        public static extern bool VirtualFreeEx([In] IntPtr hProcess, [In] UIntPtr lpAddress, UIntPtr dwSize, MEM_ALLOCATION_TYPE dwFreeType);
 
         /// <summary>Changes the protection on a region of committed pages in the virtual address space of a specified process.</summary>
         /// <param name="hProcess">
@@ -286,7 +286,7 @@ namespace Reloaded.Memory.Kernel32
         [SuppressUnmanagedCodeSecurity]
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool VirtualProtectEx([In] IntPtr hProcess, [In] IntPtr lpAddress, UIntPtr dwSize, MEM_PROTECTION flNewProtect, out Kernel32.MEM_PROTECTION lpflOldProtect);
+        public static extern bool VirtualProtectEx([In] IntPtr hProcess, [In] UIntPtr lpAddress, UIntPtr dwSize, MEM_PROTECTION flNewProtect, out Kernel32.MEM_PROTECTION lpflOldProtect);
 
         /// <summary>
         /// <para>
@@ -415,7 +415,7 @@ namespace Reloaded.Memory.Kernel32
         /// </returns>
         [SuppressUnmanagedCodeSecurity]
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr VirtualAlloc([In] IntPtr lpAddress, UIntPtr dwSize, MEM_ALLOCATION_TYPE flAllocationType, MEM_PROTECTION flProtect);
+        public static extern nuint VirtualAlloc([In] UIntPtr lpAddress, UIntPtr dwSize, MEM_ALLOCATION_TYPE flAllocationType, MEM_PROTECTION flProtect);
 
         /// <summary>
         /// <para>Releases, decommits, or releases and decommits a region of pages within the virtual address space of the calling process.</para>
@@ -477,7 +477,7 @@ namespace Reloaded.Memory.Kernel32
         [SuppressUnmanagedCodeSecurity]
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool VirtualFree([In] IntPtr lpAddress, UIntPtr dwSize, MEM_ALLOCATION_TYPE dwFreeType);
+        public static extern bool VirtualFree([In] UIntPtr lpAddress, UIntPtr dwSize, MEM_ALLOCATION_TYPE dwFreeType);
 
 
         /// <summary>
@@ -515,7 +515,7 @@ namespace Reloaded.Memory.Kernel32
         [SuppressUnmanagedCodeSecurity]
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool VirtualProtect([In] IntPtr lpAddress, UIntPtr dwSize, MEM_PROTECTION flNewProtect, out MEM_PROTECTION lpflOldProtect);
+        public static extern bool VirtualProtect([In] UIntPtr lpAddress, UIntPtr dwSize, MEM_PROTECTION flNewProtect, out MEM_PROTECTION lpflOldProtect);
 
 
         /// <summary>The type of memory allocation.</summary>

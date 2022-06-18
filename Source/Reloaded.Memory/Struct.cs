@@ -16,7 +16,7 @@ namespace Reloaded.Memory
         /* Memory Sources */
 
         /// <summary>
-        /// Defines the source for the default memory reading and writing <see cref="ToPtr{T}(System.IntPtr,T,bool)"/> and <see cref="FromPtr{T}(System.IntPtr,out T,bool)"/> functions.
+        /// Defines the source for the default memory reading and writing <see cref="ToPtr{T}(nuint,T,bool)"/> and <see cref="FromPtr{T}(nuint,out T,bool)"/> functions.
         /// This also affects the <see cref="StructArray"/> class.
         /// </summary>
         public static IMemory Source { get; set; } = new Sources.Memory();
@@ -33,7 +33,7 @@ namespace Reloaded.Memory
         /// <param name="marshalElement">Set to true to marshal the element.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [ExcludeFromCodeCoverage] // Proxy Overload
-        public static void ToPtr<T>(IntPtr pointer, T item, bool marshalElement = false) => ToPtr(pointer, ref item, marshalElement);
+        public static void ToPtr<T>(nuint pointer, T item, bool marshalElement = false) => ToPtr(pointer, ref item, marshalElement);
 
         /// <summary>
         /// Writes an item with a specified structure or class type with explicit StructLayout attribute to a pointer/memory address.
@@ -43,7 +43,7 @@ namespace Reloaded.Memory
         /// <param name="marshalElement">Set to true to marshal the element.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [ExcludeFromCodeCoverage] // Proxy Overload
-        public static void ToPtr<T>(IntPtr pointer, ref T item, bool marshalElement = false) => ToPtr(pointer, ref item, Source.Write, marshalElement);
+        public static void ToPtr<T>(nuint pointer, ref T item, bool marshalElement = false) => ToPtr(pointer, ref item, Source.Write, marshalElement);
 
         /* FromPtr: Default Setting Shorthands */
 
@@ -59,7 +59,7 @@ namespace Reloaded.Memory
 #if NET5_0_OR_GREATER
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 #endif
-        T>(IntPtr pointer, out T value, bool marshalElement = false) => FromPtr(pointer, out value, Source.Read, marshalElement);
+        T>(nuint pointer, out T value, bool marshalElement = false) => FromPtr(pointer, out value, Source.Read, marshalElement);
 
 
         /* Implementation */
@@ -72,7 +72,7 @@ namespace Reloaded.Memory
         /// <param name="marshalElement">Set to true to marshal the element.</param>
         /// <param name="writeFunction">The function to use that writes data to memory given a pointer, item, type and marshal option.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void ToPtr<T>(IntPtr pointer, ref T item, MemoryExtensions.WriteFunction<T> writeFunction, bool marshalElement = false) => writeFunction(pointer, ref item, marshalElement);
+        public static void ToPtr<T>(nuint pointer, ref T item, MemoryExtensions.WriteFunction<T> writeFunction, bool marshalElement = false) => writeFunction(pointer, ref item, marshalElement);
 
         /// <summary>
         /// Converts a pointer/memory address to a specified structure or class type with explicit StructLayout attribute.
@@ -82,7 +82,7 @@ namespace Reloaded.Memory
         /// <param name="value">Local variable to receive the read in struct.</param>
         /// <param name="readFunction">A function that reads data from memory given a pointer, type and marshal option.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void FromPtr<T>(IntPtr pointer, out T value, MemoryExtensions.ReadFunction<T> readFunction, bool marshalElement = false) => readFunction(pointer, out value, marshalElement);
+        public static void FromPtr<T>(nuint pointer, out T value, MemoryExtensions.ReadFunction<T> readFunction, bool marshalElement = false) => readFunction(pointer, out value, marshalElement);
 
         /// <summary>
         /// Converts a byte array to a specified structure or class type with explicit StructLayout attribute.

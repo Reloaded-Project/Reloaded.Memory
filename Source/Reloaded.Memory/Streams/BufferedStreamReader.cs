@@ -15,7 +15,7 @@ namespace Reloaded.Memory.Streams
     ///
     /// Limitation: Class cannot read structs larger than buffer size. This is not checked for!
     /// </summary>
-    public partial class BufferedStreamReader : IDisposable
+    public unsafe partial class BufferedStreamReader : IDisposable
     {
         private readonly Stream _stream;
         private readonly byte[] _buffer;
@@ -158,7 +158,7 @@ namespace Reloaded.Memory.Streams
             int size = Struct.GetSize<T>(marshal);
             ReFillIfNecessary(size);
 
-            _memory.Read(_gcHandlePtr + _bufferOffset, out value, marshal);
+            _memory.Read((UIntPtr)(void*)_gcHandlePtr + _bufferOffset, out value, marshal);
 
             _bufferOffset += size;
             _bufferedBytesRemaining -= size;
@@ -223,7 +223,7 @@ namespace Reloaded.Memory.Streams
         T>(out T value, bool marshal)
         {
             ReFillIfNecessary(Struct.GetSize<T>(marshal));
-            _memory.Read(_gcHandlePtr + _bufferOffset, out value, marshal);
+            _memory.Read((UIntPtr)(void*)_gcHandlePtr + _bufferOffset, out value, marshal);
         }
 
         /// <summary>

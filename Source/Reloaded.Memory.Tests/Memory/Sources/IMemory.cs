@@ -65,8 +65,8 @@ namespace Reloaded.Memory.Tests.Memory.Sources
             IMemoryTools.SwapExternalMemorySource(ref memorySource, _helloWorldProcess);
 
             // Test
-            IntPtr pointer = memorySource.Allocate(0xFFFF);
-            Assert.NotEqual((IntPtr)0, pointer);
+            nuint pointer = memorySource.Allocate(0xFFFF);
+            Assert.NotEqual((nuint)0, pointer);
             memorySource.Free(pointer);
         }
 
@@ -80,7 +80,7 @@ namespace Reloaded.Memory.Tests.Memory.Sources
         {
             // Prepare
             IMemoryTools.SwapExternalMemorySource(ref memorySource, _helloWorldProcess);
-            IntPtr pointer = memorySource.Allocate(0x100);
+            nuint pointer = memorySource.Allocate(0x100);
 
             /* Start Test */
 
@@ -110,7 +110,7 @@ namespace Reloaded.Memory.Tests.Memory.Sources
             // Prepare
             int allocationSize = 0x100;
             IMemoryTools.SwapExternalMemorySource(ref memorySource, _helloWorldProcess);
-            IntPtr pointer = memorySource.Allocate(allocationSize);
+            nuint pointer = memorySource.Allocate(allocationSize);
 
             /* Start Test */
 
@@ -139,7 +139,7 @@ namespace Reloaded.Memory.Tests.Memory.Sources
         {
             // Prepare
             IMemoryTools.SwapExternalMemorySource(ref memorySource, _helloWorldProcess);
-            IntPtr pointer = memorySource.Allocate(0x100);
+            nuint pointer = memorySource.Allocate(0x100);
 
             /* Start Test */
 
@@ -168,7 +168,7 @@ namespace Reloaded.Memory.Tests.Memory.Sources
         {
             // Prepare
             IMemoryTools.SwapExternalMemorySource(ref memorySource, _helloWorldProcess);
-            IntPtr pointer = memorySource.Allocate(0x100);
+            nuint pointer = memorySource.Allocate(0x100);
 
             /* Start Test */
 
@@ -205,7 +205,7 @@ namespace Reloaded.Memory.Tests.Memory.Sources
         {
             // Prepare
             IMemoryTools.SwapExternalMemorySource(ref memorySource, _helloWorldProcess);
-            IntPtr pointer = memorySource.Allocate(0x100);
+            nuint pointer = memorySource.Allocate(0x100);
 
             /* Start Test */
 
@@ -235,12 +235,12 @@ namespace Reloaded.Memory.Tests.Memory.Sources
             /* Start Test */
 
             // Run the change permission function to deny read/write access.
-            try { memorySource.ChangePermission((IntPtr)(-1), 0x100, Kernel32.Kernel32.MEM_PROTECTION.PAGE_NOACCESS); }
+            try { memorySource.ChangePermission(unchecked((nuint)(-1)), 0x100, Kernel32.Kernel32.MEM_PROTECTION.PAGE_NOACCESS); }
             catch (NotImplementedException)          { return; } // ChangePermission is optional to implement
             catch (MemoryPermissionException) { return; } // Thrown as expected.
 
             // Cleanup on fail.
-            memorySource.ChangePermission((IntPtr)(-1), 0x100, Kernel32.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
+            memorySource.ChangePermission(unchecked((nuint)(-1)), 0x100, Kernel32.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
             Assert.True(false, "This method should throw CannotChangePermissionsException");
         }
     }

@@ -24,7 +24,7 @@ namespace Reloaded.Memory.Tests.Memory
                 randomIntegers[x] = RandomIntStruct.BuildRandomStruct();
 
             // Allocate memory for these structs.
-            IntPtr memoryPtr = _currentProcess.Allocate(Reloaded.Memory.StructArray.GetSize<RandomIntStruct>(randomStructNumber));
+            nuint memoryPtr = _currentProcess.Allocate(Reloaded.Memory.StructArray.GetSize<RandomIntStruct>(randomStructNumber));
            
             // Write random int struct array to pointer.
             Reloaded.Memory.StructArray.ToPtr(memoryPtr, randomIntegers);

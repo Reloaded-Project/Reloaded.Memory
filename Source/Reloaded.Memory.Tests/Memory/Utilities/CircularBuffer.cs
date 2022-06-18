@@ -40,14 +40,14 @@ namespace Reloaded.Memory.Tests.Memory.Utilities
             for (int x = 0; x < bufferElements; x++)
             {
                 // Save write pointer.
-                IntPtr nextPointer = buffer.WritePointer + structSize;
+                nuint nextPointer = (UIntPtr)buffer.WritePointer + structSize;
 
                 var address = buffer.Add(ref randomIntStructs[x]);
                 memory.Read(address, out RandomIntStruct randIntStruct);
 
                 // Check correct element and pointer did not loop.
                 Assert.Equal(randomIntStructs[x], randIntStruct);
-                Assert.Equal(nextPointer, buffer.WritePointer);
+                Assert.Equal((nuint)nextPointer, buffer.WritePointer);
             }
 
             // Now check if item can fit, it should not.
@@ -68,15 +68,15 @@ namespace Reloaded.Memory.Tests.Memory.Utilities
 
             // Will not fit.
             Assert.Equal(Reloaded.Memory.Utilities.CircularBuffer.ItemFit.No, buffer.CanItemFit(tooBigForBuffer.Length));
-            Assert.Equal(IntPtr.Zero, buffer.Add(tooBigForBuffer));
+            Assert.Equal((nuint)0, buffer.Add(tooBigForBuffer));
 
             // Will fit in current loop. Note Offset = 0.
             Assert.Equal(Reloaded.Memory.Utilities.CircularBuffer.ItemFit.Yes, buffer.CanItemFit(sameSizeAsBuffer.Length));
-            Assert.NotEqual(IntPtr.Zero, buffer.Add(sameSizeAsBuffer));
+            Assert.NotEqual((nuint)0, buffer.Add(sameSizeAsBuffer));
             
             buffer.Offset = 1; // Will fit on next loop.
             Assert.Equal(Reloaded.Memory.Utilities.CircularBuffer.ItemFit.StartOfBuffer, buffer.CanItemFit(sameSizeAsBuffer.Length));
-            Assert.NotEqual(IntPtr.Zero, buffer.Add(sameSizeAsBuffer));
+            Assert.NotEqual((nuint)0, buffer.Add(sameSizeAsBuffer));
             
             // Cleanup
             buffer.Dispose();

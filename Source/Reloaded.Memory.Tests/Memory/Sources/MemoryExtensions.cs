@@ -43,7 +43,7 @@ namespace Reloaded.Memory.Tests.Memory.Sources
             // Prepare
             int structSize = Struct.GetSize<RandomIntStruct>();
             IMemoryTools.SwapExternalMemorySource(ref memorySource, _helloWorldProcess);
-            IntPtr pointer = memorySource.Allocate(structSize);
+            nuint pointer = memorySource.Allocate(structSize);
 
             /* Start Test */
 
@@ -90,7 +90,7 @@ namespace Reloaded.Memory.Tests.Memory.Sources
             // Prepare
             int arrayElements = 13432;
             IMemoryTools.SwapExternalMemorySource(ref memorySource, _helloWorldProcess);
-            IntPtr pointer = memorySource.Allocate(arrayElements);
+            nuint pointer = memorySource.Allocate(arrayElements);
 
             /* Start Test */
 
@@ -128,7 +128,7 @@ namespace Reloaded.Memory.Tests.Memory.Sources
             int arrayElements = 500;
             IMemoryTools.SwapExternalMemorySource(ref memorySource, _helloWorldProcess);
             int arraySize = Reloaded.Memory.StructArray.GetSize<RandomIntStruct>(arrayElements);
-            IntPtr pointer = memorySource.Allocate(arraySize);
+            nuint pointer = memorySource.Allocate(arraySize);
 
             /* Start Test */
 

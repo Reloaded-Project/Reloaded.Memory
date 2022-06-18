@@ -23,7 +23,7 @@ namespace Reloaded.Memory.Utilities
         /// <summary>
         /// The address of the <see cref="CircularBuffer"/>.
         /// </summary>
-        public IntPtr   Address   { get; set; }
+        public nuint Address   { get; set; }
 
         /// <summary>
         /// Size of the <see cref="CircularBuffer"/>.
@@ -33,7 +33,7 @@ namespace Reloaded.Memory.Utilities
         /// <summary>
         /// Returns the address of where the next element will be written onto the buffer.
         /// </summary>
-        public IntPtr   WritePointer => Address + Offset;
+        public nuint WritePointer => (UIntPtr)Address + Offset;
 
         /// <summary> Remaining space until the Circular buffer next loops. </summary>
         private int     Remaining    => Size - Offset;
@@ -67,17 +67,17 @@ namespace Reloaded.Memory.Utilities
         /// </summary>
         /// <param name="bytesToWrite">The bytes to add onto the buffer.</param>
         /// <returns>Pointer to the recently added item to the buffer, or IntPtr.Zero if the item cannot fit.</returns>
-        public IntPtr Add(byte[] bytesToWrite)
+        public nuint Add(byte[] bytesToWrite)
         {
             var canFit = CanItemFit(bytesToWrite.Length);
 
             if (canFit == ItemFit.No)
-                return IntPtr.Zero;
+                return 0;
 
             if (canFit == ItemFit.StartOfBuffer)
                 Offset = 0;
 
-            IntPtr writeAddress = WritePointer;
+            nuint writeAddress = WritePointer;
             Source.WriteRaw(writeAddress, bytesToWrite);
 
             Offset += bytesToWrite.Length;
@@ -90,7 +90,7 @@ namespace Reloaded.Memory.Utilities
         /// <param name="item">The item to add onto the buffer.</param>
         /// <param name="marshalElement">The element to be marshalled.</param>
         /// <returns>Pointer to the recently added item to the buffer.</returns>
-        public IntPtr Add<TStructure>(ref TStructure item, bool marshalElement = false)
+        public nuint Add<TStructure>(ref TStructure item, bool marshalElement = false)
         {
             return Add(Struct.GetBytes(ref item, marshalElement));
         }

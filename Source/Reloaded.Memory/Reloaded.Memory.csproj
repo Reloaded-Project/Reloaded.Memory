@@ -27,6 +27,7 @@
     <IsTrimmable>true</IsTrimmable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

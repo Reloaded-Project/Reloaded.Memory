@@ -18,7 +18,7 @@ namespace Reloaded.Memory.Sources
         /// <param name="memoryAddress">The memory address to read from.</param>
         /// <param name="value">Local variable to receive the read in struct.</param>
         /// <exception cref="MemoryException">Failed to read memory.</exception>
-        void Read<T> (IntPtr memoryAddress, out T value) where T : unmanaged;
+        void Read<T> (nuint memoryAddress, out T value) where T : unmanaged;
 
         /// <summary>
         /// Reads a generic type from a specified memory address.
@@ -32,7 +32,7 @@ namespace Reloaded.Memory.Sources
 #if NET5_0_OR_GREATER 
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 #endif
-        T> (IntPtr memoryAddress, out T value, bool marshal);
+        T> (nuint memoryAddress, out T value, bool marshal);
 
         /// <summary>
         /// Reads raw data from a specified memory address.
@@ -41,7 +41,7 @@ namespace Reloaded.Memory.Sources
         /// <param name="value">Local variable to receive the read in bytes.</param>
         /// <param name="length">The amount of bytes to read starting from the memoryAddress.</param>
         /// <exception cref="MemoryException">Failed to read memory.</exception>
-        void ReadRaw        (IntPtr memoryAddress, out byte[] value, int length);
+        void ReadRaw        (nuint memoryAddress, out byte[] value, int length);
 
         /// <summary>
         /// Writes a generic type to a specified memory address.
@@ -50,7 +50,7 @@ namespace Reloaded.Memory.Sources
         /// <param name="memoryAddress">The memory address to write to.</param>
         /// <param name="item">The item to write to the address.</param>
         /// <exception cref="MemoryException">Failed to write memory.</exception>
-        void Write<T>       (IntPtr memoryAddress, ref T item) where T : unmanaged;
+        void Write<T>       (nuint memoryAddress, ref T item) where T : unmanaged;
 
         /// <summary>
         /// Writes a generic type to a specified memory address.
@@ -60,7 +60,7 @@ namespace Reloaded.Memory.Sources
         /// <param name="item">The item to write to the address.</param>
         /// <param name="marshal">Set this to true to enable struct marshalling.</param>
         /// <exception cref="MemoryException">Failed to write memory.</exception>
-        void Write<T>       (IntPtr memoryAddress, ref T item, bool marshal);
+        void Write<T>       (nuint memoryAddress, ref T item, bool marshal);
 
         /// <summary>
         /// Writes raw data to a specified memory address.
@@ -68,7 +68,7 @@ namespace Reloaded.Memory.Sources
         /// <param name="memoryAddress">The memory address to read from.</param>
         /// <param name="data">The bytes to write to memoryAddress.</param>
         /// <exception cref="MemoryException">Failed to write memory.</exception>
-        void WriteRaw       (IntPtr memoryAddress, byte[] data);
+        void WriteRaw       (nuint memoryAddress, byte[] data);
 
         /// <summary>
         /// Allocates fixed size of memory inside the target memory source. 
@@ -78,7 +78,7 @@ namespace Reloaded.Memory.Sources
         /// <exception cref="NotImplementedException">Thrown if a deriving class does not implement this function.</exception>
         /// <exception cref="MemoryAllocationException">Failed to allocate memory.</exception>
         /// <returns>Address to the newly allocated memory.</returns>
-        IntPtr Allocate     (int length);
+        nuint Allocate     (int length);
 
         /// <summary>
         /// Frees memory previously allocated with <see cref="Allocate"/>.
@@ -86,7 +86,7 @@ namespace Reloaded.Memory.Sources
         /// <param name="address">The address of the memory to free.</param>
         /// <exception cref="NotImplementedException">Thrown if a deriving class does not implement this function.</exception>
         /// <returns>True if the operation is successful.</returns>
-        bool Free           (IntPtr address);
+        bool Free           (nuint address);
 
         /// <summary>
         /// Changes the page permissions for a specified combination of address and length.
@@ -97,6 +97,6 @@ namespace Reloaded.Memory.Sources
         /// <exception cref="NotImplementedException">Thrown if a deriving class does not implement this function.</exception>
         /// <exception cref="MemoryPermissionException">Failed to change permissions for the following memory address and size.</exception>
         /// <returns>The old page permissions.</returns>
-        Kernel32.Kernel32.MEM_PROTECTION ChangePermission     (IntPtr memoryAddress, int size, Kernel32.Kernel32.MEM_PROTECTION newPermissions);
+        Kernel32.Kernel32.MEM_PROTECTION ChangePermission     (nuint memoryAddress, int size, Kernel32.Kernel32.MEM_PROTECTION newPermissions);
     }
 }

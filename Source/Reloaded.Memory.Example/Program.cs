@@ -23,7 +23,7 @@ namespace Reloaded.Memory.Example
             var memory = Sources.Memory.CurrentProcess;     // Static/Preinitialized access to current process' memory.
 
             // Tutorial 0: Allocate/Free Memory
-            IntPtr memoryLocation = memory.Allocate(65535); // Did you think it would be harder?
+            nuint memoryLocation = memory.Allocate(65535); // Did you think it would be harder?
                                                             // Here's 65535 bytes at memoryLocation.
                                                             // You would free it with memory.Free(memoryLocation);
 
@@ -57,7 +57,7 @@ namespace Reloaded.Memory.Example
         /// </summary>
         /// <param name="memory">This object is used to perform memory read/write/free/allocate operations.</param>
         /// <param name="memoryLocation">Arbitrary location in memory where this tutorial will be held.</param>
-        private static void PrimitivesExample(Sources.Memory memory, IntPtr memoryLocation)
+        private static void PrimitivesExample(Sources.Memory memory, nuint memoryLocation)
         {
             // You can use the Memory Option to write any arbitrary generic primitive to memory.
             // Here is an example:
@@ -96,7 +96,7 @@ namespace Reloaded.Memory.Example
         /// </summary>
         /// <param name="memory">This object is used to perform memory read/write/free/allocate operations.</param>
         /// <param name="memoryLocation">Arbitrary location in memory where this tutorial will be held.</param>
-        private static void WriteStructsExample(IMemory memory, IntPtr memoryLocation)
+        private static void WriteStructsExample(IMemory memory, nuint memoryLocation)
         {
             // Note: Vector3 is just a struct composed of 3 floats.
             // Writing structs is no different to writing primitives; at all.
@@ -112,7 +112,7 @@ namespace Reloaded.Memory.Example
         /// </summary>
         /// <param name="memory">This object is used to perform memory read/write/free/allocate operations.</param>
         /// <param name="memoryLocation">Arbitrary location in memory where this tutorial will be held.</param>
-        private static void MemorySourceExample(IMemory memory, IntPtr memoryLocation)
+        private static void MemorySourceExample(IMemory memory, nuint memoryLocation)
         {
             // Earlier in the program; we have been writing generics to the program's memory using the 'Memory' class
             // implementing the IMemory interface. Well... that isn't the only stock class that implements this interface.
@@ -145,7 +145,7 @@ namespace Reloaded.Memory.Example
         /// </summary>
         /// <param name="memory">This object is used to perform memory read/write/free/allocate operations.</param>
         /// <param name="memoryLocation">Arbitrary location in memory where this tutorial will be held.</param>
-        private static void StructArrayExample(IMemory memory, IntPtr memoryLocation)
+        private static void StructArrayExample(IMemory memory, nuint memoryLocation)
         {
             // Let's load a binary file from the disk and write it to memory.
             const int itemCount = 40; // Number of items in struct array (known).
@@ -157,19 +157,19 @@ namespace Reloaded.Memory.Example
             memory.Write(memoryLocation, adventurePhysicsData);
 
             // Pointer to array in memory. Provides enhanced functionality over a standard pointer.
-            var adventurePhysics = new ArrayPtr<AdventurePhysics>((ulong)memoryLocation);
+            var adventurePhysics = new ArrayPtr<AdventurePhysics>(memoryLocation);
             adventurePhysics.Get(out AdventurePhysics value, 0);                        // And of course read/writes work..
                                                                                         // Uh? Yeah, for performance the indexer is not overwritten.
             float speedCap = value.HorizontalSpeedCap;
 
             // Pointer to array in memory with known length. Provides even extra functionality. (Like foreach, LINQ)
-            var adventurePhysicsFixed = new FixedArrayPtr<AdventurePhysics>((ulong)memoryLocation, itemCount);
+            var adventurePhysicsFixed = new FixedArrayPtr<AdventurePhysics>(memoryLocation, itemCount);
             float averageAirAcceleration = adventurePhysicsFixed.Average(physics => physics.AirAcceleration); // LINQ
 
             // All of these classes support read/writes from arbitrary memory of course... 
             // this is where `IMemory` comes in after all.
             IMemory anotherProcessMemory = new ExternalMemory(Process.GetCurrentProcess());
-            var physicsFixedOtherProcess = new FixedArrayPtr<AdventurePhysics>((ulong)memoryLocation, itemCount, false, anotherProcessMemory);
+            var physicsFixedOtherProcess = new FixedArrayPtr<AdventurePhysics>(memoryLocation, itemCount, false, anotherProcessMemory);
             float averageAirAcceleration2 = physicsFixedOtherProcess.Average(physics => physics.AirAcceleration);
 
             // What you just witnessed was LINQ over arbitrary structs inside memory of another process.
@@ -195,7 +195,7 @@ namespace Reloaded.Memory.Example
         /// </summary>
         /// <param name="memory">This object is used to perform memory read/write/free/allocate operations.</param>
         /// <param name="memoryLocation">Arbitrary location in memory where this tutorial will be held.</param>
-        private static void MarshallingExample(IMemory memory, IntPtr memoryLocation)
+        private static void MarshallingExample(IMemory memory, nuint memoryLocation)
         {
             // Marshalling is yet another feature that is supported when reading and writing from ANY IMemory source.
             // Consequently; this also means that classes based on IMemory - such as ArrayPtr or FixedArrayPtr support it under the hood.
@@ -217,7 +217,7 @@ namespace Reloaded.Memory.Example
         /// </summary>
         /// <param name="memory">This object is used to perform memory read/write/free/allocate operations.</param>
         /// <param name="memoryLocation">Arbitrary location in memory where this tutorial will be held.</param>
-        private static void StructUtilityExample(IMemory memory, IntPtr memoryLocation)
+        private static void StructUtilityExample(IMemory memory, nuint memoryLocation)
         {
             // Under the hood; the IMemory implementations may use a certain struct utility classes known as Struct
             // and StructArray which provide various methods for struct conversions and general work with structs.

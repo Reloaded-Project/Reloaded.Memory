@@ -11,7 +11,7 @@ namespace Reloaded.Memory.Tests.Memory.Pointers
         public unsafe void GetSetValue()
         {
             int number = 5;
-            var numberPtr = new Reloaded.Memory.Pointers.Pointer<int>((ulong) &number, false, new Reloaded.Memory.Sources.Memory()); // Last parameter only for coverage.
+            var numberPtr = new Reloaded.Memory.Pointers.Pointer<int>((nuint)(&number), false, new Reloaded.Memory.Sources.Memory()); // Last parameter only for coverage.
 
             // Change value normally and try picking up new change.
             number = 10;

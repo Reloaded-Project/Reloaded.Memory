@@ -29,7 +29,7 @@ namespace Reloaded.Memory
 #if NET5_0_OR_GREATER
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 #endif
-        T>(IntPtr memoryAddress, out T[] value, int arrayLength, bool marshal = false)
+        T>(nuint memoryAddress, out T[] value, int arrayLength, bool marshal = false)
         {
             int structSize = Struct.GetSize<T>(marshal);
 #if NET5_0_OR_GREATER
@@ -40,7 +40,7 @@ namespace Reloaded.Memory
 
             for (int x = 0; x < arrayLength; x++)
             {
-                IntPtr address = memoryAddress + (structSize * x);
+                var address = (UIntPtr)memoryAddress + (structSize * x);
                 Struct.FromPtr(address, out T result, marshal);
                 value[x] = result;
             }
@@ -53,13 +53,13 @@ namespace Reloaded.Memory
         /// <param name="memoryAddress">The memory address to write to.</param>
         /// <param name="item">The item to write to the address.</param>
         /// <param name="marshal">Set this to true in order to marshal the value when writing to memory.</param>
-        public static void ToPtr<T>(IntPtr memoryAddress, T[] item, bool marshal = false)
+        public static void ToPtr<T>(nuint memoryAddress, T[] item, bool marshal = false)
         {
             int structSize = Struct.GetSize<T>(marshal);
 
             for (int x = 0; x < item.Length; x++)
             {
-                IntPtr address = memoryAddress + (structSize * x);
+                var address = (UIntPtr)memoryAddress + (structSize * x);
                 Struct.ToPtr(address, ref item[x], marshal);
             }
         }

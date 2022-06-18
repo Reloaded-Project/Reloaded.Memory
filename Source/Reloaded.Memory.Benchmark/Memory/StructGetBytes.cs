@@ -23,7 +23,7 @@ namespace Reloaded.Memory.Benchmark.Memory
 
             fixed (byte* arrayPtr = array)
             {
-                Reloaded.Memory.Struct.ToPtr((IntPtr)arrayPtr, ref item, Memory.Write, marshalElement);
+                Reloaded.Memory.Struct.ToPtr((nuint)arrayPtr, ref item, Memory.Write, marshalElement);
             }
 
             return array;

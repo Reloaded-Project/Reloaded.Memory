@@ -47,14 +47,14 @@ namespace Reloaded.Memory.Pointers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Get(out TStruct value, int index)
         {
-            Source.Read((IntPtr)GetPointerToElement(index), out value, MarshalElements);
+            Source.Read((nuint)GetPointerToElement(index), out value, MarshalElements);
         }
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Set(ref TStruct value, int index)
         {
-            Source.Write((IntPtr)GetPointerToElement(index), ref value, MarshalElements);
+            Source.Write((nuint)GetPointerToElement(index), ref value, MarshalElements);
         }
 
         /*
@@ -71,7 +71,7 @@ namespace Reloaded.Memory.Pointers
         /// <param name="marshalElements">Set to true in order to marshal elements as they are read in and out.</param>
         /// <param name="source">Specifies the source from which the individual array elements should be read/written.</param>
         /// <remarks>See <see cref="ArrayPtr{T}"/></remarks>
-        public ArrayPtr(ulong address, bool marshalElements = false, IMemory source = null)
+        public ArrayPtr(nuint address, bool marshalElements = false, IMemory source = null)
         {
             Pointer = (void*)address;
             MarshalElements = marshalElements;

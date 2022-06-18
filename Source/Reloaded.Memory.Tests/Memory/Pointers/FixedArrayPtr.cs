@@ -11,7 +11,7 @@ namespace Reloaded.Memory.Tests.Memory.Pointers
     public class FixedArrayPtr : IDisposable
     {
         Reloaded.Memory.Sources.Memory _currentProcess;
-        IntPtr _adventurePhysicsArray;
+        nuint _adventurePhysicsArray;
         FixedArrayPtr<AdventurePhysics> _fixedArrayPtr;
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace Reloaded.Memory.Tests.Memory.Pointers
             _currentProcess = new Reloaded.Memory.Sources.Memory();
             _adventurePhysicsArray = _currentProcess.Allocate(bytes.Length);
             _currentProcess.WriteRaw(_adventurePhysicsArray, bytes);
-            _fixedArrayPtr = new FixedArrayPtr<AdventurePhysics>((ulong)_adventurePhysicsArray, PhysicsArrayLength);
+            _fixedArrayPtr = new FixedArrayPtr<AdventurePhysics>(_adventurePhysicsArray, PhysicsArrayLength);
         }
 
         public void Dispose() => _currentProcess.Free(_adventurePhysicsArray);
@@ -71,7 +71,7 @@ namespace Reloaded.Memory.Tests.Memory.Pointers
             int[] numbers = { 0, 2, 3, 5, 7, 8, 88, 442 };
             fixed (int* numbersPtr = numbers)
             {
-                var arrayPtr = new FixedArrayPtr<int>((ulong) numbersPtr, numbers.Length);
+                var arrayPtr = new FixedArrayPtr<int>((nuint)numbersPtr, numbers.Length);
                 var numbersFromEnumerator = arrayPtr.Select(x => x).ToArray();
 
                 Assert.Equal(numbers.Length, numbersFromEnumerator.Length);
@@ -90,8 +90,8 @@ namespace Reloaded.Memory.Tests.Memory.Pointers
 
             // Fill in byte array with ascending numbers.
             int upperBound = 1000;
-            IntPtr ptr = _currentProcess.Allocate(upperBound * sizeof(int));
-            var arrayPtr = new FixedArrayPtr<int>((ulong) ptr, upperBound);
+            nuint ptr = _currentProcess.Allocate(upperBound * sizeof(int));
+            var arrayPtr = new FixedArrayPtr<int>(ptr, upperBound);
 
             for (int x = 0; x < upperBound; x++)
                 arrayPtr.Set(ref x, x);
@@ -129,8 +129,8 @@ namespace Reloaded.Memory.Tests.Memory.Pointers
         public unsafe void CopyFromCopyTo()
         {
             // Allocate array space for a copy and create a new fixed pointer to it.
-            IntPtr copyPtr = _currentProcess.Allocate(_fixedArrayPtr.ArraySize);
-            var arrayCopyPtr = new FixedArrayPtr<AdventurePhysics>((ulong) copyPtr, _fixedArrayPtr.Count);
+            nuint copyPtr = _currentProcess.Allocate(_fixedArrayPtr.ArraySize);
+            var arrayCopyPtr = new FixedArrayPtr<AdventurePhysics>(copyPtr, _fixedArrayPtr.Count);
 
             // Copy from original to new array.
             AdventurePhysics[] physicsArray = new AdventurePhysics[_fixedArrayPtr.Count];

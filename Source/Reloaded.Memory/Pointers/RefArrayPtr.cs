@@ -35,7 +35,7 @@ namespace Reloaded.Memory.Pointers
         /// Creates a by reference array pointer given the address of the first element of the array.
         /// </summary>
         /// <param name="address">The address of the first element of the structure array.</param>
-        public RefArrayPtr(ulong address) => Pointer = (TStruct*) address;
+        public RefArrayPtr(nuint address) => Pointer = (TStruct*) address;
 
         /// <summary>
         /// Creates a by reference array pointer given the address of the first element of the array.

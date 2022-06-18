@@ -40,7 +40,7 @@ namespace Reloaded.Memory.Pointers
         /// </summary>
         /// <param name="address">The address of the first element of the structure array.</param>
         /// <param name="numberOfItems">Number of items in this array.</param>
-        public RefFixedArrayPtr(ulong address, int numberOfItems)
+        public RefFixedArrayPtr(nuint address, int numberOfItems)
         {
             Pointer = (TStruct*) address;
             Count = numberOfItems;
