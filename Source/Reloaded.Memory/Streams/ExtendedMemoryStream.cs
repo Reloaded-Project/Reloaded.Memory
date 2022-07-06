@@ -67,7 +67,6 @@ namespace Reloaded.Memory.Streams
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Write<T>(ref T structure) where T : unmanaged => StreamExtensions.Write(this, ref structure);
 
-
 #if FEATURE_NATIVE_SPAN
         /// <summary>
         /// Writes the sequence of bytes contained in source into the current memory stream and advances the current position within this memory stream by the number of bytes written.
