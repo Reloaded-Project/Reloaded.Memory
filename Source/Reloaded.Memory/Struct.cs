@@ -96,7 +96,7 @@ namespace Reloaded.Memory
 #if NET5_0_OR_GREATER
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 #endif
-        T>(byte[] data, out T value, bool marshalElement = true, int startIndex = 0)
+        T>(byte[] data, out T value, bool marshalElement, int startIndex)
         {
             fixed (byte* dataPtr = data)
             {
@@ -107,14 +107,77 @@ namespace Reloaded.Memory
         /// <summary>
         /// Converts a byte array to a specified structure or class type with explicit StructLayout attribute.
         /// </summary>
+        /// <param name="data">A byte array containing data from which to extract a structure from.</param>
+        /// <param name="value">Local variable to receive the read in struct.</param>
+        /// <param name="marshalElement">Set to true to marshal the element.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void FromArray<
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+            T>(byte[] data, out T value, bool marshalElement)
+        {
+            FromArray(data, out value, marshalElement, startIndex: 0);
+        }
+
+        /// <summary>
+        /// Converts a byte array to a specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
         /// <param name="value">Local variable to receive the read in struct.</param>
         /// <param name="data">A byte array containing data from which to extract a structure from.</param>
         /// <param name="startIndex">The index in the byte array to read the element from.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void FromArray<T>(byte[] data, out T value, int startIndex = 0) where T : unmanaged
+        public static void FromArray<T>(byte[] data, out T value, int startIndex) where T : unmanaged
         {
             var arraySpan = new Span<byte>(data, startIndex, data.Length - startIndex);
             value = MemoryMarshal.Read<T>(arraySpan);
+        }
+
+        /// <summary>
+        /// Converts a byte array to a specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
+        /// <param name="value">Local variable to receive the read in struct.</param>
+        /// <param name="data">A byte array containing data from which to extract a structure from.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void FromArray<T>(byte[] data, out T value) where T : unmanaged
+        {
+            FromArray(data, out value, startIndex: 0);
+        }
+
+        /// <summary>
+        /// Converts a byte array to a specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
+        /// <param name="data">A byte array containing data from which to extract a structure from.</param>
+        /// <param name="value">Local variable to receive the read in struct.</param>
+        /// <param name="marshalElement">Set to true to marshal the element.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void FromArray<
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+        T>(Span<byte> data, out T value, bool marshalElement)
+        {
+            FromArray(data, out value, marshalElement, 0);
+        }
+
+        /// <summary>
+        /// Converts a byte array to a specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
+        /// <param name="data">A byte array containing data from which to extract a structure from.</param>
+        /// <param name="value">Local variable to receive the read in struct.</param>
+        /// <param name="marshalElement">Set to true to marshal the element.</param>
+        /// <param name="startIndex">The index in the byte array to read the element from.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void FromArray<
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+        T>(Span<byte> data, out T value, bool marshalElement, int startIndex)
+        {
+            fixed (byte* dataPtr = data)
+            {
+                value = Marshal.PtrToStructure<T>((IntPtr)(&dataPtr[startIndex]));
+            }
         }
 
         /// <summary>

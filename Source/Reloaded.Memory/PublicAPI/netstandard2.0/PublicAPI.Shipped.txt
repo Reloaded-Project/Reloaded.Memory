@@ -583,8 +583,6 @@ static Reloaded.Memory.Streams.StreamExtensions.WriteBigEndianPrimitive<T>(this 
 static Reloaded.Memory.Streams.StreamExtensions.WriteBigEndianPrimitive<T>(this System.IO.Stream stream, T[] structures) -> void
 static Reloaded.Memory.Streams.StreamExtensions.WriteBigEndianStruct<T>(this System.IO.Stream stream, T structure) -> void
 static Reloaded.Memory.Streams.StreamExtensions.WriteBigEndianStruct<T>(this System.IO.Stream stream, T[] structures) -> void
-static Reloaded.Memory.Struct.FromArray<T>(byte[] data, out T value, bool marshalElement = true, int startIndex = 0) -> void
-static Reloaded.Memory.Struct.FromArray<T>(byte[] data, out T value, int startIndex = 0) -> void
 static Reloaded.Memory.Struct.FromArray<T>(System.Span<byte> data, out T value) -> void
 static Reloaded.Memory.Struct.FromPtr<T>(nuint pointer, out T value, bool marshalElement = false) -> void
 static Reloaded.Memory.Struct.FromPtr<T>(nuint pointer, out T value, Reloaded.Memory.Sources.MemoryExtensions.ReadFunction<T> readFunction, bool marshalElement = false) -> void
@@ -620,3 +618,9 @@ static Reloaded.Memory.StructArray.GetSize<T>(int elementCount, bool marshalElem
 static Reloaded.Memory.StructArray.ToPtr<T>(nuint memoryAddress, T[] item, bool marshal = false) -> void
 static Reloaded.Memory.Utilities.Blittable.IsBlittable(System.Type type) -> bool
 static Reloaded.Memory.Utilities.Blittable.IsBlittable<T>() -> bool
+static Reloaded.Memory.Struct.FromArray<T>(byte[] data, out T value) -> void
+static Reloaded.Memory.Struct.FromArray<T>(byte[] data, out T value, bool marshalElement) -> void
+static Reloaded.Memory.Struct.FromArray<T>(byte[] data, out T value, bool marshalElement, int startIndex) -> void
+static Reloaded.Memory.Struct.FromArray<T>(byte[] data, out T value, int startIndex) -> void
+static Reloaded.Memory.Struct.FromArray<T>(System.Span<byte> data, out T value, bool marshalElement) -> void
+static Reloaded.Memory.Struct.FromArray<T>(System.Span<byte> data, out T value, bool marshalElement, int startIndex) -> void

@@ -1,0 +1,6 @@
+static Reloaded.Memory.Struct.FromArray<T>(byte[] data, out T value) -> void
+static Reloaded.Memory.Struct.FromArray<T>(byte[] data, out T value, bool marshalElement) -> void
+static Reloaded.Memory.Struct.FromArray<T>(byte[] data, out T value, bool marshalElement, int startIndex) -> void
+static Reloaded.Memory.Struct.FromArray<T>(byte[] data, out T value, int startIndex) -> void
+static Reloaded.Memory.Struct.FromArray<T>(System.Span<byte> data, out T value, bool marshalElement) -> void
+static Reloaded.Memory.Struct.FromArray<T>(System.Span<byte> data, out T value, bool marshalElement, int startIndex) -> void
