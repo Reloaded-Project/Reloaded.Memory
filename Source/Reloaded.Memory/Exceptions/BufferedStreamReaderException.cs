@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
+#nullable enable
 namespace Reloaded.Memory.Exceptions
 {
     /// <inheritdoc />
@@ -21,3 +22,4 @@ namespace Reloaded.Memory.Exceptions
         public static void Throw(string message) => throw new BufferedStreamReaderException(message);
     }
 }
+#nullable disable
