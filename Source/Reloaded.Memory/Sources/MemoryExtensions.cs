@@ -380,8 +380,14 @@ namespace Reloaded.Memory.Sources
         public static void Write<TMemory, T>(this TMemory memory, int memoryAddress, T item, bool marshal = false) where TMemory : IMemory => memory.Write((nuint)memoryAddress, ref item, marshal);
 
         /// <summary>
-        /// See <see cref="SafeWrite{TMemory, T}(TMemory,IntPtr,ref T,bool)"/> />
+        /// Changes memory permissions to ensure memory can be written and writes a generic type to a specified memory address.
         /// </summary>
+        /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
+        /// <param name="memory"></param>
+        /// <param name="memoryAddress">The memory address to write to.</param>
+        /// <param name="item">The items to write to the address.</param>
+        /// <param name="marshal">Set this to true to enable struct marshalling.</param>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
         public static void SafeWrite<TMemory, T>(this TMemory memory, int memoryAddress, T item, bool marshal = false) where TMemory : IMemory => memory.SafeWrite((nuint)memoryAddress, ref item, marshal);
 
@@ -410,8 +416,14 @@ namespace Reloaded.Memory.Sources
         public static void Write<TMemory, T>(this TMemory memory, long memoryAddress, T item, bool marshal = false) where TMemory : IMemory => memory.Write((nuint)memoryAddress, ref item, marshal);
 
         /// <summary>
-        /// See <see cref="SafeWrite{TMemory,T}(TMemory,System.IntPtr,ref T,bool)"/> />
+        /// Changes memory permissions to ensure memory can be written and writes a generic type to a specified memory address.
         /// </summary>
+        /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
+        /// <param name="memory"></param>
+        /// <param name="memoryAddress">The memory address to write to.</param>
+        /// <param name="item">The items to write to the address.</param>
+        /// <param name="marshal">Set this to true to enable struct marshalling.</param>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
         public static void SafeWrite<TMemory, T>(this TMemory memory, long memoryAddress, T item, bool marshal = false) where TMemory : IMemory => memory.SafeWrite((nuint)memoryAddress, ref item, marshal);
 
@@ -442,8 +454,14 @@ namespace Reloaded.Memory.Sources
         public static void Write<TMemory, T>(this TMemory memory, nuint memoryAddress, T item, bool marshal = false) where TMemory : IMemory => memory.Write(memoryAddress, ref item, marshal);
 
         /// <summary>
-        /// See <see cref="SafeWrite{TMemory, T}(TMemory,IntPtr,ref T,bool)"/> />
+        /// Changes memory permissions to ensure memory can be written and writes a generic type to a specified memory address.
         /// </summary>
+        /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
+        /// <param name="memory"></param>
+        /// <param name="memoryAddress">The memory address to write to.</param>
+        /// <param name="item">The items to write to the address.</param>
+        /// <param name="marshal">Set this to true to enable struct marshalling.</param>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
         public static void SafeWrite<TMemory, T>(this TMemory memory, nuint memoryAddress, T item, bool marshal = false) where TMemory : IMemory => memory.SafeWrite(memoryAddress, ref item, marshal);
 
