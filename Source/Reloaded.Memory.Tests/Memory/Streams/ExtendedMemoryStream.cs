@@ -91,7 +91,7 @@ namespace Reloaded.Memory.Tests.Memory.Streams
             using (var extendedStream = new LittleEndianMemoryStream(new Reloaded.Memory.Streams.ExtendedMemoryStream()))
             {
                 extendedStream.Write(marshallingStruct);
-                Struct.FromArray<MarshallingStruct>(extendedStream.ToArray(), out var newStruct);
+                Struct.FromArray<MarshallingStruct>(extendedStream.ToArray(), out var newStruct, true);
                 Assert.Equal(marshallingStruct, newStruct);
             };
         }
