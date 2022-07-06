@@ -76,8 +76,55 @@ namespace Reloaded.Memory
 #if NET5_0_OR_GREATER
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 #endif
-        T>(byte[] data, out T[] value, bool marshalElement, int length = 0,
-            int startIndex = 0)
+        T>(byte[] data, out T[] value, bool marshalElement, int length, int startIndex)
+        {
+            FromArray(data.AsSpan(), out value, marshalElement, length, startIndex);
+        }
+
+        /// <summary>
+        /// Converts a byte array to a specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
+        /// <param name="data">A byte array containing data from which to extract a structure from.</param>
+        /// <param name="value">Local variable to receive the read in struct array.</param>
+        /// <param name="marshalElement">Set to true to marshal the element.</param>
+        /// <param name="length">The amount of elements to read from the byte array.</param>
+        public static void FromArray<
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+            T>(byte[] data, out T[] value, bool marshalElement, int length)
+        {
+            FromArray(data.AsSpan(), out value, marshalElement, length, startIndex: 0);
+        }
+
+        /// <summary>
+        /// Converts a byte array to a specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
+        /// <param name="data">A byte array containing data from which to extract a structure from.</param>
+        /// <param name="value">Local variable to receive the read in struct array.</param>
+        /// <param name="marshalElement">Set to true to marshal the element.</param>
+        public static void FromArray<
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+            T>(byte[] data, out T[] value, bool marshalElement)
+        {
+            FromArray(data.AsSpan(), out value, marshalElement, length: 0, startIndex: 0);
+        }
+
+        /// <summary>
+        /// Converts a byte array to a specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
+        /// <param name="data">A byte array containing data from which to extract a structure from.</param>
+        /// <param name="value">Local variable to receive the read in struct array.</param>
+        /// <param name="marshalElement">Set to true to marshal the element.</param>
+        /// <param name="length">The amount of elements to read from the byte array.</param>
+        /// <param name="startIndex">The index in the byte array to read the element(s) from.</param>
+        public static void FromArray<
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+        T>(Span<byte> data, out T[] value, bool marshalElement, int length, int startIndex)
         {
             int structSize = Struct.GetSize<T>(marshalElement);
             int structureCount = (length == 0) ? (data.Length - startIndex) / structSize : length;
@@ -94,11 +141,42 @@ namespace Reloaded.Memory
         /// <summary>
         /// Converts a byte array to a specified structure or class type with explicit StructLayout attribute.
         /// </summary>
+        /// <param name="data">A byte array containing data from which to extract a structure from.</param>
+        /// <param name="value">Local variable to receive the read in struct array.</param>
+        /// <param name="marshalElement">Set to true to marshal the element.</param>
+        /// <param name="length">The amount of elements to read from the byte array.</param>
+        public static void FromArray<
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+            T>(Span<byte> data, out T[] value, bool marshalElement, int length)
+        {
+            FromArray(data, out value, marshalElement, length, startIndex: 0);
+        }
+
+        /// <summary>
+        /// Converts a byte array to a specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
+        /// <param name="data">A byte array containing data from which to extract a structure from.</param>
+        /// <param name="value">Local variable to receive the read in struct array.</param>
+        /// <param name="marshalElement">Set to true to marshal the element.</param>
+        public static void FromArray<
+#if NET5_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
+            T>(Span<byte> data, out T[] value, bool marshalElement)
+        {
+            FromArray(data, out value, marshalElement, length: 0, startIndex: 0);
+        }
+
+        /// <summary>
+        /// Converts a byte array to a specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
         /// <param name="value">Local variable to receive the read in struct array.</param>
         /// <param name="data">A byte array containing data from which to extract a structure from.</param>
         /// <param name="startIndex">The index in the byte array to read the element(s) from.</param>
         /// <param name="length">The amount of elements to read from the byte array.</param>
-        public static void FromArray<T>(byte[] data, out T[] value, int startIndex = 0, int length = 0) where T : unmanaged
+        public static void FromArray<T>(byte[] data, out T[] value, int startIndex, int length) where T : unmanaged
         {
             int structSize = Struct.GetSize<T>();
             int structureCount = (length == 0) ? (data.Length - startIndex) / structSize : length;
@@ -117,12 +195,33 @@ namespace Reloaded.Memory
         }
 
         /// <summary>
+        /// Converts a byte array to a specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
+        /// <param name="value">Local variable to receive the read in struct array.</param>
+        /// <param name="data">A byte array containing data from which to extract a structure from.</param>
+        /// <param name="startIndex">The index in the byte array to read the element(s) from.</param>
+        public static void FromArray<T>(byte[] data, out T[] value, int startIndex) where T : unmanaged
+        {
+            FromArray(data, out value, startIndex, length: 0);
+        }
+
+        /// <summary>
+        /// Converts a byte array to a specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
+        /// <param name="value">Local variable to receive the read in struct array.</param>
+        /// <param name="data">A byte array containing data from which to extract a structure from.</param>
+        public static void FromArray<T>(byte[] data, out T[] value) where T : unmanaged
+        {
+            FromArray(data, out value, startIndex: 0, length: 0);
+        }
+
+        /// <summary>
         /// Converts a span to a specified structure or class type with explicit StructLayout attribute.
         /// </summary>
         /// <param name="value">Local variable to receive the read in struct array.</param>
         /// <param name="data">A byte array containing data from which to extract a structure from.</param>
         /// <param name="length">The amount of elements to read from the span.</param>
-        public static void FromArray<T>(Span<byte> data, out T[] value, int length = 0) where T : unmanaged
+        public static void FromArray<T>(Span<byte> data, out T[] value, int length) where T : unmanaged
         {
             int structSize     = Struct.GetSize<T>();
             int structureCount = (length == 0) ? (data.Length) / structSize : length;
@@ -140,15 +239,59 @@ namespace Reloaded.Memory
         }
 
         /// <summary>
+        /// Converts a span to a specified structure or class type with explicit StructLayout attribute.
+        /// </summary>
+        /// <param name="value">Local variable to receive the read in struct array.</param>
+        /// <param name="data">A byte array containing data from which to extract a structure from.</param>
+        public static void FromArray<T>(Span<byte> data, out T[] value) where T : unmanaged
+        {
+            FromArray(data, out value, length: 0);
+        }
+
+        /// <summary>
         /// Converts a byte array to a specified Big Endian primitive.
         /// </summary>
         /// <param name="value">Local variable to receive the read in struct array.</param>
         /// <param name="data">A byte array containing data from which to extract a structure from.</param>
         /// <param name="startIndex">The index in the byte array to read the element(s) from.</param>
         /// <param name="length">The amount of elements to read from the byte array.</param>
-        public static void FromArrayBigEndianPrimitive<T>(byte[] data, out T[] value, int startIndex = 0, int length = 0) where T : unmanaged
+        public static void FromArrayBigEndianPrimitive<T>(byte[] data, out T[] value, int startIndex, int length) where T : unmanaged
         {
             FromArray(data, out value, startIndex, length);
+            for (int x = 0; x < value.Length; x++)
+                Endian.Reverse(ref value[x], out value[x]);
+        }
+
+        /// <summary>
+        /// Converts a byte array to a specified Big Endian primitive.
+        /// </summary>
+        /// <param name="value">Local variable to receive the read in struct array.</param>
+        /// <param name="data">A byte array containing data from which to extract a structure from.</param>
+        /// <param name="startIndex">The index in the byte array to read the element(s) from.</param>
+        public static void FromArrayBigEndianPrimitive<T>(byte[] data, out T[] value, int startIndex) where T : unmanaged
+        {
+            FromArrayBigEndianPrimitive(data, out value, startIndex, length: 0);
+        }
+
+        /// <summary>
+        /// Converts a byte array to a specified Big Endian primitive.
+        /// </summary>
+        /// <param name="value">Local variable to receive the read in struct array.</param>
+        /// <param name="data">A byte array containing data from which to extract a structure from.</param>
+        public static void FromArrayBigEndianPrimitive<T>(byte[] data, out T[] value) where T : unmanaged
+        {
+            FromArrayBigEndianPrimitive(data, out value, startIndex: 0, length: 0);
+        }
+
+        /// <summary>
+        /// Converts a span to a specified Big Endian primitive.
+        /// </summary>
+        /// <param name="value">Local variable to receive the read in struct array.</param>
+        /// <param name="data">A byte array containing data from which to extract a structure from.</param>
+        /// <param name="length">The amount of elements to read from the span.</param>
+        public static void FromArrayBigEndianPrimitive<T>(Span<byte> data, out T[] value, int length) where T : unmanaged
+        {
+            FromArray(data, out value, length);
             for (int x = 0; x < value.Length; x++)
                 Endian.Reverse(ref value[x], out value[x]);
         }
@@ -158,13 +301,7 @@ namespace Reloaded.Memory
         /// </summary>
         /// <param name="value">Local variable to receive the read in struct array.</param>
         /// <param name="data">A byte array containing data from which to extract a structure from.</param>
-        /// <param name="length">The amount of elements to read from the span.</param>
-        public static void FromArrayBigEndianPrimitive<T>(Span<byte> data, out T[] value, int length = 0) where T : unmanaged
-        {
-            FromArray(data, out value, length);
-            for (int x = 0; x < value.Length; x++)
-                Endian.Reverse(ref value[x], out value[x]);
-        }
+        public static void FromArrayBigEndianPrimitive<T>(Span<byte> data, out T[] value) where T : unmanaged => FromArrayBigEndianPrimitive(data, out value, length: 0);
 
         /// <summary>
         /// Converts a byte array to a specified Big Endian structure or class type with explicit StructLayout attribute and <see cref="IEndianReversible"/>.
@@ -173,9 +310,33 @@ namespace Reloaded.Memory
         /// <param name="data">A byte array containing data from which to extract a structure from.</param>
         /// <param name="startIndex">The index in the byte array to read the element(s) from.</param>
         /// <param name="length">The amount of elements to read from the byte array.</param>
-        public static void FromArrayBigEndianStruct<T>(byte[] data, out T[] value, int startIndex = 0, int length = 0) where T : unmanaged, IEndianReversible
+        public static void FromArrayBigEndianStruct<T>(byte[] data, out T[] value, int startIndex, int length) where T : unmanaged, IEndianReversible
         {
             FromArray(data, out value, startIndex, length);
+            for (int x = 0; x < value.Length; x++)
+                value[x].SwapEndian();
+        }
+
+        /// <summary>
+        /// Converts a byte array to a specified Big Endian structure or class type with explicit StructLayout attribute and <see cref="IEndianReversible"/>.
+        /// </summary>
+        /// <param name="value">Local variable to receive the read in struct array.</param>
+        /// <param name="data">A byte array containing data from which to extract a structure from.</param>
+        /// <param name="startIndex">The index in the byte array to read the element(s) from.</param>
+        public static void FromArrayBigEndianStruct<T>(byte[] data, out T[] value, int startIndex) where T : unmanaged, IEndianReversible
+        {
+            FromArrayBigEndianStruct(data, out value, startIndex, length: 0);
+        }
+
+        /// <summary>
+        /// Converts a span to a specified Big Endian structure or class type with explicit StructLayout attribute and <see cref="IEndianReversible"/>..
+        /// </summary>
+        /// <param name="value">Local variable to receive the read in struct array.</param>
+        /// <param name="data">A byte array containing data from which to extract a structure from.</param>
+        /// <param name="length">The amount of elements to read from the span.</param>
+        public static void FromArrayBigEndianStruct<T>(Span<byte> data, out T[] value, int length) where T : unmanaged, IEndianReversible
+        {
+            FromArray(data, out value, length);
             for (int x = 0; x < value.Length; x++)
                 value[x].SwapEndian();
         }
@@ -185,13 +346,7 @@ namespace Reloaded.Memory
         /// </summary>
         /// <param name="value">Local variable to receive the read in struct array.</param>
         /// <param name="data">A byte array containing data from which to extract a structure from.</param>
-        /// <param name="length">The amount of elements to read from the span.</param>
-        public static void FromArrayBigEndianStruct<T>(Span<byte> data, out T[] value, int length = 0) where T : unmanaged, IEndianReversible
-        {
-            FromArray(data, out value, length);
-            for (int x = 0; x < value.Length; x++)
-                value[x].SwapEndian();
-        }
+        public static void FromArrayBigEndianStruct<T>(Span<byte> data, out T[] value) where T : unmanaged, IEndianReversible => FromArrayBigEndianStruct(data, out value, length: 0);
 
         /// <summary>
         /// Returns the size of a specific primitive or struct type.

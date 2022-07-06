@@ -602,13 +602,6 @@ static Reloaded.Memory.Struct.Source.set -> void
 static Reloaded.Memory.Struct.ToPtr<T>(nuint pointer, ref T item, bool marshalElement = false) -> void
 static Reloaded.Memory.Struct.ToPtr<T>(nuint pointer, ref T item, Reloaded.Memory.Sources.MemoryExtensions.WriteFunction<T> writeFunction, bool marshalElement = false) -> void
 static Reloaded.Memory.Struct.ToPtr<T>(nuint pointer, T item, bool marshalElement = false) -> void
-static Reloaded.Memory.StructArray.FromArray<T>(byte[] data, out T[] value, bool marshalElement, int length = 0, int startIndex = 0) -> void
-static Reloaded.Memory.StructArray.FromArray<T>(byte[] data, out T[] value, int startIndex = 0, int length = 0) -> void
-static Reloaded.Memory.StructArray.FromArray<T>(System.Span<byte> data, out T[] value, int length = 0) -> void
-static Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<T>(byte[] data, out T[] value, int startIndex = 0, int length = 0) -> void
-static Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<T>(System.Span<byte> data, out T[] value, int length = 0) -> void
-static Reloaded.Memory.StructArray.FromArrayBigEndianStruct<T>(byte[] data, out T[] value, int startIndex = 0, int length = 0) -> void
-static Reloaded.Memory.StructArray.FromArrayBigEndianStruct<T>(System.Span<byte> data, out T[] value, int length = 0) -> void
 static Reloaded.Memory.StructArray.FromPtr<T>(nuint memoryAddress, out T[] value, int arrayLength, bool marshal = false) -> void
 static Reloaded.Memory.StructArray.GetBytes<T>(T[] items) -> byte[]
 static Reloaded.Memory.StructArray.GetBytes<T>(T[] items, bool marshalElements) -> byte[]
@@ -625,3 +618,23 @@ static Reloaded.Memory.Struct.FromArray<T>(byte[] data, out T value, bool marsha
 static Reloaded.Memory.Struct.FromArray<T>(byte[] data, out T value, int startIndex) -> void
 static Reloaded.Memory.Struct.FromArray<T>(System.Span<byte> data, out T value, bool marshalElement) -> void
 static Reloaded.Memory.Struct.FromArray<T>(System.Span<byte> data, out T value, bool marshalElement, int startIndex) -> void
+static Reloaded.Memory.StructArray.FromArray<T>(byte[] data, out T[] value) -> void
+static Reloaded.Memory.StructArray.FromArray<T>(byte[] data, out T[] value, bool marshalElement) -> void
+static Reloaded.Memory.StructArray.FromArray<T>(byte[] data, out T[] value, bool marshalElement, int length) -> void
+static Reloaded.Memory.StructArray.FromArray<T>(byte[] data, out T[] value, bool marshalElement, int length, int startIndex) -> void
+static Reloaded.Memory.StructArray.FromArray<T>(byte[] data, out T[] value, int startIndex) -> void
+static Reloaded.Memory.StructArray.FromArray<T>(byte[] data, out T[] value, int startIndex, int length) -> void
+static Reloaded.Memory.StructArray.FromArray<T>(System.Span<byte> data, out T[] value) -> void
+static Reloaded.Memory.StructArray.FromArray<T>(System.Span<byte> data, out T[] value, bool marshalElement) -> void
+static Reloaded.Memory.StructArray.FromArray<T>(System.Span<byte> data, out T[] value, bool marshalElement, int length) -> void
+static Reloaded.Memory.StructArray.FromArray<T>(System.Span<byte> data, out T[] value, bool marshalElement, int length, int startIndex) -> void
+static Reloaded.Memory.StructArray.FromArray<T>(System.Span<byte> data, out T[] value, int length) -> void
+static Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<T>(byte[] data, out T[] value) -> void
+static Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<T>(byte[] data, out T[] value, int startIndex) -> void
+static Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<T>(byte[] data, out T[] value, int startIndex, int length) -> void
+static Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<T>(System.Span<byte> data, out T[] value) -> void
+static Reloaded.Memory.StructArray.FromArrayBigEndianPrimitive<T>(System.Span<byte> data, out T[] value, int length) -> void
+static Reloaded.Memory.StructArray.FromArrayBigEndianStruct<T>(byte[] data, out T[] value, int startIndex) -> void
+static Reloaded.Memory.StructArray.FromArrayBigEndianStruct<T>(byte[] data, out T[] value, int startIndex, int length) -> void
+static Reloaded.Memory.StructArray.FromArrayBigEndianStruct<T>(System.Span<byte> data, out T[] value) -> void
+static Reloaded.Memory.StructArray.FromArrayBigEndianStruct<T>(System.Span<byte> data, out T[] value, int length) -> void
