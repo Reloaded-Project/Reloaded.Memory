@@ -52,7 +52,7 @@ namespace Reloaded.Memory.Sources
             Struct.Source = memory;
 
 #if NET5_0_OR_GREATER
-            value = GC.AllocateUninitializedArray<T>(arrayLength, false);
+            value = GC.AllocateUninitializedArray<T>(arrayLength);
 #else
             value = new T[arrayLength];
 #endif
@@ -113,7 +113,7 @@ namespace Reloaded.Memory.Sources
             var oldProtection = memory.ChangePermission(memoryAddress, length, Kernel32.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE);
 
 #if NET5_0_OR_GREATER
-            value = GC.AllocateUninitializedArray<byte>(length, false);
+            value = GC.AllocateUninitializedArray<byte>(length);
 #else
             value = new byte[length];
 #endif
@@ -156,15 +156,23 @@ namespace Reloaded.Memory.Sources
         /// <param name="memoryAddress">The memory address to write to.</param>
         /// <param name="items">The array of items to write to the address.</param>
         /// <param name="marshal">Set this to true to enable struct marshalling.</param>
-        public static void Write<TMemory, T>(this TMemory memory, nuint memoryAddress, T[] items, bool marshal = false) where TMemory : IMemory
+        public static void Write<TMemory, T>(this TMemory memory, nuint memoryAddress, T[] items, bool marshal) where TMemory : IMemory
         {
             IMemory oldSource = Struct.Source;
             Struct.Source = memory;
-
             StructArray.ToPtr(memoryAddress, items, marshal);
-
             Struct.Source = oldSource;
         }
+
+        /// <summary>
+        /// Writes a generic type array to a specified memory address.
+        /// </summary>
+        /// <typeparam name="T">An individual struct type of a class with an explicit StructLayout.LayoutKind attribute.</typeparam>
+        /// <typeparam name="TMemory">Type which inherits from <see cref="IMemory"/>.</typeparam>
+        /// <param name="memory"></param>
+        /// <param name="memoryAddress">The memory address to write to.</param>
+        /// <param name="items">The array of items to write to the address.</param>
+        public static void Write<TMemory, T>(this TMemory memory, nuint memoryAddress, T[] items) where TMemory : IMemory => Write(memory, memoryAddress, items, false);
 
         /// <summary>
         /// Changes memory permissions to ensure memory can be written and writes a generic type to a specified memory address.
@@ -365,8 +373,8 @@ namespace Reloaded.Memory.Sources
         /// <param name="item">The item to write to the address.</param>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write<TMemory, T>(this TMemory memory, int memoryAddress, T item) where T : unmanaged where TMemory : IMemory => memory.Write<T>((nuint)memoryAddress, ref item);
-
+        public static void Write<TMemory, T>(this TMemory memory, int memoryAddress, T item) where T : unmanaged where TMemory : IMemory => memory.Write((nuint)memoryAddress, ref item);
+        
         /// <summary>
         /// Writes a generic type to a specified memory address.
         /// </summary>
@@ -377,7 +385,7 @@ namespace Reloaded.Memory.Sources
         /// <param name="item">The item to write to the address.</param>
         /// <param name="marshal">True to marshal the element, else false.</param>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
-        public static void Write<TMemory, T>(this TMemory memory, int memoryAddress, T item, bool marshal = false) where TMemory : IMemory => memory.Write((nuint)memoryAddress, ref item, marshal);
+        public static void Write<TMemory, T>(this TMemory memory, int memoryAddress, T item, bool marshal) where TMemory : IMemory => memory.Write((nuint)memoryAddress, ref item, marshal);
 
         /// <summary>
         /// Changes memory permissions to ensure memory can be written and writes a generic type to a specified memory address.
@@ -401,7 +409,7 @@ namespace Reloaded.Memory.Sources
         /// <param name="item">The item to write to the address.</param>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write<TMemory, T>(this TMemory memory, long memoryAddress, T item) where T : unmanaged where TMemory : IMemory => memory.Write<T>((nuint)memoryAddress, ref item);
+        public static void Write<TMemory, T>(this TMemory memory, long memoryAddress, T item) where T : unmanaged where TMemory : IMemory => memory.Write((nuint)memoryAddress, ref item);
 
         /// <summary>
         /// Writes a generic type to a specified memory address.
@@ -413,7 +421,7 @@ namespace Reloaded.Memory.Sources
         /// <param name="item">The item to write to the address.</param>
         /// <param name="marshal">True to marshal the element, else false.</param>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
-        public static void Write<TMemory, T>(this TMemory memory, long memoryAddress, T item, bool marshal = false) where TMemory : IMemory => memory.Write((nuint)memoryAddress, ref item, marshal);
+        public static void Write<TMemory, T>(this TMemory memory, long memoryAddress, T item, bool marshal) where TMemory : IMemory => memory.Write((nuint)memoryAddress, ref item, marshal);
 
         /// <summary>
         /// Changes memory permissions to ensure memory can be written and writes a generic type to a specified memory address.
@@ -439,7 +447,7 @@ namespace Reloaded.Memory.Sources
         /// <param name="item">The item to write to the address.</param>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write<TMemory, T>(this TMemory memory, nuint memoryAddress, T item) where T : unmanaged where TMemory : IMemory => memory.Write<T>(memoryAddress, ref item);
+        public static void Write<TMemory, T>(this TMemory memory, nuint memoryAddress, T item) where T : unmanaged where TMemory : IMemory => memory.Write(memoryAddress, ref item);
 
         /// <summary>
         /// Writes a generic type to a specified memory address.
@@ -451,7 +459,7 @@ namespace Reloaded.Memory.Sources
         /// <param name="item">The item to write to the address.</param>
         /// <param name="marshal">True to marshal the element, else false.</param>
         [ExcludeFromCodeCoverage] // This is a wrapper that simply lets pass by value, no logic.
-        public static void Write<TMemory, T>(this TMemory memory, nuint memoryAddress, T item, bool marshal = false) where TMemory : IMemory => memory.Write(memoryAddress, ref item, marshal);
+        public static void Write<TMemory, T>(this TMemory memory, nuint memoryAddress, T item, bool marshal) where TMemory : IMemory => memory.Write(memoryAddress, ref item, marshal);
 
         /// <summary>
         /// Changes memory permissions to ensure memory can be written and writes a generic type to a specified memory address.

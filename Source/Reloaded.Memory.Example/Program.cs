@@ -154,7 +154,7 @@ namespace Reloaded.Memory.Example
 
             // Array Read & Write from/to Memory
             memory.Read(memoryLocation, out AdventurePhysics[] adventurePhysicsData, itemCount);
-            memory.Write(memoryLocation, adventurePhysicsData);
+            memory.Write(memoryLocation, adventurePhysicsData, false);
 
             // Pointer to array in memory. Provides enhanced functionality over a standard pointer.
             var adventurePhysics = new ArrayPtr<AdventurePhysics>(memoryLocation);

@@ -10,8 +10,6 @@ namespace Reloaded.Memory.Streams
     /// </summary>
     public unsafe partial class ExtendedMemoryStream : MemoryStream
     {
-        private const int MaxStackLimit = 1024;
-
         /// <inheritdoc />
         public ExtendedMemoryStream() { }
 
@@ -53,7 +51,7 @@ namespace Reloaded.Memory.Streams
         /// Appends an managed/marshalled structure onto the <see cref="MemoryStream"/> and advances the position.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Write<T>(T[] structure, bool marshalStructure = true) => StreamExtensions.Write(this, structure, marshalStructure);
+        public void Write<T>(T[] structure, bool marshalStructure) => StreamExtensions.Write(this, structure, marshalStructure);
 
         /// <summary>
         /// Appends an unmanaged structure onto the <see cref="MemoryStream"/> and advances the position.
@@ -80,13 +78,13 @@ namespace Reloaded.Memory.Streams
         /// Appends a managed/marshalled structure onto the given <see cref="MemoryStream"/> and advances the position.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Write<T>(T structure, bool marshalStructure = true) => StreamExtensions.Write(this, ref structure, marshalStructure);
+        public void Write<T>(T structure, bool marshalStructure) => StreamExtensions.Write(this, ref structure, marshalStructure);
 
         /// <summary>
         /// Appends a managed/marshalled structure onto the given <see cref="MemoryStream"/> and advances the position.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Write<T>(ref T structure, bool marshalStructure = true) => StreamExtensions.Write(this, ref structure, marshalStructure);
+        public void Write<T>(ref T structure, bool marshalStructure) => StreamExtensions.Write(this, ref structure, marshalStructure);
 
         /// <summary>
         /// Appends bytes onto the given <see cref="MemoryStream"/> and advances the position.

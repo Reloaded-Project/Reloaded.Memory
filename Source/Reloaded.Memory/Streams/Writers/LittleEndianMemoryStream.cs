@@ -24,12 +24,12 @@ namespace Reloaded.Memory.Streams.Writers
         /// Appends an managed/marshalled structure onto the <see cref="MemoryStream"/> and advances the position.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Write<T>(T[] structure, bool marshalStructure = true) => Stream.Write(structure, marshalStructure);
+        public void Write<T>(T[] structure, bool marshalStructure) => Stream.Write(structure, marshalStructure);
 
         /// <summary>
         /// Appends a managed/marshalled structure onto the given <see cref="MemoryStream"/> and advances the position.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Write<T>(T structure, bool marshalStructure = true) => Stream.Write(ref structure, marshalStructure);
+        public void Write<T>(T structure, bool marshalStructure) => Stream.Write(ref structure, marshalStructure);
     }
 }

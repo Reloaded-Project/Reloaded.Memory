@@ -414,11 +414,8 @@ Reloaded.Memory.Streams.ExtendedMemoryStream.ExtendedMemoryStream(byte[] buffer,
 Reloaded.Memory.Streams.ExtendedMemoryStream.ExtendedMemoryStream(int capacity) -> void
 Reloaded.Memory.Streams.ExtendedMemoryStream.Write(byte[] data) -> void
 Reloaded.Memory.Streams.ExtendedMemoryStream.Write<T>(ref T structure) -> void
-Reloaded.Memory.Streams.ExtendedMemoryStream.Write<T>(ref T structure, bool marshalStructure = true) -> void
 Reloaded.Memory.Streams.ExtendedMemoryStream.Write<T>(T structure) -> void
-Reloaded.Memory.Streams.ExtendedMemoryStream.Write<T>(T structure, bool marshalStructure = true) -> void
 Reloaded.Memory.Streams.ExtendedMemoryStream.Write<T>(T[] structure) -> void
-Reloaded.Memory.Streams.ExtendedMemoryStream.Write<T>(T[] structure, bool marshalStructure = true) -> void
 Reloaded.Memory.Streams.ExtendedMemoryStream.WriteBigEndianPrimitive(byte structure) -> void
 Reloaded.Memory.Streams.ExtendedMemoryStream.WriteBigEndianPrimitive(byte[] structures) -> void
 Reloaded.Memory.Streams.ExtendedMemoryStream.WriteBigEndianPrimitive(double structure) -> void
@@ -491,8 +488,6 @@ Reloaded.Memory.Streams.Writers.EndianMemoryStream.~EndianMemoryStream() -> void
 Reloaded.Memory.Streams.Writers.LittleEndianMemoryStream
 Reloaded.Memory.Streams.Writers.LittleEndianMemoryStream.LittleEndianMemoryStream(Reloaded.Memory.Streams.ExtendedMemoryStream stream) -> void
 Reloaded.Memory.Streams.Writers.LittleEndianMemoryStream.LittleEndianMemoryStream(Reloaded.Memory.Streams.ExtendedMemoryStream stream, bool disposeUnderlyingStream = true) -> void
-Reloaded.Memory.Streams.Writers.LittleEndianMemoryStream.Write<T>(T structure, bool marshalStructure = true) -> void
-Reloaded.Memory.Streams.Writers.LittleEndianMemoryStream.Write<T>(T[] structure, bool marshalStructure = true) -> void
 Reloaded.Memory.Struct
 Reloaded.Memory.StructArray
 Reloaded.Memory.Utilities.Blittable
@@ -563,22 +558,15 @@ static Reloaded.Memory.Sources.MemoryExtensions.SafeWrite<TMemory, T>(this TMemo
 static Reloaded.Memory.Sources.MemoryExtensions.SafeWrite<TMemory, T>(this TMemory memory, nuint memoryAddress, T[] items, bool marshal = false) -> void
 static Reloaded.Memory.Sources.MemoryExtensions.SafeWriteRaw<TMemory>(this TMemory memory, nuint memoryAddress, byte[] data) -> void
 static Reloaded.Memory.Sources.MemoryExtensions.Write<TMemory, T>(this TMemory memory, int memoryAddress, T item) -> void
-static Reloaded.Memory.Sources.MemoryExtensions.Write<TMemory, T>(this TMemory memory, int memoryAddress, T item, bool marshal = false) -> void
 static Reloaded.Memory.Sources.MemoryExtensions.Write<TMemory, T>(this TMemory memory, long memoryAddress, T item) -> void
-static Reloaded.Memory.Sources.MemoryExtensions.Write<TMemory, T>(this TMemory memory, long memoryAddress, T item, bool marshal = false) -> void
 static Reloaded.Memory.Sources.MemoryExtensions.Write<TMemory, T>(this TMemory memory, nuint memoryAddress, T item) -> void
-static Reloaded.Memory.Sources.MemoryExtensions.Write<TMemory, T>(this TMemory memory, nuint memoryAddress, T item, bool marshal = false) -> void
-static Reloaded.Memory.Sources.MemoryExtensions.Write<TMemory, T>(this TMemory memory, nuint memoryAddress, T[] items, bool marshal = false) -> void
 static Reloaded.Memory.Streams.StreamExtensions.AddPadding(this System.IO.Stream stream, byte value, int alignment = 2048) -> void
 static Reloaded.Memory.Streams.StreamExtensions.AddPadding(this System.IO.Stream stream, int alignment = 2048) -> void
 static Reloaded.Memory.Streams.StreamExtensions.TryReadSafe(this System.IO.Stream stream, byte[] result) -> bool
 static Reloaded.Memory.Streams.StreamExtensions.Write(this System.IO.Stream stream, byte[] data) -> void
 static Reloaded.Memory.Streams.StreamExtensions.Write<T>(this System.IO.Stream stream, ref T structure) -> void
-static Reloaded.Memory.Streams.StreamExtensions.Write<T>(this System.IO.Stream stream, ref T structure, bool marshalStructure = true) -> void
 static Reloaded.Memory.Streams.StreamExtensions.Write<T>(this System.IO.Stream stream, T structure) -> void
-static Reloaded.Memory.Streams.StreamExtensions.Write<T>(this System.IO.Stream stream, T structure, bool marshalStructure = true) -> void
 static Reloaded.Memory.Streams.StreamExtensions.Write<T>(this System.IO.Stream stream, T[] structure) -> void
-static Reloaded.Memory.Streams.StreamExtensions.Write<T>(this System.IO.Stream stream, T[] structure, bool marshalStructure = true) -> void
 static Reloaded.Memory.Streams.StreamExtensions.WriteBigEndianPrimitive<T>(this System.IO.Stream stream, T structure) -> void
 static Reloaded.Memory.Streams.StreamExtensions.WriteBigEndianPrimitive<T>(this System.IO.Stream stream, T[] structures) -> void
 static Reloaded.Memory.Streams.StreamExtensions.WriteBigEndianStruct<T>(this System.IO.Stream stream, T structure) -> void
@@ -637,3 +625,16 @@ static Reloaded.Memory.StructArray.FromArrayBigEndianStruct<T>(byte[] data, out 
 static Reloaded.Memory.StructArray.FromArrayBigEndianStruct<T>(byte[] data, out T[] value, int startIndex, int length) -> void
 static Reloaded.Memory.StructArray.FromArrayBigEndianStruct<T>(System.Span<byte> data, out T[] value) -> void
 static Reloaded.Memory.StructArray.FromArrayBigEndianStruct<T>(System.Span<byte> data, out T[] value, int length) -> void
+Reloaded.Memory.Streams.ExtendedMemoryStream.Write<T>(ref T structure, bool marshalStructure) -> void
+Reloaded.Memory.Streams.ExtendedMemoryStream.Write<T>(T structure, bool marshalStructure) -> void
+Reloaded.Memory.Streams.ExtendedMemoryStream.Write<T>(T[] structure, bool marshalStructure) -> void
+Reloaded.Memory.Streams.Writers.LittleEndianMemoryStream.Write<T>(T structure, bool marshalStructure) -> void
+Reloaded.Memory.Streams.Writers.LittleEndianMemoryStream.Write<T>(T[] structure, bool marshalStructure) -> void
+static Reloaded.Memory.Sources.MemoryExtensions.Write<TMemory, T>(this TMemory memory, int memoryAddress, T item, bool marshal) -> void
+static Reloaded.Memory.Sources.MemoryExtensions.Write<TMemory, T>(this TMemory memory, long memoryAddress, T item, bool marshal) -> void
+static Reloaded.Memory.Sources.MemoryExtensions.Write<TMemory, T>(this TMemory memory, nuint memoryAddress, T item, bool marshal) -> void
+static Reloaded.Memory.Sources.MemoryExtensions.Write<TMemory, T>(this TMemory memory, nuint memoryAddress, T[] items) -> void
+static Reloaded.Memory.Sources.MemoryExtensions.Write<TMemory, T>(this TMemory memory, nuint memoryAddress, T[] items, bool marshal) -> void
+static Reloaded.Memory.Streams.StreamExtensions.Write<T>(this System.IO.Stream stream, ref T structure, bool marshalStructure) -> void
+static Reloaded.Memory.Streams.StreamExtensions.Write<T>(this System.IO.Stream stream, T structure, bool marshalStructure) -> void
+static Reloaded.Memory.Streams.StreamExtensions.Write<T>(this System.IO.Stream stream, T[] structure, bool marshalStructure) -> void

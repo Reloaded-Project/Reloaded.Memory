@@ -60,7 +60,7 @@ namespace Reloaded.Memory.Streams
         /// Appends an managed/marshalled structure onto the <see cref="MemoryStream"/> and advances the position.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write<T>(this Stream stream, T[] structure, bool marshalStructure = true)
+        public static void Write<T>(this Stream stream, T[] structure, bool marshalStructure )
         {
             for (int x = 0; x < structure.Length; x++)
                 stream.Write(ref structure[x], marshalStructure);
@@ -84,9 +84,8 @@ namespace Reloaded.Memory.Streams
 #if FEATURE_NATIVE_SPAN
             if (sizeof(T) < MaxStackLimit)
             {
-                Span<byte> stack = stackalloc byte[sizeof(T)];
-                MemoryMarshal.Write(stack, ref structure);
-                stream.Write(stack);
+                var span = MemoryMarshal.CreateSpan(ref structure, 1);
+                stream.Write(MemoryMarshal.Cast<T, byte>(span));
             }
             else
             {
@@ -101,7 +100,7 @@ namespace Reloaded.Memory.Streams
         /// Appends a managed/marshalled structure onto the given <see cref="MemoryStream"/> and advances the position.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write<T>(this Stream stream, T structure, bool marshalStructure = true) => stream.Write(ref structure, marshalStructure);
+        public static void Write<T>(this Stream stream, T structure, bool marshalStructure) => stream.Write(ref structure, marshalStructure);
 
         /// <summary>
         /// Appends a managed/marshalled structure onto the given <see cref="MemoryStream"/> and advances the position.
@@ -110,7 +109,7 @@ namespace Reloaded.Memory.Streams
         [SkipLocalsInit]
 #endif
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write<T>(this Stream stream, ref T structure, bool marshalStructure = true)
+        public static void Write<T>(this Stream stream, ref T structure, bool marshalStructure)
         {
 #if FEATURE_NATIVE_SPAN
             var size = Struct.GetSize<T>(true);
