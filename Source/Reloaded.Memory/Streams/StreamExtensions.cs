@@ -184,7 +184,7 @@ namespace Reloaded.Memory.Streams
             int numBytesRead = 0;
             int numBytesToRead = result.Length;
 
-            do
+            while (numBytesToRead > 0)
             {
                 int bytesRead = stream.Read(result, numBytesRead, numBytesToRead);
                 if (bytesRead <= 0)
@@ -193,7 +193,6 @@ namespace Reloaded.Memory.Streams
                 numBytesRead += bytesRead;
                 numBytesToRead -= bytesRead;
             }
-            while (numBytesRead < numBytesToRead);
 
             return true;
         }
