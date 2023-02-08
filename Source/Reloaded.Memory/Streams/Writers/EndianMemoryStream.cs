@@ -63,6 +63,7 @@ namespace Reloaded.Memory.Streams.Writers
         /// </summary>
         public void Write(byte[] data) => Stream.Write(data);
 
+#if FEATURE_NATIVE_SPAN
         /// <summary>
         /// Appends bytes onto the given <see cref="MemoryStream"/> and advances the position.
         /// </summary>
@@ -72,6 +73,7 @@ namespace Reloaded.Memory.Streams.Writers
         /// Appends bytes onto the given <see cref="MemoryStream"/> and advances the position.
         /// </summary>
         public void Write(ReadOnlySpan<byte> data) => Stream.Write(data);
+#endif
 
         /// <summary>
         /// Appends an unmanaged structure onto the <see cref="MemoryStream"/> and advances the position.
