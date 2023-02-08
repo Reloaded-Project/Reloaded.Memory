@@ -484,6 +484,8 @@ Reloaded.Memory.Streams.Writers.EndianMemoryStream.EndianMemoryStream(Reloaded.M
 Reloaded.Memory.Streams.Writers.EndianMemoryStream.Stream.get -> Reloaded.Memory.Streams.ExtendedMemoryStream
 Reloaded.Memory.Streams.Writers.EndianMemoryStream.ToArray() -> byte[]
 Reloaded.Memory.Streams.Writers.EndianMemoryStream.Write(byte[] data) -> void
+Reloaded.Memory.Streams.Writers.EndianMemoryStream.Write(System.ReadOnlySpan<byte> data) -> void
+Reloaded.Memory.Streams.Writers.EndianMemoryStream.Write(System.Span<byte> data) -> void
 Reloaded.Memory.Streams.Writers.EndianMemoryStream.~EndianMemoryStream() -> void
 Reloaded.Memory.Streams.Writers.LittleEndianMemoryStream
 Reloaded.Memory.Streams.Writers.LittleEndianMemoryStream.LittleEndianMemoryStream(Reloaded.Memory.Streams.ExtendedMemoryStream stream) -> void
