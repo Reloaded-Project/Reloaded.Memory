@@ -11,12 +11,9 @@
     <LangVersion>preview</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Reloaded-Project/Reloaded.Memory</PackageProjectUrl>
-    <RepositoryUrl></RepositoryUrl>
-    <RepositoryType></RepositoryType>
     <Description>A fully featured C# memory editing library supporting reading/writing primitive or generic struct types in either current or an external process.</Description>
-    <Version>8.0.1</Version>
+    <Version>8.1.0</Version>
     <Authors>Sewer56</Authors>
     <Company />
     <Product>Project Reloaded</Product>
@@ -47,7 +44,7 @@
   <ItemGroup>
     <None Include="..\..\LICENSE">
       <Pack>True</Pack>
-      <PackagePath></PackagePath>
+      <PackagePath>.</PackagePath>
     </None>
     <None Include="..\NuGet-Icon.png">
       <Pack>True</Pack>

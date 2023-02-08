@@ -639,3 +639,5 @@ static Reloaded.Memory.Sources.MemoryExtensions.Write<TMemory, T>(this TMemory m
 static Reloaded.Memory.Streams.StreamExtensions.Write<T>(this System.IO.Stream stream, ref T structure, bool marshalStructure) -> void
 static Reloaded.Memory.Streams.StreamExtensions.Write<T>(this System.IO.Stream stream, T structure, bool marshalStructure) -> void
 static Reloaded.Memory.Streams.StreamExtensions.Write<T>(this System.IO.Stream stream, T[] structure, bool marshalStructure) -> void
+Reloaded.Memory.Streams.Writers.EndianMemoryStream.Write(System.ReadOnlySpan<byte> data) -> void
+Reloaded.Memory.Streams.Writers.EndianMemoryStream.Write(System.Span<byte> data) -> void
