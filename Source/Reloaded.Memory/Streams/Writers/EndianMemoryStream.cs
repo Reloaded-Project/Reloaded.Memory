@@ -64,6 +64,16 @@ namespace Reloaded.Memory.Streams.Writers
         public void Write(byte[] data) => Stream.Write(data);
 
         /// <summary>
+        /// Appends bytes onto the given <see cref="MemoryStream"/> and advances the position.
+        /// </summary>
+        public void Write(Span<byte> data) => Stream.Write(data);
+
+        /// <summary>
+        /// Appends bytes onto the given <see cref="MemoryStream"/> and advances the position.
+        /// </summary>
+        public void Write(ReadOnlySpan<byte> data) => Stream.Write(data);
+
+        /// <summary>
         /// Appends an unmanaged structure onto the <see cref="MemoryStream"/> and advances the position.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

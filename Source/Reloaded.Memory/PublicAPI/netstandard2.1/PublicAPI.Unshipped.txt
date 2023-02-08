@@ -1,0 +1,2 @@
+Reloaded.Memory.Streams.Writers.EndianMemoryStream.Write(System.ReadOnlySpan<byte> data) -> void
+Reloaded.Memory.Streams.Writers.EndianMemoryStream.Write(System.Span<byte> data) -> void
