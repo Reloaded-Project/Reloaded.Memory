@@ -1,0 +1,3 @@
+[submodule "src/Reloaded.Project.Configurations"]
+	path = src/Reloaded.Project.Configurations
+	url = https://github.com/Reloaded-Project/Reloaded.Project.Configurations.git
