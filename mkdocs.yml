@@ -1,0 +1,52 @@
+site_name: Reloaded Memory Library
+site_url: https://github.com/Reloaded-Project/Reloaded.Memory
+
+repo_name: Reloaded-Project/Reloaded.Memory
+repo_url: https://github.com/Reloaded-Project/Reloaded.Memory
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Reloaded-Project
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/thesewer56?lang=en-GB
+
+extra_css:
+  - Reloaded/Stylesheets/extra.css
+
+markdown_extensions:
+  - admonition
+  - tables
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tasklist
+  - def_list
+  - meta
+  - md_in_html
+  - attr_list
+  - footnotes
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+
+theme:
+  name: material
+  palette:
+    scheme: reloaded3-slate
+  features:
+    - navigation.instant
+
+plugins:
+  - search
+
+nav:
+  - Home: index.md
+  - Utilities: 
+      - Memory Abstractions: About-Memory.md

@@ -1,23 +1,28 @@
 ## Table of Contents
+
 - [Source Code Samples](#source-code-samples)
-  - [Sample: Reading/Writing Primitives](#sample-readingwriting-primitives)
-  - [Sample: Reading/Writing Structs](#sample-readingwriting-structs)
-  - [Sample: Memory Sources](#sample-memory-sources)
-  - [Sample: Struct Array](#sample-struct-array)
-  - [Sample: Marshalling](#sample-marshalling)
-  - [Sample: Struct & StructArray Utility Classes](#sample-struct-structarray-utility-classes)
+    - [Sample: Reading/Writing Primitives](#sample-readingwriting-primitives)
+    - [Sample: Reading/Writing Structs](#sample-readingwriting-structs)
+    - [Sample: Memory Sources](#sample-memory-sources)
+    - [Sample: Struct Array](#sample-struct-array)
+    - [Sample: Marshalling](#sample-marshalling)
+    - [Sample: Struct & StructArray Utility Classes](#sample-struct-structarray-utility-classes)
 
 ## Source Code Samples
 
-These are small extracts of code originally taken from a Reloaded Mod Loader Memory Manipulation example mod, largely unmodified aside from adjusting to changes in the API. 
+These are small extracts of code originally taken from a Reloaded Mod Loader Memory Manipulation example mod, largely
+unmodified aside from adjusting to changes in the API.
 
-They are heavily commented and originally served as a tutorial for the library; I kept the comments intact and slightly modified them as they may or may not still be useful.
+They are heavily commented and originally served as a tutorial for the library; I kept the comments intact and slightly
+modified them as they may or may not still be useful.
 
-While they are tailored to novice programmers with little experience; they also describe some of the design decisions of the library for the more experienced hackers/programmers, such as why the `out` parameters are used in reading memory.
+While they are tailored to novice programmers with little experience; they also describe some of the design decisions of
+the library for the more experienced hackers/programmers, such as why the `out` parameters are used in reading memory.
 
 You can see these code samples, replicated in the `Reloaded.Memory.Examples` project in the solution.
 
 ### Sample: Reading/Writing Primitives
+
 ```csharp
 void PrimitivesExample(IMemory memory, IntPtr memoryLocation)
 {
@@ -55,6 +60,7 @@ void PrimitivesExample(IMemory memory, IntPtr memoryLocation)
 ```
 
 ### Sample: Reading/Writing Structs
+
 ```csharp
 private static void WriteStructsExample(IMemory memory, IntPtr memoryLocation)
 {
@@ -69,6 +75,7 @@ private static void WriteStructsExample(IMemory memory, IntPtr memoryLocation)
 ```
 
 ### Sample: Memory Sources
+
 ```csharp
 void MemorySourceExample(IMemory memory, IntPtr memoryLocation)
 {
@@ -100,6 +107,7 @@ void MemorySourceExample(IMemory memory, IntPtr memoryLocation)
 ```
 
 ### Sample: Struct Array
+
 ```csharp
 void StructArrayExample(IMemory memory, IntPtr memoryLocation)
 {
@@ -149,6 +157,7 @@ void StructArrayExample(IMemory memory, IntPtr memoryLocation)
 ```
 
 ### Sample: Marshalling
+
 ```csharp
 public struct CustomFileHeader
 {
@@ -183,12 +192,14 @@ void MarshallingExample(IMemory memory, IntPtr memoryLocation)
 ```
 
 **Output:**
+
 ```
 Marshal Test (Struct fixed length char array as string):
 Name = ReloadedModLoader.dll Offset = 123456 Length = 78940
 ```
 
 ### Sample: Struct & StructArray Utility Classes
+
 ```csharp
 void StructUtilityExample(IMemory memory, IntPtr memoryLocation)
 {
@@ -228,6 +239,7 @@ void StructUtilityExample(IMemory memory, IntPtr memoryLocation)
 ```
 
 **Output:**
+
 ```
 Success: Original Physics Data and StructArray.GetBytes() are Equal
 Struct Array Size: 5280

@@ -1,5 +1,3 @@
-
-
 <div align="center">
 	<h1>Project Reloaded: Memory Library</h1>
 	<img src="https://i.imgur.com/BjPn7rU.png" width="150" align="center" />
@@ -21,9 +19,12 @@
 </div>
 
 # Introduction
-Reloaded.Memory is a managed, high performance, fully featured memory manipulation library written in C#, providing a very easy to use API.
+
+Reloaded.Memory is a managed, high performance, fully featured memory manipulation library written in C#, providing a
+very easy to use API.
 
 ## Features
+
 This is not a true feature set, rather a list of ideas as to what you can do/should expect with this library:
 
 + Write/Read *generic* structures to/from memory..
@@ -31,10 +32,9 @@ This is not a true feature set, rather a list of ideas as to what you can do/sho
 + Obtain the size of a *generic* data type before/after marshalling.
 + Convert *generic* structures to *byte[]*, convert *byte[]* into *generic* structures.
 + *Allocate*, *Free*, *Change Permissions* of regions of memory in current or another process.
-+ Use LINQ over structure arrays in memory of current or another process. 
++ Use LINQ over structure arrays in memory of current or another process.
 + High performance generic stream implementations, including big endian support.
 + Utility classes, e.g. Circular Buffers.
-
 
 ## Documentation
 
@@ -42,11 +42,15 @@ The following below are links aimed to help you get started with the library, th
 
 + [Getting Started](Docs/Getting-Started.md)
 
-For extra ideas of how to use the library, you may always take a look at `Reloaded.Memory.Tests`, the test suite for the main library.
+For extra ideas of how to use the library, you may always take a look at `Reloaded.Memory.Tests`, the test suite for the
+main library.
 
 ## Contributions
+
 As with the standard for all of the `Reloaded-Project`, repositories; contributions are very welcome and encouraged.
 
-Feel free to implement new features, make bug fixes or suggestions so long as they are accompanied by an issue with a clear description of the pull request.
+Feel free to implement new features, make bug fixes or suggestions so long as they are accompanied by an issue with a
+clear description of the pull request.
 
-If you are implementing new features, please do provide the appropriate unit tests to cover the new features you have implemented; try to keep the coverage near 100% 😊.
+If you are implementing new features, please do provide the appropriate unit tests to cover the new features you have
+implemented; try to keep the coverage near 100% 😊.
