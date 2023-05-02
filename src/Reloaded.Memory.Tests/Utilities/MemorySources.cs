@@ -48,27 +48,6 @@ public class MemorySourceKindNoExternalOnNonWindows : IEnumerable<object[]>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
 
-public class MemorySourceKindData : IEnumerable<object[]>
-{
-    private static IEnumerable<object[]> GetValues()
-    {
-        Array values = Enum.GetValues(typeof(MemorySources.MemorySourceKind));
-        foreach (object? value in values)
-        {
-            // ExternalMemory is only supported on Windows.
-            bool windowsOrLinux = Polyfills.IsWindows() || Polyfills.IsLinux();
-            if ((MemorySources.MemorySourceKind)value! == MemorySources.MemorySourceKind.EXTERNAL_PROCESS &&
-                !windowsOrLinux)
-                continue;
-
-            yield return new[] { value };
-        }
-    }
-
-    public IEnumerator<object[]> GetEnumerator() => GetValues().GetEnumerator();
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-}
-
 public class MemoryMemorySource : TemporaryMemorySource<Memory.Memory>
 {
     public override Memory.Memory Memory { get; } = new();
