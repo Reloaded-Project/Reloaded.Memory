@@ -1,8 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using Reloaded.Memory.Benchmarks.Framework;
-using Reloaded.Memory.Memory.Enums;
-using Reloaded.Memory.Memory.Interfaces;
-using Reloaded.Memory.Memory.Structs;
+using Reloaded.Memory.Enums;
 using Reloaded.Memory.Utility;
 
 namespace Reloaded.Memory.Benchmarks.Benchmarks;

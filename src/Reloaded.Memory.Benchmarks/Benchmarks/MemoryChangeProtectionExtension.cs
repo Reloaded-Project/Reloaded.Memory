@@ -1,8 +1,8 @@
 ﻿using BenchmarkDotNet.Attributes;
 using Reloaded.Memory.Benchmarks.Framework;
-using Reloaded.Memory.Memory.Enums;
-using Reloaded.Memory.Memory.Interfaces;
-using Reloaded.Memory.Memory.Structs;
+using Reloaded.Memory.Enums;
+using Reloaded.Memory.Interfaces;
+using Reloaded.Memory.Structs;
 
 namespace Reloaded.Memory.Benchmarks.Benchmarks;
 
@@ -17,17 +17,17 @@ public unsafe class MemoryChangeProtectionExtension
     public MemoryAllocation Alloc { get; set; }
 
     [GlobalSetup]
-    public void Setup() => Alloc = Reloaded.Memory.Memory.Memory.Instance.Allocate(DataSize);
+    public void Setup() => Alloc = new Reloaded.Memory.Memory().Allocate(DataSize);
 
     [GlobalCleanup]
-    public void Cleanup() => Reloaded.Memory.Memory.Memory.Instance.Free(Alloc);
+    public void Cleanup() => new Reloaded.Memory.Memory().Free(Alloc);
 
     // Note: We're not unrolling because we don't care for it to run as fast as possible, only that it's zero overhead.
 
     [Benchmark]
     public nuint ChangePermission_Direct()
     {
-        var memory = new Reloaded.Memory.Memory.Memory();
+        var memory = new Reloaded.Memory.Memory();
         var oldProtection = memory.ChangeProtection(Alloc.Address, (int)Alloc.Length, MemoryProtection.READ);
         memory.ChangeProtectionRaw(Alloc.Address, (int)Alloc.Length, oldProtection);
         return oldProtection;
@@ -36,7 +36,7 @@ public unsafe class MemoryChangeProtectionExtension
     [Benchmark]
     public nuint ChangePermission_Disposable()
     {
-        var memory = new Reloaded.Memory.Memory.Memory();
+        var memory = new Reloaded.Memory.Memory();
         var oldProtection = memory.ChangeProtectionDisposable(Alloc.Address, (int)Alloc.Length, MemoryProtection.READ);
         oldProtection.Dispose();
         return oldProtection.OriginalProtection;
@@ -45,7 +45,7 @@ public unsafe class MemoryChangeProtectionExtension
     [Benchmark]
     public nuint ChangePermission_Disposable_Using()
     {
-        var memory = new Reloaded.Memory.Memory.Memory();
+        var memory = new Reloaded.Memory.Memory();
         using var oldProtection = memory.ChangeProtectionDisposable(Alloc.Address, (int)Alloc.Length, MemoryProtection.READ);
         return oldProtection.OriginalProtection;
     }

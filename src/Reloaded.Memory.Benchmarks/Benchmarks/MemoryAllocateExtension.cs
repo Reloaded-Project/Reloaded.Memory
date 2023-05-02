@@ -1,7 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using Reloaded.Memory.Benchmarks.Framework;
-using Reloaded.Memory.Memory.Interfaces;
-using Reloaded.Memory.Memory.Structs;
+using Reloaded.Memory.Interfaces;
 
 namespace Reloaded.Memory.Benchmarks.Benchmarks;
 
@@ -18,7 +17,7 @@ public unsafe class MemoryAllocateExtension
     [Benchmark]
     public nuint Allocate_Direct()
     {
-        var memory = new Reloaded.Memory.Memory.Memory();
+        var memory = new Reloaded.Memory.Memory();
         var alloc = memory.Allocate(DataSize);
         memory.Free(alloc);
         return alloc.Address;
@@ -27,7 +26,7 @@ public unsafe class MemoryAllocateExtension
     [Benchmark]
     public nuint Allocate_Disposable()
     {
-        var memory = new Reloaded.Memory.Memory.Memory();
+        var memory = new Reloaded.Memory.Memory();
         var alloc = memory.AllocateDisposable(DataSize);
         alloc.Dispose();
         return alloc.Allocation.Address;
@@ -36,7 +35,7 @@ public unsafe class MemoryAllocateExtension
     [Benchmark]
     public nuint Allocate_Disposable_Using()
     {
-        var memory = new Reloaded.Memory.Memory.Memory();
+        var memory = new Reloaded.Memory.Memory();
         using var alloc = memory.AllocateDisposable(DataSize);
         return alloc.Allocation.Address;
     }

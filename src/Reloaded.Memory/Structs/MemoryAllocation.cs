@@ -1,6 +1,6 @@
-﻿using Reloaded.Memory.Memory.Interfaces;
+﻿using Reloaded.Memory.Interfaces;
 
-namespace Reloaded.Memory.Memory.Structs;
+namespace Reloaded.Memory.Structs;
 
 /// <summary>
 ///     Represents an individual memory allocation made via <see cref="ICanAllocateMemory" />.

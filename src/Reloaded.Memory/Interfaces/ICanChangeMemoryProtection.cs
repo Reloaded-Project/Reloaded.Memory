@@ -1,10 +1,10 @@
-﻿using Reloaded.Memory.Exceptions;
-using Reloaded.Memory.Memory.Enums;
-using Reloaded.Memory.Memory.Structs;
+﻿using Reloaded.Memory.Enums;
+using Reloaded.Memory.Exceptions;
 using Reloaded.Memory.Native.Unix;
 using Reloaded.Memory.Native.Windows;
+using Reloaded.Memory.Structs;
 
-namespace Reloaded.Memory.Memory.Interfaces;
+namespace Reloaded.Memory.Interfaces;
 
 /// <summary>
 ///     A simple interface that allows the user to change memory permissions on an arbitrary platform.

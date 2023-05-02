@@ -1,7 +1,7 @@
-﻿using Reloaded.Memory.Exceptions;
-using Reloaded.Memory.Memory.Enums;
-using Reloaded.Memory.Memory.Interfaces;
-using Reloaded.Memory.Memory.Structs;
+﻿using Reloaded.Memory.Enums;
+using Reloaded.Memory.Exceptions;
+using Reloaded.Memory.Interfaces;
+using Reloaded.Memory.Structs;
 using Reloaded.Memory.Tests.Utilities;
 using Xunit;
 using static Reloaded.Memory.Tests.Utilities.MemorySources;

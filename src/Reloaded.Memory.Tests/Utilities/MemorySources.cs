@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using Reloaded.Memory.Memory;
-using Reloaded.Memory.Memory.Interfaces;
+using Reloaded.Memory.Interfaces;
 using Reloaded.Memory.Utility;
 
 namespace Reloaded.Memory.Tests.Utilities;
@@ -48,9 +47,9 @@ public class MemorySourceKindNoExternalOnNonWindows : IEnumerable<object[]>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
 
-public class MemoryMemorySource : TemporaryMemorySource<Memory.Memory>
+public class MemoryMemorySource : TemporaryMemorySource<Memory>
 {
-    public override Memory.Memory Memory { get; } = new();
+    public override Memory Memory { get; } = new();
 }
 
 public class ExternalMemoryMemorySource : TemporaryMemorySource<ExternalMemory>

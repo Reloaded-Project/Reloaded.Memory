@@ -1,6 +1,6 @@
-﻿using Reloaded.Memory.Memory.Interfaces;
+﻿using Reloaded.Memory.Interfaces;
 
-namespace Reloaded.Memory.Memory.Structs;
+namespace Reloaded.Memory.Structs;
 
 /// <summary>
 /// A memory allocation with a disposable interface.

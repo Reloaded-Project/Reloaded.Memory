@@ -2,7 +2,7 @@
 using Reloaded.Memory.Exceptions;
 using Reloaded.Memory.Utility;
 
-namespace Reloaded.Memory.Memory.Interfaces;
+namespace Reloaded.Memory.Interfaces;
 
 /// <summary>
 ///     A simple interface that provides read/write access to arbitrary sequential memory.

@@ -29,7 +29,7 @@ public class CanReadWriteMemoryGenerator : ISourceGenerator
 
             foreach (var implementedInterface in classSymbol.AllInterfaces)
             {
-                if (implementedInterface.ToDisplayString() != "Reloaded.Memory.Memory.Interfaces.ICanReadWriteMemory")
+                if (implementedInterface.ToDisplayString() != "Reloaded.Memory.Interfaces.ICanReadWriteMemory")
                     continue;
 
                 string extensionMethods = GetExtensionMethods(classSymbol.Name, classSymbol.ContainingNamespace.ToDisplayString());
@@ -49,7 +49,7 @@ public class CanReadWriteMemoryGenerator : ISourceGenerator
 $@"
 using Reloaded.Memory.Utility;
 using Reloaded.Memory.Exceptions;
-using Reloaded.Memory.Memory.Interfaces;
+using Reloaded.Memory.Interfaces;
 using System.Diagnostics.CodeAnalysis;
 
 namespace {nameSpace};

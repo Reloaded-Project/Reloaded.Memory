@@ -1,17 +1,14 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using CommunityToolkit.HighPerformance.Buffers;
+using System.Runtime.Versioning;
 using Reloaded.Memory.Exceptions;
-using Reloaded.Memory.Memory.Interfaces;
-using Reloaded.Memory.Memory.Structs;
+using Reloaded.Memory.Interfaces;
 using Reloaded.Memory.Native.Unix;
 using Reloaded.Memory.Native.Windows;
+using Reloaded.Memory.Structs;
 using Reloaded.Memory.Utility;
-#if NET5_0_OR_GREATER
-using System.Runtime.Versioning;
-#endif
 
-namespace Reloaded.Memory.Memory;
+namespace Reloaded.Memory;
 
 /// <summary>
 ///     Provides access to memory of another process on a Windows machine.
@@ -83,18 +80,17 @@ public unsafe partial struct ExternalMemory : ICanReadWriteMemory, ICanAllocateM
         T>(nuint offset, [DisallowNull] ref T value)
     {
         int structSize = Marshal.SizeOf(value);
-        if (structSize > 1024)
+        if (structSize <= 1024)
         {
-            using SpanOwner<byte> bufferOwner = SpanOwner<byte>.Allocate(structSize);
-            Span<byte> span = bufferOwner.Span;
-
-            fixed (byte* bufferPtr = span)
-                ReadWithMarshallingImpl(offset, value, bufferPtr, structSize);
+            // Hot path.
+            byte* bufferPtr = stackalloc byte[structSize];
+            ReadWithMarshallingImpl(offset, value, bufferPtr, structSize);
         }
         else
         {
-            byte* bufferPtr = stackalloc byte[structSize];
-            ReadWithMarshallingImpl(offset, value, bufferPtr, structSize);
+            // Cold path.
+            using var alloc = new Memory().AllocateDisposable((UIntPtr)structSize);
+            ReadWithMarshallingImpl(offset, value, (byte*)alloc.Allocation.Address, structSize);
         }
     }
 
@@ -137,22 +133,19 @@ public unsafe partial struct ExternalMemory : ICanReadWriteMemory, ICanAllocateM
     public void WriteWithMarshalling<T>(nuint offset, [DisallowNull] in T item)
     {
         int structSize = Marshal.SizeOf(item);
-        if (structSize > 1024)
+        if (structSize <= 1024)
         {
-            using SpanOwner<byte> bufferOwner = SpanOwner<byte>.Allocate(structSize);
-            Span<byte> span = bufferOwner.Span;
-
-            fixed (byte* bufferPtr = span)
-            {
-                Marshal.StructureToPtr<T>(item, (nint)bufferPtr, false);
-                WriteWithMarshallingImpl((byte*)offset, bufferPtr, structSize);
-            }
-        }
-        else
-        {
+            // Hot Path
             byte* bufferPtr = stackalloc byte[structSize];
             Marshal.StructureToPtr<T>(item, (nint)bufferPtr, false);
             WriteWithMarshallingImpl((byte*)offset, bufferPtr, structSize);
+        }
+        else
+        {
+            // Cold Path
+            using var alloc = new Memory().AllocateDisposable((UIntPtr)structSize);
+            Marshal.StructureToPtr<T>(item, (nint)alloc.Allocation.Address, false);
+            WriteWithMarshallingImpl((byte*)offset, (byte*)alloc.Allocation.Address, structSize);
         }
     }
 

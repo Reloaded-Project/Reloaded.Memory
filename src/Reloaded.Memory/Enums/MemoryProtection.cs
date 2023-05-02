@@ -5,7 +5,7 @@ using Reloaded.Memory.Utility;
 using static Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION;
 using static Reloaded.Memory.Native.Unix.UnixMemoryProtection;
 
-namespace Reloaded.Memory.Memory.Enums;
+namespace Reloaded.Memory.Enums;
 
 /// <summary>
 ///     Lists the various memory protection modes available.

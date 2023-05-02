@@ -1,7 +1,7 @@
 ﻿using Reloaded.Memory.Exceptions;
-using Reloaded.Memory.Memory.Structs;
+using Reloaded.Memory.Structs;
 
-namespace Reloaded.Memory.Memory.Interfaces;
+namespace Reloaded.Memory.Interfaces;
 
 /// <summary>
 ///     A simple interface that allows the user to allocate/free memory.

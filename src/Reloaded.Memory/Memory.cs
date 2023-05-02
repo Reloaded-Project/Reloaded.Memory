@@ -1,16 +1,16 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Reloaded.Memory.Enums;
 using Reloaded.Memory.Exceptions;
-using Reloaded.Memory.Memory.Enums;
-using Reloaded.Memory.Memory.Interfaces;
-using Reloaded.Memory.Memory.Structs;
+using Reloaded.Memory.Interfaces;
 using Reloaded.Memory.Native.Unix;
 using Reloaded.Memory.Native.Windows;
+using Reloaded.Memory.Structs;
 using Reloaded.Memory.Utility;
 #if NET5_0_OR_GREATER
 using static System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes;
 #endif
 
-namespace Reloaded.Memory.Memory;
+namespace Reloaded.Memory;
 
 /// <summary>
 ///     Wrapper around memory read/write/allocate in current process. Supports Windows, Linux and OSX.
@@ -73,6 +73,7 @@ public unsafe partial struct Memory : ICanReadWriteMemory, ICanAllocateMemory, I
     #region ICanAllocateMemory
 
     /// <inheritdoc />
+    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public MemoryAllocation Allocate(nuint length)
     {
@@ -116,6 +117,7 @@ public unsafe partial struct Memory : ICanReadWriteMemory, ICanAllocateMemory, I
     }
 
     /// <inheritdoc />
+    [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Free(MemoryAllocation allocation)
     {

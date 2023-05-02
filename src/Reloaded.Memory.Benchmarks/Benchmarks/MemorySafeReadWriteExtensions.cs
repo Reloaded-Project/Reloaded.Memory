@@ -1,8 +1,8 @@
 ﻿using BenchmarkDotNet.Attributes;
 using Reloaded.Memory.Benchmarks.Framework;
-using Reloaded.Memory.Memory.Enums;
-using Reloaded.Memory.Memory.Interfaces;
-using Reloaded.Memory.Memory.Structs;
+using Reloaded.Memory.Enums;
+using Reloaded.Memory.Interfaces;
+using Reloaded.Memory.Structs;
 using Reloaded.Memory.Utility;
 
 namespace Reloaded.Memory.Benchmarks.Benchmarks;
@@ -22,19 +22,19 @@ public class MemorySafeReadWriteExtensions
     [GlobalSetup]
     public void Setup()
     {
-        Alloc = Reloaded.Memory.Memory.Memory.Instance.Allocate(DataSize);
+        Alloc = new Reloaded.Memory.Memory().Allocate(DataSize);
         Data = new byte[DataSize];
     }
 
     [GlobalCleanup]
-    public void Cleanup() => Reloaded.Memory.Memory.Memory.Instance.Free(Alloc);
+    public void Cleanup() => new Reloaded.Memory.Memory().Free(Alloc);
 
     // Note: We're not unrolling because we don't care for it to run as fast as possible, only that it's zero overhead.
 
     [Benchmark]
     public void SafeReadWrite_Direct()
     {
-        var memory = new Reloaded.Memory.Memory.Memory();
+        var memory = new Reloaded.Memory.Memory();
         using var disposable = memory.ChangeProtectionDisposable(Alloc.Address, (int)Alloc.Length, MemoryProtection.READ_WRITE_EXECUTE);
         memory.WriteRaw(Alloc.Address, Data.AsSpanFast());
     }
@@ -43,7 +43,7 @@ public class MemorySafeReadWriteExtensions
     public void SafeReadWrite_Extension()
     {
         // Inlining (correctly) blocked by try/finally. Otherwise zero-overhead.
-        var memory = new Reloaded.Memory.Memory.Memory();
+        var memory = new Reloaded.Memory.Memory();
         memory.SafeWrite(Alloc.Address, Data.AsSpanFast());
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Reloaded.Memory.Memory.Interfaces;
-using Reloaded.Memory.Memory.Structs;
+using Reloaded.Memory.Interfaces;
+using Reloaded.Memory.Structs;
 using Reloaded.Memory.Tests.Utilities;
 using Reloaded.Memory.Tests.Utilities.Structures;
 using Xunit;

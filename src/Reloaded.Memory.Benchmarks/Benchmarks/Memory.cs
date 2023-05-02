@@ -1,7 +1,7 @@
 ﻿using BenchmarkDotNet.Attributes;
 using Reloaded.Memory.Benchmarks.Framework;
-using Reloaded.Memory.Memory.Interfaces;
-using Reloaded.Memory.Memory.Structs;
+using Reloaded.Memory.Interfaces;
+using Reloaded.Memory.Structs;
 
 namespace Reloaded.Memory.Benchmarks.Benchmarks;
 
@@ -16,10 +16,10 @@ public unsafe class Memory
     public MemoryAllocation Alloc { get; set; }
 
     [GlobalSetup]
-    public void Setup() => Alloc = Reloaded.Memory.Memory.Memory.Instance.Allocate(DataSize);
+    public void Setup() => Alloc = new Reloaded.Memory.Memory().Allocate(DataSize);
 
     [GlobalCleanup]
-    public void Cleanup() => Reloaded.Memory.Memory.Memory.Instance.Free(Alloc);
+    public void Cleanup() => new Reloaded.Memory.Memory().Free(Alloc);
 
     // Note: We're not unrolling because we don't care for it to run as fast as possible, only that it's zero overhead.
 
@@ -42,7 +42,7 @@ public unsafe class Memory
     [Benchmark]
     public nuint ReadViaMemory()
     {
-        var memory = new Reloaded.Memory.Memory.Memory();
+        var memory = Reloaded.Memory.Memory.Instance;
         nuint* ptr = (nuint*)Alloc.Address;
         nuint* maxAddress = (nuint*)(Alloc.Address + Alloc.Length);
         nuint result = 0;
@@ -59,7 +59,7 @@ public unsafe class Memory
     [Benchmark]
     public nuint ReadViaMemory_ViaOutParameter()
     {
-        var memory = new Reloaded.Memory.Memory.Memory();
+        var memory = new Reloaded.Memory.Memory();
         nuint* ptr = (nuint*)Alloc.Address;
         nuint* maxAddress = (nuint*)(Alloc.Address + Alloc.Length);
         nuint result = 0;
@@ -93,7 +93,7 @@ public unsafe class Memory
     [Benchmark]
     public nuint WriteViaMemory()
     {
-        var memory = new Reloaded.Memory.Memory.Memory();
+        var memory = new Reloaded.Memory.Memory();
         nuint* ptr = (nuint*)Alloc.Address;
         nuint* maxAddress = (nuint*)(Alloc.Address + Alloc.Length);
         nuint result = 0;
