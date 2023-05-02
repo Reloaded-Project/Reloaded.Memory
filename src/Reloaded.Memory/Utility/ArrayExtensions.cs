@@ -1,4 +1,6 @@
-﻿namespace Reloaded.Memory.Utility;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Reloaded.Memory.Utility;
 
 /// <summary>
 ///     Extensions dealing with arrays.
@@ -10,7 +12,7 @@ public static class ArrayExtensions
     /// </summary>
     /// <param name="data">Data to convert.</param>
     /// <typeparam name="T">Type of array.</typeparam>
-    /// <returns>Span.</returns>
+    /// <returns>Created span, while omitting null check.</returns>
     public static Span<T> AsSpanFast<T>(this T[] data)
     {
 #if NET5_0_OR_GREATER

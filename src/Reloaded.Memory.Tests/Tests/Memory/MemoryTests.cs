@@ -9,8 +9,6 @@ using static Reloaded.Memory.Tests.Utilities.MemorySources;
 
 namespace Reloaded.Memory.Tests.Tests.Memory;
 
-/* Note: The tests in this can randomly fail. */
-
 public class MemoryTests
 {
     /// <summary>
@@ -25,11 +23,11 @@ public class MemoryTests
 
         MemoryAllocation allocation = source.AllocateMemory.Allocate(allocLength);
 
-        for (int x = 0; x < 100; x++)
+        for (var x = 0; x < 100; x++)
         {
-            RandomByteArray randomArray = RandomByteArray.GenerateRandomByteArray(allocLength);
+            var randomArray = RandomByteArray.GenerateRandomByteArray(allocLength);
             source.ReadWriteMemory.WriteRaw(allocation.Address, randomArray.Array);
-            byte[] randomValueCopy = source.ReadWriteMemory.ReadRaw(allocation.Address, randomArray.Array.Length);
+            var randomValueCopy = source.ReadWriteMemory.ReadRaw(allocation.Address, randomArray.Array.Length);
             Assert.Equal(randomArray.Array, randomValueCopy);
         }
 
@@ -48,9 +46,9 @@ public class MemoryTests
         const int allocLength = 0x100;
         MemoryAllocation allocation = source.AllocateMemory.Allocate(allocLength);
 
-        for (int x = 0; x < 100; x++)
+        for (var x = 0; x < 100; x++)
         {
-            RandomIntStruct randomIntStruct = RandomIntStruct.BuildRandomStruct();
+            var randomIntStruct = RandomIntStruct.BuildRandomStruct();
             source.ReadWriteMemory.Write(allocation.Address, randomIntStruct);
             source.ReadWriteMemory.Read(allocation.Address, out RandomIntStruct randomValueCopy);
             Assert.Equal(randomIntStruct, randomValueCopy);
@@ -72,13 +70,13 @@ public class MemoryTests
     private static void ReadAndWrite_WithMarshalling_Common<T>(MemorySourceKind kind) where T : MarshallingStruct, new()
     {
         using ITemporaryMemorySource source = GetMemorySource(kind);
-        int minSize = Marshal.SizeOf<T>();
-        int allocLength = minSize;
+        var minSize = Marshal.SizeOf<T>();
+        var allocLength = minSize;
         MemoryAllocation allocation = source.AllocateMemory.Allocate((UIntPtr)allocLength);
 
-        for (int x = 0; x < 100; x++)
+        for (var x = 0; x < 100; x++)
         {
-            T randomStruct = new T();
+            var randomStruct = new T();
             source.ReadWriteMemory.WriteWithMarshalling(allocation.Address, randomStruct);
             source.ReadWriteMemory.ReadWithMarshalling(allocation.Address, out T? randomValueCopy);
 

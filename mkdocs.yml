@@ -48,5 +48,6 @@ plugins:
 
 nav:
   - Home: index.md
-  - Utilities: 
-      - Memory Abstractions: About-Memory.md
+  - Memory: About-Memory.md
+  - Pointers: 
+      Ptr&lt;T&gt;: Pointers/Ptr.md

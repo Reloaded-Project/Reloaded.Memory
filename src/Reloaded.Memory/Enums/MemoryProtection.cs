@@ -60,7 +60,7 @@ public static class MemoryProtectionExtensions
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static nuint ToUnix(MemoryProtection protection)
+    internal static nuint ToUnix(MemoryProtection protection)
     {
         UnixMemoryProtection result = 0;
         if (protection.HasFlagFast(MemoryProtection.READ))
@@ -74,7 +74,7 @@ public static class MemoryProtectionExtensions
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static nuint ToWindows(MemoryProtection protection)
+    internal static nuint ToWindows(MemoryProtection protection)
     {
         Kernel32.MEM_PROTECTION result = 0;
 
@@ -109,7 +109,7 @@ public static class MemoryProtectionExtensions
             result = PAGE_EXECUTE;
         }
 
-        return (UIntPtr)result;
+        return (nuint)result;
     }
 #pragma warning restore CA1416 // This API requires the operating system version to be checked
 }

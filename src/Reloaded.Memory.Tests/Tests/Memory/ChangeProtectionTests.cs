@@ -1,6 +1,9 @@
-﻿using Reloaded.Memory.Enums;
+﻿using System;
+using Reloaded.Memory.Enums;
 using Reloaded.Memory.Exceptions;
 using Reloaded.Memory.Interfaces;
+using Reloaded.Memory.Native.Unix;
+using Reloaded.Memory.Native.Windows;
 using Reloaded.Memory.Structs;
 using Reloaded.Memory.Tests.Utilities;
 using Xunit;
@@ -15,7 +18,7 @@ public class ChangeProtectionTests
 {
     [Theory]
     [ClassData(typeof(MemorySourceKindNoExternalOnNonWindows))]
-    public void ChangeProtection_Success(MemorySourceKind kind)
+    public unsafe void ChangeProtection_Success(MemorySourceKind kind)
     {
         using ITemporaryMemorySource source = GetMemorySource(kind);
         const int allocLength = 0x100;
@@ -25,8 +28,35 @@ public class ChangeProtectionTests
         source.ChangeMemoryProtection.ChangeProtection(allocation.Address, allocLength, MemoryProtection.READ);
         source.ChangeMemoryProtection.ChangeProtection(allocation.Address, allocLength,
             MemoryProtection.READ_WRITE_EXECUTE);
+        source.ReadWriteMemory.Write(allocation.Address, 5);
 
         source.AllocateMemory.Free(allocation);
+    }
+
+    [Theory]
+    [ClassData(typeof(MemorySourceKindNoExternalOnNonWindows))]
+    public void SafeWriteAndRead_Success(MemorySourceKind kind)
+    {
+        using ITemporaryMemorySource source = GetMemorySource(kind);
+        const int allocLength = 0x100;
+        using var allocation = source.AllocateMemory.AllocateDisposable(allocLength);
+        source.ChangeMemoryProtection.ChangeProtection(allocation.Allocation.Address, allocLength, MemoryProtection.READ);
+
+        // Prepare test data
+        var dataToWrite = new byte[allocLength];
+        new Random().NextBytes(dataToWrite);
+        Span<byte> dataToWriteSpan = dataToWrite;
+
+        // Test SafeWrite
+        source.SafeWrite(allocation.Allocation.Address, dataToWriteSpan);
+
+        // Test SafeRead
+        var dataRead = new byte[allocLength];
+        Span<byte> dataReadSpan = dataRead;
+        source.SafeRead(allocation.Allocation.Address, dataReadSpan);
+
+        // Verify that the written and read data are the same
+        Assert.Equal(dataToWrite, dataRead);
     }
 
     [Theory]
@@ -51,5 +81,30 @@ public class ChangeProtectionTests
 
         // We don't have a reliable way to test Access Violations across platforms. Pretend it works if it doesn't throw.
         using var disposable = source.ChangeMemoryProtection.ChangeProtectionDisposable(allocation.Allocation.Address, allocLength, MemoryProtection.READ);
+    }
+
+    // Mapping Tests
+    [Theory]
+    [InlineData(MemoryProtection.READ, UnixMemoryProtection.PROT_READ)]
+    [InlineData(MemoryProtection.WRITE, UnixMemoryProtection.PROT_WRITE)]
+    [InlineData(MemoryProtection.EXECUTE, UnixMemoryProtection.PROT_EXEC)]
+    public void ToUnixTest(MemoryProtection protection, UnixMemoryProtection expected)
+    {
+        nuint result = MemoryProtectionExtensions.ToUnix(protection); // Replace YourClass with the class containing the ToUnix method.
+        Assert.Equal((nuint)expected, result);
+    }
+
+    [Theory]
+    [InlineData(MemoryProtection.READ, Kernel32.MEM_PROTECTION.PAGE_READONLY)]
+    [InlineData(MemoryProtection.WRITE, Kernel32.MEM_PROTECTION.PAGE_READWRITE)]
+    [InlineData(MemoryProtection.EXECUTE, Kernel32.MEM_PROTECTION.PAGE_EXECUTE)]
+    [InlineData(MemoryProtection.READ | MemoryProtection.WRITE, Kernel32.MEM_PROTECTION.PAGE_READWRITE)]
+    [InlineData(MemoryProtection.READ | MemoryProtection.EXECUTE, Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READ)]
+    [InlineData(MemoryProtection.WRITE | MemoryProtection.EXECUTE, Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE)]
+    [InlineData(MemoryProtection.READ | MemoryProtection.WRITE | MemoryProtection.EXECUTE, Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE)]
+    public void ToWindowsTest(MemoryProtection protection, Kernel32.MEM_PROTECTION expected)
+    {
+        UIntPtr result = MemoryProtectionExtensions.ToWindows(protection); // Replace YourClass with the class containing the ToWindows method.
+        Assert.Equal((UIntPtr)expected, result);
     }
 }
