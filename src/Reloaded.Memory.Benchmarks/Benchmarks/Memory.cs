@@ -1,13 +1,13 @@
 ﻿using BenchmarkDotNet.Attributes;
 using Reloaded.Memory.Benchmarks.Framework;
-using Reloaded.Memory.Interfaces;
 using Reloaded.Memory.Structs;
 
 namespace Reloaded.Memory.Benchmarks.Benchmarks;
 
 [MemoryDiagnoser]
 [DisassemblyDiagnoser]
-[BenchmarkInfo("Memory Read Write", "Tests whether Memory's Read/Write Functionality is Zero-Cost.", Categories.ZeroOverhead)]
+[BenchmarkInfo("Memory Read Write", "Tests whether Memory's Read/Write Functionality is Zero-Cost.",
+    Categories.ZeroOverhead)]
 public unsafe class Memory
 {
     // Must be divisible by 2
@@ -26,8 +26,8 @@ public unsafe class Memory
     [Benchmark]
     public nuint ReadViaPointer()
     {
-        nuint* ptr = (nuint*)Alloc.Address;
-        nuint* maxAddress = (nuint*)(Alloc.Address + Alloc.Length);
+        var ptr = (nuint*)Alloc.Address;
+        var maxAddress = (nuint*)(Alloc.Address + Alloc.Length);
         nuint result = 0;
 
         while (ptr < maxAddress)
@@ -43,8 +43,8 @@ public unsafe class Memory
     public nuint ReadViaMemory()
     {
         var memory = Reloaded.Memory.Memory.Instance;
-        nuint* ptr = (nuint*)Alloc.Address;
-        nuint* maxAddress = (nuint*)(Alloc.Address + Alloc.Length);
+        var ptr = (nuint*)Alloc.Address;
+        var maxAddress = (nuint*)(Alloc.Address + Alloc.Length);
         nuint result = 0;
 
         while (ptr < maxAddress)
@@ -60,8 +60,8 @@ public unsafe class Memory
     public nuint ReadViaMemory_ViaOutParameter()
     {
         var memory = new Reloaded.Memory.Memory();
-        nuint* ptr = (nuint*)Alloc.Address;
-        nuint* maxAddress = (nuint*)(Alloc.Address + Alloc.Length);
+        var ptr = (nuint*)Alloc.Address;
+        var maxAddress = (nuint*)(Alloc.Address + Alloc.Length);
         nuint result = 0;
 
         while (ptr < maxAddress)
@@ -77,8 +77,8 @@ public unsafe class Memory
     [Benchmark]
     public nuint WriteViaPointer()
     {
-        nuint* ptr = (nuint*)Alloc.Address;
-        nuint* maxAddress = (nuint*)(Alloc.Address + Alloc.Length);
+        var ptr = (nuint*)Alloc.Address;
+        var maxAddress = (nuint*)(Alloc.Address + Alloc.Length);
         nuint result = 0;
 
         while (ptr < maxAddress)
@@ -94,8 +94,8 @@ public unsafe class Memory
     public nuint WriteViaMemory()
     {
         var memory = new Reloaded.Memory.Memory();
-        nuint* ptr = (nuint*)Alloc.Address;
-        nuint* maxAddress = (nuint*)(Alloc.Address + Alloc.Length);
+        var ptr = (nuint*)Alloc.Address;
+        var maxAddress = (nuint*)(Alloc.Address + Alloc.Length);
         nuint result = 0;
 
         while (ptr < maxAddress)

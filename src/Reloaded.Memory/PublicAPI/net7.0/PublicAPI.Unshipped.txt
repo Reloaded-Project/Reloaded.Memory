@@ -1,1 +1,168 @@
-﻿
+﻿Reloaded.Memory.Enums.MemoryProtection
+Reloaded.Memory.Enums.MemoryProtection.EXECUTE = 4 -> Reloaded.Memory.Enums.MemoryProtection
+Reloaded.Memory.Enums.MemoryProtection.READ = 1 -> Reloaded.Memory.Enums.MemoryProtection
+Reloaded.Memory.Enums.MemoryProtection.READ_WRITE_EXECUTE = Reloaded.Memory.Enums.MemoryProtection.READ | Reloaded.Memory.Enums.MemoryProtection.WRITE | Reloaded.Memory.Enums.MemoryProtection.EXECUTE -> Reloaded.Memory.Enums.MemoryProtection
+Reloaded.Memory.Enums.MemoryProtection.WRITE = 2 -> Reloaded.Memory.Enums.MemoryProtection
+Reloaded.Memory.Enums.MemoryProtectionExtensions
+Reloaded.Memory.Exceptions.MemoryAllocationException
+Reloaded.Memory.Exceptions.MemoryAllocationException.MemoryAllocationException(string! message) -> void
+Reloaded.Memory.Exceptions.MemoryException
+Reloaded.Memory.Exceptions.MemoryException.MemoryException(string! message) -> void
+Reloaded.Memory.Exceptions.MemoryPermissionException
+Reloaded.Memory.Exceptions.MemoryPermissionException.MemoryPermissionException(string! message) -> void
+Reloaded.Memory.ExternalMemory
+Reloaded.Memory.ExternalMemory.Allocate(nuint length) -> Reloaded.Memory.Structs.MemoryAllocation
+Reloaded.Memory.ExternalMemory.ChangeProtectionRaw(nuint memoryAddress, int size, nuint newProtection) -> nuint
+Reloaded.Memory.ExternalMemory.ExternalMemory() -> void
+Reloaded.Memory.ExternalMemory.ExternalMemory(nint processHandle) -> void
+Reloaded.Memory.ExternalMemory.ExternalMemory(System.Diagnostics.Process! process) -> void
+Reloaded.Memory.ExternalMemory.Free(Reloaded.Memory.Structs.MemoryAllocation allocation) -> bool
+Reloaded.Memory.ExternalMemory.ReadRaw(nuint offset, System.Span<byte> value) -> void
+Reloaded.Memory.ExternalMemory.ReadRef<T>(nuint offset, ref T value) -> void
+Reloaded.Memory.ExternalMemory.ReadWithMarshalling<T>(nuint offset, ref T value) -> void
+Reloaded.Memory.ExternalMemory.Write<T>(nuint offset, in T item) -> void
+Reloaded.Memory.ExternalMemory.WriteRaw(nuint offset, System.Span<byte> data) -> void
+Reloaded.Memory.ExternalMemory.WriteWithMarshalling<T>(nuint offset, in T item) -> void
+Reloaded.Memory.Interfaces.CanAllocateMemoryExtensions
+Reloaded.Memory.Interfaces.CanChangeMemoryProtectionExtensions
+Reloaded.Memory.Interfaces.CanReadWriteMemoryExtensions
+Reloaded.Memory.Interfaces.ICanAllocateMemory
+Reloaded.Memory.Interfaces.ICanAllocateMemory.Allocate(nuint length) -> Reloaded.Memory.Structs.MemoryAllocation
+Reloaded.Memory.Interfaces.ICanAllocateMemory.Free(Reloaded.Memory.Structs.MemoryAllocation allocation) -> bool
+Reloaded.Memory.Interfaces.ICanChangeMemoryProtection
+Reloaded.Memory.Interfaces.ICanChangeMemoryProtection.ChangeProtectionRaw(nuint memoryAddress, int size, nuint newProtection) -> nuint
+Reloaded.Memory.Interfaces.ICanReadWriteMemory
+Reloaded.Memory.Interfaces.ICanReadWriteMemory.ReadRaw(nuint offset, System.Span<byte> value) -> void
+Reloaded.Memory.Interfaces.ICanReadWriteMemory.ReadRef<T>(nuint offset, ref T value) -> void
+Reloaded.Memory.Interfaces.ICanReadWriteMemory.ReadWithMarshalling<T>(nuint offset, ref T value) -> void
+Reloaded.Memory.Interfaces.ICanReadWriteMemory.Write<T>(nuint offset, in T item) -> void
+Reloaded.Memory.Interfaces.ICanReadWriteMemory.WriteRaw(nuint offset, System.Span<byte> data) -> void
+Reloaded.Memory.Interfaces.ICanReadWriteMemory.WriteWithMarshalling<T>(nuint offset, in T item) -> void
+Reloaded.Memory.Memory
+Reloaded.Memory.Memory.Allocate(nuint length) -> Reloaded.Memory.Structs.MemoryAllocation
+Reloaded.Memory.Memory.ChangeProtectionRaw(nuint memoryAddress, int size, nuint newProtection) -> nuint
+Reloaded.Memory.Memory.Free(Reloaded.Memory.Structs.MemoryAllocation allocation) -> bool
+Reloaded.Memory.Memory.Memory() -> void
+Reloaded.Memory.Memory.ReadRaw(nuint offset, System.Span<byte> value) -> void
+Reloaded.Memory.Memory.ReadRef<T>(nuint offset, ref T value) -> void
+Reloaded.Memory.Memory.ReadWithMarshalling<T>(nuint offset, ref T value) -> void
+Reloaded.Memory.Memory.Write<T>(nuint offset, in T item) -> void
+Reloaded.Memory.Memory.WriteRaw(nuint offset, System.Span<byte> data) -> void
+Reloaded.Memory.Memory.WriteWithMarshalling<T>(nuint offset, in T item) -> void
+Reloaded.Memory.Native.Unix.Posix
+Reloaded.Memory.Native.Unix.Posix.IoVec
+Reloaded.Memory.Native.Unix.Posix.IoVec.IoVec() -> void
+Reloaded.Memory.Native.Unix.Posix.IoVec.iov_base -> nuint
+Reloaded.Memory.Native.Unix.Posix.IoVec.iov_len -> nuint
+Reloaded.Memory.Native.Unix.UnixMemoryProtection
+Reloaded.Memory.Native.Unix.UnixMemoryProtection.PROT_EXEC = 4 -> Reloaded.Memory.Native.Unix.UnixMemoryProtection
+Reloaded.Memory.Native.Unix.UnixMemoryProtection.PROT_NONE = 0 -> Reloaded.Memory.Native.Unix.UnixMemoryProtection
+Reloaded.Memory.Native.Unix.UnixMemoryProtection.PROT_READ = 1 -> Reloaded.Memory.Native.Unix.UnixMemoryProtection
+Reloaded.Memory.Native.Unix.UnixMemoryProtection.PROT_WRITE = 2 -> Reloaded.Memory.Native.Unix.UnixMemoryProtection
+Reloaded.Memory.Native.Windows.Kernel32
+Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE
+Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE.MEM_4MB_PAGES = 2147483648 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE
+Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE.MEM_64K_PAGES = Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE.MEM_PHYSICAL | Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE.MEM_LARGE_PAGES -> Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE
+Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE.MEM_COMMIT = 4096 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE
+Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE.MEM_DECOMMIT = 16384 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE
+Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE.MEM_DIFFERENT_IMAGE_BASE_OK = 8388608 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE
+Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE.MEM_FREE = 65536 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE
+Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE.MEM_LARGE_PAGES = 536870912 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE
+Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE.MEM_MAPPED = 262144 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE
+Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE.MEM_PHYSICAL = 4194304 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE
+Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE.MEM_PRIVATE = 131072 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE
+Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE.MEM_RELEASE = 32768 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE
+Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE.MEM_RESERVE = 8192 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE
+Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE.MEM_RESET = 524288 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE
+Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE.MEM_RESET_UNDO = 16777216 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE
+Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE.MEM_ROTATE = 8388608 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE
+Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE.MEM_TOP_DOWN = 1048576 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE
+Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE.MEM_WRITE_WATCH = 2097152 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE
+Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION
+Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION.PAGE_ENCLAVE_THREAD_CONTROL = 2147483648 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION
+Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION.PAGE_ENCLAVE_UNVALIDATED = 536870912 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION
+Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION.PAGE_EXECUTE = 16 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION
+Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READ = 32 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION
+Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE = 64 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION
+Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION.PAGE_EXECUTE_WRITECOPY = 128 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION
+Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION.PAGE_GUARD = 256 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION
+Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION.PAGE_NOACCESS = 1 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION
+Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION.PAGE_NOCACHE = 512 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION
+Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION.PAGE_READONLY = 2 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION
+Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION.PAGE_READWRITE = 4 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION
+Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION.PAGE_REVERT_TO_FILE_MAP = 2147483648 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION
+Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION.PAGE_TARGETS_INVALID = 1073741824 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION
+Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION.PAGE_TARGETS_NO_UPDATE = 1073741824 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION
+Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION.PAGE_WRITECOMBINE = 1024 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION
+Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION.PAGE_WRITECOPY = 8 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION
+Reloaded.Memory.Pointers.Ptr<T>
+Reloaded.Memory.Pointers.Ptr<T>.AsRef() -> T
+Reloaded.Memory.Pointers.Ptr<T>.Pointer.get -> T*
+Reloaded.Memory.Pointers.Ptr<T>.Pointer.set -> void
+Reloaded.Memory.Pointers.Ptr<T>.Ptr() -> void
+Reloaded.Memory.Pointers.Ptr<T>.Ptr(T* pointer) -> void
+Reloaded.Memory.Structs.DisposableMemoryAllocation<TAllocator>
+Reloaded.Memory.Structs.DisposableMemoryAllocation<TAllocator>.Allocation.get -> Reloaded.Memory.Structs.MemoryAllocation
+Reloaded.Memory.Structs.DisposableMemoryAllocation<TAllocator>.Allocation.init -> void
+Reloaded.Memory.Structs.DisposableMemoryAllocation<TAllocator>.Allocator.get -> TAllocator
+Reloaded.Memory.Structs.DisposableMemoryAllocation<TAllocator>.Allocator.init -> void
+Reloaded.Memory.Structs.DisposableMemoryAllocation<TAllocator>.DisposableMemoryAllocation() -> void
+Reloaded.Memory.Structs.DisposableMemoryAllocation<TAllocator>.Dispose() -> void
+Reloaded.Memory.Structs.DisposableMemoryProtection<TProtector>
+Reloaded.Memory.Structs.DisposableMemoryProtection<TProtector>.DisposableMemoryProtection() -> void
+Reloaded.Memory.Structs.DisposableMemoryProtection<TProtector>.Dispose() -> void
+Reloaded.Memory.Structs.DisposableMemoryProtection<TProtector>.MemoryAddress.get -> nuint
+Reloaded.Memory.Structs.DisposableMemoryProtection<TProtector>.MemoryAddress.init -> void
+Reloaded.Memory.Structs.DisposableMemoryProtection<TProtector>.OriginalProtection.get -> nuint
+Reloaded.Memory.Structs.DisposableMemoryProtection<TProtector>.OriginalProtection.init -> void
+Reloaded.Memory.Structs.DisposableMemoryProtection<TProtector>.Protector.get -> TProtector
+Reloaded.Memory.Structs.DisposableMemoryProtection<TProtector>.Protector.init -> void
+Reloaded.Memory.Structs.DisposableMemoryProtection<TProtector>.Size.get -> int
+Reloaded.Memory.Structs.DisposableMemoryProtection<TProtector>.Size.init -> void
+Reloaded.Memory.Structs.MemoryAllocation
+Reloaded.Memory.Structs.MemoryAllocation.Address -> nuint
+Reloaded.Memory.Structs.MemoryAllocation.Length -> nuint
+Reloaded.Memory.Structs.MemoryAllocation.MemoryAllocation() -> void
+Reloaded.Memory.Structs.MemoryAllocation.MemoryAllocation(nuint address, nuint length) -> void
+Reloaded.Memory.Utility.ArrayExtensions
+Reloaded.Memory.Utility.Blittable
+Reloaded.Memory.Utility.EnumExtensions
+Reloaded.Memory.Utility.Polyfills
+static extern Reloaded.Memory.Native.Unix.Posix.munmap(nuint addr, nuint length) -> int
+static extern Reloaded.Memory.Native.Unix.Posix.process_vm_readv(int pid, Reloaded.Memory.Native.Unix.Posix.IoVec* local_iov, ulong liovcnt, Reloaded.Memory.Native.Unix.Posix.IoVec* remote_iov, ulong riovcnt, ulong flags) -> nint
+static extern Reloaded.Memory.Native.Unix.Posix.process_vm_writev(int pid, Reloaded.Memory.Native.Unix.Posix.IoVec* local_iov, ulong liovcnt, Reloaded.Memory.Native.Unix.Posix.IoVec* remote_iov, ulong riovcnt, ulong flags) -> nint
+static extern Reloaded.Memory.Native.Unix.Posix.sysconf(int name) -> long
+static readonly Reloaded.Memory.Memory.Instance -> Reloaded.Memory.Memory
+static Reloaded.Memory.Enums.MemoryProtectionExtensions.ToCurrentPlatform(this Reloaded.Memory.Enums.MemoryProtection protection) -> nuint
+static Reloaded.Memory.Interfaces.CanAllocateMemoryExtensions.AllocateDisposable<TAllocator>(this TAllocator allocator, nuint numBytes) -> Reloaded.Memory.Structs.DisposableMemoryAllocation<TAllocator>
+static Reloaded.Memory.Interfaces.CanChangeMemoryProtectionExtensions.ChangeProtection<T>(this T item, nuint memoryAddress, int size, Reloaded.Memory.Enums.MemoryProtection newProtection) -> nuint
+static Reloaded.Memory.Interfaces.CanChangeMemoryProtectionExtensions.ChangeProtectionDisposable<T>(this T item, nuint memoryAddress, int size, Reloaded.Memory.Enums.MemoryProtection newProtection) -> Reloaded.Memory.Structs.DisposableMemoryProtection<T>
+static Reloaded.Memory.Interfaces.CanChangeMemoryProtectionExtensions.SafeRead<TMemory>(this TMemory item, nuint memoryAddress, System.Span<byte> data) -> void
+static Reloaded.Memory.Interfaces.CanChangeMemoryProtectionExtensions.SafeWrite<TMemory>(this TMemory item, nuint memoryAddress, System.Span<byte> data) -> void
+static Reloaded.Memory.Interfaces.CanReadWriteMemoryExtensions.Read<TSource, TData>(this TSource source, nuint offset) -> TData
+static Reloaded.Memory.Interfaces.CanReadWriteMemoryExtensions.Read<TSource, TData>(this TSource source, nuint offset, out TData value) -> void
+static Reloaded.Memory.Interfaces.CanReadWriteMemoryExtensions.ReadRaw<TSource>(this TSource source, nuint offset, int length) -> byte[]!
+static Reloaded.Memory.Interfaces.CanReadWriteMemoryExtensions.ReadWithMarshalling<TSource, TData>(this TSource source, nuint offset) -> TData
+static Reloaded.Memory.Interfaces.CanReadWriteMemoryExtensions.ReadWithMarshalling<TSource, TData>(this TSource source, nuint offset, out TData? value) -> void
+static Reloaded.Memory.Native.Unix.Posix.mmap(nuint addr, nuint length, int prot, int flags, int fd, long offset) -> nint
+static Reloaded.Memory.Native.Unix.Posix.mprotect(nuint addr, nuint len, Reloaded.Memory.Native.Unix.UnixMemoryProtection prot) -> int
+static Reloaded.Memory.Native.Unix.Posix.process_vm_readv_k32(nint processId, nuint localIov, nuint remoteIov, nuint numBytes) -> bool
+static Reloaded.Memory.Native.Unix.Posix.process_vm_writev_k32(nint processId, nuint remoteIov, nuint localIov, nuint numBytes) -> bool
+static Reloaded.Memory.Native.Windows.Kernel32.ReadProcessMemory(nint hProcess, nuint lpBaseAddress, nuint lpBuffer, nuint nSize, out nuint lpNumberOfBytesRead) -> bool
+static Reloaded.Memory.Native.Windows.Kernel32.VirtualAlloc(nuint lpAddress, nuint dwSize, Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE flAllocationType, Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION flProtect) -> nuint
+static Reloaded.Memory.Native.Windows.Kernel32.VirtualAllocEx(nint hProcess, nuint lpAddress, nuint dwSize, Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE flAllocationType, Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION flProtect) -> nuint
+static Reloaded.Memory.Native.Windows.Kernel32.VirtualFree(nuint lpAddress, nuint dwSize, Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE dwFreeType) -> bool
+static Reloaded.Memory.Native.Windows.Kernel32.VirtualFreeEx(nint hProcess, nuint lpAddress, nuint dwSize, Reloaded.Memory.Native.Windows.Kernel32.MEM_ALLOCATION_TYPE dwFreeType) -> bool
+static Reloaded.Memory.Native.Windows.Kernel32.VirtualProtect(nuint lpAddress, nuint dwSize, Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION flNewProtect, out Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION lpflOldProtect) -> bool
+static Reloaded.Memory.Native.Windows.Kernel32.VirtualProtectEx(nint hProcess, nuint lpAddress, nuint dwSize, Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION flNewProtect, out Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION lpflOldProtect) -> bool
+static Reloaded.Memory.Native.Windows.Kernel32.WriteProcessMemory(nint hProcess, nuint lpBaseAddress, nuint lpBuffer, nuint nSize, out nuint lpNumberOfBytesWritten) -> bool
+static Reloaded.Memory.Pointers.Ptr<T>.implicit operator Reloaded.Memory.Pointers.Ptr<T>(T* operand) -> Reloaded.Memory.Pointers.Ptr<T>
+static Reloaded.Memory.Pointers.Ptr<T>.implicit operator T*(Reloaded.Memory.Pointers.Ptr<T> operand) -> T*
+static Reloaded.Memory.Utility.ArrayExtensions.AsSpanFast<T>(this T[]! data) -> System.Span<T>
+static Reloaded.Memory.Utility.Blittable.ApproximateIsBlittable(System.Type! type) -> bool
+static Reloaded.Memory.Utility.Blittable.ApproximateIsBlittable<T>() -> bool
+static Reloaded.Memory.Utility.EnumExtensions.HasFlagFast<T>(this T value, T flag) -> bool
+static Reloaded.Memory.Utility.Polyfills.AllocateUninitializedArray<T>(int size, bool pinned = false) -> T[]!
+static Reloaded.Memory.Utility.Polyfills.IsLinux() -> bool
+static Reloaded.Memory.Utility.Polyfills.IsMacOS() -> bool
+static Reloaded.Memory.Utility.Polyfills.IsWindows() -> bool

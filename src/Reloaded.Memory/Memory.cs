@@ -104,9 +104,9 @@ public unsafe partial struct Memory : ICanReadWriteMemory, ICanAllocateMemory, I
         if (Polyfills.IsLinux() || Polyfills.IsMacOS())
         {
             // 0x22 = Posix.MAP_PRIVATE | Posix.MAP_ANONYMOUS
-            int flags = Polyfills.IsLinux() ? 0x22 : 0x1002;
-            var result = Posix.mmap(UIntPtr.Zero, length, (int)MemoryProtection.READ_WRITE_EXECUTE, flags, -1, 0);
-            if (result == (IntPtr)(-1))
+            var flags = Polyfills.IsLinux() ? 0x22 : 0x1002;
+            IntPtr result = Posix.mmap(UIntPtr.Zero, length, (int)MemoryProtection.READ_WRITE_EXECUTE, flags, -1, 0);
+            if (result == new IntPtr(-1))
                 ThrowHelpers.ThrowMemoryAllocationExceptionPosix(length, (int)result);
 
             return new MemoryAllocation((nuint)(nint)result, length);
@@ -128,7 +128,7 @@ public unsafe partial struct Memory : ICanReadWriteMemory, ICanAllocateMemory, I
 
         if (Polyfills.IsLinux() || Polyfills.IsMacOS())
         {
-            int result = Posix.munmap(allocation.Address, allocation.Length);
+            var result = Posix.munmap(allocation.Address, allocation.Length);
             return result == 0;
         }
 
@@ -139,13 +139,14 @@ public unsafe partial struct Memory : ICanReadWriteMemory, ICanAllocateMemory, I
     #endregion ICanAllocateMemory
 
     #region ICanChangeMemoryProtection
+
     /// <inheritdoc />
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public nuint ChangeProtectionRaw(nuint memoryAddress, int size, nuint newProtection)
     {
         if (Polyfills.IsWindows())
         {
-            bool result = Kernel32.VirtualProtect(memoryAddress, (nuint)size, (Kernel32.MEM_PROTECTION)newProtection,
+            var result = Kernel32.VirtualProtect(memoryAddress, (nuint)size, (Kernel32.MEM_PROTECTION)newProtection,
                 out Kernel32.MEM_PROTECTION oldPermissions);
             if (!result)
                 ThrowHelpers.ThrowMemoryPermissionExceptionWindows(memoryAddress, size, newProtection);
@@ -155,7 +156,7 @@ public unsafe partial struct Memory : ICanReadWriteMemory, ICanAllocateMemory, I
 
         if (Polyfills.IsLinux() || Polyfills.IsMacOS())
         {
-            int result = Posix.mprotect(memoryAddress, (nuint)size, (UnixMemoryProtection)newProtection);
+            var result = Posix.mprotect(memoryAddress, (nuint)size, (UnixMemoryProtection)newProtection);
             if (result != 0)
                 ThrowHelpers.ThrowMemoryPermissionExceptionPosix(memoryAddress, size, newProtection, result);
 
@@ -165,6 +166,8 @@ public unsafe partial struct Memory : ICanReadWriteMemory, ICanAllocateMemory, I
         ThrowHelpers.ThrowPlatformNotSupportedException();
         return UIntPtr.Zero;
     }
+
     #endregion ICanChangeMemoryProtection
+
 #pragma warning restore CA1416 // This API requires the operating system version to be checked
 }

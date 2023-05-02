@@ -45,7 +45,7 @@ public class MarshallingStruct
     /// </summary>
     public static string GetRandomString()
     {
-        string path = Path.GetRandomFileName();
+        var path = Path.GetRandomFileName();
         path = path.Replace(".", "");
         return path;
     }

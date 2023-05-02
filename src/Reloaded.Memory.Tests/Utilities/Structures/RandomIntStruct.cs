@@ -4,7 +4,7 @@ namespace Reloaded.Memory.Tests.Utilities.Structures;
 
 public struct RandomIntStruct
 {
-    private static Random Random = new();
+    private static readonly Random Random = new();
 
     private byte A;
     private short B;
@@ -34,7 +34,7 @@ public struct RandomIntStruct
     {
         unchecked
         {
-            int hashCode = A.GetHashCode();
+            var hashCode = A.GetHashCode();
             hashCode = (hashCode * 397) ^ B.GetHashCode();
             hashCode = (hashCode * 397) ^ C;
             return hashCode;

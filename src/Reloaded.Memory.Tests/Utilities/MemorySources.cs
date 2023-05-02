@@ -33,7 +33,7 @@ public class MemorySourceKindNoExternalOnNonWindows : IEnumerable<object[]>
     private static IEnumerable<object[]> GetValues()
     {
         Array values = Enum.GetValues(typeof(MemorySources.MemorySourceKind));
-        foreach (object? value in values)
+        foreach (var value in values)
         {
             if ((MemorySources.MemorySourceKind)value! == MemorySources.MemorySourceKind.EXTERNAL_PROCESS &&
                 !Polyfills.IsWindows())
@@ -85,9 +85,7 @@ public class ExternalMemoryMemorySource : TemporaryMemorySource<ExternalMemory>
         {
             _helloWorldProcess = Process.Start(new ProcessStartInfo
             {
-                FileName = filePath,
-                CreateNoWindow = true,
-                UseShellExecute = false
+                FileName = filePath, CreateNoWindow = true, UseShellExecute = false
             })!;
         }
         catch (Win32Exception)

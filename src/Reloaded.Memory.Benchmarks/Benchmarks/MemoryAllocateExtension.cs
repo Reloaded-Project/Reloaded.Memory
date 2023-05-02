@@ -1,13 +1,15 @@
 ﻿using BenchmarkDotNet.Attributes;
 using Reloaded.Memory.Benchmarks.Framework;
 using Reloaded.Memory.Interfaces;
+using Reloaded.Memory.Structs;
 
 namespace Reloaded.Memory.Benchmarks.Benchmarks;
 
 [MemoryDiagnoser]
 [DisassemblyDiagnoser]
-[BenchmarkInfo("Memory Allocation Extensions", "Checks if memory allocation extensions are minimal cost.", Categories.ZeroOverhead)]
-public unsafe class MemoryAllocateExtension
+[BenchmarkInfo("Memory Allocation Extensions", "Checks if memory allocation extensions are minimal cost.",
+    Categories.ZeroOverhead)]
+public class MemoryAllocateExtension
 {
     // Must be divisible by 2
     public const int DataSize = 4096;
@@ -18,7 +20,7 @@ public unsafe class MemoryAllocateExtension
     public nuint Allocate_Direct()
     {
         var memory = new Reloaded.Memory.Memory();
-        var alloc = memory.Allocate(DataSize);
+        MemoryAllocation alloc = memory.Allocate(DataSize);
         memory.Free(alloc);
         return alloc.Address;
     }
@@ -27,7 +29,7 @@ public unsafe class MemoryAllocateExtension
     public nuint Allocate_Disposable()
     {
         var memory = new Reloaded.Memory.Memory();
-        var alloc = memory.AllocateDisposable(DataSize);
+        DisposableMemoryAllocation<Reloaded.Memory.Memory> alloc = memory.AllocateDisposable(DataSize);
         alloc.Dispose();
         return alloc.Allocation.Address;
     }
@@ -36,7 +38,7 @@ public unsafe class MemoryAllocateExtension
     public nuint Allocate_Disposable_Using()
     {
         var memory = new Reloaded.Memory.Memory();
-        using var alloc = memory.AllocateDisposable(DataSize);
+        using DisposableMemoryAllocation<Reloaded.Memory.Memory> alloc = memory.AllocateDisposable(DataSize);
         return alloc.Allocation.Address;
     }
 }

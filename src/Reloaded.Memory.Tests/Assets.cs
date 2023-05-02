@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using Reloaded.Memory.Exceptions;
 using Reloaded.Memory.Utility;

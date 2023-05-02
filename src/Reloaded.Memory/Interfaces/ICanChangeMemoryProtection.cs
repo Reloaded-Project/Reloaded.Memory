@@ -73,46 +73,58 @@ public static class CanChangeMemoryProtectionExtensions
     ///     Disposable item which can be used to undo the changes.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static DisposableMemoryProtection<T> ChangeProtectionDisposable<T>(this T item, nuint memoryAddress, int size, MemoryProtection newProtection)
+    public static DisposableMemoryProtection<T> ChangeProtectionDisposable<T>(this T item, nuint memoryAddress,
+        int size, MemoryProtection newProtection)
         where T : ICanChangeMemoryProtection
     {
-        var original = item.ChangeProtectionRaw(memoryAddress, size, newProtection.ToCurrentPlatform());
-        return new DisposableMemoryProtection<T>()
+        nuint original = item.ChangeProtectionRaw(memoryAddress, size, newProtection.ToCurrentPlatform());
+        return new DisposableMemoryProtection<T>
         {
-            MemoryAddress = memoryAddress,
-            OriginalProtection = original,
-            Protector = item,
-            Size = size
+            MemoryAddress = memoryAddress, OriginalProtection = original, Protector = item, Size = size
         };
     }
 
     /// <summary>
-    /// Writes data to the specified memory address, temporarily changing the memory permissions to read/write/execute.
+    ///     Writes data to the specified memory address, temporarily changing the memory permissions to read/write/execute.
     /// </summary>
-    /// <param name="item">Item inheriting from both <see cref="ICanChangeMemoryProtection"/> and <see cref="ICanReadWriteMemory"/>.</param>
+    /// <param name="item">
+    ///     Item inheriting from both <see cref="ICanChangeMemoryProtection" /> and
+    ///     <see cref="ICanReadWriteMemory" />.
+    /// </param>
     /// <param name="memoryAddress">The memory address to write to.</param>
     /// <param name="data">Data to write to the address.</param>
-    /// <typeparam name="TMemory">Item inheriting from both <see cref="ICanChangeMemoryProtection"/> and <see cref="ICanReadWriteMemory"/>.</typeparam>
+    /// <typeparam name="TMemory">
+    ///     Item inheriting from both <see cref="ICanChangeMemoryProtection" /> and
+    ///     <see cref="ICanReadWriteMemory" />.
+    /// </typeparam>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void SafeWrite<TMemory>(this TMemory item, nuint memoryAddress, Span<byte> data)
         where TMemory : ICanChangeMemoryProtection, ICanReadWriteMemory
     {
-        using var permissions = item.ChangeProtectionDisposable(memoryAddress, data.Length, MemoryProtection.READ_WRITE_EXECUTE);
+        using DisposableMemoryProtection<TMemory> permissions =
+            item.ChangeProtectionDisposable(memoryAddress, data.Length, MemoryProtection.READ_WRITE_EXECUTE);
         item.WriteRaw(memoryAddress, data);
     }
 
     /// <summary>
-    /// Reads data into the span, temporarily changing the memory permissions to read/write/execute.
+    ///     Reads data into the span, temporarily changing the memory permissions to read/write/execute.
     /// </summary>
-    /// <param name="item">Item inheriting from both <see cref="ICanChangeMemoryProtection"/> and <see cref="ICanReadWriteMemory"/>.</param>
+    /// <param name="item">
+    ///     Item inheriting from both <see cref="ICanChangeMemoryProtection" /> and
+    ///     <see cref="ICanReadWriteMemory" />.
+    /// </param>
     /// <param name="memoryAddress">The memory address to write to.</param>
     /// <param name="data">Data to write to the address.</param>
-    /// <typeparam name="TMemory">Item inheriting from both <see cref="ICanChangeMemoryProtection"/> and <see cref="ICanReadWriteMemory"/>.</typeparam>
+    /// <typeparam name="TMemory">
+    ///     Item inheriting from both <see cref="ICanChangeMemoryProtection" /> and
+    ///     <see cref="ICanReadWriteMemory" />.
+    /// </typeparam>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void SafeRead<TMemory>(this TMemory item, nuint memoryAddress, Span<byte> data)
         where TMemory : ICanChangeMemoryProtection, ICanReadWriteMemory
     {
-        using var permissions = item.ChangeProtectionDisposable(memoryAddress, data.Length, MemoryProtection.READ_WRITE_EXECUTE);
+        using DisposableMemoryProtection<TMemory> permissions =
+            item.ChangeProtectionDisposable(memoryAddress, data.Length, MemoryProtection.READ_WRITE_EXECUTE);
         item.ReadRaw(memoryAddress, data);
     }
 }

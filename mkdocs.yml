@@ -49,5 +49,5 @@ plugins:
 nav:
   - Home: index.md
   - Memory: About-Memory.md
-  - Pointers: 
+  - Pointers:
       Ptr&lt;T&gt;: Pointers/Ptr.md

@@ -4,7 +4,6 @@ using FluentAssertions;
 using Reloaded.Memory.Interfaces;
 using Reloaded.Memory.Structs;
 using Reloaded.Memory.Tests.Utilities;
-using Reloaded.Memory.Utility;
 using Xunit;
 using static Reloaded.Memory.Tests.Utilities.MemorySources;
 
@@ -45,7 +44,8 @@ public class MemoryAllocationTests
         using ITemporaryMemorySource source = GetMemorySource(kind);
         const int allocLength = 0xFFFF;
 
-        using var alloc = source.AllocateMemory.AllocateDisposable(allocLength);
+        using DisposableMemoryAllocation<ICanAllocateMemory> alloc =
+            source.AllocateMemory.AllocateDisposable(allocLength);
         alloc.Allocation.Length.Should().Be((nuint)allocLength);
 
         // You cannot directly verify the memory was released since it's managed by the operating system.

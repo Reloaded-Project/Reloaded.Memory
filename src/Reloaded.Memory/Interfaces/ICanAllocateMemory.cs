@@ -53,9 +53,5 @@ public static class CanAllocateMemoryExtensions
     /// </returns>
     public static DisposableMemoryAllocation<TAllocator>
         AllocateDisposable<TAllocator>(this TAllocator allocator, nuint numBytes) where TAllocator : ICanAllocateMemory
-        => new()
-        {
-            Allocation = allocator.Allocate(numBytes),
-            Allocator = allocator
-        };
+        => new() { Allocation = allocator.Allocate(numBytes), Allocator = allocator };
 }

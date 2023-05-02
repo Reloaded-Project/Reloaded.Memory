@@ -1,12 +1,14 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Versioning;
 using Reloaded.Memory.Exceptions;
 using Reloaded.Memory.Interfaces;
 using Reloaded.Memory.Native.Unix;
 using Reloaded.Memory.Native.Windows;
 using Reloaded.Memory.Structs;
 using Reloaded.Memory.Utility;
+#if NET5_0_OR_GREATER
+using System.Runtime.Versioning;
+#endif
 
 namespace Reloaded.Memory;
 
@@ -65,7 +67,7 @@ public unsafe partial struct ExternalMemory : ICanReadWriteMemory, ICanAllocateM
     public void ReadRef<T>(nuint offset, ref T value) where T : unmanaged
     {
         void* bufferPtr = Unsafe.AsPointer(ref value);
-        bool succeeded = ReadProcessMemory(offset, bufferPtr, (nuint)sizeof(T));
+        var succeeded = ReadProcessMemory(offset, bufferPtr, (nuint)sizeof(T));
         if (!succeeded)
             ThrowHelpers.ThrowReadExternalMemoryExceptionWindows(offset, sizeof(T));
     }
@@ -79,17 +81,17 @@ public unsafe partial struct ExternalMemory : ICanReadWriteMemory, ICanAllocateM
 #endif
         T>(nuint offset, [DisallowNull] ref T value)
     {
-        int structSize = Marshal.SizeOf(value);
+        var structSize = Marshal.SizeOf(value);
         if (structSize <= 1024)
         {
             // Hot path.
-            byte* bufferPtr = stackalloc byte[structSize];
+            var bufferPtr = stackalloc byte[structSize];
             ReadWithMarshallingImpl(offset, value, bufferPtr, structSize);
         }
         else
         {
             // Cold path.
-            using var alloc = new Memory().AllocateDisposable((UIntPtr)structSize);
+            using DisposableMemoryAllocation<Memory> alloc = new Memory().AllocateDisposable((UIntPtr)structSize);
             ReadWithMarshallingImpl(offset, value, (byte*)alloc.Allocation.Address, structSize);
         }
     }
@@ -97,7 +99,7 @@ public unsafe partial struct ExternalMemory : ICanReadWriteMemory, ICanAllocateM
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void ReadWithMarshallingImpl<T>(nuint offset, [DisallowNull] T value, byte* bufferPtr, int structSize)
     {
-        bool succeeded = ReadProcessMemory(offset, bufferPtr, (nuint)structSize);
+        var succeeded = ReadProcessMemory(offset, bufferPtr, (nuint)structSize);
         if (!succeeded)
             ThrowHelpers.ThrowReadExternalMemoryExceptionWindows(offset, structSize);
 
@@ -110,7 +112,7 @@ public unsafe partial struct ExternalMemory : ICanReadWriteMemory, ICanAllocateM
     {
         fixed (byte* bufferPtr = value)
         {
-            bool succeeded = ReadProcessMemory(offset, bufferPtr, (nuint)value.Length);
+            var succeeded = ReadProcessMemory(offset, bufferPtr, (nuint)value.Length);
             if (!succeeded)
                 ThrowHelpers.ThrowReadExternalMemoryExceptionWindows(offset, value.Length);
         }
@@ -123,7 +125,7 @@ public unsafe partial struct ExternalMemory : ICanReadWriteMemory, ICanAllocateM
         ref T itemRef = ref Unsafe.AsRef(in item);
         void* itemPtr = Unsafe.AsPointer(ref itemRef);
 
-        bool succeeded = WriteProcessMemory(offset, (byte*)itemPtr, (nuint)sizeof(T));
+        var succeeded = WriteProcessMemory(offset, (byte*)itemPtr, (nuint)sizeof(T));
         if (!succeeded)
             ThrowHelpers.ThrowWriteExternalMemoryExceptionWindows(offset, sizeof(T));
     }
@@ -132,18 +134,18 @@ public unsafe partial struct ExternalMemory : ICanReadWriteMemory, ICanAllocateM
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void WriteWithMarshalling<T>(nuint offset, [DisallowNull] in T item)
     {
-        int structSize = Marshal.SizeOf(item);
+        var structSize = Marshal.SizeOf(item);
         if (structSize <= 1024)
         {
             // Hot Path
-            byte* bufferPtr = stackalloc byte[structSize];
+            var bufferPtr = stackalloc byte[structSize];
             Marshal.StructureToPtr<T>(item, (nint)bufferPtr, false);
             WriteWithMarshallingImpl((byte*)offset, bufferPtr, structSize);
         }
         else
         {
             // Cold Path
-            using var alloc = new Memory().AllocateDisposable((UIntPtr)structSize);
+            using DisposableMemoryAllocation<Memory> alloc = new Memory().AllocateDisposable((UIntPtr)structSize);
             Marshal.StructureToPtr<T>(item, (nint)alloc.Allocation.Address, false);
             WriteWithMarshallingImpl((byte*)offset, (byte*)alloc.Allocation.Address, structSize);
         }
@@ -152,7 +154,7 @@ public unsafe partial struct ExternalMemory : ICanReadWriteMemory, ICanAllocateM
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void WriteWithMarshallingImpl(byte* offset, byte* itemPtr, int structSize)
     {
-        bool succeeded = WriteProcessMemory((nuint)offset, itemPtr, (nuint)structSize);
+        var succeeded = WriteProcessMemory((nuint)offset, itemPtr, (nuint)structSize);
         if (!succeeded)
             ThrowHelpers.ThrowWriteExternalMemoryExceptionWindows((nuint)offset, structSize);
     }
@@ -163,7 +165,7 @@ public unsafe partial struct ExternalMemory : ICanReadWriteMemory, ICanAllocateM
     {
         fixed (byte* bytePtr = data)
         {
-            bool succeeded = WriteProcessMemory(offset, bytePtr, (nuint)data.Length);
+            var succeeded = WriteProcessMemory(offset, bytePtr, (nuint)data.Length);
             if (!succeeded)
                 ThrowHelpers.ThrowWriteExternalMemoryExceptionWindows(offset, data.Length);
         }
@@ -239,7 +241,7 @@ public unsafe partial struct ExternalMemory : ICanReadWriteMemory, ICanAllocateM
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public nuint ChangeProtectionRaw(nuint memoryAddress, int size, nuint newProtection)
     {
-        bool result = Kernel32.VirtualProtectEx(_processHandle, memoryAddress, (nuint)size,
+        var result = Kernel32.VirtualProtectEx(_processHandle, memoryAddress, (nuint)size,
             (Kernel32.MEM_PROTECTION)newProtection, out Kernel32.MEM_PROTECTION oldPermissions);
 
         if (!result)

@@ -2,8 +2,8 @@
 using Reloaded.Memory.Native.Unix;
 using Reloaded.Memory.Native.Windows;
 using Reloaded.Memory.Utility;
-using static Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION;
 using static Reloaded.Memory.Native.Unix.UnixMemoryProtection;
+using static Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION;
 
 namespace Reloaded.Memory.Enums;
 

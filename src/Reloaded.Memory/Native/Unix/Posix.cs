@@ -9,7 +9,7 @@ namespace Reloaded.Memory.Native.Unix;
 public static partial class Posix
 {
     /// <summary>
-    /// Creates a new mapping in the virtual address space of the calling process.
+    ///     Creates a new mapping in the virtual address space of the calling process.
     /// </summary>
     /// <param name="addr">A hint to the kernel about where the mapping should start. NULL is commonly used for no hint.</param>
     /// <param name="length">The length of the mapping (number of bytes to map).</param>
@@ -18,9 +18,9 @@ public static partial class Posix
     /// <param name="fd">File descriptor. Set to -1 for anonymous mappings.</param>
     /// <param name="offset">Offset in the file. Set to 0 for anonymous mappings.</param>
     /// <returns>
-    /// A pointer to the mapped memory region.
-    /// On success, returns the starting address of the mapped region.
-    /// On error, returns (IntPtr)(-1) and errno is set to indicate the error.
+    ///     A pointer to the mapped memory region.
+    ///     On success, returns the starting address of the mapped region.
+    ///     On error, returns (IntPtr)(-1) and errno is set to indicate the error.
     /// </returns>
 #if NET7_0_OR_GREATER
     [LibraryImport("libc", SetLastError = true)]
@@ -31,7 +31,7 @@ public static partial class Posix
 #endif
 
     /// <summary>
-    /// Get configuration information at run time
+    ///     Get configuration information at run time
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
@@ -143,7 +143,7 @@ public static partial class Posix
     {
         IoVec local = new() { iov_base = localIov, iov_len = numBytes };
         IoVec remote = new() { iov_base = remoteIov, iov_len = numBytes };
-        return process_vm_readv((int)processId, &local, 1, &remote, 1, 0) != (IntPtr)(-1);
+        return process_vm_readv((int)processId, &local, 1, &remote, 1, 0) != new IntPtr(-1);
     }
 
     /// <summary>
@@ -161,6 +161,6 @@ public static partial class Posix
     {
         IoVec remote = new() { iov_base = remoteIov, iov_len = numBytes };
         IoVec local = new() { iov_base = localIov, iov_len = numBytes };
-        return process_vm_writev((int)processId, &local, 1, &remote, 1, 0) != (IntPtr)(-1);
+        return process_vm_writev((int)processId, &local, 1, &remote, 1, 0) != new IntPtr(-1);
     }
 }

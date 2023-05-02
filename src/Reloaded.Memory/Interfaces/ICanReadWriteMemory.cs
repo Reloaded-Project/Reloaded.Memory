@@ -168,7 +168,7 @@ public static class CanReadWriteMemoryExtensions
     public static byte[] ReadRaw<TSource>(this TSource source, nuint offset, int length)
         where TSource : ICanReadWriteMemory
     {
-        byte[] result = Polyfills.AllocateUninitializedArray<byte>(length);
+        var result = Polyfills.AllocateUninitializedArray<byte>(length);
         source.ReadRaw(offset, result.AsSpanFast());
         return result;
     }

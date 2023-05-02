@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Reloaded.Memory.Utility;
+﻿namespace Reloaded.Memory.Utility;
 
 /// <summary>
 ///     Extensions dealing with arrays.

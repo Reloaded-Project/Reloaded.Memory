@@ -12,18 +12,12 @@ public class Ptr
     public unsafe void Test_UsingArrayOfPointers()
     {
         // Make array of four pointers.
-        int a = 1;
-        int b = 2;
-        int c = 3;
-        int d = 4;
+        var a = 1;
+        var b = 2;
+        var c = 3;
+        var d = 4;
 
-        Ptr<int>[] arrayOfPointers =
-        {
-            new(&a),
-            new(&b),
-            new(&c),
-            new(&d)
-        };
+        Ptr<int>[] arrayOfPointers = { new(&a), new(&b), new(&c), new(&d) };
 
         Assert.Equal(a, arrayOfPointers[0].AsRef());
         Assert.Equal(b, arrayOfPointers[1].AsRef());

@@ -9,7 +9,8 @@ namespace Reloaded.Memory.Benchmarks.Benchmarks;
 
 [MemoryDiagnoser]
 [DisassemblyDiagnoser]
-[BenchmarkInfo("Memory Safe Read/Write Extensions", "Checks if memory safe read/write are minimal cost.", Categories.ZeroOverhead)]
+[BenchmarkInfo("Memory Safe Read/Write Extensions", "Checks if memory safe read/write are minimal cost.",
+    Categories.ZeroOverhead)]
 public class MemorySafeReadWriteExtensions
 {
     // Must be divisible by 2
@@ -35,7 +36,8 @@ public class MemorySafeReadWriteExtensions
     public void SafeReadWrite_Direct()
     {
         var memory = new Reloaded.Memory.Memory();
-        using var disposable = memory.ChangeProtectionDisposable(Alloc.Address, (int)Alloc.Length, MemoryProtection.READ_WRITE_EXECUTE);
+        using DisposableMemoryProtection<Reloaded.Memory.Memory> disposable =
+            memory.ChangeProtectionDisposable(Alloc.Address, (int)Alloc.Length, MemoryProtection.READ_WRITE_EXECUTE);
         memory.WriteRaw(Alloc.Address, Data.AsSpanFast());
     }
 

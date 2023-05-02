@@ -3,27 +3,27 @@ using System.Reflection;
 namespace Reloaded.Memory.Benchmarks.Framework;
 
 /// <summary>
-/// A benchmark that can be ran by the user.
+///     A benchmark that can be ran by the user.
 /// </summary>
 public record SelectableBenchmark
 {
     /// <summary>
-    /// Type behind the benchmark.
+    ///     Type behind the benchmark.
     /// </summary>
     public Type Type { get; init; }
 
     /// <summary>
-    /// Name of the benchmark.
+    ///     Name of the benchmark.
     /// </summary>
     public string Name { get; init; }
 
     /// <summary>
-    /// Description of the benchmark.
+    ///     Description of the benchmark.
     /// </summary>
     public string Description { get; init; }
 
     /// <summary>
-    /// Category of the benchmark.
+    ///     Category of the benchmark.
     /// </summary>
     public string? Category { get; init; }
 

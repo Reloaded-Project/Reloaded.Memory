@@ -8,8 +8,9 @@ namespace Reloaded.Memory.Benchmarks.Benchmarks;
 
 [MemoryDiagnoser]
 [DisassemblyDiagnoser]
-[BenchmarkInfo("Memory Protection Extensions", "Checks if memory protection change extensions are minimal cost.", Categories.ZeroOverhead)]
-public unsafe class MemoryChangeProtectionExtension
+[BenchmarkInfo("Memory Protection Extensions", "Checks if memory protection change extensions are minimal cost.",
+    Categories.ZeroOverhead)]
+public class MemoryChangeProtectionExtension
 {
     // Must be divisible by 2
     public const int DataSize = 4096;
@@ -37,7 +38,8 @@ public unsafe class MemoryChangeProtectionExtension
     public nuint ChangePermission_Disposable()
     {
         var memory = new Reloaded.Memory.Memory();
-        var oldProtection = memory.ChangeProtectionDisposable(Alloc.Address, (int)Alloc.Length, MemoryProtection.READ);
+        DisposableMemoryProtection<Reloaded.Memory.Memory> oldProtection =
+            memory.ChangeProtectionDisposable(Alloc.Address, (int)Alloc.Length, MemoryProtection.READ);
         oldProtection.Dispose();
         return oldProtection.OriginalProtection;
     }
@@ -46,7 +48,8 @@ public unsafe class MemoryChangeProtectionExtension
     public nuint ChangePermission_Disposable_Using()
     {
         var memory = new Reloaded.Memory.Memory();
-        using var oldProtection = memory.ChangeProtectionDisposable(Alloc.Address, (int)Alloc.Length, MemoryProtection.READ);
+        using DisposableMemoryProtection<Reloaded.Memory.Memory> oldProtection =
+            memory.ChangeProtectionDisposable(Alloc.Address, (int)Alloc.Length, MemoryProtection.READ);
         return oldProtection.OriginalProtection;
     }
 }
