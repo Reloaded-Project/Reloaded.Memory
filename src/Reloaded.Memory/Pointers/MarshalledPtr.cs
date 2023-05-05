@@ -1,41 +1,58 @@
-﻿using Reloaded.Memory.Interfaces;
-#if NET5_0_OR_GREATER
-using System.Diagnostics.CodeAnalysis;
-#endif
+﻿using System.Diagnostics.CodeAnalysis;
+using Reloaded.Memory.Interfaces;
 
 namespace Reloaded.Memory.Pointers;
 
 /// <summary>
-///     Blittable single level pointer type that you can use with generic types.
+///     Single level pointer type that will read/write values with marshalling.
 /// </summary>
-/// <typeparam name="T">The item behind the blittable pointer.</typeparam>
+/// <typeparam name="T">The item behind the pointer.</typeparam>
 /// <remarks>
-///     This type was formerly called 'BlittablePointer' but was renamed to 'Ptr' for conciseness.
+///     This is the 'managed' equivalent of <see cref="Ptr{T}" />.
+///     Elements used with this struct must be fixed size.
 /// </remarks>
 [PublicAPI]
-public unsafe struct Ptr<
+public unsafe struct MarshalledPtr<
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors |
                                 DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 #endif
-    T> : IEquatable<Ptr<T>> where T : unmanaged
+    T> : IEquatable<MarshalledPtr<T>> where T : new()
 {
     /// <summary>
     ///     The pointer to the value.
-    ///     For reference only; only use for pointers in RAM (based on <see cref="Memory{T}" />), otherwise use methods!
     /// </summary>
     /// <remarks>Only use for pointers in same process.</remarks>
-    public T* Pointer { get; set; }
+    public byte* Pointer { get; set; }
 
     /// <summary>
-    ///     Creates a blittable pointer
+    ///     Size of element after marshalling.
+    /// </summary>
+    public int ElementSize { get; private set; }
+
+    /// <summary>
+    ///     Creates a pointer to an element that needs marshalling (but is still fixed size).
     /// </summary>
     /// <param name="pointer">Pointer to wrap around.</param>
-    public Ptr(T* pointer) => Pointer = pointer;
+    public MarshalledPtr(byte* pointer)
+    {
+        Pointer = pointer;
+        ElementSize = Marshal.SizeOf<T>();
+    }
 
     /// <summary>
-    ///     Converts this <see cref="Ptr{T}" /> to a value reference.
-    ///     Only use for pointers in RAM (based on <see cref="Memory{T}" />), otherwise use methods!
+    ///     Creates a pointer to an element that needs marshalling (but is still fixed size).
+    /// </summary>
+    /// <param name="pointer">Pointer to wrap around.</param>
+    /// <param name="elementSize">Size of the element behind this pointer.</param>
+    public MarshalledPtr(byte* pointer, int elementSize)
+    {
+        Pointer = pointer;
+        ElementSize = elementSize;
+    }
+
+    /// <summary>
+    ///     Converts this <see cref="MarshalledPtr{T}" /> to a value reference.
     /// </summary>
     /// <remarks>
     ///     Only use for pointers within same process.
@@ -50,7 +67,8 @@ public unsafe struct Ptr<
     /// <param name="source">The memory source to read from.</param>
     /// <returns>The value at the pointer's address.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public T Get<TSource>(TSource source) where TSource : ICanReadWriteMemory => source.Read<T>((nuint)Pointer);
+    public T Get<TSource>(TSource source) where TSource : ICanReadWriteMemory
+        => source.ReadWithMarshalling<T>((nuint)Pointer);
 
     /// <summary>
     ///     Gets the value at the address where the current pointer points to from a given <typeparamref name="TSource" />.
@@ -59,8 +77,8 @@ public unsafe struct Ptr<
     /// <param name="source">The memory source to read from.</param>
     /// <param name="value">The value at the pointer's address.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Get<TSource>(TSource source, out T value) where TSource : ICanReadWriteMemory
-        => source.Read((nuint)Pointer, out value);
+    public void Get<TSource>(TSource source, out T? value) where TSource : ICanReadWriteMemory
+        => source.ReadWithMarshallingOutParameter((nuint)Pointer, out value);
 
     /// <summary>
     ///     Sets the value where the current pointer is pointing to from a given <typeparamref name="TSource" />.
@@ -69,8 +87,8 @@ public unsafe struct Ptr<
     /// <param name="source">The memory source to write to.</param>
     /// <param name="value">The value to set at the pointer's address.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Set<TSource>(TSource source, in T value) where TSource : ICanReadWriteMemory
-        => source.Write((nuint)Pointer, value);
+    public void Set<TSource>(TSource source, [DisallowNull] in T value) where TSource : ICanReadWriteMemory
+        => source.WriteWithMarshalling((nuint)Pointer, value);
 
     /// <summary>
     ///     Gets the value at the address where the current pointer points to plus the index offset from a given
@@ -82,7 +100,7 @@ public unsafe struct Ptr<
     /// <returns>The value at the pointer's address plus the index offset.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public T Get<TSource>(TSource source, int index) where TSource : ICanReadWriteMemory
-        => source.Read<T>((nuint)(Pointer + index));
+        => source.ReadWithMarshalling<T>((nuint)(Pointer + index * ElementSize));
 
     /// <summary>
     ///     Gets the value at the address where the current pointer points to plus the index offset from a given
@@ -93,8 +111,8 @@ public unsafe struct Ptr<
     /// <param name="index">The index offset of the element.</param>
     /// <param name="value">The value at the pointer's address plus the index offset.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Get<TSource>(TSource source, int index, out T value) where TSource : ICanReadWriteMemory
-        => source.Read((nuint)(Pointer + index), out value);
+    public void Get<TSource>(TSource source, int index, out T? value) where TSource : ICanReadWriteMemory
+        => source.ReadWithMarshallingOutParameter((nuint)(Pointer + index * ElementSize), out value);
 
     /// <summary>
     ///     Sets the value where the current pointer is pointing to plus the index offset from a given
@@ -105,8 +123,8 @@ public unsafe struct Ptr<
     /// <param name="index">The index offset of the element.</param>
     /// <param name="value">The value to set at the pointer's address plus the index offset.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Set<TSource>(TSource source, int index, in T value) where TSource : ICanReadWriteMemory
-        => source.Write((nuint)(Pointer + index), value);
+    public void Set<TSource>(TSource source, int index, [DisallowNull] in T value) where TSource : ICanReadWriteMemory
+        => source.WriteWithMarshalling((nuint)(Pointer + index * ElementSize), value);
 
     /// <summary>
     ///     Gets the value at the address where the current pointer points to.
@@ -117,7 +135,7 @@ public unsafe struct Ptr<
     ///     <see cref="ICanReadWriteMemory" />.
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public T Get() => *Pointer;
+    public T Get() => Marshal.PtrToStructure<T>((IntPtr)Pointer)!;
 
     /// <summary>
     ///     Gets the value at the address where the current pointer points to.
@@ -128,7 +146,7 @@ public unsafe struct Ptr<
     ///     <see cref="ICanReadWriteMemory" />.
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Get(out T value) => value = *Pointer;
+    public void Get(out T? value) => value = Marshal.PtrToStructure<T>((IntPtr)Pointer);
 
     /// <summary>
     ///     Sets the value where the current pointer is pointing to.
@@ -139,7 +157,7 @@ public unsafe struct Ptr<
     ///     <see cref="ICanReadWriteMemory" />.
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Set(in T value) => *Pointer = value;
+    public void Set([DisallowNull] in T value) => Marshal.StructureToPtr<T>(value, (IntPtr)Pointer, false);
 
     /// <summary>
     ///     Gets the value at the address where the current pointer points to plus the index offset.
@@ -151,7 +169,7 @@ public unsafe struct Ptr<
     ///     <see cref="ICanReadWriteMemory" />.
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public T Get(int index) => Pointer[index];
+    public T Get(int index) => Marshal.PtrToStructure<T>((IntPtr)(Pointer + index * ElementSize))!;
 
     /// <summary>
     ///     Gets the value at the address where the current pointer points to plus the index offset.
@@ -163,7 +181,8 @@ public unsafe struct Ptr<
     ///     <see cref="ICanReadWriteMemory" />.
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Get(int index, out T value) => value = Pointer[index];
+    public void Get(int index, out T? value)
+        => value = Marshal.PtrToStructure<T>((IntPtr)(Pointer + index * ElementSize))!;
 
     /// <summary>
     ///     Sets the value where the current pointer is pointing to plus the index offset.
@@ -175,90 +194,95 @@ public unsafe struct Ptr<
     ///     <see cref="ICanReadWriteMemory" />.
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Set(int index, in T value) => Pointer[index] = value;
+    public void Set(int index, [DisallowNull] in T value)
+        => Marshal.StructureToPtr<T>(value, (IntPtr)(Pointer + index * ElementSize), false);
 
-    // Overridable operators
     /// <summary>
-    ///     Compares two <see cref="Ptr{T}" /> instances for equality.
+    ///     Compares two <see cref="MarshalledPtr{T}" /> instances for equality.
     /// </summary>
-    /// <param name="left">The left <see cref="Ptr{T}" /> to compare.</param>
-    /// <param name="right">The right <see cref="Ptr{T}" /> to compare.</param>
+    /// <param name="left">The left <see cref="MarshalledPtr{T}" /> to compare.</param>
+    /// <param name="right">The right <see cref="MarshalledPtr{T}" /> to compare.</param>
     /// <returns>True if the pointers are equal, false otherwise.</returns>
-    public static bool operator ==(Ptr<T> left, Ptr<T> right) => left.Pointer == right.Pointer;
+    public static bool operator ==(MarshalledPtr<T> left, MarshalledPtr<T> right) => left.Pointer == right.Pointer;
 
     /// <summary>
-    ///     Compares two <see cref="Ptr{T}" /> instances for inequality.
+    ///     Compares two <see cref="MarshalledPtr{T}" /> instances for inequality.
     /// </summary>
-    /// <param name="left">The left <see cref="Ptr{T}" /> to compare.</param>
-    /// <param name="right">The right <see cref="Ptr{T}" /> to compare.</param>
+    /// <param name="left">The left <see cref="MarshalledPtr{T}" /> to compare.</param>
+    /// <param name="right">The right <see cref="MarshalledPtr{T}" /> to compare.</param>
     /// <returns>True if the pointers are not equal, false otherwise.</returns>
-    public static bool operator !=(Ptr<T> left, Ptr<T> right) => left.Pointer != right.Pointer;
+    public static bool operator !=(MarshalledPtr<T> left, MarshalledPtr<T> right) => left.Pointer != right.Pointer;
 
     /// <summary>
-    ///     Adds an integer offset to a <see cref="Ptr{T}" />.
+    ///     Adds an integer offset to a <see cref="MarshalledPtr{T}" />.
     /// </summary>
-    /// <param name="pointer">The <see cref="Ptr{T}" /> to add the offset to.</param>
+    /// <param name="pointer">The <see cref="MarshalledPtr{T}" /> to add the offset to.</param>
     /// <param name="offset">The integer offset to add.</param>
-    /// <returns>A new <see cref="Ptr{T}" /> with the updated address.</returns>
-    public static Ptr<T> operator +(Ptr<T> pointer, int offset) => new(pointer.Pointer + offset);
+    /// <returns>A new <see cref="MarshalledPtr{T}" /> with the updated address.</returns>
+    public static MarshalledPtr<T> operator +(MarshalledPtr<T> pointer, int offset)
+        => new(pointer.Pointer + offset * pointer.ElementSize, pointer.ElementSize);
 
     /// <summary>
-    ///     Subtracts an integer offset from a <see cref="Ptr{T}" />.
+    ///     Subtracts an integer offset from a <see cref="MarshalledPtr{T}" />.
     /// </summary>
-    /// <param name="pointer">The <see cref="Ptr{T}" /> to subtract the offset from.</param>
+    /// <param name="pointer">The <see cref="MarshalledPtr{T}" /> to subtract the offset from.</param>
     /// <param name="offset">The integer offset to subtract.</param>
-    /// <returns>A new <see cref="Ptr{T}" /> with the updated address.</returns>
-    public static Ptr<T> operator -(Ptr<T> pointer, int offset) => new(pointer.Pointer - offset);
+    /// <returns>A new <see cref="MarshalledPtr{T}" /> with the updated address.</returns>
+    public static MarshalledPtr<T> operator -(MarshalledPtr<T> pointer, int offset)
+        => new(pointer.Pointer - offset * pointer.ElementSize, pointer.ElementSize);
 
     /// <summary>
     ///     Increments the address of the <see cref="Ptr{T}" /> by the size of <typeparamref name="T" />.
     /// </summary>
     /// <param name="pointer">The <see cref="Ptr{T}" /> to increment.</param>
     /// <returns>A new <see cref="Ptr{T}" /> with the incremented address.</returns>
-    public static Ptr<T> operator ++(Ptr<T> pointer) => new(pointer.Pointer + 1);
+    public static MarshalledPtr<T> operator ++(MarshalledPtr<T> pointer) => new(pointer.Pointer + pointer.ElementSize);
 
     /// <summary>
     ///     Decrements the address of the <see cref="Ptr{T}" /> by the size of <typeparamref name="T" />.
     /// </summary>
     /// <param name="pointer">The <see cref="Ptr{T}" /> to decrement.</param>
     /// <returns>A new <see cref="Ptr{T}" /> with the decremented address.</returns>
-    public static Ptr<T> operator --(Ptr<T> pointer) => new(pointer.Pointer - 1);
+    public static MarshalledPtr<T> operator --(MarshalledPtr<T> pointer) => new(pointer.Pointer - pointer.ElementSize);
 
     /// <summary>
-    ///     Determines if the <see cref="Ptr{T}" /> is considered "true" in a boolean context.
+    ///     Determines if the <see cref="MarshalledPtr{T}" /> is considered "true" in a boolean context.
     /// </summary>
-    /// <param name="operand">The <see cref="Ptr{T}" /> to evaluate.</param>
+    /// <param name="operand">The <see cref="MarshalledPtr{T}" /> to evaluate.</param>
     /// <returns>True if the underlying pointer is not null, false otherwise.</returns>
-    public static bool operator true(Ptr<T> operand) => operand.Pointer != null;
+    public static bool operator true(MarshalledPtr<T> operand) => operand.Pointer != null;
 
     /// <summary>
-    ///     Determines if the <see cref="Ptr{T}" /> is considered "false" in a boolean context.
+    ///     Determines if the <see cref="MarshalledPtr{T}" /> is considered "false" in a boolean context.
     /// </summary>
-    /// <param name="operand">The <see cref="Ptr{T}" /> to evaluate.</param>
+    /// <param name="operand">The <see cref="MarshalledPtr{T}" /> to evaluate.</param>
     /// <returns>True if the underlying pointer is null, false otherwise.</returns>
-    public static bool operator false(Ptr<T> operand) => operand.Pointer == null;
+    public static bool operator false(MarshalledPtr<T> operand) => operand.Pointer == null;
 
     /// <summary>
-    ///     Implicitly converts a <see cref="Ptr{T}" /> to a pointer of type T.
+    ///     Checks for the equality of the current <see cref="MarshalledPtr{T}" /> with another <see cref="MarshalledPtr{T}" />
+    ///     .
     /// </summary>
-    /// <param name="operand">The <see cref="Ptr{T}" /> to convert.</param>
-    public static implicit operator Ptr<T>(T* operand) => new(operand);
+    /// <param name="other">The other <see cref="MarshalledPtr{T}" /> to compare with.</param>
+    /// <returns>True if the pointers are equal and have the same element size, false otherwise.</returns>
+    public bool Equals(MarshalledPtr<T> other) => Pointer == other.Pointer && ElementSize == other.ElementSize;
 
     /// <summary>
-    ///     Implicitly converts a pointer of type T to a <see cref="Ptr{T}" />.
+    ///     Checks for the equality of the current <see cref="MarshalledPtr{T}" /> with another object.
     /// </summary>
-    /// <param name="operand">The pointer of type T to convert.</param>
-    public static implicit operator T*(Ptr<T> operand) => operand.Pointer;
+    /// <param name="obj">The other object to compare with.</param>
+    /// <returns>
+    ///     True if the object is a <see cref="MarshalledPtr{T}" /> and the pointers are equal and have the same element
+    ///     size, false otherwise.
+    /// </returns>
+    public override bool Equals(object? obj) => obj is MarshalledPtr<T> other && Equals(other);
+
+    /// <summary>
+    ///     Gets the hash code of the current <see cref="MarshalledPtr{T}" />.
+    /// </summary>
+    /// <returns>The hash code of the current <see cref="MarshalledPtr{T}" />.</returns>
+    public override int GetHashCode() => ((IntPtr)Pointer).GetHashCode() ^ ElementSize;
 
     /// <inheritdoc />
-    public override int GetHashCode() => (int)Pointer;
-
-    /// <inheritdoc />
-    public override bool Equals(object? obj) => obj is Ptr<T> other && Equals(other);
-
-    /// <inheritdoc />
-    public bool Equals(Ptr<T> other) => this == other;
-
-    /// <inheritdoc />
-    public override string ToString() => $"Ptr<{typeof(T).Name}> ({(ulong)Pointer:X})";
+    public override string ToString() => $"MarshalledPtr<{typeof(T).Name}> ({(ulong)Pointer:X})";
 }

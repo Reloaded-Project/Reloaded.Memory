@@ -25,16 +25,20 @@ Reloaded.Memory.ExternalMemory.WriteRaw(nuint offset, System.Span<byte> data) ->
 Reloaded.Memory.ExternalMemory.WriteWithMarshalling<T>(nuint offset, in T item) -> void
 Reloaded.Memory.Interfaces.CanAllocateMemoryExtensions
 Reloaded.Memory.Interfaces.CanChangeMemoryProtectionExtensions
-Reloaded.Memory.Interfaces.CanReadWriteMemoryExtensions
 Reloaded.Memory.Interfaces.ICanAllocateMemory
 Reloaded.Memory.Interfaces.ICanAllocateMemory.Allocate(nuint length) -> Reloaded.Memory.Structs.MemoryAllocation
 Reloaded.Memory.Interfaces.ICanAllocateMemory.Free(Reloaded.Memory.Structs.MemoryAllocation allocation) -> bool
 Reloaded.Memory.Interfaces.ICanChangeMemoryProtection
 Reloaded.Memory.Interfaces.ICanChangeMemoryProtection.ChangeProtectionRaw(nuint memoryAddress, int size, nuint newProtection) -> nuint
 Reloaded.Memory.Interfaces.ICanReadWriteMemory
+Reloaded.Memory.Interfaces.ICanReadWriteMemory.Read<TData>(nuint offset) -> TData
+Reloaded.Memory.Interfaces.ICanReadWriteMemory.Read<TData>(nuint offset, out TData value) -> void
+Reloaded.Memory.Interfaces.ICanReadWriteMemory.ReadRaw(nuint offset, int length) -> byte[]!
 Reloaded.Memory.Interfaces.ICanReadWriteMemory.ReadRaw(nuint offset, System.Span<byte> value) -> void
 Reloaded.Memory.Interfaces.ICanReadWriteMemory.ReadRef<T>(nuint offset, ref T value) -> void
 Reloaded.Memory.Interfaces.ICanReadWriteMemory.ReadWithMarshalling<T>(nuint offset, ref T value) -> void
+Reloaded.Memory.Interfaces.ICanReadWriteMemory.ReadWithMarshalling<TData>(nuint offset) -> TData
+Reloaded.Memory.Interfaces.ICanReadWriteMemory.ReadWithMarshallingOutParameter<TData>(nuint offset, out TData? value) -> void
 Reloaded.Memory.Interfaces.ICanReadWriteMemory.Write<T>(nuint offset, in T item) -> void
 Reloaded.Memory.Interfaces.ICanReadWriteMemory.WriteRaw(nuint offset, System.Span<byte> data) -> void
 Reloaded.Memory.Interfaces.ICanReadWriteMemory.WriteWithMarshalling<T>(nuint offset, in T item) -> void
@@ -149,11 +153,6 @@ static Reloaded.Memory.Interfaces.CanChangeMemoryProtectionExtensions.ChangeProt
 static Reloaded.Memory.Interfaces.CanChangeMemoryProtectionExtensions.ChangeProtectionDisposable<T>(this T item, nuint memoryAddress, int size, Reloaded.Memory.Enums.MemoryProtection newProtection) -> Reloaded.Memory.Structs.DisposableMemoryProtection<T>
 static Reloaded.Memory.Interfaces.CanChangeMemoryProtectionExtensions.SafeRead<TMemory>(this TMemory item, nuint memoryAddress, System.Span<byte> data) -> void
 static Reloaded.Memory.Interfaces.CanChangeMemoryProtectionExtensions.SafeWrite<TMemory>(this TMemory item, nuint memoryAddress, System.Span<byte> data) -> void
-static Reloaded.Memory.Interfaces.CanReadWriteMemoryExtensions.Read<TSource, TData>(this TSource source, nuint offset) -> TData
-static Reloaded.Memory.Interfaces.CanReadWriteMemoryExtensions.Read<TSource, TData>(this TSource source, nuint offset, out TData value) -> void
-static Reloaded.Memory.Interfaces.CanReadWriteMemoryExtensions.ReadRaw<TSource>(this TSource source, nuint offset, int length) -> byte[]!
-static Reloaded.Memory.Interfaces.CanReadWriteMemoryExtensions.ReadWithMarshalling<TSource, TData>(this TSource source, nuint offset) -> TData
-static Reloaded.Memory.Interfaces.CanReadWriteMemoryExtensions.ReadWithMarshalling<TSource, TData>(this TSource source, nuint offset, out TData? value) -> void
 static Reloaded.Memory.Native.Unix.Posix.process_vm_readv_k32(nint processId, nuint localIov, nuint remoteIov, nuint numBytes) -> bool
 static Reloaded.Memory.Native.Unix.Posix.process_vm_writev_k32(nint processId, nuint remoteIov, nuint localIov, nuint numBytes) -> bool
 static Reloaded.Memory.Pointers.Ptr<T>.implicit operator Reloaded.Memory.Pointers.Ptr<T>(T* operand) -> Reloaded.Memory.Pointers.Ptr<T>

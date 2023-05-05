@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Reloaded.Memory.Interfaces;
 using Reloaded.Memory.Structs;
 using Reloaded.Memory.Tests.Utilities;
 using Reloaded.Memory.Tests.Utilities.Structures;
@@ -78,7 +77,7 @@ public class MemoryTests
         {
             var randomStruct = new T();
             source.ReadWriteMemory.WriteWithMarshalling(allocation.Address, randomStruct);
-            source.ReadWriteMemory.ReadWithMarshalling(allocation.Address, out T? randomValueCopy);
+            source.ReadWriteMemory.ReadWithMarshallingOutParameter(allocation.Address, out T? randomValueCopy);
 
             Assert.Equal(randomStruct, randomValueCopy);
 

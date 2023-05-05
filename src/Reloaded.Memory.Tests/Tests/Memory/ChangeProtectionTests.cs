@@ -96,7 +96,7 @@ public class ChangeProtectionTests
     [InlineData(MemoryProtection.EXECUTE, UnixMemoryProtection.PROT_EXEC)]
     public void ToUnixTest(MemoryProtection protection, UnixMemoryProtection expected)
     {
-        nuint result = MemoryProtectionExtensions.ToUnix(protection);
+        var result = MemoryProtectionExtensions.ToUnix(protection);
         Assert.Equal((nuint)expected, result);
     }
 
@@ -111,7 +111,7 @@ public class ChangeProtectionTests
         Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE)]
     public void ToWindowsTest(MemoryProtection protection, Kernel32.MEM_PROTECTION expected)
     {
-        nuint result = MemoryProtectionExtensions.ToWindows(protection);
+        var result = MemoryProtectionExtensions.ToWindows(protection);
         Assert.Equal((nuint)expected, result);
     }
 #pragma warning restore CA1416 // Validate platform compatibility
