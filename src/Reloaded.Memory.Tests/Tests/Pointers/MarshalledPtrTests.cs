@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using FluentAssertions;
 using Reloaded.Memory.Pointers;
 using Reloaded.Memory.Tests.Utilities.Structures;
@@ -48,7 +47,7 @@ public unsafe class MarshalledPtrTests
         var size = Marshal.SizeOf<MarshallingStruct>();
         var buffer = stackalloc byte[size];
         var memory = new Reloaded.Memory.Memory();
-        memory.WriteWithMarshalling((UIntPtr)buffer, sample);
+        memory.WriteWithMarshalling((nuint)buffer, sample);
 
         MarshalledPtr<MarshallingStruct> ptr = new(buffer);
         MarshallingStruct read = ptr.Get();
@@ -71,7 +70,7 @@ public unsafe class MarshalledPtrTests
 
         var buffer = stackalloc byte[totalSize];
         for (var x = 0; x < samples.Length; x++)
-            memory.WriteWithMarshalling((UIntPtr)(buffer + x * sizeOfStruct), samples[x]);
+            memory.WriteWithMarshalling((nuint)(buffer + x * sizeOfStruct), samples[x]);
 
         MarshalledPtr<MarshallingStruct> ptr = new(buffer);
         for (var x = 0; x < samples.Length; x++)

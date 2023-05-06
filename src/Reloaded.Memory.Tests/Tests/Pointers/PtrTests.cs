@@ -1,5 +1,4 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Reloaded.Memory.Pointers;
 using Reloaded.Memory.Tests.Utilities.Structures;
 using Reloaded.Memory.Utility;
@@ -177,8 +176,8 @@ public unsafe class Ptr
         Blittable.ApproximateIsBlittable<Ptr<uint>>().Should().BeTrue();
         Blittable.ApproximateIsBlittable<Ptr<long>>().Should().BeTrue();
         Blittable.ApproximateIsBlittable<Ptr<ulong>>().Should().BeTrue();
-        Blittable.ApproximateIsBlittable<Ptr<IntPtr>>().Should().BeTrue();
-        Blittable.ApproximateIsBlittable<Ptr<UIntPtr>>().Should().BeTrue();
+        Blittable.ApproximateIsBlittable<Ptr<nint>>().Should().BeTrue();
+        Blittable.ApproximateIsBlittable<Ptr<nuint>>().Should().BeTrue();
         Blittable.ApproximateIsBlittable<Ptr<RandomIntStruct>>().Should().BeTrue();
     }
 }
