@@ -1,5 +1,4 @@
-﻿
-using Reloaded.Memory.Interfaces;
+﻿using Reloaded.Memory.Interfaces;
 #if NET5_0_OR_GREATER
 using System.Diagnostics.CodeAnalysis;
 #endif
@@ -27,12 +26,12 @@ public unsafe struct SourcedPtr<
     public Ptr<T> Pointer;
 
     /// <summary>
-    /// The source from which the data is read/written from.
+    ///     The source from which the data is read/written from.
     /// </summary>
     public TSource Source;
 
     /// <summary>
-    /// Creates a sourced pointer given the raw pointer and the source.
+    ///     Creates a sourced pointer given the raw pointer and the source.
     /// </summary>
     /// <param name="pointer">The raw pointer.</param>
     /// <param name="source">The source behind the pointer.</param>
@@ -42,7 +41,7 @@ public unsafe struct SourcedPtr<
         Source = source;
     }
 
-    /// <inheritdoc cref="SourcedPtr{T,TSource}.AsRef"/>
+    /// <inheritdoc cref="SourcedPtr{T,TSource}.AsRef" />
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ref T AsRef() => ref Pointer.AsRef();
 
@@ -108,7 +107,8 @@ public unsafe struct SourcedPtr<
     /// <param name="pointer">The <see cref="SourcedPtr{T,TSource}" /> to add the offset to.</param>
     /// <param name="offset">The integer offset to add.</param>
     /// <returns>A new <see cref="SourcedPtr{T,TSource}" /> with the updated address.</returns>
-    public static SourcedPtr<T, TSource> operator +(SourcedPtr<T, TSource> pointer, int offset) => new(pointer.Pointer + offset, pointer.Source);
+    public static SourcedPtr<T, TSource> operator +(SourcedPtr<T, TSource> pointer, int offset)
+        => new(pointer.Pointer + offset, pointer.Source);
 
     /// <summary>
     ///     Subtracts an integer offset from a <see cref="SourcedPtr{T,TSource}" />.
@@ -116,21 +116,24 @@ public unsafe struct SourcedPtr<
     /// <param name="pointer">The <see cref="SourcedPtr{T,TSource}" /> to subtract the offset from.</param>
     /// <param name="offset">The integer offset to subtract.</param>
     /// <returns>A new <see cref="SourcedPtr{T,TSource}" /> with the updated address.</returns>
-    public static SourcedPtr<T, TSource> operator -(SourcedPtr<T, TSource> pointer, int offset) => new(pointer.Pointer - offset, pointer.Source);
+    public static SourcedPtr<T, TSource> operator -(SourcedPtr<T, TSource> pointer, int offset)
+        => new(pointer.Pointer - offset, pointer.Source);
 
     /// <summary>
     ///     Increments the address of the <see cref="SourcedPtr{T,TSource}" /> by the size of <typeparamref name="T" />.
     /// </summary>
     /// <param name="pointer">The <see cref="SourcedPtr{T,TSource}" /> to increment.</param>
     /// <returns>A new <see cref="SourcedPtr{T,TSource}" /> with the incremented address.</returns>
-    public static SourcedPtr<T, TSource> operator ++(SourcedPtr<T, TSource> pointer) => new(pointer.Pointer + 1, pointer.Source);
+    public static SourcedPtr<T, TSource> operator ++(SourcedPtr<T, TSource> pointer)
+        => new(pointer.Pointer + 1, pointer.Source);
 
     /// <summary>
     ///     Decrements the address of the <see cref="SourcedPtr{T,TSource}" /> by the size of <typeparamref name="T" />.
     /// </summary>
     /// <param name="pointer">The <see cref="SourcedPtr{T,TSource}" /> to decrement.</param>
     /// <returns>A new <see cref="SourcedPtr{T,TSource}" /> with the decremented address.</returns>
-    public static SourcedPtr<T, TSource> operator --(SourcedPtr<T, TSource> pointer) => new(pointer.Pointer - 1, pointer.Source);
+    public static SourcedPtr<T, TSource> operator --(SourcedPtr<T, TSource> pointer)
+        => new(pointer.Pointer - 1, pointer.Source);
 
     /// <summary>
     ///     Determines if the <see cref="SourcedPtr{T,TSource}" /> is considered "true" in a boolean context.
@@ -147,13 +150,15 @@ public unsafe struct SourcedPtr<
     public static bool operator false(SourcedPtr<T, TSource> operand) => operand.Pointer.Pointer == null;
 
     /// <inheritdoc />
-    public bool Equals(SourcedPtr<T, TSource> other) => Pointer.Equals(other.Pointer) && EqualityComparer<TSource>.Default.Equals(Source, other.Source);
+    public bool Equals(SourcedPtr<T, TSource> other) => Pointer.Equals(other.Pointer) &&
+                                                        EqualityComparer<TSource>.Default.Equals(Source, other.Source);
 
     /// <inheritdoc />
     public override bool Equals(object? obj) => obj is SourcedPtr<T, TSource> other && Equals(other);
 
     /// <inheritdoc />
-    public override int GetHashCode() => (Pointer.GetHashCode() * 397) ^ EqualityComparer<TSource>.Default.GetHashCode(Source);
+    public override int GetHashCode()
+        => (Pointer.GetHashCode() * 397) ^ EqualityComparer<TSource>.Default.GetHashCode(Source);
 
     /// <inheritdoc />
     public override string ToString() => $"SourcedPtr<{typeof(T).Name}, {typeof(TSource).Name}> ({Pointer})";

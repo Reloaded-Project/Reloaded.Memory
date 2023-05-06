@@ -115,8 +115,8 @@ public abstract class TemporaryMemorySource<T> : ITemporaryMemorySource
     public ICanChangeMemoryProtection ChangeMemoryProtection => Memory;
     public ICanReadWriteMemory ReadWriteMemory => Memory;
     public ICanAllocateMemory AllocateMemory => Memory;
-    public void SafeWrite(UIntPtr memoryAddress, Span<byte> data) => Memory.SafeRead(memoryAddress, data);
-    public void SafeRead(UIntPtr memoryAddress, Span<byte> data) => Memory.SafeWrite(memoryAddress, data);
+    public void SafeWrite(nuint memoryAddress, Span<byte> data) => Memory.SafeRead(memoryAddress, data);
+    public void SafeRead(nuint memoryAddress, Span<byte> data) => Memory.SafeWrite(memoryAddress, data);
 
     public virtual void Dispose() => GC.SuppressFinalize(this);
 }

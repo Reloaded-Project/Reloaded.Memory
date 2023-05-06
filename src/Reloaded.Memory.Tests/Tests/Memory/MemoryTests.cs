@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using Reloaded.Memory.Structs;
 using Reloaded.Memory.Tests.Utilities;
 using Reloaded.Memory.Tests.Utilities.Structures;
@@ -71,7 +70,7 @@ public class MemoryTests
         using ITemporaryMemorySource source = GetMemorySource(kind);
         var minSize = Marshal.SizeOf<T>();
         var allocLength = minSize;
-        MemoryAllocation allocation = source.AllocateMemory.Allocate((UIntPtr)allocLength);
+        MemoryAllocation allocation = source.AllocateMemory.Allocate((nuint)allocLength);
 
         for (var x = 0; x < 100; x++)
         {

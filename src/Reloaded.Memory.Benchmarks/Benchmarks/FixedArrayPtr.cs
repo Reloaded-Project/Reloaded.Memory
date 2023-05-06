@@ -6,7 +6,8 @@ using Reloaded.Memory.Structs;
 namespace Reloaded.Memory.Benchmarks.Benchmarks;
 
 [DisassemblyDiagnoser]
-[BenchmarkInfo("FixedArrayPtr Read Write", "Tests whether FixedArrayPtr's Read/Write Functionality is Zero-Cost.", Categories.ZeroOverhead)]
+[BenchmarkInfo("FixedArrayPtr Read Write", "Tests whether FixedArrayPtr's Read/Write Functionality is Zero-Cost.",
+    Categories.ZeroOverhead)]
 public unsafe class FixedArrayPtr
 {
     private const int ArrayLength = 1000;
@@ -26,7 +27,7 @@ public unsafe class FixedArrayPtr
         _destinationArray = new int[ArrayLength];
 
         var random = new Random();
-        for (int x = 0; x < ArrayLength; x++)
+        for (var x = 0; x < ArrayLength; x++)
             _sourceArray[x] = random.Next();
     }
 
@@ -43,9 +44,9 @@ public unsafe class FixedArrayPtr
     [Benchmark]
     public int FixedArrayPtr_Get()
     {
-        var ptr = _fixedArrayPtr;
-        int value = 0;
-        for (int x = 0; x < ArrayLength; x++)
+        FixedArrayPtr<int> ptr = _fixedArrayPtr;
+        var value = 0;
+        for (var x = 0; x < ArrayLength; x++)
             value = ptr.Get(x);
 
         return value;
@@ -55,8 +56,8 @@ public unsafe class FixedArrayPtr
     public int RawPointer_Get()
     {
         int* ptr = _fixedArrayPtr.Pointer;
-        int value = 0;
-        for (int x = 0; x < ArrayLength; x++)
+        var value = 0;
+        for (var x = 0; x < ArrayLength; x++)
             value = ptr[x];
 
         return value;
@@ -65,8 +66,8 @@ public unsafe class FixedArrayPtr
     [Benchmark]
     public void FixedArrayPtr_Set()
     {
-        var ptr = _fixedArrayPtr;
-        for (int x = 0; x < ArrayLength; x++)
+        FixedArrayPtr<int> ptr = _fixedArrayPtr;
+        for (var x = 0; x < ArrayLength; x++)
             ptr.Set(x, _sourceArray[x]);
     }
 
@@ -74,7 +75,7 @@ public unsafe class FixedArrayPtr
     public void RawPointer_Set()
     {
         int* ptr = _fixedArrayPtr.Pointer;
-        for (int x = 0; x < ArrayLength; x++)
+        for (var x = 0; x < ArrayLength; x++)
             ptr[x] = _sourceArray[x];
     }
 }

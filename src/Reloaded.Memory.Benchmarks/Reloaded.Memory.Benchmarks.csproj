@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../Reloaded.Project.Configurations/Directory.Build.props" />
+  <Import Project="../Reloaded.Project.Configurations/Directory.Build.props"/>
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -9,12 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.13.5" />
-    <PackageReference Include="Spectre.Console" Version="0.46.0" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.13.5"/>
+    <PackageReference Include="Spectre.Console" Version="0.46.0"/>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Reloaded.Memory\Reloaded.Memory.csproj" />
+    <ProjectReference Include="..\Reloaded.Memory\Reloaded.Memory.csproj"/>
   </ItemGroup>
 
 </Project>

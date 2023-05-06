@@ -159,7 +159,7 @@ public unsafe class FixedArrayPtrTests
         {
             var fixedArrayPtr = new FixedArrayPtr<int>(ptr, sourceArray.Length);
 
-            for (int x = 0; x < sourceArray.Length; x++)
+            for (var x = 0; x < sourceArray.Length; x++)
                 Assert.Equal(x, fixedArrayPtr.IndexOf(sourceArray[x]));
 
             Assert.Equal(-1, fixedArrayPtr.IndexOf(0));
@@ -175,7 +175,7 @@ public unsafe class FixedArrayPtrTests
         {
             var fixedArrayPtr = new FixedArrayPtr<int>(ptr, sourceArray.Length);
 
-            for (int x = 0; x < sourceArray.Length; x++)
+            for (var x = 0; x < sourceArray.Length; x++)
                 Assert.Equal(x, fixedArrayPtr.IndexOf(new Reloaded.Memory.Memory(), sourceArray[x]));
 
             Assert.Equal(-1, fixedArrayPtr.IndexOf(new Reloaded.Memory.Memory(), 0));
@@ -190,7 +190,7 @@ public unsafe class FixedArrayPtrTests
         fixed (int* ptr = sourceArray)
         {
             var fixedArrayPtr = new FixedArrayPtr<int>(ptr, sourceArray.Length);
-            foreach (int value in sourceArray)
+            foreach (var value in sourceArray)
                 Assert.True(fixedArrayPtr.Contains(value));
 
             Assert.False(fixedArrayPtr.Contains(0));
@@ -205,7 +205,7 @@ public unsafe class FixedArrayPtrTests
         fixed (int* ptr = sourceArray)
         {
             var fixedArrayPtr = new FixedArrayPtr<int>(ptr, sourceArray.Length);
-            foreach (int value in sourceArray)
+            foreach (var value in sourceArray)
                 Assert.True(fixedArrayPtr.Contains(new Reloaded.Memory.Memory(), value));
 
             Assert.False(fixedArrayPtr.Contains(new Reloaded.Memory.Memory(), 0));

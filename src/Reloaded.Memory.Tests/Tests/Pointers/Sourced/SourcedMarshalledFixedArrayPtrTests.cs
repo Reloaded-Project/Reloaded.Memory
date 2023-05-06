@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using FluentAssertions;
 using Reloaded.Memory.Pointers.Sourced;
 using Xunit;
@@ -20,7 +19,9 @@ public unsafe class SourcedMarshalledFixedArrayPtrTests
 
         fixed (int* ptr = destinationArray)
         {
-            var sourcedFixedArrayPtr = new SourcedMarshalledFixedArrayPtr<int, Reloaded.Memory.Memory>(ptr, destinationArray.Length, new Reloaded.Memory.Memory());
+            var sourcedFixedArrayPtr =
+                new SourcedMarshalledFixedArrayPtr<int, Reloaded.Memory.Memory>(ptr, destinationArray.Length,
+                    new Reloaded.Memory.Memory());
             sourcedFixedArrayPtr.CopyFrom(sourceArray.AsSpan(), sourceArray.Length);
 
             for (var x = 0; x < sourceArray.Length; x++)
@@ -36,7 +37,9 @@ public unsafe class SourcedMarshalledFixedArrayPtrTests
 
         fixed (int* ptr = destinationArray)
         {
-            var sourcedFixedArrayPtr = new SourcedMarshalledFixedArrayPtr<int, Reloaded.Memory.Memory>(ptr, destinationArray.Length, new Reloaded.Memory.Memory());
+            var sourcedFixedArrayPtr =
+                new SourcedMarshalledFixedArrayPtr<int, Reloaded.Memory.Memory>(ptr, destinationArray.Length,
+                    new Reloaded.Memory.Memory());
             sourcedFixedArrayPtr.CopyFrom(sourceArray.AsSpan(), 3, 1, 1);
 
             sourcedFixedArrayPtr.Get(0).Should().Be(0);
@@ -55,7 +58,9 @@ public unsafe class SourcedMarshalledFixedArrayPtrTests
 
         fixed (int* ptr = sourceArray)
         {
-            var sourcedFixedArrayPtr = new SourcedMarshalledFixedArrayPtr<int, Reloaded.Memory.Memory>(ptr, sourceArray.Length, new Reloaded.Memory.Memory());
+            var sourcedFixedArrayPtr =
+                new SourcedMarshalledFixedArrayPtr<int, Reloaded.Memory.Memory>(ptr, sourceArray.Length,
+                    new Reloaded.Memory.Memory());
             sourcedFixedArrayPtr.CopyTo(destinationArray.AsSpan(), sourceArray.Length);
 
             for (var i = 0; i < sourceArray.Length; i++)
@@ -73,7 +78,9 @@ public unsafe class SourcedMarshalledFixedArrayPtrTests
 
         fixed (int* ptr = sourceArray)
         {
-            var sourcedFixedArrayPtr = new SourcedMarshalledFixedArrayPtr<int, Reloaded.Memory.Memory>(ptr, sourceArray.Length, new Reloaded.Memory.Memory());
+            var sourcedFixedArrayPtr =
+                new SourcedMarshalledFixedArrayPtr<int, Reloaded.Memory.Memory>(ptr, sourceArray.Length,
+                    new Reloaded.Memory.Memory());
             sourcedFixedArrayPtr.CopyTo(destinationArray.AsSpan(), 3, 1, 1);
 
             destinationArray[0].Should().Be(0);
@@ -90,9 +97,11 @@ public unsafe class SourcedMarshalledFixedArrayPtrTests
         var sourceArray = new[] { 1, 2, 3, 4, 5 };
         fixed (int* ptr = sourceArray)
         {
-            var sourcedFixedArrayPtr = new SourcedMarshalledFixedArrayPtr<int, Reloaded.Memory.Memory>(ptr, sourceArray.Length, new Reloaded.Memory.Memory());
+            var sourcedFixedArrayPtr =
+                new SourcedMarshalledFixedArrayPtr<int, Reloaded.Memory.Memory>(ptr, sourceArray.Length,
+                    new Reloaded.Memory.Memory());
 
-            for (int x = 0; x < sourceArray.Length; x++)
+            for (var x = 0; x < sourceArray.Length; x++)
                 Assert.Equal(x, sourcedFixedArrayPtr.IndexOf(sourceArray[x]));
 
             Assert.Equal(-1, sourcedFixedArrayPtr.IndexOf(0));
@@ -106,8 +115,10 @@ public unsafe class SourcedMarshalledFixedArrayPtrTests
         var sourceArray = new[] { 1, 2, 3, 4, 5 };
         fixed (int* ptr = sourceArray)
         {
-            var sourcedFixedArrayPtr = new SourcedMarshalledFixedArrayPtr<int, Reloaded.Memory.Memory>(ptr, sourceArray.Length, new Reloaded.Memory.Memory());
-            foreach (int value in sourceArray)
+            var sourcedFixedArrayPtr =
+                new SourcedMarshalledFixedArrayPtr<int, Reloaded.Memory.Memory>(ptr, sourceArray.Length,
+                    new Reloaded.Memory.Memory());
+            foreach (var value in sourceArray)
                 Assert.True(sourcedFixedArrayPtr.Contains(value));
 
             Assert.False(sourcedFixedArrayPtr.Contains(0));
@@ -121,8 +132,10 @@ public unsafe class SourcedMarshalledFixedArrayPtrTests
         var sourceArray = new[] { 1, 2, 3, 4, 5 };
         fixed (int* ptr = sourceArray)
         {
-            var sourcedFixedArrayPtr = new SourcedMarshalledFixedArrayPtr<int, Reloaded.Memory.Memory>(ptr, sourceArray.Length, new Reloaded.Memory.Memory());
-            foreach (int value in sourcedFixedArrayPtr)
+            var sourcedFixedArrayPtr =
+                new SourcedMarshalledFixedArrayPtr<int, Reloaded.Memory.Memory>(ptr, sourceArray.Length,
+                    new Reloaded.Memory.Memory());
+            foreach (var value in sourcedFixedArrayPtr)
                 Assert.True(sourcedFixedArrayPtr.Contains(value));
         }
     }

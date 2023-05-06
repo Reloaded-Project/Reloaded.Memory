@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using FluentAssertions;
 using Reloaded.Memory.Interfaces;
 using Reloaded.Memory.Structs;
@@ -27,8 +26,8 @@ public class MemoryAllocationTests
 
         MemoryAllocation alloc = source.AllocateMemory.Allocate(allocLength);
 
-        alloc.Length.Should().Be((UIntPtr)allocLength);
-        alloc.Address.Should().NotBe((UIntPtr)0);
+        alloc.Length.Should().Be((nuint)allocLength);
+        alloc.Address.Should().NotBe((nuint)0);
 
         source.AllocateMemory.Free(alloc);
     }

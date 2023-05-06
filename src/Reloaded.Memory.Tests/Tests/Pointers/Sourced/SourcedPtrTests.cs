@@ -14,7 +14,7 @@ public unsafe class SourcedPtrTests
         var memory = new Reloaded.Memory.Memory();
         var ptr = new SourcedPtr<int, Reloaded.Memory.Memory>(new Ptr<int>(&value), memory);
 
-        ((nuint)ptr.Pointer.Pointer).Should().NotBe((nuint)0);
+        ((nuint)ptr.Pointer.Pointer).Should().NotBe(0);
         ((nuint)ptr.Pointer.Pointer).Should().Be((nuint)(&value));
         ptr.Source.Should().Be(memory);
     }
@@ -145,9 +145,7 @@ public unsafe class SourcedPtrTests
 
         SourcedPtr<int, Reloaded.Memory.Memory>[] arrayOfSourcedPointers =
         {
-            new(new Ptr<int>(&a), source),
-            new(new Ptr<int>(&b), source),
-            new(new Ptr<int>(&c), source),
+            new(new Ptr<int>(&a), source), new(new Ptr<int>(&b), source), new(new Ptr<int>(&c), source),
             new(new Ptr<int>(&d), source)
         };
 

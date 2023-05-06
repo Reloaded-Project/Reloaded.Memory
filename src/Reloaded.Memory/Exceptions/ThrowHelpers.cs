@@ -42,7 +42,8 @@ internal abstract class ThrowHelpers
         $"Unable to change permissions for the following memory address {memoryAddress} of size {size} and permission {newProtection}. Error: {result}. SetLastError: {Marshal.GetLastWin32Error()}");
 
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public static void ThrowArgumentOutOfRangeException(int length, int sourceIndex, int destinationIndex, int sourceArrayLength, int fixedArrayPtrCount)
+    public static void ThrowArgumentOutOfRangeException(int length, int sourceIndex, int destinationIndex,
+        int sourceArrayLength, int fixedArrayPtrCount)
     {
         if (length < 0)
             throw new ArgumentOutOfRangeException(nameof(length), "Length must be non-negative.");

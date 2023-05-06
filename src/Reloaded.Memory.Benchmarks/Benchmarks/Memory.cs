@@ -49,7 +49,7 @@ public unsafe class Memory
 
         while (ptr < maxAddress)
         {
-            result += memory.Read<nuint>((UIntPtr)ptr);
+            result += memory.Read<nuint>((nuint)ptr);
             ptr += 1;
         }
 
@@ -66,7 +66,7 @@ public unsafe class Memory
 
         while (ptr < maxAddress)
         {
-            memory.Read<nuint>((UIntPtr)ptr, out var res);
+            memory.Read<nuint>((nuint)ptr, out var res);
             result += res;
             ptr += 1;
         }
@@ -100,7 +100,7 @@ public unsafe class Memory
 
         while (ptr < maxAddress)
         {
-            memory.Write((UIntPtr)ptr, (UIntPtr)ptr);
+            memory.Write((nuint)ptr, (nuint)ptr);
             ptr += 1;
         }
 
