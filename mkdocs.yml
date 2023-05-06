@@ -51,3 +51,4 @@ nav:
   - Memory: About-Memory.md
   - Pointers:
       Ptr&lt;T&gt;: Pointers/Ptr.md
+      FixedArrayPtr&lt;T&gt;: Pointers/FixedArrayPtr.md

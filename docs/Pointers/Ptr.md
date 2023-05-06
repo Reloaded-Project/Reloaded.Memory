@@ -4,7 +4,7 @@
 
 !!! note "This type was formerly called `BlittablePointer<T>` and `ArrayPtr<T>` in old library versions."
 
-!!! warning "Zero overhead not guaranteed for `ICanReadWriteMemory` implementations outside of `Memory` (RAM)."
+!!! warning "Zero overhead but not 1:1 codegen in all scenarios. e.g. Multiplying an element in place via Setter can be slower (.NET 7)."
 
 A helper to allow you to do two things:  
 
@@ -125,3 +125,11 @@ public struct OpenFileFnPtr { public FuncPtr<Ptr<byte>, Ptr<byte>, int, Ptr<byte
 
 _openFile = FileSystemFuncs.OpenFile.HookAs<FileSystemFuncs.OpenFileFnPtr>(typeof(FileAccessServer), nameof(OpenBfsFileImpl)).Activate();
 ```
+
+## SourcedPtr&lt;T&gt;
+
+!!! info "This is a tuple of `Ptr<T>` and `TSource`."
+
+Basically, it allows you to assign a `TSource` to a `Ptr<T>` and skip passing `TSource` as a parameter.  
+
+Remaining usage is the same.

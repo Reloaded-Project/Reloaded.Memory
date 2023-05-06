@@ -40,4 +40,17 @@ internal abstract class ThrowHelpers
     public static void ThrowMemoryPermissionExceptionPosix(nuint memoryAddress, int size, nuint newProtection,
         int result) => throw new MemoryPermissionException(
         $"Unable to change permissions for the following memory address {memoryAddress} of size {size} and permission {newProtection}. Error: {result}. SetLastError: {Marshal.GetLastWin32Error()}");
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    public static void ThrowArgumentOutOfRangeException(int length, int sourceIndex, int destinationIndex, int sourceArrayLength, int fixedArrayPtrCount)
+    {
+        if (length < 0)
+            throw new ArgumentOutOfRangeException(nameof(length), "Length must be non-negative.");
+
+        if (sourceIndex < 0 || sourceIndex + length > sourceArrayLength)
+            throw new ArgumentOutOfRangeException(nameof(sourceIndex), "Invalid source index.");
+
+        if (destinationIndex < 0 || destinationIndex + length > fixedArrayPtrCount)
+            throw new ArgumentOutOfRangeException(nameof(destinationIndex), "Invalid destination index.");
+    }
 }

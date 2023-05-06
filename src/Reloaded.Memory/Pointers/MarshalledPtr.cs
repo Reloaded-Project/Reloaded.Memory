@@ -23,7 +23,7 @@ public unsafe struct MarshalledPtr<
     ///     The pointer to the value.
     /// </summary>
     /// <remarks>Only use for pointers in same process.</remarks>
-    public byte* Pointer { get; set; }
+    public byte* Pointer;
 
     /// <summary>
     ///     Size of element after marshalling.
@@ -50,15 +50,6 @@ public unsafe struct MarshalledPtr<
         Pointer = pointer;
         ElementSize = elementSize;
     }
-
-    /// <summary>
-    ///     Converts this <see cref="MarshalledPtr{T}" /> to a value reference.
-    /// </summary>
-    /// <remarks>
-    ///     Only use for pointers within same process.
-    /// </remarks>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ref T AsRef() => ref Unsafe.AsRef<T>(Pointer);
 
     /// <summary>
     ///     Gets the value at the address where the current pointer points to from a given <typeparamref name="TSource" />.

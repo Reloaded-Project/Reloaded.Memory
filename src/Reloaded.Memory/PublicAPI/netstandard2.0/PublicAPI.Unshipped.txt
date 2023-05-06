@@ -101,8 +101,6 @@ Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION.PAGE_WRITECOMBINE = 1024 
 Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION.PAGE_WRITECOPY = 8 -> Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION
 Reloaded.Memory.Pointers.Ptr<T>
 Reloaded.Memory.Pointers.Ptr<T>.AsRef() -> T
-Reloaded.Memory.Pointers.Ptr<T>.Pointer.get -> T*
-Reloaded.Memory.Pointers.Ptr<T>.Pointer.set -> void
 Reloaded.Memory.Pointers.Ptr<T>.Ptr() -> void
 Reloaded.Memory.Pointers.Ptr<T>.Ptr(T* pointer) -> void
 Reloaded.Memory.Structs.DisposableMemoryAllocation<TAllocator>

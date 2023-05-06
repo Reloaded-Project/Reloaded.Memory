@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Reloaded.Memory.Pointers;
 
 /// <summary>
-///     Blittable single level pointer type that you can use with generic types.
+///     A blittable single level pointer type that you can use with generic types.
 /// </summary>
 /// <typeparam name="T">The item behind the blittable pointer.</typeparam>
 /// <remarks>
@@ -25,7 +25,7 @@ public unsafe struct Ptr<
     ///     For reference only; only use for pointers in RAM (based on <see cref="Memory{T}" />), otherwise use methods!
     /// </summary>
     /// <remarks>Only use for pointers in same process.</remarks>
-    public T* Pointer { get; set; }
+    public T* Pointer;
 
     /// <summary>
     ///     Creates a blittable pointer
