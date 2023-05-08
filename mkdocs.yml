@@ -65,3 +65,4 @@ nav:
       CircularBuffer: Utilities/CircularBuffer.md
       ObjectMarshal: Utilities/ObjectMarshal.md
       Pinnable&lt;T&gt;: Utilities/Pinnable.md
+      TypeInfo: Utilities/TypeInfo.md

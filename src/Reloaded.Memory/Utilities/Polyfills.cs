@@ -1,4 +1,5 @@
-﻿using Reloaded.Memory.Exceptions;
+﻿using System.Numerics;
+using Reloaded.Memory.Exceptions;
 
 namespace Reloaded.Memory.Utilities;
 
@@ -8,7 +9,7 @@ namespace Reloaded.Memory.Utilities;
 /// <remarks>
 ///     In cases where the feature is not directly supported, a best effort alternative is provided.
 /// </remarks>
-public static class Polyfills
+internal static class Polyfills
 {
     // The OS identifier platform code below is JIT friendly; compiled out at runtime for .NET 5 and above.
 
@@ -72,7 +73,7 @@ public static class Polyfills
     /// <param name="stream">The stream to write the result to.</param>
     /// <param name="buffer">The bytes to write to the output.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void WriteSpan<TStream>(this TStream stream, Span<byte> buffer) where TStream : Stream
+    public static void Write<TStream>(this TStream stream, Span<byte> buffer) where TStream : Stream
     {
 #if NETCOREAPP3_1_OR_GREATER || NETSTANDARD2_1
         stream.Write(buffer);
@@ -86,7 +87,7 @@ public static class Polyfills
 
     /// <summary>
     /// Appends a span of bytes onto the <see cref="Stream"/> and advances the position.
-    /// This is a polyfill for older framework versions.
+    /// This is a polyfill for ReadAtLeast, for older runtimes.
     /// </summary>
     /// <typeparam name="TStream">Type of stream.</typeparam>
     /// <param name="stream">The stream to write the result to.</param>
@@ -94,7 +95,7 @@ public static class Polyfills
     /// <exception cref="EndOfStreamException">End of stream was reached.</exception>
     /// <returns>Number of bytes read.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int ReadAll<TStream>(this TStream stream, Span<byte> buffer) where TStream : Stream
+    public static int ReadAtLeast<TStream>(this TStream stream, Span<byte> buffer) where TStream : Stream
     {
 #if NET7_0_OR_GREATER
         return stream.ReadAtLeast(buffer, buffer.Length);
@@ -115,6 +116,24 @@ public static class Polyfills
 
         rental.Array.AsSpan(0, buffer.Length).CopyTo(buffer);
         return totalRead;
+#endif
+    }
+
+    /// <summary>
+    /// Rotates the specified value left by the specified number of bits.
+    /// Similar in behavior to the x86 instruction ROL.
+    /// </summary>
+    /// <param name="value">The value to rotate.</param>
+    /// <param name="offset">The number of bits to rotate by.
+    /// Any value outside the range [0..31] is treated as congruent mod 32.</param>
+    /// <returns>The rotated value.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static uint RotateLeft(uint value, int offset)
+    {
+#if NET7_0_OR_GREATER
+        return BitOperations.RotateLeft(value, offset);
+#else
+        return (value << offset) | (value >> (32 - offset));
 #endif
     }
 }

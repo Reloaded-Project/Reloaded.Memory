@@ -67,7 +67,7 @@ public static unsafe class StreamExtensions
     public static void Write<TStream, T>(this TStream stream, Span<T> structure) where T : unmanaged where TStream : Stream
     {
         Span<byte> byteSpan = MemoryMarshal.Cast<T, byte>(structure);
-        Polyfills.WriteSpan(stream, byteSpan);
+        Polyfills.Write(stream, byteSpan);
     }
 
     /// <summary>
@@ -83,12 +83,12 @@ public static unsafe class StreamExtensions
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
         Span<T> structureSpan = MemoryMarshal.CreateSpan(ref Unsafe.AsRef(in structure), 1);
         Span<byte> byteSpan = MemoryMarshal.Cast<T, byte>(structureSpan);
-        Polyfills.WriteSpan(stream, byteSpan);
+        stream.Write(byteSpan);
 #else
         T localStructure = structure;
         var structureSpan = new Span<T>(&localStructure, 1);
         Span<byte> byteSpan = MemoryMarshal.Cast<T, byte>(structureSpan);
-        Polyfills.WriteSpan(stream, byteSpan);
+        stream.Write(byteSpan);
 #endif
     }
 
@@ -107,7 +107,7 @@ public static unsafe class StreamExtensions
         {
             var stack = stackalloc byte[size];
             Marshal.StructureToPtr(item!, (IntPtr)stack, false);
-            Polyfills.WriteSpan(stream, new Span<byte>(stack, size));
+            Polyfills.Write(stream, new Span<byte>(stack, size));
             return;
         }
 
@@ -181,7 +181,7 @@ public static unsafe class StreamExtensions
     {
         var size = sizeof(T);
         Span<byte> byteSpan = stackalloc byte[size];
-        Polyfills.ReadAll(stream, byteSpan);
+        Polyfills.ReadAtLeast(stream, byteSpan);
         result = MemoryMarshal.Read<T>(byteSpan);
     }
 
@@ -206,7 +206,7 @@ public static unsafe class StreamExtensions
     public static void Read<TStream, T>(this TStream stream, Span<T> output) where T : unmanaged where TStream : Stream
     {
         Span<byte> byteSpan = MemoryMarshal.Cast<T, byte>(output);
-        Polyfills.ReadAll(stream, byteSpan);
+        Polyfills.ReadAtLeast(stream, byteSpan);
     }
 
     /// <summary>
@@ -226,7 +226,7 @@ public static unsafe class StreamExtensions
     {
         var size = Marshal.SizeOf<T>();
         Span<byte> byteSpan = stackalloc byte[size];
-        stream.ReadAll(byteSpan);
+        stream.ReadAtLeast(byteSpan);
 
         fixed (byte* bytePtr = byteSpan)
             result = Marshal.PtrToStructure<T>((nint)bytePtr)!;
@@ -266,7 +266,7 @@ public static unsafe class StreamExtensions
         var itemSize = Marshal.SizeOf<T>();
         var totalSize = itemSize * output.Length;
         Span<byte> byteSpan = totalSize < MaxStackLimit ? stackalloc byte[totalSize] : Polyfills.AllocateUninitializedArray<byte>(totalSize);
-        stream.ReadAll(byteSpan);
+        stream.ReadAtLeast(byteSpan);
 
         fixed (byte* spanPtr = byteSpan)
         {

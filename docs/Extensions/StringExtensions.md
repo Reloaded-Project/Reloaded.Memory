@@ -32,6 +32,21 @@ public static int Count(this string text, char c)
 
 Counts the number of occurrences of a given character in a target `string` instance.
 
+### GetHashCodeFast
+
+!!! warning "SIMD method currently restricted to .NET 7+. PRs for backports are welcome."
+
+!!! warning "Will produce different hashes depending on runtime."
+
+```csharp
+public static nuint GetHashCodeFast(string text)
+public static unsafe nuint GetHashCodeFast(this ReadOnlySpan<char> text)
+```
+
+Faster hashcode for strings; but does not randomize between application runs.
+Use this method if and only if 'Denial of Service' attacks are not a concern
+(i.e. never used for free-form user input), or are otherwise mitigated.
+
 ## Usage
 
 ### Get Reference to First Element in String
@@ -55,4 +70,11 @@ ref char charAtIndexRef = ref text.DangerousGetReferenceAt(index);
 string text = "Hello, world!";
 char targetChar = 'l';
 int count = text.Count(targetChar);
+```
+
+### Get Fast Hash Code
+
+```csharp
+string text = "Hello, world!";
+nuint fastHashCode = text.GetHashCodeFast();
 ```

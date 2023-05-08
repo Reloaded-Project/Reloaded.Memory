@@ -1,4 +1,5 @@
 using System.Buffers;
+using Reloaded.Memory.Extensions;
 
 namespace Reloaded.Memory.Utilities;
 
@@ -15,7 +16,7 @@ public struct ArrayRental : IDisposable
     /// <summary>
     ///     Returns the span for given rented array.
     /// </summary>
-    public Span<byte> Span => Array.AsSpan();
+    public Span<byte> Span => Array.AsSpanFast();
 
     /// <summary>
     ///     Rents a provided number of bytes.
