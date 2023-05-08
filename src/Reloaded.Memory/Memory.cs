@@ -5,7 +5,7 @@ using Reloaded.Memory.Interfaces;
 using Reloaded.Memory.Native.Unix;
 using Reloaded.Memory.Native.Windows;
 using Reloaded.Memory.Structs;
-using Reloaded.Memory.Utility;
+using Reloaded.Memory.Utilities;
 #if NET5_0_OR_GREATER
 using static System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes;
 #endif

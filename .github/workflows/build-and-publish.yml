@@ -15,7 +15,7 @@ jobs:
         os:
           - windows-latest
           - ubuntu-latest
-          - macos-latest
+          - macos-13
         targetFramework:
           - net7.0
           - net6.0

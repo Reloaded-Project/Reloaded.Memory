@@ -1,14 +1,12 @@
-﻿using System.Runtime.Serialization;
-#if NET5_0_OR_GREATER
-using System.Diagnostics.CodeAnalysis;
-#endif
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Serialization;
 
-namespace Reloaded.Memory.Utility;
+namespace Reloaded.Memory.Utilities;
 
 /// <summary>
 ///     A group of useful utility methods for determining if a type is blittable.
 /// </summary>
-public static class Blittable
+public static class TypeInfo
 {
     /// <summary>
     ///     Returns true if a type is blittable, else false.

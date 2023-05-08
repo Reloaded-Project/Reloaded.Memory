@@ -1,10 +1,11 @@
 ﻿using Reloaded.Memory.Exceptions;
 
-namespace Reloaded.Memory.Utility;
+namespace Reloaded.Memory.Extensions;
 
 /// <summary>
 ///     Extension methods for dealing with enums.
 /// </summary>
+[PublicAPI]
 public static class EnumExtensions
 {
     /// <summary>
@@ -30,7 +31,6 @@ public static class EnumExtensions
         if (sizeof(T) == sizeof(long))
             return (Unsafe.As<T, long>(ref value) & Unsafe.As<T, long>(ref flag)) == Unsafe.As<T, long>(ref flag);
 
-        ThrowHelpers.ThrowEnumNotSupportedException<T>();
-        return false;
+        return value.HasFlag(flag);
     }
 }

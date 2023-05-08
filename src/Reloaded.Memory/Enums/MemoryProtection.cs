@@ -1,7 +1,8 @@
 ﻿using Reloaded.Memory.Exceptions;
+using Reloaded.Memory.Extensions;
 using Reloaded.Memory.Native.Unix;
 using Reloaded.Memory.Native.Windows;
-using Reloaded.Memory.Utility;
+using Reloaded.Memory.Utilities;
 using static Reloaded.Memory.Native.Unix.UnixMemoryProtection;
 using static Reloaded.Memory.Native.Windows.Kernel32.MEM_PROTECTION;
 

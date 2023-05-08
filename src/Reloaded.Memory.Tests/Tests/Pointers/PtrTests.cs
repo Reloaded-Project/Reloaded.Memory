@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Reloaded.Memory.Pointers;
 using Reloaded.Memory.Tests.Utilities.Structures;
-using Reloaded.Memory.Utility;
+using Reloaded.Memory.Utilities;
 using Xunit;
 
 // ReSharper disable RedundantCast
@@ -168,16 +168,16 @@ public unsafe class Ptr
     [Fact]
     public void IsBlittable()
     {
-        Blittable.ApproximateIsBlittable<Ptr<byte>>().Should().BeTrue();
-        Blittable.ApproximateIsBlittable<Ptr<sbyte>>().Should().BeTrue();
-        Blittable.ApproximateIsBlittable<Ptr<short>>().Should().BeTrue();
-        Blittable.ApproximateIsBlittable<Ptr<ushort>>().Should().BeTrue();
-        Blittable.ApproximateIsBlittable<Ptr<int>>().Should().BeTrue();
-        Blittable.ApproximateIsBlittable<Ptr<uint>>().Should().BeTrue();
-        Blittable.ApproximateIsBlittable<Ptr<long>>().Should().BeTrue();
-        Blittable.ApproximateIsBlittable<Ptr<ulong>>().Should().BeTrue();
-        Blittable.ApproximateIsBlittable<Ptr<nint>>().Should().BeTrue();
-        Blittable.ApproximateIsBlittable<Ptr<nuint>>().Should().BeTrue();
-        Blittable.ApproximateIsBlittable<Ptr<RandomIntStruct>>().Should().BeTrue();
+        TypeInfo.ApproximateIsBlittable<Ptr<byte>>().Should().BeTrue();
+        TypeInfo.ApproximateIsBlittable<Ptr<sbyte>>().Should().BeTrue();
+        TypeInfo.ApproximateIsBlittable<Ptr<short>>().Should().BeTrue();
+        TypeInfo.ApproximateIsBlittable<Ptr<ushort>>().Should().BeTrue();
+        TypeInfo.ApproximateIsBlittable<Ptr<int>>().Should().BeTrue();
+        TypeInfo.ApproximateIsBlittable<Ptr<uint>>().Should().BeTrue();
+        TypeInfo.ApproximateIsBlittable<Ptr<long>>().Should().BeTrue();
+        TypeInfo.ApproximateIsBlittable<Ptr<ulong>>().Should().BeTrue();
+        TypeInfo.ApproximateIsBlittable<Ptr<nint>>().Should().BeTrue();
+        TypeInfo.ApproximateIsBlittable<Ptr<nuint>>().Should().BeTrue();
+        TypeInfo.ApproximateIsBlittable<Ptr<RandomIntStruct>>().Should().BeTrue();
     }
 }

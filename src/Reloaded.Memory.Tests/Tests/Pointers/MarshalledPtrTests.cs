@@ -3,6 +3,7 @@ using FluentAssertions;
 using Reloaded.Memory.Pointers;
 using Reloaded.Memory.Tests.Utilities.Structures;
 using Xunit;
+#pragma warning disable CS8500
 
 // ReSharper disable RedundantCast
 

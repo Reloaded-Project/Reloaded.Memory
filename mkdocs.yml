@@ -52,3 +52,16 @@ nav:
   - Pointers:
       Ptr&lt;T&gt;: Pointers/Ptr.md
       FixedArrayPtr&lt;T&gt;: Pointers/FixedArrayPtr.md
+  - Extensions:
+      Array: Extensions/ArrayExtensions.md
+      Bool: Extensions/BoolExtensions.md
+      Enum: Extensions/EnumExtensions.md
+      Span: Extensions/SpanExtensions.md
+      Stream: Extensions/StreamExtensions.md
+      String: Extensions/StringExtensions.md
+      Vector: Extensions/VectorExtensions.md
+  - Utilities:
+      Box&lt;T&gt;: Utilities/Box.md
+      CircularBuffer: Utilities/CircularBuffer.md
+      ObjectMarshal: Utilities/ObjectMarshal.md
+      Pinnable&lt;T&gt;: Utilities/Pinnable.md

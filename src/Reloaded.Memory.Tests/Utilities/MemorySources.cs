@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using Reloaded.Memory.Interfaces;
-using Reloaded.Memory.Utility;
+using Reloaded.Memory.Utilities;
 
 namespace Reloaded.Memory.Tests.Utilities;
 

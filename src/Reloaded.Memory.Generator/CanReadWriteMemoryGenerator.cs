@@ -48,7 +48,8 @@ public class CanReadWriteMemoryGenerator : ISourceGenerator
         stringBuilder.AppendLine($"using {nameSpace};");
         stringBuilder.AppendLine(
             $@"
-using Reloaded.Memory.Utility;
+using Reloaded.Memory.Extensions;
+using Reloaded.Memory.Utilities;
 using Reloaded.Memory.Exceptions;
 using Reloaded.Memory.Interfaces;
 using System.Diagnostics.CodeAnalysis;

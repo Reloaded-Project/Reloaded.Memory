@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using Reloaded.Memory.Pointers;
 using Reloaded.Memory.Pointers.Sourced;
 using Xunit;
@@ -14,7 +15,8 @@ public unsafe class SourcedPtrTests
         var memory = new Reloaded.Memory.Memory();
         var ptr = new SourcedPtr<int, Reloaded.Memory.Memory>(new Ptr<int>(&value), memory);
 
-        ((nuint)ptr.Pointer.Pointer).Should().NotBe(0);
+        // ReSharper disable once RedundantCast
+        ((nuint)ptr.Pointer.Pointer).Should().NotBe((nuint)0);
         ((nuint)ptr.Pointer.Pointer).Should().Be((nuint)(&value));
         ptr.Source.Should().Be(memory);
     }

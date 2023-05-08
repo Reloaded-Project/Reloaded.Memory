@@ -37,6 +37,9 @@ It is designed to be as fast as possible, with no overhead, while providing usef
 - **Fully Documented:** The library is fully tested & documented with XML comments.  
 - **Cross Platform:** 99% of the library is fully compatible with Windows, Linux and MacOS across multiple CPU architectures.  
 
+This project guarantees binary backwards compatibility; meaning you can substitute the library with any newer version
+without recompiling the source code. Should the need to introduce any breaking changes occur; much like the runtime.
+
 ## Community Feedback
 
 If you have questions/bug reports/etc. feel free to [Open an Issue](https://github.com/Reloaded-Project/Reloaded.Memory/issues/new).

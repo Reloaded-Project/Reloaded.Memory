@@ -13,8 +13,8 @@ public unsafe class FixedArrayPtr
     private const int ArrayLength = 1000;
 
     private FixedArrayPtr<int> _fixedArrayPtr;
-    private int[] _sourceArray;
-    private int[] _destinationArray;
+    private int[] _sourceArray = null!;
+    private int[] _destinationArray = null!;
     private MemoryAllocation _allocation;
 
     [GlobalSetup]
@@ -34,13 +34,12 @@ public unsafe class FixedArrayPtr
     [GlobalCleanup]
     public void Cleanup() => new Reloaded.Memory.Memory().Free(_allocation);
 
-    /*
     [Benchmark]
     public void FixedArrayPtr_CopyFrom() => _fixedArrayPtr.CopyFrom(_sourceArray, ArrayLength);
 
     [Benchmark]
     public void FixedArrayPtr_CopyTo() => _fixedArrayPtr.CopyTo(_destinationArray, ArrayLength);
-*/
+
     [Benchmark]
     public int FixedArrayPtr_Get()
     {

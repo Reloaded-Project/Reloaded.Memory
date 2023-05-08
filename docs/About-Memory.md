@@ -130,13 +130,14 @@ All silly boilerplate needed to manipulate different sources is gone; and this i
 
 Now you can allocate in another process in a consistent manner. Useful?
 
-!!! warning "`ICanAllocateMemory` for `ExternalMemory` currently implemented in Windows only; PRs for Linux and OSX that use `ptrace` or alternative are welcome."
+!!! warning "`ICanAllocateMemory` for `ExternalMemory` currently implemented in Windows only; PRs for Linux and OSX."
 
 ## Unified Permission Change API
 
 !!! info
 
     Structs like `Memory` and `ExternalMemory` employ `ICanChangeMemoryProtection` API to allow you to change memory permissions.  
+
     This allows you to make existing code etc. in memory writable for editing.  
 
 === "This Process"
@@ -172,7 +173,7 @@ Now you can allocate in another process in a consistent manner. Useful?
 
 Pretty useful huh?
 
-!!! warning "`ICanChangeMemoryProtection` for `ExternalMemory` currently implemented in Windows only; PRs for Linux and OSX that use `ptrace` or alternative are welcome."
+!!! warning "`ICanChangeMemoryProtection` for `ExternalMemory` currently implemented in Windows only; PRs for Linux and OSX are welcome."
 
 ## Extensions
 

@@ -5,6 +5,20 @@
 /// </summary>
 internal abstract class ThrowHelpers
 {
+#if !NET7_0_OR_GREATER
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    public static void ThrowEndOfFileException() => throw new EndOfStreamException();
+#endif
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    public static void ThrowOverflowException() => throw new OverflowException();
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    public static void ThrowArgumentOutOfRangeException() => throw new ArgumentOutOfRangeException();
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    public static void ThrowArgumentOutOfRangeException(string paramName) => throw new ArgumentOutOfRangeException(paramName);
+
     [MethodImpl(MethodImplOptions.NoInlining)]
     public static void ThrowEnumNotSupportedException<T>()
         => throw new NotSupportedException($"Enum type {typeof(T).Name} is not supported.");

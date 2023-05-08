@@ -2,7 +2,7 @@
 using System.IO;
 using System.Runtime.InteropServices;
 using Reloaded.Memory.Exceptions;
-using Reloaded.Memory.Utility;
+using Reloaded.Memory.Utilities;
 
 namespace Reloaded.Memory.Tests;
 
