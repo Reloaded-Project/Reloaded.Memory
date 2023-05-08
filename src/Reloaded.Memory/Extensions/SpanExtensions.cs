@@ -81,7 +81,8 @@ public static class SpanExtensions
     /// </remarks>
     [ExcludeFromCodeCoverage] // "Taken from runtime."
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ReadOnlySpan<TTo> CastFast<TFrom, TTo>(this ReadOnlySpan<TFrom> data) where TFrom : struct where TTo : struct
+    public static ReadOnlySpan<TTo> CastFast<TFrom, TTo>(this ReadOnlySpan<TFrom> data)
+        where TFrom : struct where TTo : struct
     {
 #if NETSTANDARD2_0 || NET48
         return MemoryMarshal.Cast<TFrom, TTo>(data);
@@ -173,7 +174,8 @@ public static class SpanExtensions
     }
 
     /// <summary>
-    ///     Returns a reference to an element at a specified index within a given <see cref="ReadOnlySpan{T}" />, with no bounds
+    ///     Returns a reference to an element at a specified index within a given <see cref="ReadOnlySpan{T}" />, with no
+    ///     bounds
     ///     checks.
     /// </summary>
     /// <typeparam name="T">The type of elements in the input <see cref="ReadOnlySpan{T}" /> instance.</typeparam>
@@ -217,7 +219,8 @@ public static class SpanExtensions
     }
 
     /// <summary>
-    ///     Returns a reference to an element at a specified index within a given <see cref="ReadOnlySpan{T}" />, with no bounds
+    ///     Returns a reference to an element at a specified index within a given <see cref="ReadOnlySpan{T}" />, with no
+    ///     bounds
     ///     checks.
     /// </summary>
     /// <typeparam name="T">The type of elements in the input <see cref="ReadOnlySpan{T}" /> instance.</typeparam>
@@ -254,7 +257,8 @@ public static class SpanExtensions
         where T : unmanaged => MemoryMarshal.AsBytes(span);
 
     /// <summary>
-    ///     Casts a <see cref="ReadOnlySpan{T}" /> of one primitive type <typeparamref name="T" /> to <see cref="ReadOnlySpan{T}" /> of bytes.
+    ///     Casts a <see cref="ReadOnlySpan{T}" /> of one primitive type <typeparamref name="T" /> to
+    ///     <see cref="ReadOnlySpan{T}" /> of bytes.
     /// </summary>
     /// <typeparam name="T">The type if items in the source <see cref="ReadOnlySpan{T}" />.</typeparam>
     /// <param name="span">The source slice, of type <typeparamref name="T" />.</param>
@@ -287,7 +291,8 @@ public static class SpanExtensions
         where TTo : unmanaged => MemoryMarshal.Cast<TFrom, TTo>(span);
 
     /// <summary>
-    ///     Casts a <see cref="ReadOnlySpan{T}" /> of one primitive type <typeparamref name="TFrom" /> to another primitive type
+    ///     Casts a <see cref="ReadOnlySpan{T}" /> of one primitive type <typeparamref name="TFrom" /> to another primitive
+    ///     type
     ///     <typeparamref name="TTo" />.
     /// </summary>
     /// <typeparam name="TFrom">The type of items in the source <see cref="ReadOnlySpan{T}" />.</typeparam>
@@ -316,10 +321,10 @@ public static class SpanExtensions
     public static unsafe int IndexOf<T>(this Span<T> span, ref T value)
     {
         ref T r0 = ref MemoryMarshal.GetReference(span);
-        var byteOffset = Unsafe.ByteOffset(ref r0, ref value);
+        IntPtr byteOffset = Unsafe.ByteOffset(ref r0, ref value);
 
 #pragma warning disable CS8500
-        var elementOffset = byteOffset / (nint)(uint)sizeof(T);
+        nint elementOffset = byteOffset / (nint)(uint)sizeof(T);
 #pragma warning restore CS8500
 
         if ((nuint)elementOffset >= (uint)span.Length)
@@ -340,10 +345,10 @@ public static class SpanExtensions
     public static unsafe int IndexOf<T>(this ReadOnlySpan<T> span, ref T value)
     {
         ref T r0 = ref MemoryMarshal.GetReference(span);
-        var byteOffset = Unsafe.ByteOffset(ref r0, ref value);
+        IntPtr byteOffset = Unsafe.ByteOffset(ref r0, ref value);
 
 #pragma warning disable CS8500
-        var elementOffset = byteOffset / (nint)(uint)sizeof(T);
+        nint elementOffset = byteOffset / (nint)(uint)sizeof(T);
 #pragma warning restore CS8500
 
         if ((nuint)elementOffset >= (uint)span.Length)
@@ -567,7 +572,7 @@ public static class SpanExtensions
 
             if (remainingLength > (nuint)Vector<T>.Count)
             {
-                var lengthToExamine = remainingLength - (nuint)Vector<T>.Count;
+                nuint lengthToExamine = remainingLength - (nuint)Vector<T>.Count;
 
                 do
                 {

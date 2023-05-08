@@ -161,9 +161,9 @@ internal static class SpanHelper
                 // to sum the partial results. We also backup the current offset to
                 // be able to track how many items have been processed, which lets
                 // us avoid updating a third counter (length) in the loop body.
-                var max = GetUpperBound<T>();
-                var chunkLength = length <= max ? length : max;
-                var initialOffset = offset;
+                nint max = GetUpperBound<T>();
+                nint chunkLength = length <= max ? length : max;
+                nint initialOffset = offset;
 
                 Vector<T> partials = Vector<T>.Zero;
 

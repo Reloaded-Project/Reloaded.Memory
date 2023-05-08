@@ -7,7 +7,7 @@ using Reloaded.Memory.Utilities;
 namespace Reloaded.Memory.Extensions;
 
 /// <summary>
-/// Provides various extensions to streams.
+///     Provides various extensions to streams.
 /// </summary>
 [PublicAPI]
 public static unsafe class StreamExtensions
@@ -15,14 +15,14 @@ public static unsafe class StreamExtensions
     private const int MaxStackLimit = 1024;
 
     /// <summary>
-    /// Pads the stream with any/random bytes until it is aligned.
+    ///     Pads the stream with any/random bytes until it is aligned.
     /// </summary>
     /// <typeparam name="TStream">Type of stream padding is</typeparam>
     /// <param name="stream">The stream that will be aligned to the alignment granularity.</param>
     /// <param name="alignment">The desired alignment of the stream.</param>
     /// <remarks>
     ///     Usually this will pad with 0x0, but that might not be true for 100% of streams.
-    ///     It is dependent on implementation of <see cref="Stream.SetLength"/>.
+    ///     It is dependent on implementation of <see cref="Stream.SetLength" />.
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void AddPadding<TStream>(this TStream stream, int alignment) where TStream : Stream
@@ -37,7 +37,7 @@ public static unsafe class StreamExtensions
     }
 
     /// <summary>
-    /// Pads the stream with <see paramref="value"/> bytes until it is aligned.
+    ///     Pads the stream with <see paramref="value" /> bytes until it is aligned.
     /// </summary>
     /// <typeparam name="TStream">Type of stream.</typeparam>
     /// <param name="stream">The stream to add padding to.</param>
@@ -57,21 +57,22 @@ public static unsafe class StreamExtensions
     }
 
     /// <summary>
-    /// Appends an unmanaged structure onto the <paramref name="stream"/> and advances the position.
+    ///     Appends an unmanaged structure onto the <paramref name="stream" /> and advances the position.
     /// </summary>
     /// <typeparam name="TStream">Type of stream.</typeparam>
     /// <typeparam name="T">Type of item to write.</typeparam>
     /// <param name="stream">Type of stream used to write to the output.</param>
     /// <param name="structure">Span of items to be written to the output.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void Write<TStream, T>(this TStream stream, Span<T> structure) where T : unmanaged where TStream : Stream
+    public static void Write<TStream, T>(this TStream stream, Span<T> structure)
+        where T : unmanaged where TStream : Stream
     {
         Span<byte> byteSpan = MemoryMarshal.Cast<T, byte>(structure);
         Polyfills.Write(stream, byteSpan);
     }
 
     /// <summary>
-    /// Appends an unmanaged structure onto the <paramref name="stream"/> and advances the position.
+    ///     Appends an unmanaged structure onto the <paramref name="stream" /> and advances the position.
     /// </summary>
     /// <typeparam name="TStream">Type of stream.</typeparam>
     /// <typeparam name="T">Type of item to write.</typeparam>
@@ -93,7 +94,7 @@ public static unsafe class StreamExtensions
     }
 
     /// <summary>
-    /// Appends a managed/marshalled structure onto the given <see cref="MemoryStream"/> and advances the position.
+    ///     Appends a managed/marshalled structure onto the given <see cref="MemoryStream" /> and advances the position.
     /// </summary>
     /// <typeparam name="TStream">Type of stream.</typeparam>
     /// <typeparam name="T">Type of item to write.</typeparam>
@@ -119,17 +120,18 @@ public static unsafe class StreamExtensions
     }
 
     /// <summary>
-    /// Appends a managed/marshalled structure onto the given <see cref="MemoryStream"/> and advances the position.
+    ///     Appends a managed/marshalled structure onto the given <see cref="MemoryStream" /> and advances the position.
     /// </summary>
     /// <typeparam name="TStream">Type of stream.</typeparam>
     /// <typeparam name="T">Type of item to write.</typeparam>
     /// <param name="stream">Type of stream used to write to the output.</param>
     /// <param name="item">Array of items to be written to the output.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void WriteMarshalled<TStream, T>(this TStream stream, T[] item) where TStream : Stream => WriteMarshalled(stream, item.AsSpan());
+    public static void WriteMarshalled<TStream, T>(this TStream stream, T[] item) where TStream : Stream
+        => WriteMarshalled(stream, item.AsSpan());
 
     /// <summary>
-    /// Appends a managed/marshalled structure onto the given <see cref="MemoryStream"/> and advances the position.
+    ///     Appends a managed/marshalled structure onto the given <see cref="MemoryStream" /> and advances the position.
     /// </summary>
     /// <typeparam name="TStream">Type of stream.</typeparam>
     /// <typeparam name="T">Type of item to write.</typeparam>
@@ -150,6 +152,7 @@ public static unsafe class StreamExtensions
                 Marshal.StructureToPtr(item[x]!, (IntPtr)currentStackPtr, false);
                 currentStackPtr += itemSize;
             }
+
             stream.Write(new Span<byte>(stack, totalSize));
             return;
         }
@@ -169,7 +172,7 @@ public static unsafe class StreamExtensions
     }
 
     /// <summary>
-    /// Reads a single unmanaged structure of type T from the stream.
+    ///     Reads a single unmanaged structure of type T from the stream.
     /// </summary>
     /// <typeparam name="TStream">Type of stream.</typeparam>
     /// <typeparam name="T">Type of item to read.</typeparam>
@@ -181,22 +184,23 @@ public static unsafe class StreamExtensions
     {
         var size = sizeof(T);
         Span<byte> byteSpan = stackalloc byte[size];
-        Polyfills.ReadAtLeast(stream, byteSpan);
+        stream.ReadAtLeast(byteSpan);
         result = MemoryMarshal.Read<T>(byteSpan);
     }
 
     /// <summary>
-    /// Reads a span of unmanaged structures of type T from the stream into the provided output span.
+    ///     Reads a span of unmanaged structures of type T from the stream into the provided output span.
     /// </summary>
     /// <typeparam name="TStream">Type of stream.</typeparam>
     /// <typeparam name="T">Type of items to read.</typeparam>
     /// <param name="stream">The stream to read from.</param>
     /// <param name="output">The array to store the read items.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void Read<TStream, T>(this TStream stream, T[] output) where T : unmanaged where TStream : Stream => Read(stream, output);
+    public static void Read<TStream, T>(this TStream stream, T[] output) where T : unmanaged where TStream : Stream
+        => Read(stream, output);
 
     /// <summary>
-    /// Reads a span of unmanaged structures of type T from the stream into the provided output span.
+    ///     Reads a span of unmanaged structures of type T from the stream into the provided output span.
     /// </summary>
     /// <typeparam name="TStream">Type of stream.</typeparam>
     /// <typeparam name="T">Type of items to read.</typeparam>
@@ -206,11 +210,11 @@ public static unsafe class StreamExtensions
     public static void Read<TStream, T>(this TStream stream, Span<T> output) where T : unmanaged where TStream : Stream
     {
         Span<byte> byteSpan = MemoryMarshal.Cast<T, byte>(output);
-        Polyfills.ReadAtLeast(stream, byteSpan);
+        stream.ReadAtLeast(byteSpan);
     }
 
     /// <summary>
-    /// Reads a single marshalled structure of type T from the stream.
+    ///     Reads a single marshalled structure of type T from the stream.
     /// </summary>
     /// <typeparam name="TStream">Type of stream.</typeparam>
     /// <typeparam name="T">Type of item to read.</typeparam>
@@ -220,7 +224,8 @@ public static unsafe class StreamExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void ReadMarshalled<TStream,
 #if NET5_0_OR_GREATER
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors |
+                                    DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 #endif
         T>(this TStream stream, out T result) where TStream : Stream
     {
@@ -233,7 +238,7 @@ public static unsafe class StreamExtensions
     }
 
     /// <summary>
-    /// Reads a span of marshalled structures of type T from the stream into the provided output span.
+    ///     Reads a span of marshalled structures of type T from the stream into the provided output span.
     /// </summary>
     /// <typeparam name="TStream">Type of stream.</typeparam>
     /// <typeparam name="T">Type of items to read.</typeparam>
@@ -242,7 +247,8 @@ public static unsafe class StreamExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void ReadMarshalled<TStream,
 #if NET5_0_OR_GREATER
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors |
+                                    DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 #endif
         T>(this TStream stream, T[] output) where TStream : Stream
     {
@@ -250,7 +256,7 @@ public static unsafe class StreamExtensions
     }
 
     /// <summary>
-    /// Reads a span of marshalled structures of type T from the stream into the provided output span.
+    ///     Reads a span of marshalled structures of type T from the stream into the provided output span.
     /// </summary>
     /// <typeparam name="TStream">Type of stream.</typeparam>
     /// <typeparam name="T">Type of items to read.</typeparam>
@@ -258,20 +264,23 @@ public static unsafe class StreamExtensions
     /// <param name="output">The span to store the read items.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void ReadMarshalled<TStream,
-        #if NET5_0_OR_GREATER
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)]
-        #endif
+#if NET5_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors |
+                                    DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+#endif
         T>(this TStream stream, Span<T> output) where TStream : Stream
     {
         var itemSize = Marshal.SizeOf<T>();
         var totalSize = itemSize * output.Length;
-        Span<byte> byteSpan = totalSize < MaxStackLimit ? stackalloc byte[totalSize] : Polyfills.AllocateUninitializedArray<byte>(totalSize);
+        Span<byte> byteSpan = totalSize < MaxStackLimit
+            ? stackalloc byte[totalSize]
+            : Polyfills.AllocateUninitializedArray<byte>(totalSize);
         stream.ReadAtLeast(byteSpan);
 
         fixed (byte* spanPtr = byteSpan)
         {
-            byte* currentPtr = spanPtr;
-            for (int x = 0; x < output.Length; x++)
+            var currentPtr = spanPtr;
+            for (var x = 0; x < output.Length; x++)
             {
                 output[x] = Marshal.PtrToStructure<T>((IntPtr)currentPtr)!;
                 currentPtr += itemSize;

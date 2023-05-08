@@ -3,13 +3,13 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Diagnostics.CodeAnalysis;
-using System.Numerics;
+using Reloaded.Memory.Internals;
+using Reloaded.Memory.Utilities;
 #if NET7_0_OR_GREATER
+using System.Numerics;
 using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.X86;
 #endif
-using Reloaded.Memory.Internals;
-using Reloaded.Memory.Utilities;
 #if NETSTANDARD
 using System.Runtime.InteropServices;
 #endif
@@ -17,17 +17,23 @@ using System.Runtime.InteropServices;
 namespace Reloaded.Memory.Extensions;
 
 /// <summary>
-/// Helpers for working with the <see cref="string"/> type.
+///     Helpers for working with the <see cref="string" /> type.
 /// </summary>
 [PublicAPI]
 public static class StringExtensions
 {
     /// <summary>
-    /// Returns a reference to the first element within a given <see cref="string"/>, with no bounds checks.
+    ///     Returns a reference to the first element within a given <see cref="string" />, with no bounds checks.
     /// </summary>
-    /// <param name="text">The input <see cref="string"/> instance.</param>
-    /// <returns>A reference to the first element within <paramref name="text"/>, or the location it would have used, if <paramref name="text"/> is empty.</returns>
-    /// <remarks>This method doesn't do any bounds checks, therefore it is responsibility of the caller to perform checks in case the returned value is dereferenced.</remarks>
+    /// <param name="text">The input <see cref="string" /> instance.</param>
+    /// <returns>
+    ///     A reference to the first element within <paramref name="text" />, or the location it would have used, if
+    ///     <paramref name="text" /> is empty.
+    /// </returns>
+    /// <remarks>
+    ///     This method doesn't do any bounds checks, therefore it is responsibility of the caller to perform checks in
+    ///     case the returned value is dereferenced.
+    /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage] // From CommunityToolkit.HighPerformance
     public static ref char DangerousGetReference(this string text)
@@ -40,12 +46,15 @@ public static class StringExtensions
     }
 
     /// <summary>
-    /// Returns a reference to an element at a specified index within a given <see cref="string"/>, with no bounds checks.
+    ///     Returns a reference to an element at a specified index within a given <see cref="string" />, with no bounds checks.
     /// </summary>
-    /// <param name="text">The input <see cref="string"/> instance.</param>
-    /// <param name="i">The index of the element to retrieve within <paramref name="text"/>.</param>
-    /// <returns>A reference to the element within <paramref name="text"/> at the index specified by <paramref name="i"/>.</returns>
-    /// <remarks>This method doesn't do any bounds checks, therefore it is responsibility of the caller to ensure the <paramref name="i"/> parameter is valid.</remarks>
+    /// <param name="text">The input <see cref="string" /> instance.</param>
+    /// <param name="i">The index of the element to retrieve within <paramref name="text" />.</param>
+    /// <returns>A reference to the element within <paramref name="text" /> at the index specified by <paramref name="i" />.</returns>
+    /// <remarks>
+    ///     This method doesn't do any bounds checks, therefore it is responsibility of the caller to ensure the
+    ///     <paramref name="i" /> parameter is valid.
+    /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage] // From CommunityToolkit.HighPerformance
     public static ref char DangerousGetReferenceAt(this string text, int i)
@@ -53,46 +62,46 @@ public static class StringExtensions
 #if NET6_0_OR_GREATER
         ref char r0 = ref Unsafe.AsRef(text.GetPinnableReference());
 #else
-        ref char r0 = ref MemoryMarshal.GetReference(text.AsSpan());
+        ref var r0 = ref MemoryMarshal.GetReference(text.AsSpan());
 #endif
-        ref char ri = ref Unsafe.Add(ref r0, (nint)(uint)i);
+        ref var ri = ref Unsafe.Add(ref r0, (nint)(uint)i);
 
         return ref ri;
     }
 
     /// <summary>
-    /// Counts the number of occurrences of a given character into a target <see cref="string"/> instance.
+    ///     Counts the number of occurrences of a given character into a target <see cref="string" /> instance.
     /// </summary>
-    /// <param name="text">The input <see cref="string"/> instance to read.</param>
+    /// <param name="text">The input <see cref="string" /> instance to read.</param>
     /// <param name="c">The character to look for.</param>
-    /// <returns>The number of occurrences of <paramref name="c"/> in <paramref name="text"/>.</returns>
+    /// <returns>The number of occurrences of <paramref name="c" /> in <paramref name="text" />.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage] // From CommunityToolkit.HighPerformance
     public static int Count(this string text, char c)
     {
-        ref char r0 = ref text.DangerousGetReference();
-        nint length = (nint)(uint)text.Length;
+        ref var r0 = ref text.DangerousGetReference();
+        var length = (nint)(uint)text.Length;
 
         return (int)SpanHelper.Count(ref r0, length, c);
     }
 
     /// <summary>
-    /// Faster hashcode for strings; but does not randomize between application runs.
+    ///     Faster hashcode for strings; but does not randomize between application runs.
     /// </summary>
     /// <param name="text">The string for which to get hash code for.</param>
     /// <remarks>
     ///     'Use this if and only if 'Denial of Service' attacks are not a concern (i.e. never used for free-form user input),
-    ///      or are otherwise mitigated.
+    ///     or are otherwise mitigated.
     /// </remarks>
     public static nuint GetHashCodeFast(this string text) => text.AsSpan().GetHashCodeFast();
 
     /// <summary>
-    /// Faster hashcode for strings; but does not randomize between application runs.
+    ///     Faster hashcode for strings; but does not randomize between application runs.
     /// </summary>
     /// <param name="text">The string for which to get hash code for.</param>
     /// <remarks>
     ///     'Use this if and only if 'Denial of Service' attacks are not a concern (i.e. never used for free-form user input),
-    ///      or are otherwise mitigated.
+    ///     or are otherwise mitigated.
     /// </remarks>
     [ExcludeFromCodeCoverage] // "Cannot be accurately measured without multiple architectures. Known good impl." This is still tested tho.
     [SuppressMessage("ReSharper", "InconsistentNaming")]
@@ -100,9 +109,8 @@ public static class StringExtensions
     {
         fixed (char* src = &text.GetPinnableReference())
         {
-            int length = text.Length; // Span has no guarantee of null terminator.
+            var length = text.Length; // Span has no guarantee of null terminator.
 #if NET7_0_OR_GREATER
-
             // For short strings below size of nuint, we need separate approach; so we use legacy runtime approach
             // for said cold case.
             if (length >= sizeof(nuint) / sizeof(char))
@@ -123,7 +131,8 @@ public static class StringExtensions
                 {
                     // AVX Version
                     // Ideally I could rewrite this in full Vector256 but I don't know how to get it to emit VPMULUDQ for the multiply operation.
-                    if (Avx2.IsSupported && length >= sizeof(Vector256<ulong>) / sizeof(char) * 4) // over 128 bytes + AVX
+                    if (Avx2.IsSupported &&
+                        length >= sizeof(Vector256<ulong>) / sizeof(char) * 4) // over 128 bytes + AVX
                     {
                         var prime = Vector256.Create((ulong)0x100000001b3);
                         var hash1Avx = Vector256.Create(0xcbf29ce484222325);
@@ -282,7 +291,7 @@ public static class StringExtensions
                         if (length >= (sizeof(nuint) / sizeof(char)))
                             hash1 = (BitOperations.RotateLeft(hash1, 5) + hash1) ^ ptr[0];
 
-                        return  hash1 + (hash2 * 1566083941);
+                        return hash1 + (hash2 * 1566083941);
                     }
 
                     // The future is now.
@@ -345,8 +354,8 @@ public static class StringExtensions
         // Version for when input data is smaller than native int. This one is taken from the runtime.
         // For tiny strings like 'C:'
         uint hash1 = (5381 << 16) + 5381;
-        uint hash2 = hash1;
-        uint* ptr = (uint*)src;
+        var hash2 = hash1;
+        var ptr = (uint*)src;
 
         while (length > 2)
         {
@@ -363,6 +372,6 @@ public static class StringExtensions
             hash2 = (Polyfills.RotateLeft(hash2, 5) + hash2) ^ ptr[0];
         }
 
-        return hash1 + (hash2 * 1566083941);
+        return hash1 + hash2 * 1566083941;
     }
 }

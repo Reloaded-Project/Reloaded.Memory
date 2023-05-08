@@ -1,6 +1,4 @@
-﻿using Reloaded.Memory.Exceptions;
-
-namespace Reloaded.Memory.Extensions;
+﻿namespace Reloaded.Memory.Extensions;
 
 /// <summary>
 ///     Extension methods for dealing with enums.

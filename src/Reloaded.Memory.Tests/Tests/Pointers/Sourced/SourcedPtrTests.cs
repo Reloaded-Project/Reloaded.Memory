@@ -1,5 +1,4 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Reloaded.Memory.Pointers;
 using Reloaded.Memory.Pointers.Sourced;
 using Xunit;

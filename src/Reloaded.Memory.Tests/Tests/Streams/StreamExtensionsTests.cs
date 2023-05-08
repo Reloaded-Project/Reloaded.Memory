@@ -35,11 +35,7 @@ public class StreamExtensionsTests
     public void WriteReadUnmanagedArrayTest()
     {
         using var memoryStream = new MemoryStream();
-        var input = new UnmanagedStruct[]
-        {
-            new() { A = 42, B = 3.14f },
-            new() { A = 84, B = 6.28f },
-        };
+        var input = new UnmanagedStruct[] { new() { A = 42, B = 3.14f }, new() { A = 84, B = 6.28f } };
         memoryStream.Write(input.AsSpan());
         memoryStream.Position = 0;
         var output = new UnmanagedStruct[input.Length];
@@ -53,8 +49,7 @@ public class StreamExtensionsTests
         using var memoryStream = new MemoryStream();
         var input = new MarshalledStruct[]
         {
-            new() { A = 42, B = "Hello, World!" },
-            new() { A = 84, B = "Hi, Universe!" },
+            new() { A = 42, B = "Hello, World!" }, new() { A = 84, B = "Hi, Universe!" }
         };
         memoryStream.WriteMarshalled(input);
         memoryStream.Position = 0;
@@ -92,7 +87,8 @@ public class StreamExtensionsTests
     [InlineData(3, 4, 1, (byte)0xFF)]
     [InlineData(4, 4, 0, (byte)0xFF)]
     [InlineData(5, 4, 3, (byte)0xFF)]
-    public void AlignWithValue_ShouldAlignToAlignmentAndPadWithValue(int initialPosition, int alignment, int expectedPadding, byte value)
+    public void AlignWithValue_ShouldAlignToAlignmentAndPadWithValue(int initialPosition, int alignment,
+        int expectedPadding, byte value)
     {
         // Arrange
         using var stream = new MemoryStream();
@@ -108,7 +104,7 @@ public class StreamExtensionsTests
 
         // Check that the padding bytes are set to the desired value
         stream.Position = initialPosition;
-        for (int x = 0; x < expectedPadding; x++)
+        for (var x = 0; x < expectedPadding; x++)
             stream.ReadByte().Should().Be(value);
     }
 

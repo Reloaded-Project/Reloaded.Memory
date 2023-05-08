@@ -16,7 +16,7 @@ public unsafe class CircularBufferTests
         byte value = 0xAB;
         var result = circularBuffer.Add(value);
 
-        (circularBuffer.Current).Should().Be((nuint)buffer + 1);
+        circularBuffer.Current.Should().Be((nuint)buffer + 1);
         ((nuint)buffer).Should().Be(result);
         (*buffer).Should().Be(value);
     }
@@ -30,7 +30,7 @@ public unsafe class CircularBufferTests
         var value = 0x12345678;
         var result = circularBuffer.Add(value);
 
-        (circularBuffer.Current).Should().Be((nuint)buffer + 4);
+        circularBuffer.Current.Should().Be((nuint)buffer + 4);
         ((nuint)buffer).Should().Be(result);
         (*(int*)buffer).Should().Be(value);
     }
@@ -44,7 +44,7 @@ public unsafe class CircularBufferTests
         var value = 0x12345678;
         var result = circularBuffer.Add(new Reloaded.Memory.Memory(), value);
 
-        (circularBuffer.Current).Should().Be((nuint)buffer + 4);
+        circularBuffer.Current.Should().Be((nuint)buffer + 4);
         ((nuint)buffer).Should().Be(result);
         (*(int*)buffer).Should().Be(value);
     }
@@ -58,7 +58,7 @@ public unsafe class CircularBufferTests
         var value = 0x12345678;
         var result = circularBuffer.Add((byte*)&value, sizeof(int));
 
-        (circularBuffer.Current).Should().Be((nuint)buffer + 4);
+        circularBuffer.Current.Should().Be((nuint)buffer + 4);
         ((nuint)buffer).Should().Be(result);
         (*(int*)buffer).Should().Be(value);
     }
@@ -72,7 +72,7 @@ public unsafe class CircularBufferTests
         var value = 0x12345678;
         var result = circularBuffer.Add(new Reloaded.Memory.Memory(), (byte*)&value, sizeof(int));
 
-        (circularBuffer.Current).Should().Be((nuint)buffer + 4);
+        circularBuffer.Current.Should().Be((nuint)buffer + 4);
         ((nuint)buffer).Should().Be(result);
         (*(int*)buffer).Should().Be(value);
     }
@@ -87,7 +87,7 @@ public unsafe class CircularBufferTests
         var result = circularBuffer.Add<byte>(0x0);
         result = circularBuffer.Add(value);
 
-        (circularBuffer.Current).Should().Be((nuint)buffer + 4);
+        circularBuffer.Current.Should().Be((nuint)buffer + 4);
         ((nuint)buffer).Should().Be(result);
         (*(int*)buffer).Should().Be(value);
     }
@@ -102,7 +102,7 @@ public unsafe class CircularBufferTests
         var result = circularBuffer.Add(new Reloaded.Memory.Memory(), (byte)0x0);
         result = circularBuffer.Add(new Reloaded.Memory.Memory(), value);
 
-        (circularBuffer.Current).Should().Be((nuint)buffer + 4);
+        circularBuffer.Current.Should().Be((nuint)buffer + 4);
         ((nuint)buffer).Should().Be(result);
         (*(int*)buffer).Should().Be(value);
     }
@@ -117,7 +117,7 @@ public unsafe class CircularBufferTests
         var result = circularBuffer.Add<byte>(0x0);
         result = circularBuffer.Add((byte*)&value, sizeof(int));
 
-        (circularBuffer.Current).Should().Be((nuint)buffer + 4);
+        circularBuffer.Current.Should().Be((nuint)buffer + 4);
         ((nuint)buffer).Should().Be(result);
         (*(int*)buffer).Should().Be(value);
     }

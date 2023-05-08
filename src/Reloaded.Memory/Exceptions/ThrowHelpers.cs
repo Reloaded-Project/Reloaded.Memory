@@ -17,7 +17,8 @@ internal abstract class ThrowHelpers
     public static void ThrowArgumentOutOfRangeException() => throw new ArgumentOutOfRangeException();
 
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public static void ThrowArgumentOutOfRangeException(string paramName) => throw new ArgumentOutOfRangeException(paramName);
+    public static void ThrowArgumentOutOfRangeException(string paramName)
+        => throw new ArgumentOutOfRangeException(paramName);
 
     [MethodImpl(MethodImplOptions.NoInlining)]
     public static void ThrowEnumNotSupportedException<T>()

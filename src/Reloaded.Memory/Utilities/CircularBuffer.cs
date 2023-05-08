@@ -3,7 +3,7 @@
 namespace Reloaded.Memory.Utilities;
 
 /// <summary>
-///     The <see cref="CircularBuffer" /> is a writeable buffer useful for temporary storage of data.<br/><br/>
+///     The <see cref="CircularBuffer" /> is a writeable buffer useful for temporary storage of data.<br /><br />
 ///     It's a buffer whereby once you reach the end of the buffer, it loops back over to the beginning of the stream
 ///     automatically.
 /// </summary>
@@ -12,35 +12,27 @@ public unsafe class CircularBuffer
     /// <summary>
     ///     The address of the <see cref="CircularBuffer" />.
     /// </summary>
-    public nuint Start => _start;
+    public nuint Start { get; }
 
     /// <summary>
     ///     The address of the <see cref="CircularBuffer" />.
     /// </summary>
-    public nuint End => _end;
+    public nuint End { get; }
 
     /// <summary>
     ///     Address of the current item in the buffer.
     /// </summary>
-    public nuint Current
-    {
-        get => _current;
-        private set => _current = value;
-    }
+    public nuint Current { get; private set; }
 
     /// <summary>
-    /// Remaining space in the buffer.
+    ///     Remaining space in the buffer.
     /// </summary>
-    public nuint Remaining => _end - _current;
+    public nuint Remaining => End - Current;
 
     /// <summary>
-    /// The overall size of the buffer.
+    ///     The overall size of the buffer.
     /// </summary>
-    public nuint Size => _end - _start;
-
-    private readonly nuint _start;
-    private readonly nuint _end;
-    private nuint _current; // for faster access.
+    public nuint Size => End - Start;
 
     /// <summary>
     ///     Creates a <see cref="CircularBuffer" /> within the target memory source.
@@ -49,8 +41,8 @@ public unsafe class CircularBuffer
     /// <param name="size">The size of the buffer in bytes.</param>
     public CircularBuffer(nuint start, int size)
     {
-        _start = start;
-        _end = (nuint)((byte*)start + size);
+        Start = start;
+        End = (nuint)((byte*)start + size);
         Current = start;
     }
 
@@ -66,23 +58,23 @@ public unsafe class CircularBuffer
     /// </remarks>
     public nuint Add(byte* data, uint length)
     {
-        var remaining = (uint)(_end - _current);
+        var remaining = (uint)(End - Current);
         if (length <= remaining)
         {
             // Hot path, item can be written to buffer.
-            Buffer.MemoryCopy(data, (void*)_current, remaining, length);
-            var result = _current;
-            _current += length;
+            Buffer.MemoryCopy(data, (void*)Current, remaining, length);
+            nuint result = Current;
+            Current += length;
             return result;
         }
 
-        var size = _end - _start;
+        nuint size = End - Start;
         if (size >= length)
         {
             // Item fits but we need to write to buffer start.
-            Buffer.MemoryCopy(data, (void*)_start, size, length);
-            var result = _start;
-            _current = _start + length;
+            Buffer.MemoryCopy(data, (void*)Start, size, length);
+            nuint result = Start;
+            Current = Start + length;
             return result;
         }
 
@@ -92,7 +84,7 @@ public unsafe class CircularBuffer
     /// <summary>
     ///     Adds a new item onto the circular buffer.
     /// </summary>
-    /// <typeparam name="TSource">An implementation of <see cref="ICanReadWriteMemory"/>.</typeparam>
+    /// <typeparam name="TSource">An implementation of <see cref="ICanReadWriteMemory" />.</typeparam>
     /// <param name="source">The source to write the contents to.</param>
     /// <param name="data">Address to the item to add.</param>
     /// <param name="length">Number of bytes to add.</param>
@@ -102,19 +94,19 @@ public unsafe class CircularBuffer
         if (length <= Remaining)
         {
             // Hot path, item can be written to buffer.
-            source.WriteRaw(_current, new Span<byte>(data, (int)length));
-            var result = _current;
-            _current += length;
+            source.WriteRaw(Current, new Span<byte>(data, (int)length));
+            nuint result = Current;
+            Current += length;
             return result;
         }
 
-        var size = _end - _start;
+        nuint size = End - Start;
         if (size >= length)
         {
             // Item fits but we need to write to buffer start.
-            source.WriteRaw(_start, new Span<byte>(data, (int)length));
-            var result = _start;
-            _current = _start + length;
+            source.WriteRaw(Start, new Span<byte>(data, (int)length));
+            nuint result = Start;
+            Current = Start + length;
             return result;
         }
 
@@ -125,7 +117,7 @@ public unsafe class CircularBuffer
     ///     Adds a new item onto the circular buffer.
     /// </summary>
     /// <typeparam name="T">The type of item you wish to write to the buffer.</typeparam>
-    /// <typeparam name="TSource">An implementation of <see cref="ICanReadWriteMemory"/>.</typeparam>
+    /// <typeparam name="TSource">An implementation of <see cref="ICanReadWriteMemory" />.</typeparam>
     /// <param name="source">The source to write the contents to.</param>
     /// <param name="value">The value you wish to write to the buffer.</param>
     /// <returns>Pointer to the recently added item to the buffer, or zero if the item cannot fit.</returns>
@@ -160,24 +152,25 @@ public unsafe class CircularBuffer
     }
 
     #region Optimized Methods for Common Types
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal nuint AddFast<T>(T value) where T : unmanaged
     {
         if ((nuint)sizeof(T) <= Remaining)
         {
             // Hot path, item can be written to buffer.
-            *(T*)_current = value;
-            var result = _current;
-            _current += (nuint)sizeof(T);
+            *(T*)Current = value;
+            nuint result = Current;
+            Current += (nuint)sizeof(T);
             return result;
         }
 
         if (Size >= (nuint)sizeof(T))
         {
             // Item fits but we need to write to buffer start.
-            *(T*)_start = value;
-            var result = _start;
-            _current = result + (nuint)sizeof(T);
+            *(T*)Start = value;
+            nuint result = Start;
+            Current = result + (nuint)sizeof(T);
             return result;
         }
 
@@ -190,24 +183,25 @@ public unsafe class CircularBuffer
         if ((nuint)sizeof(T) <= Remaining)
         {
             // Hot path, item can be written to buffer.
-            source.Write(_current, value);
-            var result = _current;
-            _current += (nuint)sizeof(T);
+            source.Write(Current, value);
+            nuint result = Current;
+            Current += (nuint)sizeof(T);
             return result;
         }
 
         if (Size >= (nuint)sizeof(T))
         {
             // Item fits but we need to write to buffer start.
-            source.Write(_start, value);
-            var result = _start;
-            _current = result + (nuint)sizeof(T);
+            source.Write(Start, value);
+            nuint result = Start;
+            Current = result + (nuint)sizeof(T);
             return result;
         }
 
         // Rare case.
         return UIntPtr.Zero;
     }
+
     #endregion
 
     /// <summary>
@@ -243,23 +237,23 @@ public unsafe class CircularBuffer
     /* Custom Types. */
 
     /// <summary>
-    /// Possible results for whether the item can fit.
+    ///     Possible results for whether the item can fit.
     /// </summary>
     public enum ItemFit
     {
         /// <summary>
-        /// The item can fit into the buffer.
+        ///     The item can fit into the buffer.
         /// </summary>
         Yes,
 
         /// <summary>
-        /// The item can fit into the buffer, but not in the remaining space (will be placed at start of buffer).
+        ///     The item can fit into the buffer, but not in the remaining space (will be placed at start of buffer).
         /// </summary>
         StartOfBuffer,
 
         /// <summary>
-        /// The item is too large to fit into the buffer.
+        ///     The item is too large to fit into the buffer.
         /// </summary>
-        No,
+        No
     }
 }

@@ -105,12 +105,9 @@ public static class ObjectMarshal
     ///     if (obj is T)
     ///     {
     ///         value = (T)obj;
-    ///
     ///         return true;
     ///     }
-    ///
     ///     value = default;
-    ///
     ///     return false;
     /// }
     /// </code>

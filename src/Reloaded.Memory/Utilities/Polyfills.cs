@@ -1,5 +1,8 @@
-﻿using System.Numerics;
+﻿#if NET7_0_OR_GREATER
+using System.Numerics;
+#else
 using Reloaded.Memory.Exceptions;
+#endif
 
 namespace Reloaded.Memory.Utilities;
 
@@ -66,8 +69,8 @@ internal static class Polyfills
     }
 
     /// <summary>
-    /// Appends a span of bytes onto the <see cref="Stream"/> and advances the position.
-    /// This is a polyfill for older framework versions.
+    ///     Appends a span of bytes onto the <see cref="Stream" /> and advances the position.
+    ///     This is a polyfill for older framework versions.
     /// </summary>
     /// <typeparam name="TStream">Type of stream.</typeparam>
     /// <param name="stream">The stream to write the result to.</param>
@@ -79,15 +82,15 @@ internal static class Polyfills
         stream.Write(buffer);
 #else
         using var rental = new ArrayRental(buffer.Length);
-        var span = rental.Array.AsSpan(0, buffer.Length);
+        Span<byte> span = rental.Array.AsSpan(0, buffer.Length);
         buffer.CopyTo(span);
         stream.Write(rental.Array, 0, buffer.Length);
 #endif
     }
 
     /// <summary>
-    /// Appends a span of bytes onto the <see cref="Stream"/> and advances the position.
-    /// This is a polyfill for ReadAtLeast, for older runtimes.
+    ///     Appends a span of bytes onto the <see cref="Stream" /> and advances the position.
+    ///     This is a polyfill for ReadAtLeast, for older runtimes.
     /// </summary>
     /// <typeparam name="TStream">Type of stream.</typeparam>
     /// <param name="stream">The stream to write the result to.</param>
@@ -120,12 +123,14 @@ internal static class Polyfills
     }
 
     /// <summary>
-    /// Rotates the specified value left by the specified number of bits.
-    /// Similar in behavior to the x86 instruction ROL.
+    ///     Rotates the specified value left by the specified number of bits.
+    ///     Similar in behavior to the x86 instruction ROL.
     /// </summary>
     /// <param name="value">The value to rotate.</param>
-    /// <param name="offset">The number of bits to rotate by.
-    /// Any value outside the range [0..31] is treated as congruent mod 32.</param>
+    /// <param name="offset">
+    ///     The number of bits to rotate by.
+    ///     Any value outside the range [0..31] is treated as congruent mod 32.
+    /// </param>
     /// <returns>The rotated value.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static uint RotateLeft(uint value, int offset)

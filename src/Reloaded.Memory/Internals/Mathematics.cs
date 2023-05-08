@@ -7,7 +7,7 @@ internal static class Mathematics
         if (multiple == 0)
             return number;
 
-        int remainder = number % multiple;
+        var remainder = number % multiple;
         if (remainder == 0)
             return number;
 

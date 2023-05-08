@@ -26,12 +26,14 @@ public class SpanExtensions_Replace
     [InlineData("abcdefghabcdefghabcdefghabcdefgh", 'x', 'y', "abcdefghabcdefghabcdefghabcdefgh")]
     [InlineData("axcexghaxcexghaxcexghaxcexgh", 'x', 'y', "ayceyghayceyghayceyghayceygh")]
     [InlineData("xaxcxgxaxcxgxaxcxgxaxcxgx", 'x', 'y', "yaycygyaycygyaycygyaycygy")]
-    [InlineData("axcexghaxcexghaxcexghaxcexghxaxcxgxaxcxgxaxcxgxaxcxgx", 'x', 'y', "ayceyghayceyghayceyghayceyghyaycygyaycygyaycygyaycygy")]
+    [InlineData("axcexghaxcexghaxcexghaxcexghxaxcxgxaxcxgxaxcxgxaxcxgx", 'x', 'y',
+        "ayceyghayceyghayceyghayceyghyaycygyaycygyaycygyaycygy")]
     // Shorter inputs for non-SIMD
     [InlineData("abcdefgh", 'x', 'y', "abcdefgh")]
     [InlineData("axcexgh", 'x', 'y', "ayceygh")]
     [InlineData("xaxcxgx", 'x', 'y', "yaycygy")]
-    public void Replace_CharInput_ShouldReplaceCorrectly(string input, char oldValue, char newValue, string expectedResult)
+    public void Replace_CharInput_ShouldReplaceCorrectly(string input, char oldValue, char newValue,
+        string expectedResult)
     {
         // Arrange
         Span<char> data = new char[input.Length];
@@ -49,7 +51,8 @@ public class SpanExtensions_Replace
     [InlineData(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 }, 9, 10, new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 })]
     [InlineData(new byte[] { 1, 9, 3, 4, 5, 6, 7, 8 }, 9, 10, new byte[] { 1, 10, 3, 4, 5, 6, 7, 8 })]
     [InlineData(new byte[] { 9, 1, 9, 4, 5, 6, 7, 8 }, 9, 10, new byte[] { 10, 1, 10, 4, 5, 6, 7, 8 })]
-    public void Replace_ByteInput_ShouldReplaceCorrectly(byte[] input, byte oldValue, byte newValue, byte[] expectedResult)
+    public void Replace_ByteInput_ShouldReplaceCorrectly(byte[] input, byte oldValue, byte newValue,
+        byte[] expectedResult)
     {
         // Arrange
         Span<byte> data = input.AsSpan();

@@ -11,7 +11,7 @@ public class SpanExtensions_SliceFast
     public void SliceFast_StartIndex_ShouldSliceCorrectly()
     {
         // Arrange
-        Span<int> data = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        Span<int> data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
         // Act
         Span<int> result = data.SliceFast(5);
@@ -24,7 +24,7 @@ public class SpanExtensions_SliceFast
     public void SliceFast_ReadOnlySpanStartIndex_ShouldSliceCorrectly()
     {
         // Arrange
-        ReadOnlySpan<int> data = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        ReadOnlySpan<int> data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
         // Act
         ReadOnlySpan<int> result = data.SliceFast(5);
@@ -37,7 +37,7 @@ public class SpanExtensions_SliceFast
     public void SliceFast_StartIndexAndLength_ShouldSliceCorrectly()
     {
         // Arrange
-        Span<int> data = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        Span<int> data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
         // Act
         Span<int> result = data.SliceFast(3, 4);
@@ -50,7 +50,7 @@ public class SpanExtensions_SliceFast
     public void SliceFast_ReadOnlySpanStartIndexAndLength_ShouldSliceCorrectly()
     {
         // Arrange
-        ReadOnlySpan<int> data = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        ReadOnlySpan<int> data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
         // Act
         ReadOnlySpan<int> result = data.SliceFast(3, 4);
@@ -63,7 +63,7 @@ public class SpanExtensions_SliceFast
     public void SliceFast_Range_ShouldSliceCorrectly()
     {
         // Arrange
-        Span<int> data = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        Span<int> data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
         // Act
         Span<int> result = data.SliceFast(3..7);
@@ -76,7 +76,7 @@ public class SpanExtensions_SliceFast
     public void SliceFast_ReadOnlySpanRange_ShouldSliceCorrectly()
     {
         // Arrange
-        ReadOnlySpan<int> data = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        ReadOnlySpan<int> data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
         // Act
         ReadOnlySpan<int> result = data.SliceFast(3..7);

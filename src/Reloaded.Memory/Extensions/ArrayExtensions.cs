@@ -4,10 +4,10 @@
 using System.Diagnostics.CodeAnalysis;
 using Reloaded.Memory.Exceptions;
 using Reloaded.Memory.Internals;
+using RuntimeHelpers = Reloaded.Memory.Internals.RuntimeHelpers;
 #if !NET5_0_OR_GREATER
 using Reloaded.Memory.Utilities;
 #endif
-using RuntimeHelpers = Reloaded.Memory.Internals.RuntimeHelpers;
 
 namespace Reloaded.Memory.Extensions;
 
@@ -85,8 +85,8 @@ public static class ArrayExtensions
         where T : IEquatable<T>
     {
         ref T r0 = ref array.DangerousGetReference();
-        var length = RuntimeHelpers.GetArrayNativeLength(array);
-        var count = SpanHelper.Count(ref r0, length, value);
+        nint length = RuntimeHelpers.GetArrayNativeLength(array);
+        nint count = SpanHelper.Count(ref r0, length, value);
 
         if ((nuint)count > int.MaxValue)
             ThrowHelpers.ThrowOverflowException();
@@ -203,11 +203,11 @@ public static class ArrayExtensions
     }
 
     /// <summary>
-    /// Checks whether or not a given <typeparamref name="T"/> array is covariant.
+    ///     Checks whether or not a given <typeparamref name="T" /> array is covariant.
     /// </summary>
-    /// <typeparam name="T">The type of items in the input <typeparamref name="T"/> array instance.</typeparam>
-    /// <param name="array">The input <typeparamref name="T"/> array instance.</param>
-    /// <returns>Whether or not <paramref name="array"/> is covariant.</returns>
+    /// <typeparam name="T">The type of items in the input <typeparamref name="T" /> array instance.</typeparam>
+    /// <param name="array">The input <typeparamref name="T" /> array instance.</param>
+    /// <returns>Whether or not <paramref name="array" /> is covariant.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsCovariant<T>(this T[] array) => default(T) is null && array.GetType() != typeof(T[]);
 }

@@ -7,23 +7,23 @@ namespace Reloaded.Memory.Tests.Tests.Extensions;
 
 public class StringExtensions
 {
-    private static Random _random = new();
+    private static readonly Random _random = new();
 
     // TODO: The tests here could be more diverse. We're only scratching the surface of the barrel.
 
     /// <summary>
-    /// Test for hashing long strings.
-    /// This is just a baseline quick test.
+    ///     Test for hashing long strings.
+    ///     This is just a baseline quick test.
     /// </summary>
     [Fact]
     public void HashString()
     {
-        for (int x = 0; x < 257; x++)
+        for (var x = 0; x < 257; x++)
         {
             var text = RandomString(x, RandomStringUpperWithEmoji(x));
             var expected = text.GetHashCodeFast();
 
-            for (int y = 0; y < 10; y++)
+            for (var y = 0; y < 10; y++)
                 Assert.Equal(expected, text.GetHashCodeFast());
         }
     }
@@ -41,6 +41,9 @@ public class StringExtensions
     private static string RandomStringUpper(int length) => RandomString(length, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
     private static string RandomStringLower(int length) => RandomString(length, "abcdefghijklmnopqrstuvwxyz");
 
-    private static string RandomStringUpperWithEmoji(int length) => RandomString(length, "ABCDEFGHIJKLMNOPQRSTUVWXYZ⚠️🚦🔺🏒😕🏞🖌🖕🌷☠⛩🍸👳🍠🚦📟💦🚏🌥🏪🌖😱");
-    private static string RandomStringLowerWithEmoji(int length) => RandomString(length, "abcdefghijklmnopqrstuvwxyz⚠️🚦🔺🏒😕🏞🖌🖕🌷☠⛩🍸👳🍠🚦📟💦🚏🌥🏪🌖😱");
+    private static string RandomStringUpperWithEmoji(int length) => RandomString(length,
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ⚠️🚦🔺🏒😕🏞🖌🖕🌷☠⛩🍸👳🍠🚦📟💦🚏🌥🏪🌖😱");
+
+    private static string RandomStringLowerWithEmoji(int length) => RandomString(length,
+        "abcdefghijklmnopqrstuvwxyz⚠️🚦🔺🏒😕🏞🖌🖕🌷☠⛩🍸👳🍠🚦📟💦🚏🌥🏪🌖😱");
 }

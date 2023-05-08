@@ -23,7 +23,7 @@ public unsafe class PinnableTests
         var value = 42;
 
         using var pinnableValue = new Pinnable<int>(value);
-        (pinnableValue.Value).Should().Be(value);
+        pinnableValue.Value.Should().Be(value);
     }
 
     [Fact]

@@ -28,7 +28,7 @@ public unsafe class Pinnable<T> : IDisposable where T : unmanaged
     private GCHandle _handle;
 #endif
 
-    private bool _disposed = false;
+    private bool _disposed;
 
     /* Constructor/Destructor */
 
