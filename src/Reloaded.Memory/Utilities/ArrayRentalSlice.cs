@@ -1,7 +1,11 @@
+using Reloaded.Memory.Extensions;
+
 namespace Reloaded.Memory.Utilities;
 
 /// <summary>
 ///     Represents a slice of an <see cref="ArrayRental" />.
+///     This API is meant to be used as a return value from methods, and transfers control of the rental from the internal
+///     <see cref="ArrayRental"/>.
 /// </summary>
 public struct ArrayRentalSlice : IDisposable
 {
@@ -13,7 +17,7 @@ public struct ArrayRentalSlice : IDisposable
     /// <summary>
     ///     Returns the span for the rented slice.
     /// </summary>
-    public Span<byte> Span => Rental.Array.AsSpan(0, Length);
+    public Span<byte> Span => Rental.Array.AsSpanFast(0, Length);
 
     /// <summary>
     ///     Length of this slice.

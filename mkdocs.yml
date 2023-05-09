@@ -61,6 +61,7 @@ nav:
       String: Extensions/StringExtensions.md
       Vector: Extensions/VectorExtensions.md
   - Utilities:
+      ArrayRental: Utilities/ArrayRental.md
       Box&lt;T&gt;: Utilities/Box.md
       CircularBuffer: Utilities/CircularBuffer.md
       ObjectMarshal: Utilities/ObjectMarshal.md

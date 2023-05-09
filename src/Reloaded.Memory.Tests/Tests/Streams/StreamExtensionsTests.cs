@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using FluentAssertions;
 using Reloaded.Memory.Extensions;
+using Reloaded.Memory.Tests.Utilities.Structures;
 using Xunit;
 
 namespace Reloaded.Memory.Tests.Tests.Streams;
@@ -24,10 +25,10 @@ public class StreamExtensionsTests
     public void WriteReadMarshalledTest()
     {
         using var memoryStream = new MemoryStream();
-        var input = new MarshalledStruct { A = 42, B = "Hello, World!" };
+        var input = new MarshallingStruct();
         memoryStream.WriteMarshalled(input);
         memoryStream.Position = 0;
-        memoryStream.ReadMarshalled(out MarshalledStruct output);
+        memoryStream.ReadMarshalled(out MarshallingStruct output);
         output.Should().Be(input);
     }
 
@@ -47,13 +48,14 @@ public class StreamExtensionsTests
     public void WriteReadMarshalledArrayTest()
     {
         using var memoryStream = new MemoryStream();
-        var input = new MarshalledStruct[]
+        var input = new MarshallingStruct[]
         {
-            new() { A = 42, B = "Hello, World!" }, new() { A = 84, B = "Hi, Universe!" }
+            new(),
+            new()
         };
         memoryStream.WriteMarshalled(input);
         memoryStream.Position = 0;
-        var output = new MarshalledStruct[input.Length];
+        var output = new MarshallingStruct[input.Length];
         memoryStream.ReadMarshalled(output);
         output.Should().Equal(input);
     }
@@ -114,17 +116,6 @@ public class StreamExtensionsTests
         public float B;
 
         public override bool Equals(object obj) => obj is UnmanagedStruct other && A == other.A && B == other.B;
-        public override int GetHashCode() => (A * 397) ^ B.GetHashCode();
-    }
-
-    public struct MarshalledStruct
-    {
-        public int A;
-
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
-        public string B;
-
-        public override bool Equals(object obj) => obj is MarshalledStruct other && A == other.A && B == other.B;
         public override int GetHashCode() => (A * 397) ^ B.GetHashCode();
     }
 }
