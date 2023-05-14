@@ -25,6 +25,10 @@ internal abstract class ThrowHelpers
         => throw new NotSupportedException($"Enum type {typeof(T).Name} is not supported.");
 
     [MethodImpl(MethodImplOptions.NoInlining)]
+    public static void ThrowTypeNotSupportedException<T>()
+        => throw new NotSupportedException($"Type {typeof(T).Name} is not supported.");
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public static void ThrowPlatformNotSupportedException()
         => throw new PlatformNotSupportedException("Operating System in use is not supported.");
 

@@ -1,7 +1,9 @@
 using System;
+using System.Buffers.Binary;
 using System.IO;
 using System.Runtime.InteropServices;
 using FluentAssertions;
+using Reloaded.Memory.Interfaces;
 using Reloaded.Memory.Streams;
 using Reloaded.Memory.Tests.Utilities.Structures;
 using Xunit;
@@ -147,7 +149,7 @@ public class BufferedStreamReaderTests
         Span<byte> data = stackalloc byte[length];
         reader.ReadBytesUnbuffered(offset, data);
 
-        for (int x = 0; x < length; x++)
+        for (var x = 0; x < length; x++)
             data[x].Should().Be((byte)(offset + x));
     }
 
@@ -175,10 +177,10 @@ public class BufferedStreamReaderTests
         var length = 10;
         var available = 0;
 
-        byte* result = reader.ReadRaw(length, out available);
+        var result = reader.ReadRaw(length, out available);
 
         available.Should().Be(length); // Check if correct amount of data is available
-        for (int x = 0; x < length; x++)
+        for (var x = 0; x < length; x++)
             result[x].Should().Be((byte)x); // Check if the correct data is read
     }
 
@@ -190,11 +192,11 @@ public class BufferedStreamReaderTests
         var length = 10;
         var available = 0;
 
-        byte* result = reader.ReadRaw(10, out available);
+        var result = reader.ReadRaw(10, out available);
         result = reader.ReadRaw(length, out available);
 
         available.Should().Be(length); // Check if correct amount of data is available
-        for (int x = 0; x < length; x++)
+        for (var x = 0; x < length; x++)
             result[x].Should().Be((byte)(x + 10)); // Check if the correct data is read
     }
 
@@ -206,10 +208,10 @@ public class BufferedStreamReaderTests
         var length = 200; // Requested length is more than the buffer size
         var available = 0;
 
-        byte* result = reader.ReadRaw(length, out available);
+        var result = reader.ReadRaw(length, out available);
 
         available.Should().BeLessOrEqualTo(100); // Check if the available data does not exceed buffer size
-        for (int x = 0; x < available; x++)
+        for (var x = 0; x < available; x++)
             result[x].Should().Be((byte)x); // Check if the correct data is read
     }
 
@@ -221,10 +223,10 @@ public class BufferedStreamReaderTests
         var numItems = 10;
         var available = 0;
 
-        int* result = reader.ReadRaw<int>(numItems, out available);
+        var result = reader.ReadRaw<int>(numItems, out available);
 
         available.Should().Be(numItems); // Check if correct amount of data is available
-        for (int x = 0; x < numItems; x++)
+        for (var x = 0; x < numItems; x++)
             result[x].Should().Be(x); // Check if the correct data is read
     }
 
@@ -236,10 +238,10 @@ public class BufferedStreamReaderTests
         var numItems = 200; // Requested items is more than the buffer size
         var available = 0;
 
-        int* result = reader.ReadRaw<int>(numItems, out available);
+        var result = reader.ReadRaw<int>(numItems, out available);
 
         available.Should().BeLessOrEqualTo(100); // Check if the available data does not exceed buffer size
-        for (int x = 0; x < available; x++)
+        for (var x = 0; x < available; x++)
             result[x].Should().Be(x); // Check if the correct data is read
     }
 
@@ -251,11 +253,11 @@ public class BufferedStreamReaderTests
         var numItems = 200; // Requested items is more than the buffer size
         var available = 0;
 
-        int* result = reader.ReadRaw<int>(numItems, out available);
+        var result = reader.ReadRaw<int>(numItems, out available);
 
         available.Should().BeLessOrEqualTo(99);
         reader.Position().Should().Be(396); // seeked back to last multiple of T
-        for (int x = 0; x < available; x++)
+        for (var x = 0; x < available; x++)
             result[x].Should().Be(x);
     }
 
@@ -268,14 +270,66 @@ public class BufferedStreamReaderTests
         var itemsRead = reader.ReadRaw(span);
 
         itemsRead.Should().BeLessOrEqualTo(100); // Check if the number of items read is not more than the buffer size
-        for (int x = 0; x < itemsRead; x++)
+        for (var x = 0; x < itemsRead; x++)
             span[x].Should().Be(x); // Check if the correct data is read into the span
+    }
+
+    private struct UShortEx : ICanReverseEndian
+    {
+        public ushort Short;
+        public void ReverseEndian() => Short = BinaryPrimitives.ReverseEndianness(Short);
+        public static implicit operator ushort(UShortEx value) => value.Short;
+        public static implicit operator UShortEx(ushort value) => new UShortEx { Short = value };
+    }
+
+    [Fact]
+    public void Read_AsLittleEndianStruct()
+    {
+        var buffer = new byte[] { 0x01, 0x02, 0x03, 0x04 };
+        using var memoryStream = new MemoryStream(buffer);
+        using var reader = new BufferedStreamReader<MemoryStream>(memoryStream);
+        var expected = BitConverter.IsLittleEndian ? (UShortEx)0x0201 : (UShortEx)0x0102;
+        var actual = reader.ReadLittleEndianStruct<UShortEx>();
+        actual.Should().Be(expected);
+    }
+
+    [Fact]
+    public void Read_AsBigEndianStruct()
+    {
+        var buffer = new byte[] { 0x01, 0x02, 0x03, 0x04 };
+        using var memoryStream = new MemoryStream(buffer);
+        using var reader = new BufferedStreamReader<MemoryStream>(memoryStream);
+        var expected = BitConverter.IsLittleEndian ? (UShortEx)0x0102 : (UShortEx)0x0201;
+        var actual = reader.ReadBigEndianStruct<UShortEx>();
+        actual.Should().Be(expected);
+    }
+
+    [Fact]
+    public void Peek_AsLittleEndianStruct()
+    {
+        var buffer = new byte[] { 0x01, 0x02, 0x03, 0x04 };
+        using var memoryStream = new MemoryStream(buffer);
+        using var reader = new BufferedStreamReader<MemoryStream>(memoryStream);
+        var expected = BitConverter.IsLittleEndian ? (UShortEx)0x0201 : (UShortEx)0x0102;
+        var actual = reader.PeekLittleEndianStruct<UShortEx>();
+        actual.Should().Be(expected);
+    }
+
+    [Fact]
+    public void Peek_AsBigEndianStruct()
+    {
+        var buffer = new byte[] { 0x01, 0x02, 0x03, 0x04 };
+        using var memoryStream = new MemoryStream(buffer);
+        using var reader = new BufferedStreamReader<MemoryStream>(memoryStream);
+        var expected = BitConverter.IsLittleEndian ? (UShortEx)0x0102 : (UShortEx)0x0201;
+        var actual = reader.PeekBigEndianStruct<UShortEx>();
+        actual.Should().Be(expected);
     }
 
     private MemoryStream GenerateTestStream(int length)
     {
         var buffer = new byte[length];
-        for (int x = 0; x < length; x++)
+        for (var x = 0; x < length; x++)
             buffer[x] = (byte)x;
 
         return new MemoryStream(buffer);
@@ -290,7 +344,7 @@ public class BufferedStreamReaderTests
     {
         // Arrange
         var buffer = new int[numItems];
-        for (int x = 0; x < buffer.Length; x++)
+        for (var x = 0; x < buffer.Length; x++)
             buffer[x] = x;
 
         Buffer.BlockCopy(buffer, 0, data, 0, data.Length);

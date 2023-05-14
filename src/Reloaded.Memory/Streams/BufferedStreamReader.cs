@@ -1,4 +1,5 @@
-﻿using Reloaded.Memory.Utilities;
+﻿using Reloaded.Memory.Interfaces;
+using Reloaded.Memory.Utilities;
 #if NET5_0_OR_GREATER
 using System.Diagnostics.CodeAnalysis;
 #endif
@@ -17,7 +18,7 @@ namespace Reloaded.Memory.Streams;
 ///     or <see cref="BinaryWriter" /> as minimal error checking is done.
 /// </remarks>
 [PublicAPI]
-public unsafe class BufferedStreamReader<TStream> : IDisposable where TStream : Stream
+public unsafe partial class BufferedStreamReader<TStream> : IDisposable where TStream : Stream
 {
     private readonly byte[] _buffer;
 
@@ -158,8 +159,7 @@ public unsafe class BufferedStreamReader<TStream> : IDisposable where TStream : 
     }
 
     /// <summary>
-    ///     Reads a managed or unmanaged generic type from the stream.
-    ///     Note: For performance recommend using other overload if reading unmanaged type (i.e. marshal = false)
+    ///     Reads a value that requires marshalling from the stream.
     /// </summary>
     /// <typeparam name="T">Type of value to read.</typeparam>
     /// <returns>The value read, after marshalling.</returns>
@@ -321,7 +321,7 @@ public unsafe class BufferedStreamReader<TStream> : IDisposable where TStream : 
     public void Read<T>(out T value) where T : unmanaged => value = Read<T>();
 
     /// <summary>
-    ///     Reads a managed or unmanaged generic type from the stream without incrementing the position.
+    ///     Reads a value that requires marshalling stream without incrementing the position.
     ///     Note: For performance recommend using other overload if reading unmanaged type (i.e. marshal = false)
     /// </summary>
     /// <typeparam name="T">The type to read with marshalling.</typeparam>
@@ -387,7 +387,7 @@ public unsafe class BufferedStreamReader<TStream> : IDisposable where TStream : 
     /// </summary>
     /// <param name="size">The size of the item to check if can be read, in bytes.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool CanRead(int size) => size <= BufferBytesAvailable;
+    private bool CanRead(int size) => size <= BufferBytesAvailable;
 
     /// <summary>
     ///     Refills the remainder of the buffer.

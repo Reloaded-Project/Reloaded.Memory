@@ -60,10 +60,13 @@ nav:
       Stream: Extensions/StreamExtensions.md
       String: Extensions/StringExtensions.md
       Vector: Extensions/VectorExtensions.md
+  - Streams:
+      BufferedStreamReader: Streams/BufferedStreamReader.md
   - Utilities:
       ArrayRental: Utilities/ArrayRental.md
       Box&lt;T&gt;: Utilities/Box.md
       CircularBuffer: Utilities/CircularBuffer.md
+      Endian: Utilities/Endian.md
       ObjectMarshal: Utilities/ObjectMarshal.md
       Pinnable&lt;T&gt;: Utilities/Pinnable.md
       TypeInfo: Utilities/TypeInfo.md
