@@ -15,6 +15,77 @@
     Remember, always ensure the stream and reader are properly disposed of after use. 
     The best practice is to use the `using` statement or `try-finally` block in C# to ensure resources are correctly released.
 
+## Performance
+
+Amount of time taken to read 8 MiB of data (library version 9.0.0):
+
+Legend:  
+- `BinaryReader` read via BinaryReader.  
+- `BufferedStreamReader` read via BufferedStreamReader.  
+- `BufferedStreamReader` read via BufferedStreamReader (ReadRaw method).  
+- `NativePointer` no stream; no copy; access existing data from array (baseline reference).  
+
+### MemoryStream
+
+Benchmarks on MemoryStream (near zero overhead) allow us to compare the performance against `BinaryReader` and 
+array access (baseline reference).  
+
+`Byte`:  
+
+| Method                   |        Mean | Code Size |
+|--------------------------|------------:|----------:|
+| BinaryReader             | 15,452.7 us |     171 B |
+| BufferedStreamReader     |  6,298.7 us |     703 B |
+| BufferedStreamReader Raw |  1,997.3 us |     669 B |
+| NativePointer            |  1,845.2 us |      38 B |
+
+`Int`:  
+
+| Method                   |        Mean | Code Size |
+|--------------------------|------------:|----------:|
+| BinaryReader             |  3,253.2 us |     637 B |
+| BufferedStreamReader     |  1,708.7 us |     981 B |
+| BufferedStreamReader Raw |    606.8 us |     760 B |
+| NativePointer            |    464.1 us |      54 B |
+
+`Long`:  
+
+| Method                   |        Mean | Code Size |
+|--------------------------|------------:|----------:|
+| BinaryReader             |  1,665.2 us |     639 B |
+| BufferedStreamReader     |    890.8 us |     709 B |
+| BufferedStreamReader Raw |    370.7 us |     761 B |
+| NativePointer            |    227.3 us |      55 B |
+
+### FileStream
+
+Benchmarks on FileStream allow us to compare the performance against `BinaryReader` more closely.
+
+`Byte`:  
+
+| Method                   |        Mean | Code Size |
+|--------------------------|------------:|----------:|
+| BinaryReader             | 21,309.7 us |     169 B |
+| BufferedStreamReader     |  6,731.9 us |   1,052 B |
+| BufferedStreamReader Raw |  2,763.3 us |     661 B |
+
+
+`Int`:  
+
+| Method                   |        Mean | Code Size |
+|--------------------------|------------:|----------:|
+| BinaryReader             | 22,279.2 us |     640 B |
+| BufferedStreamReader     |  2,219.4 us |   1,487 B |
+| BufferedStreamReader Raw |  1,310.4 us |     753 B |
+
+`Long`:  
+
+| Method                   |        Mean | Code Size |
+|--------------------------|------------:|----------:|
+| BinaryReader             | 13,025.8 us |     642 B |
+| BufferedStreamReader     |  1,425.6 us |   1,068 B |
+| BufferedStreamReader Raw |    943.7 us |     754 B |
+
 ## Properties
 
 - `BaseStream`: The stream this class was instantiated with.
