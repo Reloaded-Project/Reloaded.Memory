@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Runtime.InteropServices;
 using FluentAssertions;
 using Reloaded.Memory.Extensions;
 using Reloaded.Memory.Tests.Utilities.Structures;

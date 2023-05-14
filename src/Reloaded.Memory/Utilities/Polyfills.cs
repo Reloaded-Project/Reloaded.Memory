@@ -1,4 +1,6 @@
-﻿#if NET7_0_OR_GREATER
+﻿
+using Reloaded.Memory.Extensions;
+#if NET7_0_OR_GREATER
 using System.Numerics;
 #else
 using Reloaded.Memory.Exceptions;
@@ -93,15 +95,55 @@ internal static class Polyfills
     ///     This is a polyfill for ReadAtLeast, for older runtimes.
     /// </summary>
     /// <typeparam name="TStream">Type of stream.</typeparam>
-    /// <param name="stream">The stream to write the result to.</param>
-    /// <param name="buffer">The bytes to write to the output.</param>
+    /// <param name="stream">The stream to read from.</param>
+    /// <param name="buffer">The array to receive the result.</param>
+    /// <param name="offset">Offset in the array.</param>
+    /// <param name="length">Length in the array.</param>
+    /// <param name="throwOnEndOfStream">Throws on end of stream.</param>
     /// <exception cref="EndOfStreamException">End of stream was reached.</exception>
     /// <returns>Number of bytes read.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int ReadAtLeast<TStream>(this TStream stream, Span<byte> buffer) where TStream : Stream
+    public static int ReadAtLeast<TStream>(this TStream stream, byte[] buffer, int offset, int length, bool throwOnEndOfStream = true) where TStream : Stream
     {
 #if NET7_0_OR_GREATER
-        return stream.ReadAtLeast(buffer, buffer.Length);
+        return stream.ReadAtLeast(buffer.AsSpanFast(offset, length), length, throwOnEndOfStream);
+#else
+        using var rental = new ArrayRental(length);
+        var totalRead = 0;
+        while (totalRead < length)
+        {
+            var read = stream.Read(rental.Array, totalRead, length - totalRead);
+            if (read == 0)
+            {
+                if (throwOnEndOfStream)
+                    ThrowHelpers.ThrowEndOfFileException();
+
+                rental.Array.AsSpan(0, totalRead).CopyTo(buffer.AsSpanFast(offset, totalRead));
+                return totalRead;
+            }
+
+            totalRead += read;
+        }
+
+        rental.Array.AsSpan(0, totalRead).CopyTo(buffer.AsSpanFast(offset, totalRead));
+        return totalRead;
+#endif
+    }
+
+    /// <summary>
+    ///     Appends a span of bytes onto the <see cref="Stream" /> and advances the position.
+    ///     This is a polyfill for ReadAtLeast, for older runtimes.
+    /// </summary>
+    /// <typeparam name="TStream">Type of stream.</typeparam>
+    /// <param name="stream">The stream to read from.</param>
+    /// <param name="buffer">The span to receive the result from.</param>
+    /// <param name="throwOnEndOfStream">Throws when end of stream encountered.</param>
+    /// <returns>Number of bytes read.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int ReadAtLeast<TStream>(this TStream stream, Span<byte> buffer, bool throwOnEndOfStream = false) where TStream : Stream
+    {
+#if NET7_0_OR_GREATER
+        return stream.ReadAtLeast(buffer, buffer.Length, throwOnEndOfStream);
 #else
         using var rental = new ArrayRental(buffer.Length);
         var totalRead = 0;
@@ -110,7 +152,10 @@ internal static class Polyfills
             var read = stream.Read(rental.Array, totalRead, buffer.Length - totalRead);
             if (read == 0)
             {
-                ThrowHelpers.ThrowEndOfFileException();
+                if (throwOnEndOfStream)
+                    ThrowHelpers.ThrowEndOfFileException();
+
+                rental.Array.AsSpan(0, totalRead).CopyTo(buffer);
                 return totalRead;
             }
 

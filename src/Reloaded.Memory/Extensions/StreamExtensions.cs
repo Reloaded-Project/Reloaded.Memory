@@ -103,7 +103,7 @@ public static unsafe class StreamExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void WriteMarshalled<TStream, T>(this TStream stream, T item) where TStream : Stream
     {
-        var size = Marshal.SizeOf<T>();
+        var size = TypeInfo.MarshalledSizeOf<T>();
         if (size < MaxStackLimit)
         {
             var stack = stackalloc byte[size];
@@ -140,7 +140,7 @@ public static unsafe class StreamExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void WriteMarshalled<TStream, T>(this TStream stream, Span<T> item) where TStream : Stream
     {
-        var itemSize = Marshal.SizeOf<T>();
+        var itemSize = TypeInfo.MarshalledSizeOf<T>();
         var totalSize = itemSize * item.Length;
 
         if (totalSize < MaxStackLimit)
@@ -229,7 +229,7 @@ public static unsafe class StreamExtensions
 #endif
         T>(this TStream stream, out T result) where TStream : Stream
     {
-        var size = Marshal.SizeOf<T>();
+        var size = TypeInfo.MarshalledSizeOf<T>();
         Span<byte> byteSpan = stackalloc byte[size];
         stream.ReadAtLeast(byteSpan);
 
@@ -270,7 +270,7 @@ public static unsafe class StreamExtensions
 #endif
         T>(this TStream stream, Span<T> output) where TStream : Stream
     {
-        var itemSize = Marshal.SizeOf<T>();
+        var itemSize = TypeInfo.MarshalledSizeOf<T>();
         var totalSize = itemSize * output.Length;
         Span<byte> byteSpan = totalSize < MaxStackLimit
             ? stackalloc byte[totalSize]

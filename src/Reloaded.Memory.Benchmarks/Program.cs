@@ -3,6 +3,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using BenchmarkDotNet.Running;
+using Reloaded.Memory.Benchmarks.Benchmarks;
 using Reloaded.Memory.Benchmarks.Framework;
 using Spectre.Console;
 

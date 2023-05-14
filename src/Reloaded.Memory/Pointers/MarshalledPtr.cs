@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Reloaded.Memory.Interfaces;
+using Reloaded.Memory.Utilities;
 
 namespace Reloaded.Memory.Pointers;
 
@@ -37,7 +38,7 @@ public unsafe struct MarshalledPtr<
     public MarshalledPtr(byte* pointer)
     {
         Pointer = pointer;
-        ElementSize = Marshal.SizeOf<T>();
+        ElementSize = TypeInfo.MarshalledSizeOf<T>();
     }
 
     /// <summary>

@@ -25,7 +25,7 @@ public static class TypeInfo
 #endif
         T>()
     {
-        return IsBlittableCache<T>.Value;
+        return TypeInfoCache<T>.Value;
     }
 
     /// <summary>
@@ -65,7 +65,13 @@ public static class TypeInfo
         }
     }
 
-    private static class IsBlittableCache<
+    /// <summary>
+    ///     Retrieves the size of a given type after marshalling.
+    /// </summary>
+    /// <typeparam name="T">The size of the given type.</typeparam>
+    public static int MarshalledSizeOf<T>() => TypeSizeCache<T>.MarshalledSize;
+
+    private static class TypeInfoCache<
 #if NET5_0_OR_GREATER
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors |
                                     DynamicallyAccessedMemberTypes.NonPublicConstructors)]
@@ -73,5 +79,10 @@ public static class TypeInfo
         T>
     {
         public static readonly bool Value = ApproximateIsBlittable(typeof(T));
+    }
+
+    private static class TypeSizeCache<T>
+    {
+        public static readonly int MarshalledSize = Marshal.SizeOf<T>();
     }
 }
