@@ -12,7 +12,7 @@ namespace Reloaded.Memory.Streams
     {
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic Int16 from the stream without incrementing the position.
+    ///     [Little Endian] Reads an unmanaged, Int16 from the stream without incrementing the position.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -25,7 +25,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic Int16 from the stream without incrementing the position.
+    ///     [Little Endian] Reads an unmanaged, Int16 from the stream without incrementing the position.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -33,7 +33,7 @@ namespace Reloaded.Memory.Streams
     public Int16 PeekLittleEndian(out Int16 value) => value = PeekLittleEndianInt16();
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic Int16 from the stream.
+    ///     [Little Endian] Reads an unmanaged, Int16 from the stream.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -46,7 +46,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic Int16 from the stream.
+    ///     [Little Endian] Reads an unmanaged, Int16 from the stream.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -54,7 +54,7 @@ namespace Reloaded.Memory.Streams
     public Int16 ReadLittleEndian(out Int16 value) => value = ReadLittleEndianInt16();
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic Int16 from the stream without incrementing the position.
+    ///     [Big Endian] Reads an unmanaged, Int16 from the stream without incrementing the position.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -67,7 +67,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic Int16 from the stream without incrementing the position.
+    ///     [Big Endian] Reads an unmanaged, Int16 from the stream without incrementing the position.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -75,7 +75,7 @@ namespace Reloaded.Memory.Streams
     public Int16 PeekBigEndian(out Int16 value) => value = PeekBigEndianInt16();
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic Int16 from the stream.
+    ///     [Big Endian] Reads an unmanaged, Int16 from the stream.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -88,7 +88,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic Int16 from the stream.
+    ///     [Big Endian] Reads an unmanaged, Int16 from the stream.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -96,7 +96,7 @@ namespace Reloaded.Memory.Streams
     public Int16 ReadBigEndian(out Int16 value) => value = ReadBigEndianInt16();
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic UInt16 from the stream without incrementing the position.
+    ///     [Little Endian] Reads an unmanaged, UInt16 from the stream without incrementing the position.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -109,7 +109,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic UInt16 from the stream without incrementing the position.
+    ///     [Little Endian] Reads an unmanaged, UInt16 from the stream without incrementing the position.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -117,7 +117,7 @@ namespace Reloaded.Memory.Streams
     public UInt16 PeekLittleEndian(out UInt16 value) => value = PeekLittleEndianUInt16();
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic UInt16 from the stream.
+    ///     [Little Endian] Reads an unmanaged, UInt16 from the stream.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -130,7 +130,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic UInt16 from the stream.
+    ///     [Little Endian] Reads an unmanaged, UInt16 from the stream.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -138,7 +138,7 @@ namespace Reloaded.Memory.Streams
     public UInt16 ReadLittleEndian(out UInt16 value) => value = ReadLittleEndianUInt16();
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic UInt16 from the stream without incrementing the position.
+    ///     [Big Endian] Reads an unmanaged, UInt16 from the stream without incrementing the position.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -151,7 +151,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic UInt16 from the stream without incrementing the position.
+    ///     [Big Endian] Reads an unmanaged, UInt16 from the stream without incrementing the position.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -159,7 +159,7 @@ namespace Reloaded.Memory.Streams
     public UInt16 PeekBigEndian(out UInt16 value) => value = PeekBigEndianUInt16();
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic UInt16 from the stream.
+    ///     [Big Endian] Reads an unmanaged, UInt16 from the stream.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -172,7 +172,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic UInt16 from the stream.
+    ///     [Big Endian] Reads an unmanaged, UInt16 from the stream.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -180,7 +180,7 @@ namespace Reloaded.Memory.Streams
     public UInt16 ReadBigEndian(out UInt16 value) => value = ReadBigEndianUInt16();
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic Int32 from the stream without incrementing the position.
+    ///     [Little Endian] Reads an unmanaged, Int32 from the stream without incrementing the position.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -193,7 +193,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic Int32 from the stream without incrementing the position.
+    ///     [Little Endian] Reads an unmanaged, Int32 from the stream without incrementing the position.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -201,7 +201,7 @@ namespace Reloaded.Memory.Streams
     public Int32 PeekLittleEndian(out Int32 value) => value = PeekLittleEndianInt32();
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic Int32 from the stream.
+    ///     [Little Endian] Reads an unmanaged, Int32 from the stream.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -214,7 +214,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic Int32 from the stream.
+    ///     [Little Endian] Reads an unmanaged, Int32 from the stream.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -222,7 +222,7 @@ namespace Reloaded.Memory.Streams
     public Int32 ReadLittleEndian(out Int32 value) => value = ReadLittleEndianInt32();
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic Int32 from the stream without incrementing the position.
+    ///     [Big Endian] Reads an unmanaged, Int32 from the stream without incrementing the position.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -235,7 +235,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic Int32 from the stream without incrementing the position.
+    ///     [Big Endian] Reads an unmanaged, Int32 from the stream without incrementing the position.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -243,7 +243,7 @@ namespace Reloaded.Memory.Streams
     public Int32 PeekBigEndian(out Int32 value) => value = PeekBigEndianInt32();
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic Int32 from the stream.
+    ///     [Big Endian] Reads an unmanaged, Int32 from the stream.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -256,7 +256,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic Int32 from the stream.
+    ///     [Big Endian] Reads an unmanaged, Int32 from the stream.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -264,7 +264,7 @@ namespace Reloaded.Memory.Streams
     public Int32 ReadBigEndian(out Int32 value) => value = ReadBigEndianInt32();
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic UInt32 from the stream without incrementing the position.
+    ///     [Little Endian] Reads an unmanaged, UInt32 from the stream without incrementing the position.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -277,7 +277,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic UInt32 from the stream without incrementing the position.
+    ///     [Little Endian] Reads an unmanaged, UInt32 from the stream without incrementing the position.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -285,7 +285,7 @@ namespace Reloaded.Memory.Streams
     public UInt32 PeekLittleEndian(out UInt32 value) => value = PeekLittleEndianUInt32();
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic UInt32 from the stream.
+    ///     [Little Endian] Reads an unmanaged, UInt32 from the stream.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -298,7 +298,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic UInt32 from the stream.
+    ///     [Little Endian] Reads an unmanaged, UInt32 from the stream.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -306,7 +306,7 @@ namespace Reloaded.Memory.Streams
     public UInt32 ReadLittleEndian(out UInt32 value) => value = ReadLittleEndianUInt32();
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic UInt32 from the stream without incrementing the position.
+    ///     [Big Endian] Reads an unmanaged, UInt32 from the stream without incrementing the position.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -319,7 +319,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic UInt32 from the stream without incrementing the position.
+    ///     [Big Endian] Reads an unmanaged, UInt32 from the stream without incrementing the position.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -327,7 +327,7 @@ namespace Reloaded.Memory.Streams
     public UInt32 PeekBigEndian(out UInt32 value) => value = PeekBigEndianUInt32();
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic UInt32 from the stream.
+    ///     [Big Endian] Reads an unmanaged, UInt32 from the stream.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -340,7 +340,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic UInt32 from the stream.
+    ///     [Big Endian] Reads an unmanaged, UInt32 from the stream.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -348,7 +348,7 @@ namespace Reloaded.Memory.Streams
     public UInt32 ReadBigEndian(out UInt32 value) => value = ReadBigEndianUInt32();
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic Int64 from the stream without incrementing the position.
+    ///     [Little Endian] Reads an unmanaged, Int64 from the stream without incrementing the position.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -361,7 +361,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic Int64 from the stream without incrementing the position.
+    ///     [Little Endian] Reads an unmanaged, Int64 from the stream without incrementing the position.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -369,7 +369,7 @@ namespace Reloaded.Memory.Streams
     public Int64 PeekLittleEndian(out Int64 value) => value = PeekLittleEndianInt64();
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic Int64 from the stream.
+    ///     [Little Endian] Reads an unmanaged, Int64 from the stream.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -382,7 +382,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic Int64 from the stream.
+    ///     [Little Endian] Reads an unmanaged, Int64 from the stream.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -390,7 +390,7 @@ namespace Reloaded.Memory.Streams
     public Int64 ReadLittleEndian(out Int64 value) => value = ReadLittleEndianInt64();
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic Int64 from the stream without incrementing the position.
+    ///     [Big Endian] Reads an unmanaged, Int64 from the stream without incrementing the position.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -403,7 +403,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic Int64 from the stream without incrementing the position.
+    ///     [Big Endian] Reads an unmanaged, Int64 from the stream without incrementing the position.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -411,7 +411,7 @@ namespace Reloaded.Memory.Streams
     public Int64 PeekBigEndian(out Int64 value) => value = PeekBigEndianInt64();
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic Int64 from the stream.
+    ///     [Big Endian] Reads an unmanaged, Int64 from the stream.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -424,7 +424,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic Int64 from the stream.
+    ///     [Big Endian] Reads an unmanaged, Int64 from the stream.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -432,7 +432,7 @@ namespace Reloaded.Memory.Streams
     public Int64 ReadBigEndian(out Int64 value) => value = ReadBigEndianInt64();
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic UInt64 from the stream without incrementing the position.
+    ///     [Little Endian] Reads an unmanaged, UInt64 from the stream without incrementing the position.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -445,7 +445,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic UInt64 from the stream without incrementing the position.
+    ///     [Little Endian] Reads an unmanaged, UInt64 from the stream without incrementing the position.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -453,7 +453,7 @@ namespace Reloaded.Memory.Streams
     public UInt64 PeekLittleEndian(out UInt64 value) => value = PeekLittleEndianUInt64();
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic UInt64 from the stream.
+    ///     [Little Endian] Reads an unmanaged, UInt64 from the stream.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -466,7 +466,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic UInt64 from the stream.
+    ///     [Little Endian] Reads an unmanaged, UInt64 from the stream.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -474,7 +474,7 @@ namespace Reloaded.Memory.Streams
     public UInt64 ReadLittleEndian(out UInt64 value) => value = ReadLittleEndianUInt64();
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic UInt64 from the stream without incrementing the position.
+    ///     [Big Endian] Reads an unmanaged, UInt64 from the stream without incrementing the position.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -487,7 +487,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic UInt64 from the stream without incrementing the position.
+    ///     [Big Endian] Reads an unmanaged, UInt64 from the stream without incrementing the position.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -495,7 +495,7 @@ namespace Reloaded.Memory.Streams
     public UInt64 PeekBigEndian(out UInt64 value) => value = PeekBigEndianUInt64();
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic UInt64 from the stream.
+    ///     [Big Endian] Reads an unmanaged, UInt64 from the stream.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -508,7 +508,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic UInt64 from the stream.
+    ///     [Big Endian] Reads an unmanaged, UInt64 from the stream.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -516,7 +516,7 @@ namespace Reloaded.Memory.Streams
     public UInt64 ReadBigEndian(out UInt64 value) => value = ReadBigEndianUInt64();
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic Single from the stream without incrementing the position.
+    ///     [Little Endian] Reads an unmanaged, Single from the stream without incrementing the position.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -529,7 +529,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic Single from the stream without incrementing the position.
+    ///     [Little Endian] Reads an unmanaged, Single from the stream without incrementing the position.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -537,7 +537,7 @@ namespace Reloaded.Memory.Streams
     public Single PeekLittleEndian(out Single value) => value = PeekLittleEndianSingle();
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic Single from the stream.
+    ///     [Little Endian] Reads an unmanaged, Single from the stream.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -550,7 +550,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic Single from the stream.
+    ///     [Little Endian] Reads an unmanaged, Single from the stream.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -558,7 +558,7 @@ namespace Reloaded.Memory.Streams
     public Single ReadLittleEndian(out Single value) => value = ReadLittleEndianSingle();
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic Single from the stream without incrementing the position.
+    ///     [Big Endian] Reads an unmanaged, Single from the stream without incrementing the position.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -571,7 +571,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic Single from the stream without incrementing the position.
+    ///     [Big Endian] Reads an unmanaged, Single from the stream without incrementing the position.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -579,7 +579,7 @@ namespace Reloaded.Memory.Streams
     public Single PeekBigEndian(out Single value) => value = PeekBigEndianSingle();
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic Single from the stream.
+    ///     [Big Endian] Reads an unmanaged, Single from the stream.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -592,7 +592,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic Single from the stream.
+    ///     [Big Endian] Reads an unmanaged, Single from the stream.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -600,7 +600,7 @@ namespace Reloaded.Memory.Streams
     public Single ReadBigEndian(out Single value) => value = ReadBigEndianSingle();
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic Double from the stream without incrementing the position.
+    ///     [Little Endian] Reads an unmanaged, Double from the stream without incrementing the position.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -613,7 +613,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic Double from the stream without incrementing the position.
+    ///     [Little Endian] Reads an unmanaged, Double from the stream without incrementing the position.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -621,7 +621,7 @@ namespace Reloaded.Memory.Streams
     public Double PeekLittleEndian(out Double value) => value = PeekLittleEndianDouble();
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic Double from the stream.
+    ///     [Little Endian] Reads an unmanaged, Double from the stream.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -634,7 +634,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Little Endian] Reads an unmanaged, generic Double from the stream.
+    ///     [Little Endian] Reads an unmanaged, Double from the stream.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -642,7 +642,7 @@ namespace Reloaded.Memory.Streams
     public Double ReadLittleEndian(out Double value) => value = ReadLittleEndianDouble();
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic Double from the stream without incrementing the position.
+    ///     [Big Endian] Reads an unmanaged, Double from the stream without incrementing the position.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -655,7 +655,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic Double from the stream without incrementing the position.
+    ///     [Big Endian] Reads an unmanaged, Double from the stream without incrementing the position.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -663,7 +663,7 @@ namespace Reloaded.Memory.Streams
     public Double PeekBigEndian(out Double value) => value = PeekBigEndianDouble();
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic Double from the stream.
+    ///     [Big Endian] Reads an unmanaged, Double from the stream.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage]
@@ -676,7 +676,7 @@ namespace Reloaded.Memory.Streams
     }
 
     /// <summary>
-    ///     [Big Endian] Reads an unmanaged, generic Double from the stream.
+    ///     [Big Endian] Reads an unmanaged, Double from the stream.
     /// </summary>
     /// <param name="value">The variable to receive the output value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -280,9 +280,29 @@ public Double ReadBigEndian(out Double value)
 
 Reads a big endian value of the specified type from the stream and advances the position by the size of the type.
 
+### AsLittleEndian
+
+!!! tip "Implements, `IEndianedBufferStreamReader<TStream>`. Use constraint `where T : IEndianedBufferStreamReader<TStream>` to write endian agnostic code without any overhead."
+
+```csharp
+public LittleEndianBufferedStreamReader<TStream> AsLittleEndian();
+```
+
+Returns a reader that can be used to read little endian values from the stream.  
+
+### AsBigEndian
+
+!!! tip "Implements, `IEndianedBufferStreamReader<TStream>`. Use constraint `where T : IEndianedBufferStreamReader<TStream>` to write endian agnostic code without any overhead."
+
+```csharp
+public BigEndianBufferedStreamReader<TStream> AsBigEndian();
+```
+
+Returns a reader that can be used to read big endian values from the stream.  
+
 ## Methods (Endian Struct Extensions)
 
-!!! info "The following methods are valid for structs which implement `ICanReverseEndian`".
+!!! info "The following methods are valid for structs which implement `ICanReverseEndian`"
 
 ### PeekLittleEndianStruct
 
@@ -407,7 +427,6 @@ int value = reader.Peek<int>(); // Peeks an integer from the stream
 Console.WriteLine($"The peeked integer value is {value}. Stream did not advance.");
 ```
 
-
 ### Using Customized Buffer Size
 
 !!! note "The default buffer size of 64KBytes should be sufficient for most use cases, including file reads."
@@ -439,6 +458,30 @@ Then, an integer is read, the reader advances a certain number of bytes, and fin
 The results are then printed to the console.
 
 ## Examples (Extensions)
+
+### Writing Endian Agnostic Code
+
+!!! info "Shows you how to write code that works with both Big and Little Endian data."
+
+```csharp
+using var reader = new BufferedStreamReader<FileStream>(fileStream);
+
+// Read in Big Endian
+Read(reader.AsBigEndian());
+// or... as Little Endian
+Read(reader.AsLittleEndian());
+
+private void Read<TReader>(TReader reader) where TReader : IEndianedBufferStreamReader
+{
+    // Some neat parsing code here.
+    var i16 = reader.ReadInt16();
+    var i32 = reader.PeekInt32();
+}
+```
+
+This approach allows you to write code which uses the same logic for both big and little endian.  
+You can either pass `reader.AsLittleEndian()` or `reader.AsBigEndian()` to your parsing code. Either way, your reader
+will be devirtualized and you'll be able to parse away with 0 overhead.
 
 ### Reading Big/Little Endian Primitives
 

@@ -1,9 +1,7 @@
 using System;
-using System.Buffers.Binary;
 using System.IO;
 using System.Runtime.InteropServices;
 using FluentAssertions;
-using Reloaded.Memory.Interfaces;
 using Reloaded.Memory.Streams;
 using Reloaded.Memory.Tests.Utilities.Structures;
 using Xunit;
@@ -18,7 +16,7 @@ public class BufferedStreamReaderTests
         using var stream = new MemoryStream();
         using var reader = new BufferedStreamReader<MemoryStream>(stream);
         reader.BaseStream.Should().BeSameAs(stream);
-        reader.BufferBytesAvailable.Should().Be(0);
+        reader.BufferedBytesAvailable.Should().Be(0);
         reader.CurrentBufferSize.Should().Be(0);
         reader.IsEndOfStream.Should().BeFalse();
     }
@@ -29,7 +27,7 @@ public class BufferedStreamReaderTests
         using var reader = new BufferedStreamReader<MemoryStream>(GenerateTestStream(4));
         var readByte = reader.Read<byte>();
         readByte.Should().Be(0);
-        reader.Position().Should().Be(1);
+        reader.Position.Should().Be(1);
     }
 
     [Fact]
@@ -38,7 +36,7 @@ public class BufferedStreamReaderTests
         using var reader = new BufferedStreamReader<MemoryStream>(GenerateTestStream(4));
         var peekByte = reader.Peek<byte>();
         peekByte.Should().Be(0);
-        reader.Position().Should().Be(0); // Position shouldn't change after Peek
+        reader.Position.Should().Be(0); // Position shouldn't change after Peek
     }
 
     [Fact]
@@ -46,7 +44,7 @@ public class BufferedStreamReaderTests
     {
         using var reader = new BufferedStreamReader<MemoryStream>(GenerateTestStream(4));
         reader.Seek(2, SeekOrigin.Begin);
-        reader.Position().Should().Be(2);
+        reader.Position.Should().Be(2);
         var readByte = reader.Read<byte>();
         readByte.Should().Be(2); // Read the third byte
     }
@@ -57,12 +55,12 @@ public class BufferedStreamReaderTests
         using var stream = GenerateTestStream(100);
         using var reader = new BufferedStreamReader<MemoryStream>(stream);
         reader.Seek(25, SeekOrigin.Begin);
-        reader.Position().Should().Be(25);
+        reader.Position.Should().Be(25);
         var readByte = reader.Read<byte>();
         readByte.Should().Be(25);
 
         reader.Seek(0, SeekOrigin.Begin);
-        reader.Position().Should().Be(0);
+        reader.Position.Should().Be(0);
         readByte = reader.Read<byte>();
         readByte.Should().Be(0);
     }
@@ -73,17 +71,17 @@ public class BufferedStreamReaderTests
         using var stream = GenerateTestStream(100);
         using var reader = new BufferedStreamReader<MemoryStream>(stream);
         reader.Advance(25);
-        reader.Position().Should().Be(25);
+        reader.Position.Should().Be(25);
         var readByte = reader.Read<byte>();
         readByte.Should().Be(25);
 
         reader.Advance(10);
-        reader.Position().Should().Be(36);
+        reader.Position.Should().Be(36);
         readByte = reader.Read<byte>();
         readByte.Should().Be(36);
 
         reader.Advance(-20);
-        reader.Position().Should().Be(17);
+        reader.Position.Should().Be(17);
         readByte = reader.Read<byte>();
         readByte.Should().Be(17);
     }
@@ -94,12 +92,12 @@ public class BufferedStreamReaderTests
         using var stream = GenerateTestStream(100);
         using var reader = new BufferedStreamReader<MemoryStream>(stream);
         reader.Seek(10, SeekOrigin.End);
-        reader.Position().Should().Be(90);
+        reader.Position.Should().Be(90);
         var readByte = reader.Read<byte>();
         readByte.Should().Be(90);
 
         reader.Seek(0, SeekOrigin.End);
-        reader.Position().Should().Be(100);
+        reader.Position.Should().Be(100);
     }
 
     [Fact]
@@ -132,11 +130,11 @@ public class BufferedStreamReaderTests
         using var reader = new BufferedStreamReader<MemoryStream>(stream);
         var peekStruct = reader.PeekMarshalled<MarshallingStruct>();
         peekStruct.Should().BeEquivalentTo(testStruct);
-        reader.Position().Should().Be(0); // Position should not have advanced
+        reader.Position.Should().Be(0); // Position should not have advanced
 
         var readStruct = reader.ReadMarshalled<MarshallingStruct>();
         readStruct.Should().BeEquivalentTo(testStruct);
-        reader.Position().Should().Be(size); // Position should have advanced
+        reader.Position.Should().Be(size); // Position should have advanced
     }
 
     [Fact]
@@ -162,9 +160,9 @@ public class BufferedStreamReaderTests
         var length = 10;
         Span<byte> data = stackalloc byte[length];
 
-        var initialPosition = reader.Position();
+        var initialPosition = reader.Position;
         reader.ReadBytesUnbuffered(offset, data);
-        var finalPosition = reader.Position();
+        var finalPosition = reader.Position;
 
         finalPosition.Should().Be(initialPosition); // Position should not have changed
     }
@@ -256,7 +254,7 @@ public class BufferedStreamReaderTests
         var result = reader.ReadRaw<int>(numItems, out available);
 
         available.Should().BeLessOrEqualTo(99);
-        reader.Position().Should().Be(396); // seeked back to last multiple of T
+        reader.Position.Should().Be(396); // seeked back to last multiple of T
         for (var x = 0; x < available; x++)
             result[x].Should().Be(x);
     }
@@ -274,23 +272,14 @@ public class BufferedStreamReaderTests
             span[x].Should().Be(x); // Check if the correct data is read into the span
     }
 
-    private struct UShortEx : ICanReverseEndian
-    {
-        public ushort Short;
-        public void ReverseEndian() => Short = BinaryPrimitives.ReverseEndianness(Short);
-        public static implicit operator ushort(UShortEx value) => value.Short;
-        public static implicit operator UShortEx(ushort value) => new UShortEx { Short = value };
-    }
-
     [Fact]
     public void Read_AsLittleEndianStruct()
     {
         var buffer = new byte[] { 0x01, 0x02, 0x03, 0x04 };
         using var memoryStream = new MemoryStream(buffer);
         using var reader = new BufferedStreamReader<MemoryStream>(memoryStream);
-        var expected = BitConverter.IsLittleEndian ? (UShortEx)0x0201 : (UShortEx)0x0102;
         var actual = reader.ReadLittleEndianStruct<UShortEx>();
-        actual.Should().Be(expected);
+        actual.Should().Be((UShortEx)0x0201);
     }
 
     [Fact]
@@ -299,9 +288,8 @@ public class BufferedStreamReaderTests
         var buffer = new byte[] { 0x01, 0x02, 0x03, 0x04 };
         using var memoryStream = new MemoryStream(buffer);
         using var reader = new BufferedStreamReader<MemoryStream>(memoryStream);
-        var expected = BitConverter.IsLittleEndian ? (UShortEx)0x0102 : (UShortEx)0x0201;
         var actual = reader.ReadBigEndianStruct<UShortEx>();
-        actual.Should().Be(expected);
+        actual.Should().Be((UShortEx)0x0102);
     }
 
     [Fact]
@@ -310,9 +298,8 @@ public class BufferedStreamReaderTests
         var buffer = new byte[] { 0x01, 0x02, 0x03, 0x04 };
         using var memoryStream = new MemoryStream(buffer);
         using var reader = new BufferedStreamReader<MemoryStream>(memoryStream);
-        var expected = BitConverter.IsLittleEndian ? (UShortEx)0x0201 : (UShortEx)0x0102;
         var actual = reader.PeekLittleEndianStruct<UShortEx>();
-        actual.Should().Be(expected);
+        actual.Should().Be((UShortEx)0x0201);
     }
 
     [Fact]
@@ -321,9 +308,8 @@ public class BufferedStreamReaderTests
         var buffer = new byte[] { 0x01, 0x02, 0x03, 0x04 };
         using var memoryStream = new MemoryStream(buffer);
         using var reader = new BufferedStreamReader<MemoryStream>(memoryStream);
-        var expected = BitConverter.IsLittleEndian ? (UShortEx)0x0102 : (UShortEx)0x0201;
         var actual = reader.PeekBigEndianStruct<UShortEx>();
-        actual.Should().Be(expected);
+        actual.Should().Be((UShortEx)0x0102);
     }
 
     private MemoryStream GenerateTestStream(int length)

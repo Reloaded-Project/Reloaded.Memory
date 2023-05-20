@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".solutionItems", ".solution
 		Reloaded.Project.Configurations\FixUndeclaredAPIs.ps1 = Reloaded.Project.Configurations\FixUndeclaredAPIs.ps1
 		..\.github\workflows\deploy-mkdocs.yml = ..\.github\workflows\deploy-mkdocs.yml
 		..\mkdocs.yml = ..\mkdocs.yml
+		..\Readme.md = ..\Readme.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloaded.Memory", "Reloaded.Memory\Reloaded.Memory.csproj", "{1700C74A-EC2F-4713-B6E3-59A2563D9B5D}"

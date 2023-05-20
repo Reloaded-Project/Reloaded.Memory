@@ -1,5 +1,4 @@
-﻿using Reloaded.Memory.Interfaces;
-using Reloaded.Memory.Utilities;
+﻿using Reloaded.Memory.Utilities;
 #if NET5_0_OR_GREATER
 using System.Diagnostics.CodeAnalysis;
 #endif
@@ -40,12 +39,12 @@ public unsafe partial class BufferedStreamReader<TStream> : IDisposable where TS
     /// <summary>
     ///     Gets the remaining number of bytes that are currently buffered.
     /// </summary>
-    public int BufferBytesAvailable { get; private set; }
+    public int BufferedBytesAvailable { get; private set; }
 
     /// <summary>
     ///     Gets the total size of the current buffered data at this moment in time.
     /// </summary>
-    public int CurrentBufferSize => _bufferOffset + BufferBytesAvailable;
+    public int CurrentBufferSize => _bufferOffset + BufferedBytesAvailable;
 
     /// <summary>
     ///     This is true if end of stream was reached while refilling the internal buffer.
@@ -63,8 +62,7 @@ public unsafe partial class BufferedStreamReader<TStream> : IDisposable where TS
     /// <summary>
     ///     The current position of the buffer.
     /// </summary>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public long Position() => BaseStream.Position - BufferBytesAvailable;
+    public long Position => BaseStream.Position - BufferedBytesAvailable;
 
     /// <summary>
     ///     Constructs a <see cref="BufferedStreamReader{TStream}" />.
@@ -113,11 +111,11 @@ public unsafe partial class BufferedStreamReader<TStream> : IDisposable where TS
     public void Seek(long offset, SeekOrigin origin)
     {
         if (origin == SeekOrigin.Begin)
-            offset -= Position();
+            offset -= Position;
 
         // seekTarget == _stream.Length - offset
         else if (origin == SeekOrigin.End)
-            offset = BaseStream.Length - offset - Position();
+            offset = BaseStream.Length - offset - Position;
 
         RelativeSeek(offset);
     }
@@ -176,14 +174,14 @@ public unsafe partial class BufferedStreamReader<TStream> : IDisposable where TS
         {
             var result = Marshal.PtrToStructure<T>((nint)(void*)_gcHandlePtr + _bufferOffset)!;
             _bufferOffset += size;
-            BufferBytesAvailable -= size;
+            BufferedBytesAvailable -= size;
             return result;
         }
 
         ReFillBuffer();
         var result2 = Marshal.PtrToStructure<T>((nint)(void*)_gcHandlePtr + _bufferOffset)!;
         _bufferOffset += size;
-        BufferBytesAvailable -= size;
+        BufferedBytesAvailable -= size;
         return result2;
     }
 
@@ -199,14 +197,14 @@ public unsafe partial class BufferedStreamReader<TStream> : IDisposable where TS
         {
             T result = *(T*)((byte*)_gcHandlePtr + _bufferOffset);
             _bufferOffset += size;
-            BufferBytesAvailable -= size;
+            BufferedBytesAvailable -= size;
             return result;
         }
 
         ReFillBuffer();
         T result2 = *(T*)((byte*)_gcHandlePtr + _bufferOffset);
         _bufferOffset += size;
-        BufferBytesAvailable -= size;
+        BufferedBytesAvailable -= size;
         return result2;
     }
 
@@ -233,15 +231,15 @@ public unsafe partial class BufferedStreamReader<TStream> : IDisposable where TS
             var result = (byte*)_gcHandlePtr + _bufferOffset;
             available = length;
             _bufferOffset += length;
-            BufferBytesAvailable -= length;
+            BufferedBytesAvailable -= length;
             return result;
         }
 
         ReFillBuffer();
         var result2 = (byte*)_gcHandlePtr + _bufferOffset;
-        available = Math.Min(BufferBytesAvailable, length);
+        available = Math.Min(BufferedBytesAvailable, length);
         _bufferOffset += available;
-        BufferBytesAvailable -= available;
+        BufferedBytesAvailable -= available;
         return result2;
     }
 
@@ -382,23 +380,33 @@ public unsafe partial class BufferedStreamReader<TStream> : IDisposable where TS
     public void Peek<T>(out T value) where T : unmanaged => value = Peek<T>();
 
     /// <summary>
+    /// Converts the stream to big endian.
+    /// </summary>
+    public BigEndianBufferedStreamReader<TStream> AsBigEndian() => this;
+
+    /// <summary>
+    /// Converts the stream to little endian.
+    /// </summary>
+    public LittleEndianBufferedStreamReader<TStream> AsLittleEndian() => this;
+
+    /// <summary>
     ///     Returns true if the <see cref="BufferedStreamReader{TStream}" /> has sufficient space buffered
     ///     to read memory of given size.
     /// </summary>
     /// <param name="size">The size of the item to check if can be read, in bytes.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private bool CanRead(int size) => size <= BufferBytesAvailable;
+    private bool CanRead(int size) => size <= BufferedBytesAvailable;
 
     /// <summary>
     ///     Refills the remainder of the buffer.
-    ///     i.e. Preserves data to still be read (<see cref="BufferBytesAvailable" />) and reads enough data to fill rest of
+    ///     i.e. Preserves data to still be read (<see cref="BufferedBytesAvailable" />) and reads enough data to fill rest of
     ///     buffer.
     /// </summary>
     private void ReFillBuffer()
     {
-        Buffer.MemoryCopy((void*)(_gcHandlePtr + _bufferOffset), (void*)_gcHandlePtr, BufferBytesAvailable,
-            BufferBytesAvailable);
-        FillBuffer(BufferBytesAvailable);
+        Buffer.MemoryCopy((void*)(_gcHandlePtr + _bufferOffset), (void*)_gcHandlePtr, BufferedBytesAvailable,
+            BufferedBytesAvailable);
+        FillBuffer(BufferedBytesAvailable);
     }
 
     /// <summary>
@@ -407,11 +415,11 @@ public unsafe partial class BufferedStreamReader<TStream> : IDisposable where TS
     /// <param name="bufferOffset">The offset in the buffer to start filling from.</param>
     private void FillBuffer(int bufferOffset)
     {
-        BufferBytesAvailable = BaseStream.ReadAtLeast(_buffer, bufferOffset, _buffer.Length - bufferOffset, false) +
+        BufferedBytesAvailable = BaseStream.ReadAtLeast(_buffer, bufferOffset, _buffer.Length - bufferOffset, false) +
                                bufferOffset;
         _bufferOffset = 0;
 
-        if (BufferBytesAvailable >= _buffer.Length)
+        if (BufferedBytesAvailable >= _buffer.Length)
             return;
 
         IsEndOfStream = true;
@@ -430,10 +438,10 @@ public unsafe partial class BufferedStreamReader<TStream> : IDisposable where TS
         // Do not invert braces, optimised for hot paths.
         if (relativeOffset >= 0)
         {
-            if (relativeOffset <= BufferBytesAvailable)
+            if (relativeOffset <= BufferedBytesAvailable)
             {
                 _bufferOffset += (int)relativeOffset;
-                BufferBytesAvailable -= (int)relativeOffset;
+                BufferedBytesAvailable -= (int)relativeOffset;
                 return;
             }
         }
@@ -443,7 +451,7 @@ public unsafe partial class BufferedStreamReader<TStream> : IDisposable where TS
             if (relativeOffset * -1 <= _bufferOffset)
             {
                 _bufferOffset += (int)relativeOffset;
-                BufferBytesAvailable -= (int)relativeOffset;
+                BufferedBytesAvailable -= (int)relativeOffset;
                 return;
             }
         }
@@ -454,7 +462,7 @@ public unsafe partial class BufferedStreamReader<TStream> : IDisposable where TS
 
     private void SeekSlow(long relativeOffset)
     {
-        var targetPosition = Position() + relativeOffset;
+        var targetPosition = Position + relativeOffset;
         var targetOffset = targetPosition - BaseStream.Position;
         BaseStream.Seek(targetOffset, SeekOrigin.Current);
         FillBuffer(0);

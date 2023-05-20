@@ -1,14 +1,25 @@
 ﻿using System;
+using System.Runtime.InteropServices;
+using Reloaded.Memory.Interfaces;
+using Reloaded.Memory.Utilities;
 
 namespace Reloaded.Memory.Tests.Utilities.Structures;
 
-public struct RandomIntStruct
+[StructLayout(LayoutKind.Sequential, Pack = 1, Size = 8)]
+public struct RandomIntStruct : ICanWriteToAnEndianWriter, ICanBeReadByAnEndianReader, ICanReverseEndian
 {
     private static readonly Random Random = new();
 
     private byte A;
     private short B;
     private int C;
+
+    public RandomIntStruct()
+    {
+        A = (byte)Random.Next(byte.MinValue, byte.MaxValue);
+        B = (short)Random.Next(short.MinValue, short.MaxValue);
+        C = Random.Next(int.MinValue, int.MaxValue);
+    }
 
     public static RandomIntStruct BuildRandomStruct()
     {
@@ -39,5 +50,27 @@ public struct RandomIntStruct
             hashCode = (hashCode * 397) ^ C;
             return hashCode;
         }
+    }
+
+    public void ReverseEndian()
+    {
+        B = Endian.Reverse(B);
+        C = Endian.Reverse(C);
+    }
+
+    public unsafe void Read<TEndianReader>(ref TEndianReader reader) where TEndianReader : IEndianReader
+    {
+        A = reader.ReadByteAtOffset(0);
+        B = reader.ReadShortAtOffset(1);
+        C = reader.ReadIntAtOffset(3);
+        reader.Seek(sizeof(RandomIntStruct));
+    }
+
+    public unsafe void Write<TEndianWriter>(ref TEndianWriter reader) where TEndianWriter : IEndianWriter
+    {
+        reader.WriteAtOffset(A, 0);
+        reader.WriteAtOffset(B, 1);
+        reader.WriteAtOffset(C, 3);
+        reader.Seek(sizeof(RandomIntStruct));
     }
 }

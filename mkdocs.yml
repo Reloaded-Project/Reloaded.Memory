@@ -61,7 +61,15 @@ nav:
       String: Extensions/StringExtensions.md
       Vector: Extensions/VectorExtensions.md
   - Streams:
+      Endian Readers & Writers:
+          About: Streams/EndianReaders/About.md
+          BigEndianReader: Streams/EndianReaders/BigEndianReader.md
+          BigEndianWriter: Streams/EndianReaders/BigEndianWriter.md
+          LittleEndianReader: Streams/EndianReaders/LittleEndianReader.md
+          LittleEndianWriter: Streams/EndianReaders/LittleEndianWriter.md
+
       BufferedStreamReader: Streams/BufferedStreamReader.md
+
   - Utilities:
       ArrayRental: Utilities/ArrayRental.md
       Box&lt;T&gt;: Utilities/Box.md
