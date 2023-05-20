@@ -37,7 +37,7 @@ public class MemorySafeReadWriteExtensions
     {
         var memory = new Reloaded.Memory.Memory();
         using DisposableMemoryProtection<Reloaded.Memory.Memory> disposable =
-            memory.ChangeProtectionDisposable(Alloc.Address, (int)Alloc.Length, MemoryProtection.READ_WRITE_EXECUTE);
+            memory.ChangeProtectionDisposable(Alloc.Address, (int)Alloc.Length, MemoryProtection.ReadWriteExecute);
         memory.WriteRaw(Alloc.Address, Data.AsSpanFast());
     }
 

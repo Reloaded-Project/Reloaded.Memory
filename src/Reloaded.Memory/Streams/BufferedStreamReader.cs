@@ -258,7 +258,7 @@ public unsafe partial class BufferedStreamReader<TStream> : IDisposable where TS
     /// </returns>
     /// <remarks>
     ///     Prefer this method over any of the other methods if you intend on reading large amount of data.
-    ///     This method is slow if sizeof(<typeparamref name="T"/>) is not a power of 2.
+    ///     This method is slow if sizeof(<typeparamref name="T" />) is not a power of 2.
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public T* ReadRaw<T>(int numItems, out int available) where T : unmanaged
@@ -380,12 +380,12 @@ public unsafe partial class BufferedStreamReader<TStream> : IDisposable where TS
     public void Peek<T>(out T value) where T : unmanaged => value = Peek<T>();
 
     /// <summary>
-    /// Converts the stream to big endian.
+    ///     Converts the stream to big endian.
     /// </summary>
     public BigEndianBufferedStreamReader<TStream> AsBigEndian() => this;
 
     /// <summary>
-    /// Converts the stream to little endian.
+    ///     Converts the stream to little endian.
     /// </summary>
     public LittleEndianBufferedStreamReader<TStream> AsLittleEndian() => this;
 
@@ -416,7 +416,7 @@ public unsafe partial class BufferedStreamReader<TStream> : IDisposable where TS
     private void FillBuffer(int bufferOffset)
     {
         BufferedBytesAvailable = BaseStream.ReadAtLeast(_buffer, bufferOffset, _buffer.Length - bufferOffset, false) +
-                               bufferOffset;
+                                 bufferOffset;
         _bufferOffset = 0;
 
         if (BufferedBytesAvailable >= _buffer.Length)

@@ -25,9 +25,9 @@ public class ChangeProtectionTests
         MemoryAllocation allocation = source.AllocateMemory.Allocate(allocLength);
 
         // We don't have a reliable way to test Access Violations across platforms. Pretend it works if it doesn't throw.
-        source.ChangeMemoryProtection.ChangeProtection(allocation.Address, allocLength, MemoryProtection.READ);
+        source.ChangeMemoryProtection.ChangeProtection(allocation.Address, allocLength, MemoryProtection.Read);
         source.ChangeMemoryProtection.ChangeProtection(allocation.Address, allocLength,
-            MemoryProtection.READ_WRITE_EXECUTE);
+            MemoryProtection.ReadWriteExecute);
         source.ReadWriteMemory.Write(allocation.Address, 5);
 
         source.AllocateMemory.Free(allocation);
@@ -42,7 +42,7 @@ public class ChangeProtectionTests
         using DisposableMemoryAllocation<ICanAllocateMemory> allocation =
             source.AllocateMemory.AllocateDisposable(allocLength);
         source.ChangeMemoryProtection.ChangeProtection(allocation.Allocation.Address, allocLength,
-            MemoryProtection.READ);
+            MemoryProtection.Read);
 
         // Prepare test data
         var dataToWrite = new byte[allocLength];
@@ -69,7 +69,7 @@ public class ChangeProtectionTests
         Assert.Throws<MemoryPermissionException>(() =>
         {
             source.ChangeMemoryProtection.ChangeProtection(unchecked((nuint)(-1)), 0x100,
-                MemoryProtection.READ_WRITE_EXECUTE);
+                MemoryProtection.ReadWriteExecute);
         });
     }
 
@@ -85,15 +85,15 @@ public class ChangeProtectionTests
         // We don't have a reliable way to test Access Violations across platforms. Pretend it works if it doesn't throw.
         using DisposableMemoryProtection<ICanChangeMemoryProtection> disposable =
             source.ChangeMemoryProtection.ChangeProtectionDisposable(allocation.Allocation.Address, allocLength,
-                MemoryProtection.READ);
+                MemoryProtection.Read);
     }
 
     // Mapping Tests
 #pragma warning disable CA1416 // Validate platform compatibility
     [Theory]
-    [InlineData(MemoryProtection.READ, UnixMemoryProtection.PROT_READ)]
-    [InlineData(MemoryProtection.WRITE, UnixMemoryProtection.PROT_WRITE)]
-    [InlineData(MemoryProtection.EXECUTE, UnixMemoryProtection.PROT_EXEC)]
+    [InlineData(MemoryProtection.Read, UnixMemoryProtection.PROT_READ)]
+    [InlineData(MemoryProtection.Write, UnixMemoryProtection.PROT_WRITE)]
+    [InlineData(MemoryProtection.Execute, UnixMemoryProtection.PROT_EXEC)]
     public void ToUnixTest(MemoryProtection protection, UnixMemoryProtection expected)
     {
         var result = MemoryProtectionExtensions.ToUnix(protection);
@@ -101,13 +101,13 @@ public class ChangeProtectionTests
     }
 
     [Theory]
-    [InlineData(MemoryProtection.READ, Kernel32.MEM_PROTECTION.PAGE_READONLY)]
-    [InlineData(MemoryProtection.WRITE, Kernel32.MEM_PROTECTION.PAGE_READWRITE)]
-    [InlineData(MemoryProtection.EXECUTE, Kernel32.MEM_PROTECTION.PAGE_EXECUTE)]
-    [InlineData(MemoryProtection.READ | MemoryProtection.WRITE, Kernel32.MEM_PROTECTION.PAGE_READWRITE)]
-    [InlineData(MemoryProtection.READ | MemoryProtection.EXECUTE, Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READ)]
-    [InlineData(MemoryProtection.WRITE | MemoryProtection.EXECUTE, Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE)]
-    [InlineData(MemoryProtection.READ | MemoryProtection.WRITE | MemoryProtection.EXECUTE,
+    [InlineData(MemoryProtection.Read, Kernel32.MEM_PROTECTION.PAGE_READONLY)]
+    [InlineData(MemoryProtection.Write, Kernel32.MEM_PROTECTION.PAGE_READWRITE)]
+    [InlineData(MemoryProtection.Execute, Kernel32.MEM_PROTECTION.PAGE_EXECUTE)]
+    [InlineData(MemoryProtection.Read | MemoryProtection.Write, Kernel32.MEM_PROTECTION.PAGE_READWRITE)]
+    [InlineData(MemoryProtection.Read | MemoryProtection.Execute, Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READ)]
+    [InlineData(MemoryProtection.Write | MemoryProtection.Execute, Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE)]
+    [InlineData(MemoryProtection.Read | MemoryProtection.Write | MemoryProtection.Execute,
         Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE)]
     public void ToWindowsTest(MemoryProtection protection, Kernel32.MEM_PROTECTION expected)
     {

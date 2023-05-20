@@ -105,7 +105,7 @@ public unsafe partial struct Memory : ICanReadWriteMemory, ICanAllocateMemory, I
         {
             // 0x22 = Posix.MAP_PRIVATE | Posix.MAP_ANONYMOUS
             var flags = Polyfills.IsLinux() ? 0x22 : 0x1002;
-            IntPtr result = Posix.mmap(UIntPtr.Zero, length, (int)MemoryProtection.READ_WRITE_EXECUTE, flags, -1, 0);
+            IntPtr result = Posix.mmap(UIntPtr.Zero, length, (int)MemoryProtection.ReadWriteExecute, flags, -1, 0);
             if (result == new IntPtr(-1))
                 ThrowHelpers.ThrowMemoryAllocationExceptionPosix(length, (int)result);
 

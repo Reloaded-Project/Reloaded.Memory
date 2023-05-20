@@ -56,9 +56,8 @@ public sealed class Box<T>
     ///     the <see langword="private" /> visibility modifier and prevent direct use.
     /// </remarks>
     /// <exception cref="InvalidOperationException">Always thrown when this constructor is used (eg. from reflection).</exception>
-    private Box()
-        => throw new InvalidOperationException(
-            "The CommunityToolkit.HighPerformance.Box<T> constructor should never be used.");
+    private Box() => throw new InvalidOperationException(
+        "The CommunityToolkit.HighPerformance.Box<T> constructor should never be used.");
 
     /// <summary>
     ///     Returns a <see cref="Box{T}" /> reference from the input <see cref="object" /> instance.

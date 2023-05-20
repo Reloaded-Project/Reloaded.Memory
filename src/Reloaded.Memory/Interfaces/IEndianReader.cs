@@ -3,7 +3,7 @@ using Reloaded.Memory.Streams;
 namespace Reloaded.Memory.Interfaces;
 
 /// <summary>
-/// An interface shared by <see cref="LittleEndianReader"/> and <see cref="BigEndianReader"/>.
+///     An interface shared by <see cref="LittleEndianReader" /> and <see cref="BigEndianReader" />.
 /// </summary>
 public interface IEndianReader
 {
@@ -146,14 +146,14 @@ public interface IEndianReader
     void Seek(int offset);
 
     /// <summary>
-    /// Reads into a supported structure.
+    ///     Reads into a supported structure.
     /// </summary>
     /// <param name="item">The item to read the values into.</param>
     /// <typeparam name="T">Type of item to read into.</typeparam>
     public void Read<T>(ref T item) where T : ICanBeReadByAnEndianReader;
 
     /// <summary>
-    /// Deserializes into provided structure.
+    ///     Deserializes into provided structure.
     /// </summary>
     /// <typeparam name="T">Type of item to create.</typeparam>
     /// <returns>New instance of given structure.</returns>

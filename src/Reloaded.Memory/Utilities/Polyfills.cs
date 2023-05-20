@@ -1,10 +1,9 @@
-﻿
-using Reloaded.Memory.Extensions;
-#if NET7_0_OR_GREATER
+﻿#if NET7_0_OR_GREATER
 using System.Numerics;
 #else
 using Reloaded.Memory.Exceptions;
 #endif
+using Reloaded.Memory.Extensions;
 
 namespace Reloaded.Memory.Utilities;
 
@@ -103,7 +102,8 @@ internal static class Polyfills
     /// <exception cref="EndOfStreamException">End of stream was reached.</exception>
     /// <returns>Number of bytes read.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int ReadAtLeast<TStream>(this TStream stream, byte[] buffer, int offset, int length, bool throwOnEndOfStream = true) where TStream : Stream
+    public static int ReadAtLeast<TStream>(this TStream stream, byte[] buffer, int offset, int length,
+        bool throwOnEndOfStream = true) where TStream : Stream
     {
 #if NET7_0_OR_GREATER
         return stream.ReadAtLeast(buffer.AsSpanFast(offset, length), length, throwOnEndOfStream);
@@ -140,7 +140,8 @@ internal static class Polyfills
     /// <param name="throwOnEndOfStream">Throws when end of stream encountered.</param>
     /// <returns>Number of bytes read.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int ReadAtLeast<TStream>(this TStream stream, Span<byte> buffer, bool throwOnEndOfStream = false) where TStream : Stream
+    public static int ReadAtLeast<TStream>(this TStream stream, Span<byte> buffer, bool throwOnEndOfStream = false)
+        where TStream : Stream
     {
 #if NET7_0_OR_GREATER
         return stream.ReadAtLeast(buffer, buffer.Length, throwOnEndOfStream);

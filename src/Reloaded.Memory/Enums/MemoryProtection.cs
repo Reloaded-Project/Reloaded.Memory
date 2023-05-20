@@ -17,22 +17,22 @@ public enum MemoryProtection
     /// <summary>
     ///     Allows you to read the memory.
     /// </summary>
-    READ = 1 << 0,
+    Read = 1 << 0,
 
     /// <summary>
     ///     Allows you to write the memory.
     /// </summary>
-    WRITE = 1 << 1,
+    Write = 1 << 1,
 
     /// <summary>
     ///     Allows you to execute the memory.
     /// </summary>
-    EXECUTE = 1 << 2,
+    Execute = 1 << 2,
 
     /// <summary>
     ///     Allows you to read, write and execute
     /// </summary>
-    READ_WRITE_EXECUTE = READ | WRITE | EXECUTE
+    ReadWriteExecute = Read | Write | Execute
 }
 
 /// <summary>
@@ -64,11 +64,11 @@ public static class MemoryProtectionExtensions
     internal static nuint ToUnix(MemoryProtection protection)
     {
         UnixMemoryProtection result = 0;
-        if (protection.HasFlagFast(MemoryProtection.READ))
+        if (protection.HasFlagFast(MemoryProtection.Read))
             result |= PROT_READ;
-        if (protection.HasFlagFast(MemoryProtection.WRITE))
+        if (protection.HasFlagFast(MemoryProtection.Write))
             result |= PROT_WRITE;
-        if (protection.HasFlagFast(MemoryProtection.EXECUTE))
+        if (protection.HasFlagFast(MemoryProtection.Execute))
             result |= PROT_EXEC;
 
         return (nuint)result;
@@ -79,33 +79,33 @@ public static class MemoryProtectionExtensions
     {
         Kernel32.MEM_PROTECTION result = 0;
 
-        if (protection.HasFlagFast(MemoryProtection.READ) && protection.HasFlagFast(MemoryProtection.WRITE) &&
-            protection.HasFlagFast(MemoryProtection.EXECUTE))
+        if (protection.HasFlagFast(MemoryProtection.Read) && protection.HasFlagFast(MemoryProtection.Write) &&
+            protection.HasFlagFast(MemoryProtection.Execute))
         {
             result = PAGE_EXECUTE_READWRITE;
         }
-        else if (protection.HasFlagFast(MemoryProtection.READ) && protection.HasFlagFast(MemoryProtection.WRITE))
+        else if (protection.HasFlagFast(MemoryProtection.Read) && protection.HasFlagFast(MemoryProtection.Write))
         {
             result = PAGE_READWRITE;
         }
-        else if (protection.HasFlagFast(MemoryProtection.READ) && protection.HasFlagFast(MemoryProtection.EXECUTE))
+        else if (protection.HasFlagFast(MemoryProtection.Read) && protection.HasFlagFast(MemoryProtection.Execute))
         {
             result = PAGE_EXECUTE_READ;
         }
-        else if (protection.HasFlagFast(MemoryProtection.WRITE) && protection.HasFlagFast(MemoryProtection.EXECUTE))
+        else if (protection.HasFlagFast(MemoryProtection.Write) && protection.HasFlagFast(MemoryProtection.Execute))
         {
             // There is no specific flag for Write + Execute, so we use PAGE_EXECUTE_READWRITE
             result = PAGE_EXECUTE_READWRITE;
         }
-        else if (protection.HasFlagFast(MemoryProtection.READ))
+        else if (protection.HasFlagFast(MemoryProtection.Read))
         {
             result = PAGE_READONLY;
         }
-        else if (protection.HasFlagFast(MemoryProtection.WRITE))
+        else if (protection.HasFlagFast(MemoryProtection.Write))
         {
             result = PAGE_READWRITE;
         }
-        else if (protection.HasFlagFast(MemoryProtection.EXECUTE))
+        else if (protection.HasFlagFast(MemoryProtection.Execute))
         {
             result = PAGE_EXECUTE;
         }

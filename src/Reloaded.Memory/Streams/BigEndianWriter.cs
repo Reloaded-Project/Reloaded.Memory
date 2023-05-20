@@ -17,7 +17,7 @@ public unsafe struct BigEndianWriter : IEndianWriter
     public byte* Ptr;
 
     /// <summary>
-    /// Creates a simple wrapper around a pointer that writes in Big Endian.
+    ///     Creates a simple wrapper around a pointer that writes in Big Endian.
     /// </summary>
     /// <param name="ptr">Pointer to the item behind the writer.</param>
     public BigEndianWriter(byte* ptr) => Ptr = ptr;

@@ -102,7 +102,7 @@ public static class CanChangeMemoryProtectionExtensions
         where TMemory : ICanChangeMemoryProtection, ICanReadWriteMemory
     {
         using DisposableMemoryProtection<TMemory> permissions =
-            item.ChangeProtectionDisposable(memoryAddress, data.Length, MemoryProtection.READ_WRITE_EXECUTE);
+            item.ChangeProtectionDisposable(memoryAddress, data.Length, MemoryProtection.ReadWriteExecute);
         item.WriteRaw(memoryAddress, data);
     }
 
@@ -124,7 +124,7 @@ public static class CanChangeMemoryProtectionExtensions
         where TMemory : ICanChangeMemoryProtection, ICanReadWriteMemory
     {
         using DisposableMemoryProtection<TMemory> permissions =
-            item.ChangeProtectionDisposable(memoryAddress, data.Length, MemoryProtection.READ_WRITE_EXECUTE);
+            item.ChangeProtectionDisposable(memoryAddress, data.Length, MemoryProtection.ReadWriteExecute);
         item.ReadRaw(memoryAddress, data);
     }
 }

@@ -4,7 +4,7 @@ using Reloaded.Memory.Streams;
 namespace Reloaded.Memory.Interfaces;
 
 /// <summary>
-/// An implementation of <see cref="BufferedStreamReader{TStream}"/> tied to a specific endian.
+///     An implementation of <see cref="BufferedStreamReader{TStream}" /> tied to a specific endian.
 /// </summary>
 public interface IEndianedBufferStreamReader
 {
@@ -38,7 +38,8 @@ public interface IEndianedBufferStreamReader
     /// <param name="offset">Offset of the origin.</param>
     /// <param name="origin">Where to seek the stream from.</param>
     /// <remarks>
-    ///     For performance reasons, prefer <see cref="BufferedStreamReader{TStream}.Advance" /> if you intend to seek from current position.
+    ///     For performance reasons, prefer <see cref="BufferedStreamReader{TStream}.Advance" /> if you intend to seek from
+    ///     current position.
     /// </remarks>
     [ExcludeFromCodeCoverage]
     void Seek(long offset, SeekOrigin origin);
@@ -67,31 +68,31 @@ public interface IEndianedBufferStreamReader
     int ReadBytesUnbuffered(long offset, Span<byte> data);
 
     /// <summary>
-    ///     Reads a generic struct <typeparamref name="T"/> from the stream.
+    ///     Reads a generic struct <typeparamref name="T" /> from the stream.
     /// </summary>
-    /// <typeparam name="T">Type of struct to read which inherits from <see cref="ICanReverseEndian"/>.</typeparam>
+    /// <typeparam name="T">Type of struct to read which inherits from <see cref="ICanReverseEndian" />.</typeparam>
     /// <returns>The struct from the stream.</returns>
     T ReadStruct<T>() where T : unmanaged, ICanReverseEndian;
 
     /// <summary>
-    ///     Reads a generic struct <typeparamref name="T"/> from the stream.
+    ///     Reads a generic struct <typeparamref name="T" /> from the stream.
     /// </summary>
-    /// <typeparam name="T">Type of struct to read which inherits from <see cref="ICanReverseEndian"/>.</typeparam>
+    /// <typeparam name="T">Type of struct to read which inherits from <see cref="ICanReverseEndian" />.</typeparam>
     /// <param name="result">The result of the read operation.</param>
     /// <returns>The struct from the stream.</returns>
     void ReadStruct<T>(out T result) where T : unmanaged, ICanReverseEndian;
 
     /// <summary>
-    ///     Reads a generic struct <typeparamref name="T"/> from the stream without advancing the stream.
+    ///     Reads a generic struct <typeparamref name="T" /> from the stream without advancing the stream.
     /// </summary>
-    /// <typeparam name="T">Type of struct to read which inherits from <see cref="ICanReverseEndian"/>.</typeparam>
+    /// <typeparam name="T">Type of struct to read which inherits from <see cref="ICanReverseEndian" />.</typeparam>
     /// <returns>The struct from the stream.</returns>
     T PeekStruct<T>() where T : unmanaged, ICanReverseEndian;
 
     /// <summary>
-    ///     Reads a generic struct <typeparamref name="T"/> from the stream without advancing the stream.
+    ///     Reads a generic struct <typeparamref name="T" /> from the stream without advancing the stream.
     /// </summary>
-    /// <typeparam name="T">Type of struct to read which inherits from <see cref="ICanReverseEndian"/>.</typeparam>
+    /// <typeparam name="T">Type of struct to read which inherits from <see cref="ICanReverseEndian" />.</typeparam>
     /// <param name="result">The result of the read operation.</param>
     /// <returns>The struct from the stream.</returns>
     void PeekStruct<T>(out T result) where T : unmanaged, ICanReverseEndian;
@@ -369,7 +370,7 @@ public interface IEndianedBufferStreamReader
     /// </returns>
     /// <remarks>
     ///     Prefer this method over any of the other methods if you intend on reading large amount of data.
-    ///     This method is slow if sizeof(<typeparamref name="T"/>) is not a power of 2.
+    ///     This method is slow if sizeof(<typeparamref name="T" />) is not a power of 2.
     /// </remarks>
     [ExcludeFromCodeCoverage]
     unsafe T* ReadRaw<T>(int numItems, out int available) where T : unmanaged;
@@ -407,9 +408,9 @@ public interface IEndianedBufferStreamReader
 }
 
 /// <summary>
-/// An implementation of <see cref="BufferedStreamReader{TStream}"/> tied to a specific endian.
+///     An implementation of <see cref="BufferedStreamReader{TStream}" /> tied to a specific endian.
 /// </summary>
-/// <typeparam name="TStream">Type of stream underlying the <see cref="BufferedStreamReader{TStream}"/>.</typeparam>
+/// <typeparam name="TStream">Type of stream underlying the <see cref="BufferedStreamReader{TStream}" />.</typeparam>
 public interface IEndianedBufferStreamReader<out TStream> : IEndianedBufferStreamReader where TStream : Stream
 {
     /// <summary>

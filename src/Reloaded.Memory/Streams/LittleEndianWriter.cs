@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Reloaded.Memory.Interfaces;
 using Reloaded.Memory.Utilities;
 
@@ -18,7 +17,7 @@ public unsafe struct LittleEndianWriter : IEndianWriter
     public byte* Ptr;
 
     /// <summary>
-    /// Creates a simple wrapper around a pointer that writes in Little Endian.
+    ///     Creates a simple wrapper around a pointer that writes in Little Endian.
     /// </summary>
     /// <param name="ptr">Pointer to the item behind the writer.</param>
     public LittleEndianWriter(byte* ptr) => Ptr = ptr;

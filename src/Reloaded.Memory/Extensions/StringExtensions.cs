@@ -11,7 +11,6 @@ using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.X86;
 #endif
 #if NETSTANDARD
-using System.Runtime.InteropServices;
 #endif
 
 namespace Reloaded.Memory.Extensions;

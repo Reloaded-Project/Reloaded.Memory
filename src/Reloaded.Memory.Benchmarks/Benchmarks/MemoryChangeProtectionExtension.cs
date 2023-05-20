@@ -29,7 +29,7 @@ public class MemoryChangeProtectionExtension
     public nuint ChangePermission_Direct()
     {
         var memory = new Reloaded.Memory.Memory();
-        var oldProtection = memory.ChangeProtection(Alloc.Address, (int)Alloc.Length, MemoryProtection.READ);
+        var oldProtection = memory.ChangeProtection(Alloc.Address, (int)Alloc.Length, MemoryProtection.Read);
         memory.ChangeProtectionRaw(Alloc.Address, (int)Alloc.Length, oldProtection);
         return oldProtection;
     }
@@ -39,7 +39,7 @@ public class MemoryChangeProtectionExtension
     {
         var memory = new Reloaded.Memory.Memory();
         DisposableMemoryProtection<Reloaded.Memory.Memory> oldProtection =
-            memory.ChangeProtectionDisposable(Alloc.Address, (int)Alloc.Length, MemoryProtection.READ);
+            memory.ChangeProtectionDisposable(Alloc.Address, (int)Alloc.Length, MemoryProtection.Read);
         oldProtection.Dispose();
         return oldProtection.OriginalProtection;
     }
@@ -49,7 +49,7 @@ public class MemoryChangeProtectionExtension
     {
         var memory = new Reloaded.Memory.Memory();
         using DisposableMemoryProtection<Reloaded.Memory.Memory> oldProtection =
-            memory.ChangeProtectionDisposable(Alloc.Address, (int)Alloc.Length, MemoryProtection.READ);
+            memory.ChangeProtectionDisposable(Alloc.Address, (int)Alloc.Length, MemoryProtection.Read);
         return oldProtection.OriginalProtection;
     }
 }

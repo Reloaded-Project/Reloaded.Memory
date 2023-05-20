@@ -5,7 +5,7 @@ namespace Reloaded.Memory.Utilities;
 /// <summary>
 ///     Represents a slice of an <see cref="ArrayRental" />.
 ///     This API is meant to be used as a return value from methods, and transfers control of the rental from the internal
-///     <see cref="ArrayRental"/>.
+///     <see cref="ArrayRental" />.
 /// </summary>
 [PublicAPI]
 public struct ArrayRentalSlice : IDisposable

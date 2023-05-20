@@ -3,7 +3,7 @@ using Reloaded.Memory.Streams;
 namespace Reloaded.Memory.Interfaces;
 
 /// <summary>
-/// An interface shared by <see cref="LittleEndianWriter"/> and <see cref="BigEndianWriter"/>.
+///     An interface shared by <see cref="LittleEndianWriter" /> and <see cref="BigEndianWriter" />.
 /// </summary>
 public interface IEndianWriter
 {

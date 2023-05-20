@@ -5,10 +5,10 @@ using Reloaded.Memory.Exceptions;
 namespace Reloaded.Memory.Utilities;
 
 /// <summary>
-/// Utility methods for dealing with endian conversions.
+///     Utility methods for dealing with endian conversions.
 /// </summary>
 /// <summary>
-/// Provides various utilities for converting primitives and structures between endians.
+///     Provides various utilities for converting primitives and structures between endians.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public static class Endian
@@ -58,7 +58,7 @@ public static class Endian
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
     /// <summary>
-    /// Reverses the endian of a primitive value such as int, short, float, double etc. (Not including structs).
+    ///     Reverses the endian of a primitive value such as int, short, float, double etc. (Not including structs).
     /// </summary>
     /// <typeparam name="T">Type of element whose endian is to be reversed.</typeparam>
     /// <param name="value">The individual value to be byte reversed.</param>

@@ -170,7 +170,7 @@ public unsafe struct LittleEndianReader : IEndianReader
     {
         if (BitConverter.IsLittleEndian)
         {
-            var result = *(T*)Ptr;
+            T result = *(T*)Ptr;
             Ptr += sizeof(T);
             return result;
         }

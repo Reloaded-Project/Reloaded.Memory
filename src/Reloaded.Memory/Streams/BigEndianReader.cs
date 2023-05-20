@@ -17,7 +17,7 @@ public unsafe struct BigEndianReader : IEndianReader
     public byte* Ptr;
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="BigEndianReader"/> struct with the given pointer.
+    ///     Initializes a new instance of the <see cref="BigEndianReader" /> struct with the given pointer.
     /// </summary>
     /// <param name="ptr">The pointer to read from.</param>
     public BigEndianReader(byte* ptr) => Ptr = ptr;
@@ -170,12 +170,12 @@ public unsafe struct BigEndianReader : IEndianReader
     {
         if (!BitConverter.IsLittleEndian)
         {
-            var result = *(T*)Ptr;
+            T result = *(T*)Ptr;
             Ptr += sizeof(T);
             return result;
         }
 
-        T value = new T();
+        var value = new T();
         value.Read(ref this);
         return value;
     }

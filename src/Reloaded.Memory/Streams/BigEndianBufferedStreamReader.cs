@@ -4,7 +4,8 @@ using Reloaded.Memory.Interfaces;
 namespace Reloaded.Memory.Streams;
 
 /// <summary>
-///     Implementation of <see cref="BufferedStreamReader{TStream}"/> that delegates the underlying method calls as Big Endian.
+///     Implementation of <see cref="BufferedStreamReader{TStream}" /> that delegates the underlying method calls as Big
+///     Endian.
 /// </summary>
 /// <typeparam name="TStream">Type of underlying stream.</typeparam>
 public struct BigEndianBufferedStreamReader<TStream> : IEndianedBufferStreamReader<TStream> where TStream : Stream
@@ -181,7 +182,8 @@ public struct BigEndianBufferedStreamReader<TStream> : IEndianedBufferStreamRead
 
     /// <inheritdoc />
     [ExcludeFromCodeCoverage]
-    public unsafe T* ReadRaw<T>(int numItems, out int available) where T : unmanaged => _impl.ReadRaw<T>(numItems, out available);
+    public unsafe T* ReadRaw<T>(int numItems, out int available) where T : unmanaged
+        => _impl.ReadRaw<T>(numItems, out available);
 
     /// <inheritdoc />
     [ExcludeFromCodeCoverage]
@@ -192,14 +194,18 @@ public struct BigEndianBufferedStreamReader<TStream> : IEndianedBufferStreamRead
     public unsafe int ReadRaw<T>(T* buffer, int numItems) where T : unmanaged => _impl.ReadRaw(buffer, numItems);
 
     /// <summary>
-    /// Implicitly converts a <see cref="BigEndianBufferedStreamReader{TStream}"/> to a <see cref="BufferedStreamReader{TStream}"/>.
+    ///     Implicitly converts a <see cref="BigEndianBufferedStreamReader{TStream}" /> to a
+    ///     <see cref="BufferedStreamReader{TStream}" />.
     /// </summary>
-    /// <param name="reader">The <see cref="BigEndianBufferedStreamReader{TStream}"/> to convert.</param>
-    public static implicit operator BufferedStreamReader<TStream>(BigEndianBufferedStreamReader<TStream> reader) => reader._impl;
+    /// <param name="reader">The <see cref="BigEndianBufferedStreamReader{TStream}" /> to convert.</param>
+    public static implicit operator BufferedStreamReader<TStream>(BigEndianBufferedStreamReader<TStream> reader)
+        => reader._impl;
 
     /// <summary>
-    /// Implicitly converts a <see cref="BufferedStreamReader{TStream}"/> to a <see cref="BigEndianBufferedStreamReader{TStream}"/>.
+    ///     Implicitly converts a <see cref="BufferedStreamReader{TStream}" /> to a
+    ///     <see cref="BigEndianBufferedStreamReader{TStream}" />.
     /// </summary>
-    /// <param name="reader">The <see cref="BufferedStreamReader{TStream}"/> to convert.</param>
-    public static implicit operator BigEndianBufferedStreamReader<TStream>(BufferedStreamReader<TStream> reader) => new() { _impl = reader };
+    /// <param name="reader">The <see cref="BufferedStreamReader{TStream}" /> to convert.</param>
+    public static implicit operator BigEndianBufferedStreamReader<TStream>(BufferedStreamReader<TStream> reader)
+        => new() { _impl = reader };
 }
