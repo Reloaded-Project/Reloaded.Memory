@@ -72,7 +72,7 @@ arrayIntPtr++;
 Reading from RAM:  
 
 ```csharp
-int valueFromSource = intPtr.Get(); // implicit Memory.Instance
+int valueFromSource = pointer.Get(); // implicit Memory.Instance
 Console.WriteLine($"Value from RAM: {valueFromSource}");
 ```
 
@@ -80,14 +80,14 @@ Reading from RAM of another process:
 
 ```csharp
 // externalMemory = new ExternalMemory(anotherProcess);
-int valueFromSource = intPtr.Get(externalMemory);
+int valueFromSource = pointer.Get(externalMemory);
 Console.WriteLine($"Value from another process' RAM: {valueFromSource}");
 ```
 
 You can also read/write to offsets:
 
 ```csharp
-int valueAtOffset2 = intPtr.Get(2);
+int valueAtOffset2 = pointer.Get(2);
 Console.WriteLine($"Value from RAM (Offset 2): {valueAtOffset2}");
 ```
 

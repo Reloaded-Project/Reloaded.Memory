@@ -1,6 +1,6 @@
 # Pinnable&lt;T&gt;
 
-!!! info "Allows you to pin a native unmanaged object in a static location in memory, to be later accessible from native code."
+!!! info "Allows you to pin an unmanaged object in a static location in memory, to be later accessible from native code."
 
 !!! warning "Assume value is copied; modify the Pinnable instance to read/write values once created."
 

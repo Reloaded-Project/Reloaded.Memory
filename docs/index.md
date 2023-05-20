@@ -23,7 +23,6 @@ hide:
 	</a>
 </div>
 
-
 ## About
 
 Reloaded.Memory is a high performance library which provides `zero-cost abstractions` for memory manipulation in C#.  
@@ -39,6 +38,51 @@ It is designed to be as fast as possible, with no overhead, while providing usef
 
 This project guarantees binary backwards compatibility; meaning you can substitute the library with any newer version
 without recompiling the source code. Should the need to introduce any breaking changes occur; much like the runtime.
+
+## Common Utilities
+
+!!! info "Common Classes within this Package Include"
+
+**Memory Manipulation:  **
+
+| Action           | Description                                                                         |
+|------------------|-------------------------------------------------------------------------------------|
+| `Memory`         | Allows you to Read, Write, Allocate & Change Memory Protection for Current Process. |
+| `ExternalMemory` | Read, Write, Allocate & Change Memory Protection but for Another Process.           |
+
+**Streams Management:  **
+
+| Action                        | Description                                     |
+|-------------------------------|-------------------------------------------------|
+| `BigEndian(Reader/Writer)`    | Read/write raw data in memory as Big Endian.    |
+| `LittleEndian(Reader/Writer)` | Read/write raw data in memory as Little Endian. |
+| `BufferedStreamReader`        | High performance alternative to `BinaryReader`. |
+
+**Extensions:  **
+
+| Action                   | Description                                                                       |
+|--------------------------|-----------------------------------------------------------------------------------|
+| `(Array/Span)Extensions` | Unsafe slicing, references without bounds checks and SIMD accelerated extensions. |
+| `StreamExtensions`       | Extensions for reading and writing from/to generics.                              |
+| `StringExtensions`       | Custom Hash Function(s) and unsafe character references.                          |
+
+**Utilities:  **
+
+| Action                             | Description                                                                            |
+|------------------------------------|----------------------------------------------------------------------------------------|
+| `ArrayRental` & `ArrayRentalSlice` | Safe wrapper around `ArrayPool<T>` rentals.                                            |
+| `Box<T>`                           | Represents a boxed value type, providing build-time validation and automatic unboxing. |
+| `CircularBuffer`                   | Basic high-performance circular buffer.                                                |
+| `Pinnable<T>`                      | Utility for pinning C# objects for access from native code.                            |
+
+**Base building blocks:  **
+
+| Action                                          | Description                                     |
+|-------------------------------------------------|-------------------------------------------------|
+| `Ptr<T> / MarshalledPtr<T>`                     | Abstraction over a pointer to arbitrary source. |
+| `FixedArrayPtr<T> & MarshalledFixedArrayPtr<T>` | Abstraction over a pointer with known length.   |
+
+(This list is not exhaustive, please see the API Documentation for complete API)
 
 ## Community Feedback
 

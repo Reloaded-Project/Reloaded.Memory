@@ -10,6 +10,7 @@
     <Authors>Sewer56</Authors>
     <Product>Reloaded Memory Library</Product>
     <PackageId>Reloaded.Memory</PackageId>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PolySharpUsePublicAccessibilityForGeneratedTypes>true</PolySharpUsePublicAccessibilityForGeneratedTypes>
   </PropertyGroup>
 
@@ -38,6 +39,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Reloaded.Memory.Generator\Reloaded.Memory.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="" />
+    <None Remove="../Reloaded.Project.Configurations/LICENSE.md" />
+    <None Include="LICENSE.md" Pack="true" PackagePath=""/>
   </ItemGroup>
 
   <ItemGroup>
