@@ -19,7 +19,7 @@ hide:
 	</a>
 	<!-- Build Status -->
 	<a href="https://github.com/Reloaded-Project/Reloaded.Memory/actions/workflows/build-and-publish.yml">
-		<img src="https://img.shields.io/github/actions/workflow/status/Reloaded-Project/Reloaded.Memory/build-and-publish.yml?branch=main" alt="Build Status" />
+		<img src="https://img.shields.io/github/actions/workflow/status/Reloaded-Project/Reloaded.Memory/build-and-publish.yml" alt="Build Status" />
 	</a>
 </div>
 
