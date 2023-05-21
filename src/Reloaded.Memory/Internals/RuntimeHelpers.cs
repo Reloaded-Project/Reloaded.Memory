@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+#if !NET6_0_OR_GREATER
 using Reloaded.Memory.Utilities;
+#endif
 
 namespace Reloaded.Memory.Internals;
 
@@ -32,7 +34,6 @@ internal static class RuntimeHelpers
     /// <returns>The byte offset to the first <typeparamref name="T" /> element in a SZ array.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IntPtr GetArrayDataByteOffset<T>() => TypeInfo<T>.ArrayDataByteOffset;
-#endif
 
     /// <summary>
     ///     A private generic class to preload type info for arbitrary runtime types.
@@ -43,6 +44,7 @@ internal static class RuntimeHelpers
         /// <summary>
         ///     The byte offset to the first <typeparamref name="T" /> element in a SZ array.
         /// </summary>
+        // ReSharper disable once StaticMemberInGenericType
         public static readonly nint ArrayDataByteOffset = MeasureArrayDataByteOffset();
 
         /// <summary>
@@ -55,4 +57,5 @@ internal static class RuntimeHelpers
             return ObjectMarshal.DangerousGetObjectDataByteOffset(array, ref array[0]);
         }
     }
+#endif
 }

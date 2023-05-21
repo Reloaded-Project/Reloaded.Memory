@@ -21,7 +21,7 @@ public class MemoryAllocateExtension
     {
         var memory = new Reloaded.Memory.Memory();
         MemoryAllocation alloc = memory.Allocate(DataSize);
-        memory.Free(alloc);
+        _ = memory.Free(alloc);
         return alloc.Address;
     }
 

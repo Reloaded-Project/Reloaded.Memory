@@ -61,5 +61,5 @@ public unsafe class Ptr
     }
 
     [GlobalCleanup]
-    public void Cleanup() => Reloaded.Memory.Memory.Instance.Free(_allocation);
+    public bool Cleanup() => Reloaded.Memory.Memory.Instance.Free(_allocation);
 }

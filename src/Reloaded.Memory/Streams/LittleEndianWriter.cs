@@ -174,5 +174,6 @@ public unsafe struct LittleEndianWriter : IEndianWriter
 
     /// <inheritdoc />
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
     public void Write<T>(in T item) where T : unmanaged, ICanWriteToAnEndianWriter => item.Write(ref this);
 }

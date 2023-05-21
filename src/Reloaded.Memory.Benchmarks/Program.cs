@@ -3,7 +3,6 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using BenchmarkDotNet.Running;
-using Reloaded.Memory.Benchmarks.Benchmarks;
 using Reloaded.Memory.Benchmarks.Framework;
 using Spectre.Console;
 
@@ -41,7 +40,7 @@ while (true)
     }
 }
 
-void PrintTable(SelectableBenchmark[] benchmarks)
+void PrintTable(SelectableBenchmark[] benches)
 {
     var columns = new List<(string Name, Expression<Func<SelectableBenchmark, string>> Selector)>
     {
@@ -50,7 +49,7 @@ void PrintTable(SelectableBenchmark[] benchmarks)
 
     // Filter out columns with no values
     List<(string Name, Expression<Func<SelectableBenchmark, string>> Selector)> filteredColumns = columns
-        .Where(column => benchmarks.Any(x => !string.IsNullOrEmpty(column.Selector.Compile().Invoke(x))))
+        .Where(column => benches.Any(x => !string.IsNullOrEmpty(column.Selector.Compile().Invoke(x))))
         .ToList();
 
     // Create a table
@@ -61,9 +60,9 @@ void PrintTable(SelectableBenchmark[] benchmarks)
         table.AddColumn(column.Name);
 
     // Add rows
-    for (var x = 0; x < benchmarks.Length; x++)
+    for (var x = 0; x < benches.Length; x++)
     {
-        SelectableBenchmark benchmark = benchmarks[x];
+        SelectableBenchmark benchmark = benches[x];
         var rowValues = filteredColumns
             .Select(column => column.Selector.Compile().Invoke(benchmark))
             .ToArray();

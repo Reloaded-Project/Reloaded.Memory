@@ -17,7 +17,7 @@ namespace Reloaded.Memory.Streams;
 ///     or <see cref="BinaryWriter" /> as minimal error checking is done.
 /// </remarks>
 [PublicAPI]
-public unsafe partial class BufferedStreamReader<TStream> : IDisposable where TStream : Stream
+public unsafe partial class BufferedStreamReader<TStream> where TStream : Stream
 {
     private readonly byte[] _buffer;
 

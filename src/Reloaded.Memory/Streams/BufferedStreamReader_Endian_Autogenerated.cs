@@ -1,5 +1,6 @@
 ﻿
 
+// ReSharper disable RedundantUsingDirective
 using System.Runtime.CompilerServices;
 using System.Buffers.Binary;
 using System.Diagnostics.CodeAnalysis;

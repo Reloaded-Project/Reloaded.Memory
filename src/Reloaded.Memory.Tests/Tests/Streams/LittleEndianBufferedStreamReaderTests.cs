@@ -1,6 +1,5 @@
 using System.IO;
 using FluentAssertions;
-using Reloaded.Memory.Interfaces;
 using Reloaded.Memory.Streams;
 using Reloaded.Memory.Tests.Utilities.Structures;
 using Xunit;

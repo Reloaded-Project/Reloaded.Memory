@@ -9,11 +9,10 @@ namespace Reloaded.Memory.Tests.Tests.Streams;
 
 public unsafe class BigEndianWriterTests
 {
-    private T AssertEndianReverse<T>(T actual, T value) where T : unmanaged
+    private void AssertEndianReverse<T>(T actual, T value) where T : unmanaged
     {
         var expected = !IsLittleEndian ? value : Reverse(value);
         actual.Should().Be(expected);
-        return actual;
     }
 
     [Fact]

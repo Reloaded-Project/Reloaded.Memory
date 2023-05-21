@@ -173,9 +173,8 @@ public class BufferedStreamReaderTests
         using var stream = GenerateTestStream(100);
         using var reader = new BufferedStreamReader<MemoryStream>(stream);
         var length = 10;
-        var available = 0;
 
-        var result = reader.ReadRaw(length, out available);
+        var result = reader.ReadRaw(length, out var available);
 
         available.Should().Be(length); // Check if correct amount of data is available
         for (var x = 0; x < length; x++)
@@ -188,9 +187,9 @@ public class BufferedStreamReaderTests
         using var stream = GenerateTestStream(100);
         using var reader = new BufferedStreamReader<MemoryStream>(stream);
         var length = 10;
-        var available = 0;
 
-        var result = reader.ReadRaw(10, out available);
+        // ReSharper disable once RedundantAssignment
+        var result = reader.ReadRaw(10, out var available);
         result = reader.ReadRaw(length, out available);
 
         available.Should().Be(length); // Check if correct amount of data is available
@@ -204,9 +203,8 @@ public class BufferedStreamReaderTests
         using var stream = GenerateTestStream(100);
         using var reader = new BufferedStreamReader<MemoryStream>(stream);
         var length = 200; // Requested length is more than the buffer size
-        var available = 0;
 
-        var result = reader.ReadRaw(length, out available);
+        var result = reader.ReadRaw(length, out var available);
 
         available.Should().BeLessOrEqualTo(100); // Check if the available data does not exceed buffer size
         for (var x = 0; x < available; x++)
@@ -219,9 +217,8 @@ public class BufferedStreamReaderTests
         using var stream = new MemoryStream(SetupIntArrayInByteArray(100));
         using var reader = new BufferedStreamReader<MemoryStream>(stream);
         var numItems = 10;
-        var available = 0;
 
-        var result = reader.ReadRaw<int>(numItems, out available);
+        var result = reader.ReadRaw<int>(numItems, out var available);
 
         available.Should().Be(numItems); // Check if correct amount of data is available
         for (var x = 0; x < numItems; x++)
@@ -234,9 +231,8 @@ public class BufferedStreamReaderTests
         using var stream = new MemoryStream(SetupIntArrayInByteArray(100));
         using var reader = new BufferedStreamReader<MemoryStream>(stream);
         var numItems = 200; // Requested items is more than the buffer size
-        var available = 0;
 
-        var result = reader.ReadRaw<int>(numItems, out available);
+        var result = reader.ReadRaw<int>(numItems, out var available);
 
         available.Should().BeLessOrEqualTo(100); // Check if the available data does not exceed buffer size
         for (var x = 0; x < available; x++)
@@ -249,9 +245,8 @@ public class BufferedStreamReaderTests
         using var stream = new MemoryStream(SetupIntArrayInByteArray(100, new byte[399]));
         using var reader = new BufferedStreamReader<MemoryStream>(stream);
         var numItems = 200; // Requested items is more than the buffer size
-        var available = 0;
 
-        var result = reader.ReadRaw<int>(numItems, out available);
+        var result = reader.ReadRaw<int>(numItems, out var available);
 
         available.Should().BeLessOrEqualTo(99);
         reader.Position.Should().Be(396); // seeked back to last multiple of T

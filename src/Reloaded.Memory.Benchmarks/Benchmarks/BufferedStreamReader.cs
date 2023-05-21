@@ -10,12 +10,12 @@ namespace Reloaded.Memory.Benchmarks.Benchmarks;
 [BenchmarkInfo("Buffered Stream Reader (MemoryStream)", "Tests performance of Buffered Stream Reader on MemoryStream.", Categories.Performance)]
 public class BufferedStreamReader
 {
-    private MemoryStream _memoryStream;
-    private BufferedStreamReader<MemoryStream> _bufferedStreamReader;
-    private byte[] _buffer;
+    private MemoryStream _memoryStream = null!;
+    private BufferedStreamReader<MemoryStream> _bufferedStreamReader = null!;
+    private byte[] _buffer = null!;
     private unsafe byte* _nativePtr;
     private GCHandle _handle;
-    private BinaryReader _binaryReader;
+    private BinaryReader _binaryReader = null!;
 
     [Params(8388608)] // 8 MiB
     public int N { get; set; }
@@ -58,10 +58,10 @@ public class BufferedStreamReader
     }
 
     [Benchmark]
-    public unsafe byte NativePointer_ReadByte() => NativePointer_Read<byte>();
+    public byte NativePointer_ReadByte() => NativePointer_Read<byte>();
 
     [Benchmark]
-    public unsafe byte BufferedStreamReader_ReadByteRaw() => BufferedStreamReader_ReadRaw<byte>();
+    public byte BufferedStreamReader_ReadByteRaw() => BufferedStreamReader_ReadRaw<byte>();
 
     [Benchmark]
     public int BufferedStreamReader_ReadInt()
@@ -110,7 +110,7 @@ public class BufferedStreamReader
     public long BufferedStreamReader_ReadLong() => BufferedStreamReader_Read<long>();
 
     [Benchmark]
-    public unsafe long NativePointer_ReadLong() => NativePointer_Read<long>();
+    public long NativePointer_ReadLong() => NativePointer_Read<long>();
 
     [Benchmark]
     public long BufferedStreamReader_ReadLongRaw() => BufferedStreamReader_ReadRaw<long>();

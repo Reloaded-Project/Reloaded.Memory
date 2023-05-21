@@ -21,7 +21,7 @@ public class MemoryChangeProtectionExtension
     public void Setup() => Alloc = new Reloaded.Memory.Memory().Allocate(DataSize);
 
     [GlobalCleanup]
-    public void Cleanup() => new Reloaded.Memory.Memory().Free(Alloc);
+    public bool Cleanup() => new Reloaded.Memory.Memory().Free(Alloc);
 
     // Note: We're not unrolling because we don't care for it to run as fast as possible, only that it's zero overhead.
 

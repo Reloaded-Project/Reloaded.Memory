@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using BenchmarkDotNet.Attributes;
 using Reloaded.Memory.Benchmarks.Framework;
@@ -10,6 +11,7 @@ namespace Reloaded.Memory.Benchmarks.Benchmarks;
 [MedianColumn]
 [DisassemblyDiagnoser(printInstructionAddresses: true)]
 [BenchmarkInfo("String Hashing", "Measures the performance of string hashing.", Categories.Performance)]
+[SuppressMessage("ReSharper", "RedundantAssignment")]
 public class StringHashBenchmark
 {
     private static readonly Random _random = new();

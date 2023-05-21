@@ -184,7 +184,7 @@ public static class StringExtensions
                         while (length >= (sizeof(nuint) / sizeof(char)))
                         {
                             length -= (sizeof(nuint) / sizeof(char));
-                            hash1 = (nuint)((BitOperations.RotateLeft(hash1, 5) + hash1) ^ ptr[0]);
+                            hash1 = (BitOperations.RotateLeft(hash1, 5) + hash1) ^ ptr[0];
                             ptr += 1;
                         }
 

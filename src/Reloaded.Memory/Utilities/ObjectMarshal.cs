@@ -33,7 +33,7 @@ public static class ObjectMarshal
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IntPtr DangerousGetObjectDataByteOffset<T>(object obj, ref T data)
     {
-        var rawObj = Unsafe.As<RawObjectData>(obj)!;
+        var rawObj = Unsafe.As<RawObjectData>(obj);
         ref var r0 = ref rawObj.Data;
         ref var r1 = ref Unsafe.As<T, byte>(ref data);
 
@@ -56,7 +56,7 @@ public static class ObjectMarshal
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref T DangerousGetObjectDataReferenceAt<T>(object obj, IntPtr offset)
     {
-        var rawObj = Unsafe.As<RawObjectData>(obj)!;
+        var rawObj = Unsafe.As<RawObjectData>(obj);
         ref var r0 = ref rawObj.Data;
         ref var r1 = ref Unsafe.AddByteOffset(ref r0, offset);
         ref T r2 = ref Unsafe.As<byte, T>(ref r1);

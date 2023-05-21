@@ -197,7 +197,7 @@ public static unsafe class StreamExtensions
     /// <param name="output">The array to store the read items.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Read<TStream, T>(this TStream stream, T[] output) where T : unmanaged where TStream : Stream
-        => Read(stream, output);
+        => Read(stream, output.AsSpan());
 
     /// <summary>
     ///     Reads a span of unmanaged structures of type T from the stream into the provided output span.

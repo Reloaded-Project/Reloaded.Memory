@@ -84,6 +84,7 @@ public unsafe class CircularBufferTests
         var circularBuffer = new CircularBuffer((nuint)buffer, 4);
 
         var value = 0x12345678;
+        // ReSharper disable once RedundantAssignment
         var result = circularBuffer.Add<byte>(0x0);
         result = circularBuffer.Add(value);
 
@@ -99,6 +100,7 @@ public unsafe class CircularBufferTests
         var circularBuffer = new CircularBuffer((nuint)buffer, 4);
 
         var value = 0x12345678;
+        // ReSharper disable once RedundantAssignment
         var result = circularBuffer.Add(new Reloaded.Memory.Memory(), (byte)0x0);
         result = circularBuffer.Add(new Reloaded.Memory.Memory(), value);
 
@@ -114,6 +116,7 @@ public unsafe class CircularBufferTests
         var circularBuffer = new CircularBuffer((nuint)buffer, 4);
 
         var value = 0x12345678;
+        // ReSharper disable once RedundantAssignment
         var result = circularBuffer.Add<byte>(0x0);
         result = circularBuffer.Add((byte*)&value, sizeof(int));
 

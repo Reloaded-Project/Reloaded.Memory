@@ -45,5 +45,5 @@ public class Assets
     ///     Gets an item with the specified relative path to the 'Assets' folder.
     /// </summary>
     public static string GetItemWithRelativePath(string path)
-        => Path.Combine(AppContext.BaseDirectory!, "Assets", path);
+        => Path.Combine(AppContext.BaseDirectory, "Assets", path);
 }

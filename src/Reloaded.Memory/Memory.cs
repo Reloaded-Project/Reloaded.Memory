@@ -75,6 +75,7 @@ public unsafe partial struct Memory : ICanReadWriteMemory, ICanAllocateMemory, I
     /// <inheritdoc />
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [SuppressMessage("ReSharper", "BuiltInTypeReferenceStyle")]
     public MemoryAllocation Allocate(nuint length)
     {
         if (Polyfills.IsWindows())
@@ -109,6 +110,7 @@ public unsafe partial struct Memory : ICanReadWriteMemory, ICanAllocateMemory, I
             if (result == new IntPtr(-1))
                 ThrowHelpers.ThrowMemoryAllocationExceptionPosix(length, (int)result);
 
+            // ReSharper disable once RedundantCast
             return new MemoryAllocation((nuint)(nint)result, length);
         }
 
@@ -119,6 +121,7 @@ public unsafe partial struct Memory : ICanReadWriteMemory, ICanAllocateMemory, I
     /// <inheritdoc />
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [SuppressMessage("ReSharper", "BuiltInTypeReferenceStyle")]
     public bool Free(MemoryAllocation allocation)
     {
         if (Polyfills.IsWindows())
@@ -142,6 +145,7 @@ public unsafe partial struct Memory : ICanReadWriteMemory, ICanAllocateMemory, I
 
     /// <inheritdoc />
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [SuppressMessage("ReSharper", "BuiltInTypeReferenceStyle")]
     public nuint ChangeProtectionRaw(nuint memoryAddress, int size, nuint newProtection)
     {
         if (Polyfills.IsWindows())

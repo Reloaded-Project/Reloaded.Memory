@@ -35,6 +35,7 @@ namespace Reloaded.Memory.Utilities;
 [PublicAPI]
 [ExcludeFromCodeCoverage] // From CommunityToolkit.HighPerformance
 [MITLicense]
+// ReSharper disable once ClassCannotBeInstantiated
 public sealed class Box<T>
     where T : struct
 {
@@ -74,7 +75,7 @@ public sealed class Box<T>
             ThrowInvalidCastExceptionForGetFrom();
         }
 
-        return Unsafe.As<Box<T>>(obj)!;
+        return Unsafe.As<Box<T>>(obj);
     }
 
     /// <summary>
@@ -87,7 +88,7 @@ public sealed class Box<T>
     ///     to ensure it actually represents a boxed <typeparamref name="T" /> value and not some other instance.
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Box<T> DangerousGetFrom(object obj) => Unsafe.As<Box<T>>(obj)!;
+    public static Box<T> DangerousGetFrom(object obj) => Unsafe.As<Box<T>>(obj);
 
     /// <summary>
     ///     Tries to get a <see cref="Box{T}" /> reference from an input <see cref="object" /> representing a boxed
@@ -107,7 +108,7 @@ public sealed class Box<T>
     {
         if (obj.GetType() == typeof(T))
         {
-            box = Unsafe.As<Box<T>>(obj)!;
+            box = Unsafe.As<Box<T>>(obj);
             return true;
         }
 
@@ -138,7 +139,7 @@ public sealed class Box<T>
         // manually be implemented in the Box<T> type. For instance, boxing a float
         // and calling ToString() on it directly, on its boxed object or on a Box<T>
         // reference retrieved from it will produce the same result in all cases.
-        Unsafe.As<Box<T>>(value)!;
+        Unsafe.As<Box<T>>(value);
 
     /// <inheritdoc />
     public override string ToString() =>
@@ -153,6 +154,7 @@ public sealed class Box<T>
         // an object reference is used instead, the call would be forwarded
         // to those same methods anyway, since the method table for an object
         // representing a T instance is the one of type T anyway.
+        // ReSharper disable once RedundantSuppressNullableWarningExpression
         this.GetReference().ToString()!;
 
     /// <inheritdoc />

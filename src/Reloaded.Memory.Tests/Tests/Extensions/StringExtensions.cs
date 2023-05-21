@@ -28,22 +28,9 @@ public class StringExtensions
         }
     }
 
-    private static string RandomString(int length)
-    {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        return new string(Enumerable.Repeat(chars, length)
-            .Select(s => s[_random.Next(s.Length)]).ToArray());
-    }
-
     private static string RandomString(int length, string charSet) => new(Enumerable.Repeat(charSet, length)
         .Select(s => s[_random.Next(s.Length)]).ToArray());
 
-    private static string RandomStringUpper(int length) => RandomString(length, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-    private static string RandomStringLower(int length) => RandomString(length, "abcdefghijklmnopqrstuvwxyz");
-
     private static string RandomStringUpperWithEmoji(int length) => RandomString(length,
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ⚠️🚦🔺🏒😕🏞🖌🖕🌷☠⛩🍸👳🍠🚦📟💦🚏🌥🏪🌖😱");
-
-    private static string RandomStringLowerWithEmoji(int length) => RandomString(length,
-        "abcdefghijklmnopqrstuvwxyz⚠️🚦🔺🏒😕🏞🖌🖕🌷☠⛩🍸👳🍠🚦📟💦🚏🌥🏪🌖😱");
 }

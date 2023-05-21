@@ -114,7 +114,8 @@ public class StreamExtensionsTests
         public int A;
         public float B;
 
-        public override bool Equals(object obj) => obj is UnmanagedStruct other && A == other.A && B == other.B;
+        // ReSharper disable once CompareOfFloatsByEqualityOperator
+        public override bool Equals(object? obj) => obj is UnmanagedStruct other && A == other.A && B == other.B;
         public override int GetHashCode() => (A * 397) ^ B.GetHashCode();
     }
 }

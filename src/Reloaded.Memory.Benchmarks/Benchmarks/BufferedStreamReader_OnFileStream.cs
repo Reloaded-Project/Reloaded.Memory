@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices;
 using BenchmarkDotNet.Attributes;
 using Reloaded.Memory.Benchmarks.Framework;
 using Reloaded.Memory.Streams;
@@ -10,16 +9,16 @@ namespace Reloaded.Memory.Benchmarks.Benchmarks;
 [BenchmarkInfo("Buffered Stream Reader (FileStream)", "Tests performance of Buffered Stream Reader on FileStream.", Categories.Performance)]
 public class BufferedStreamReader_FileStream
 {
-    private FileStream _fileStream;
-    private BufferedStreamReader<FileStream> _bufferedStreamReader;
-    private BinaryReader _binaryReader;
-    private string _filePath;
+    private FileStream _fileStream = null!;
+    private BufferedStreamReader<FileStream> _bufferedStreamReader = null!;
+    private BinaryReader _binaryReader = null!;
+    private string _filePath = null!;
 
     [Params(8388608)] // 8 MiB
     public int N { get; set; }
 
     [GlobalSetup]
-    public unsafe void Setup()
+    public void Setup()
     {
         _filePath = Path.GetTempFileName();
         _fileStream = new FileStream(_filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
@@ -54,7 +53,7 @@ public class BufferedStreamReader_FileStream
     }
 
     [Benchmark]
-    public unsafe byte BufferedStreamReader_ReadByteRaw() => BufferedStreamReader_ReadRaw<byte>();
+    public byte BufferedStreamReader_ReadByteRaw() => BufferedStreamReader_ReadRaw<byte>();
 
     [Benchmark]
     public int BufferedStreamReader_ReadInt()
