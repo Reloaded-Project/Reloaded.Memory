@@ -87,8 +87,8 @@ jobs:
         with:
           code-coverage-path: './Cobertura.xml'
           changelog-path: './Changelog.md'
-          nupkg-glob: './src/*.nupkg'
-          snupkg-glob: './src/*.snupkg'
+          nupkg-glob: '*.nupkg'
+          snupkg-glob: '*.snupkg'
           nuget-key: ${{ secrets.NUGET_KEY }}
           changelog-template: 'keepachangelog'
           is-release: ${{ startsWith(github.ref, 'refs/tags/') }}

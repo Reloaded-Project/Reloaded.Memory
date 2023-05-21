@@ -12,6 +12,8 @@
     <PackageId>Reloaded.Memory</PackageId>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PolySharpUsePublicAccessibilityForGeneratedTypes>true</PolySharpUsePublicAccessibilityForGeneratedTypes>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
