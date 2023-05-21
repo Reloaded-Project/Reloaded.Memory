@@ -1,6 +1,6 @@
 # StringExtensions
 
-!!! info "Forked from [Community Toolkit](https://github.com/CommunityToolkit/dotnet)."
+!!! info "Partially forked from [Community Toolkit](https://github.com/CommunityToolkit/dotnet)."
 
 !!! info "Utility class providing high performance extension methods for working with the `string` type."
 
