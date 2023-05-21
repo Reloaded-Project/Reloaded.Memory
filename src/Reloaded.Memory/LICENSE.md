@@ -41,13 +41,17 @@ The license terms do not permit this.
 
 However, if your software is completely non-commercial, meaning it's neither
 sold for profit, funded in development, nor hidden behind a paywall (like Patreon),
-we will probably just look the other way.
+we will just look the other way.
 
 This often applies to non-professional programmers, learners, or those
 with no intent to exploit the project. We believe in understanding and
 leniency for those who might not know better.
 
-If you are interested in obtaining a commercial license, or need an exemption, 
+GPL v3 exists to protect the project and its contributors.  
+If you're not exploiting the project for commercial gain, you're not hurting us; 
+and we will not enforce the terms of the GPL.  
+
+If you are interested in obtaining a commercial license, or want an explicit written exemption,
 please get in touch with the repository owners.
 
 ## Can I link Reloaded Libraries statically/dynamically?
