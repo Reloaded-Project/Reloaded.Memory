@@ -1,7 +1,7 @@
 
 <div align="center">
 	<h1>The Reloaded Memory Library</h1>
-	<img src="docs/Reloaded/Images/Reloaded-Icon.png" width="150" align="center" />
+	<img src="https://raw.githubusercontent.com/Reloaded-Project/Reloaded.MkDocsMaterial.Themes.R2/adc12754862c5107fcd1357c7501e4d9d9f09d07/Images/Reloaded-Icon.png" width="150" align="center" />
 	<br/> <br/>
 	<strong><i>Psssh, nothing personnel kid</i></strong>
 	<br/> <br/>
