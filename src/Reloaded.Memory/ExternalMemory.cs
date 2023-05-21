@@ -21,7 +21,7 @@ namespace Reloaded.Memory;
 #endif
 // ReSharper disable once PartialTypeWithSinglePart
 [SuppressMessage("Interoperability", "CA1416: Validate platform compatibility")] // false report
-public unsafe partial struct ExternalMemory : ICanReadWriteMemory, ICanAllocateMemory, ICanChangeMemoryProtection
+public readonly unsafe partial struct ExternalMemory : ICanReadWriteMemory, ICanAllocateMemory, ICanChangeMemoryProtection
 {
     /// <summary>
     ///     Contains the handle of the process used to read memory

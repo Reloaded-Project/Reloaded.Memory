@@ -6,7 +6,7 @@ namespace Reloaded.Memory.Structs;
 ///     A memory allocation with a disposable interface.
 /// </summary>
 /// <typeparam name="TAllocator">Type of allocator used to create this allocation.</typeparam>
-public struct DisposableMemoryAllocation<TAllocator> : IDisposable where TAllocator : ICanAllocateMemory
+public readonly struct DisposableMemoryAllocation<TAllocator> : IDisposable where TAllocator : ICanAllocateMemory
 {
     /// <summary>
     ///     The memory allocation that's disposable.

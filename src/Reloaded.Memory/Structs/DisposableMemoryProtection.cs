@@ -6,7 +6,7 @@ namespace Reloaded.Memory.Structs;
 ///     A memory allocation with a disposable interface.
 /// </summary>
 /// <typeparam name="TProtector">Type of allocator used to create this allocation.</typeparam>
-public struct DisposableMemoryProtection<TProtector> : IDisposable where TProtector : ICanChangeMemoryProtection
+public readonly struct DisposableMemoryProtection<TProtector> : IDisposable where TProtector : ICanChangeMemoryProtection
 {
     /// <summary>
     ///     Memory address where protection is to be disabled.

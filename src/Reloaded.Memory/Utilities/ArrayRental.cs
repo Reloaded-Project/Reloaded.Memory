@@ -6,7 +6,7 @@ namespace Reloaded.Memory.Utilities;
 /// <summary>
 ///     Instance of a rented array. Don't forget to dispose me please!
 /// </summary>
-public struct ArrayRental : IDisposable
+public readonly struct ArrayRental : IDisposable
 {
     /// <summary>
     ///     The underlying array for this rental.
