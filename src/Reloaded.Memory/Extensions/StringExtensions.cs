@@ -1,10 +1,7 @@
-// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-
 using System.Diagnostics.CodeAnalysis;
 using Reloaded.Memory.Internals;
 using Reloaded.Memory.Utilities;
+using Reloaded.Memory.Utilities.License;
 #if NET7_0_OR_GREATER
 using System.Numerics;
 using System.Runtime.Intrinsics;
@@ -35,6 +32,7 @@ public static class StringExtensions
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage] // From CommunityToolkit.HighPerformance
+    [MITLicense]
     public static ref char DangerousGetReference(this string text)
     {
 #if NET6_0_OR_GREATER
@@ -56,6 +54,7 @@ public static class StringExtensions
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage] // From CommunityToolkit.HighPerformance
+    [MITLicense]
     public static ref char DangerousGetReferenceAt(this string text, int i)
     {
 #if NET6_0_OR_GREATER
@@ -76,6 +75,7 @@ public static class StringExtensions
     /// <returns>The number of occurrences of <paramref name="c" /> in <paramref name="text" />.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage] // From CommunityToolkit.HighPerformance
+    [MITLicense]
     public static int Count(this string text, char c)
     {
         ref var r0 = ref text.DangerousGetReference();

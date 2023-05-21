@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Diagnostics.CodeAnalysis;
+using Reloaded.Memory.Utilities.License;
 
 namespace Reloaded.Memory.Utilities;
 
@@ -11,6 +12,7 @@ namespace Reloaded.Memory.Utilities;
 /// </summary>
 [PublicAPI]
 [ExcludeFromCodeCoverage] // "Taken from CommunityToolkit.HighPerformance, no need to test again."
+[MITLicense]
 public static class ObjectMarshal
 {
     /// <summary>

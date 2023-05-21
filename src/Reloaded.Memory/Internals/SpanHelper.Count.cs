@@ -5,6 +5,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using Reloaded.Memory.Extensions;
+using Reloaded.Memory.Utilities.License;
 
 namespace Reloaded.Memory.Internals;
 
@@ -12,6 +13,7 @@ namespace Reloaded.Memory.Internals;
 ///     Helpers to process sequences of values by reference.
 /// </summary>
 [ExcludeFromCodeCoverage] // From CommunityToolkit
+[MITLicense]
 internal static class SpanHelper
 {
     /// <summary>

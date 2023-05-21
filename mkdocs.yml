@@ -48,6 +48,7 @@ plugins:
 
 nav:
   - Home: index.md
+  - License: Reloaded/Pages/license.md
   - Memory: About-Memory.md
   - Pointers:
       Ptr&lt;T&gt;: Pointers/Ptr.md

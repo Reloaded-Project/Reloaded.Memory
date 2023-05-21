@@ -1,16 +1,13 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using Reloaded.Memory.Internals;
+using Reloaded.Memory.Utilities.License;
 #if NETCOREAPP3_1_OR_GREATER
 using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.X86;
 #endif
 
 namespace Reloaded.Memory.Extensions;
-
-// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
 
 /// <summary>
 ///     Helpers for working with the <see cref="Span{T}" /> type.
@@ -27,6 +24,7 @@ public static class SpanExtensions
     /// <remarks>
     ///     Not accelerated on .NET Framework and Net Standard 2.0.
     /// </remarks>
+    [MITLicense]
     [ExcludeFromCodeCoverage] // "Taken from runtime."
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Span<TTo> CastFast<TFrom, TTo>(this Span<TFrom> data) where TFrom : struct where TTo : struct
@@ -79,6 +77,7 @@ public static class SpanExtensions
     /// <remarks>
     ///     Not accelerated on .NET Framework and Net Standard 2.0.
     /// </remarks>
+    [MITLicense]
     [ExcludeFromCodeCoverage] // "Taken from runtime."
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ReadOnlySpan<TTo> CastFast<TFrom, TTo>(this ReadOnlySpan<TFrom> data)
@@ -135,6 +134,7 @@ public static class SpanExtensions
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage] // From CommunityToolkit
+    [MITLicense]
     public static ref T DangerousGetReference<T>(this Span<T> span) => ref MemoryMarshal.GetReference(span);
 
     /// <summary>
@@ -149,6 +149,7 @@ public static class SpanExtensions
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage] // From CommunityToolkit
+    [MITLicense]
     public static ref T DangerousGetReference<T>(this ReadOnlySpan<T> span) => ref MemoryMarshal.GetReference(span);
 
     /// <summary>
@@ -165,6 +166,7 @@ public static class SpanExtensions
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage] // From CommunityToolkit
+    [MITLicense]
     public static ref T DangerousGetReferenceAt<T>(this Span<T> span, int i)
     {
         ref T r0 = ref MemoryMarshal.GetReference(span);
@@ -188,6 +190,7 @@ public static class SpanExtensions
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage] // From CommunityToolkit
+    [MITLicense]
     public static ref T DangerousGetReferenceAt<T>(this ReadOnlySpan<T> span, int i)
     {
         ref T r0 = ref MemoryMarshal.GetReference(span);
@@ -210,6 +213,7 @@ public static class SpanExtensions
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage] // From CommunityToolkit
+    [MITLicense]
     public static ref T DangerousGetReferenceAt<T>(this Span<T> span, nint i)
     {
         ref T r0 = ref MemoryMarshal.GetReference(span);
@@ -233,6 +237,7 @@ public static class SpanExtensions
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage] // From CommunityToolkit
+    [MITLicense]
     public static ref T DangerousGetReferenceAt<T>(this ReadOnlySpan<T> span, nint i)
     {
         ref T r0 = ref MemoryMarshal.GetReference(span);
@@ -253,6 +258,7 @@ public static class SpanExtensions
     /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage] // From CommunityToolkit
+    [MITLicense]
     public static Span<byte> AsBytes<T>(this Span<T> span)
         where T : unmanaged => MemoryMarshal.AsBytes(span);
 
@@ -269,6 +275,7 @@ public static class SpanExtensions
     /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage] // From CommunityToolkit
+    [MITLicense]
     public static ReadOnlySpan<byte> AsBytes<T>(this ReadOnlySpan<T> span)
         where T : unmanaged => MemoryMarshal.AsBytes(span);
 
@@ -286,6 +293,7 @@ public static class SpanExtensions
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage] // From CommunityToolkit
+    [MITLicense]
     public static Span<TTo> Cast<TFrom, TTo>(this Span<TFrom> span)
         where TFrom : unmanaged
         where TTo : unmanaged => MemoryMarshal.Cast<TFrom, TTo>(span);
@@ -305,6 +313,7 @@ public static class SpanExtensions
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage] // From CommunityToolkit
+    [MITLicense]
     public static ReadOnlySpan<TTo> Cast<TFrom, TTo>(this ReadOnlySpan<TFrom> span)
         where TFrom : unmanaged
         where TTo : unmanaged => MemoryMarshal.Cast<TFrom, TTo>(span);
@@ -318,6 +327,7 @@ public static class SpanExtensions
     /// <returns>The index of <paramref name="value" /> within <paramref name="span" />, or <c>-1</c>.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage] // From CommunityToolkit
+    [MITLicense]
     public static unsafe int IndexOf<T>(this Span<T> span, ref T value)
     {
         ref T r0 = ref MemoryMarshal.GetReference(span);
@@ -342,6 +352,7 @@ public static class SpanExtensions
     /// <returns>The index of <paramref name="value" /> within <paramref name="span" />, or <c>-1</c>.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage] // From CommunityToolkit
+    [MITLicense]
     public static unsafe int IndexOf<T>(this ReadOnlySpan<T> span, ref T value)
     {
         ref T r0 = ref MemoryMarshal.GetReference(span);
@@ -366,6 +377,7 @@ public static class SpanExtensions
     /// <returns>The number of occurrences of <paramref name="value" /> in <paramref name="span" />.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage] // From CommunityToolkit
+    [MITLicense]
     public static int Count<T>(this Span<T> span, T value)
         where T : IEquatable<T>
     {
@@ -383,6 +395,7 @@ public static class SpanExtensions
     /// <returns>The number of occurrences of <paramref name="value" /> in <paramref name="span" />.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ExcludeFromCodeCoverage] // From CommunityToolkit
+    [MITLicense]
     public static int Count<T>(this ReadOnlySpan<T> span, T value)
         where T : IEquatable<T>
     {

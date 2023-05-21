@@ -4,6 +4,7 @@
 
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using Reloaded.Memory.Utilities.License;
 
 namespace Reloaded.Memory.Utilities;
 
@@ -33,6 +34,7 @@ namespace Reloaded.Memory.Utilities;
 [DebuggerDisplay("{ToString(),raw}")]
 [PublicAPI]
 [ExcludeFromCodeCoverage] // From CommunityToolkit.HighPerformance
+[MITLicense]
 public sealed class Box<T>
     where T : struct
 {
