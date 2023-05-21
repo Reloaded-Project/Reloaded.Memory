@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-#if !NET6_0_OR_GREATER
+#if !NET5_0_OR_GREATER
 using Reloaded.Memory.Utilities;
 #endif
 
@@ -26,7 +26,7 @@ internal static class RuntimeHelpers
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static nint GetArrayNativeLength<T>(T[] array) => (nint)array.LongLength;
 
-#if !NET6_0_OR_GREATER
+#if !NET5_0_OR_GREATER
     /// <summary>
     ///     Gets the byte offset to the first <typeparamref name="T" /> element in a SZ array.
     /// </summary>
