@@ -1,0 +1,81 @@
+site_name: Reloaded Memory Library
+site_url: https://github.com/Reloaded-Project/Reloaded.Memory
+
+repo_name: Reloaded-Project/Reloaded.Memory
+repo_url: https://github.com/Reloaded-Project/Reloaded.Memory
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Reloaded-Project
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/thesewer56?lang=en-GB
+
+extra_css:
+  - Reloaded/Stylesheets/extra.css
+
+markdown_extensions:
+  - admonition
+  - tables
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tasklist
+  - def_list
+  - meta
+  - md_in_html
+  - attr_list
+  - footnotes
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+
+theme:
+  name: material
+  palette:
+    scheme: reloaded3-slate
+  features:
+    - navigation.instant
+
+plugins:
+  - search
+
+nav:
+  - Home: index.md
+  - License: Reloaded/Pages/license.md
+  - Memory: About-Memory.md
+  - Pointers:
+      Ptr&lt;T&gt;: Pointers/Ptr.md
+      FixedArrayPtr&lt;T&gt;: Pointers/FixedArrayPtr.md
+  - Extensions:
+      Array: Extensions/ArrayExtensions.md
+      Bool: Extensions/BoolExtensions.md
+      Enum: Extensions/EnumExtensions.md
+      Span: Extensions/SpanExtensions.md
+      Stream: Extensions/StreamExtensions.md
+      String: Extensions/StringExtensions.md
+      Vector: Extensions/VectorExtensions.md
+  - Streams:
+      Endian Readers & Writers:
+          About: Streams/EndianReaders/About.md
+          BigEndianReader: Streams/EndianReaders/BigEndianReader.md
+          BigEndianWriter: Streams/EndianReaders/BigEndianWriter.md
+          LittleEndianReader: Streams/EndianReaders/LittleEndianReader.md
+          LittleEndianWriter: Streams/EndianReaders/LittleEndianWriter.md
+
+      BufferedStreamReader: Streams/BufferedStreamReader.md
+
+  - Utilities:
+      ArrayRental: Utilities/ArrayRental.md
+      Box&lt;T&gt;: Utilities/Box.md
+      CircularBuffer: Utilities/CircularBuffer.md
+      Endian: Utilities/Endian.md
+      ObjectMarshal: Utilities/ObjectMarshal.md
+      Pinnable&lt;T&gt;: Utilities/Pinnable.md
+      TypeInfo: Utilities/TypeInfo.md

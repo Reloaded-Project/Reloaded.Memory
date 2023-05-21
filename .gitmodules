@@ -1,0 +1,6 @@
+[submodule "src/Reloaded.Project.Configurations"]
+	path = src/Reloaded.Project.Configurations
+	url = https://github.com/Reloaded-Project/Reloaded.Project.Configurations.git
+[submodule "docs/Reloaded"]
+	path = docs/Reloaded
+	url = https://github.com/Reloaded-Project/Reloaded.MkDocsMaterial.Themes.R2.git

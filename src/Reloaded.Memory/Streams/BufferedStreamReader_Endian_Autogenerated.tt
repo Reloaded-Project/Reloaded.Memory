@@ -1,0 +1,112 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ output extension=".cs" #>
+
+<#
+    string[] types = { "Int16", "UInt16", "Int32", "UInt32", "Int64", "UInt64", "Single", "Double" };
+#>
+
+// ReSharper disable RedundantUsingDirective
+using System.Runtime.CompilerServices;
+using System.Buffers.Binary;
+using System.Diagnostics.CodeAnalysis;
+using Reloaded.Memory.Utilities;
+// ReSharper disable BuiltInTypeReferenceStyle
+
+namespace Reloaded.Memory.Streams
+{
+    public partial class BufferedStreamReader<TStream> : IDisposable
+    {
+<#
+    foreach (var type in types)
+    {
+#>
+
+    /// <summary>
+    ///     [Little Endian] Reads an unmanaged, <#= type #> from the stream without incrementing the position.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [ExcludeFromCodeCoverage]
+    public <#= type #> PeekLittleEndian<#= type #>()
+    {
+        if (BitConverter.IsLittleEndian)
+            return Peek<<#= type #>>();
+
+        return Endian.Reverse(Peek<<#= type #>>());
+    }
+
+    /// <summary>
+    ///     [Little Endian] Reads an unmanaged, <#= type #> from the stream without incrementing the position.
+    /// </summary>
+    /// <param name="value">The variable to receive the output value.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [ExcludeFromCodeCoverage]
+    public <#= type #> PeekLittleEndian(out <#= type #> value) => value = PeekLittleEndian<#= type #>();
+
+    /// <summary>
+    ///     [Little Endian] Reads an unmanaged, <#= type #> from the stream.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [ExcludeFromCodeCoverage]
+    public <#= type #> ReadLittleEndian<#= type #>()
+    {
+        if (BitConverter.IsLittleEndian)
+            return Read<<#= type #>>();
+
+        return Endian.Reverse(Read<<#= type #>>());
+    }
+
+    /// <summary>
+    ///     [Little Endian] Reads an unmanaged, <#= type #> from the stream.
+    /// </summary>
+    /// <param name="value">The variable to receive the output value.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [ExcludeFromCodeCoverage]
+    public <#= type #> ReadLittleEndian(out <#= type #> value) => value = ReadLittleEndian<#= type #>();
+
+    /// <summary>
+    ///     [Big Endian] Reads an unmanaged, <#= type #> from the stream without incrementing the position.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [ExcludeFromCodeCoverage]
+    public <#= type #> PeekBigEndian<#= type #>()
+    {
+        if (!BitConverter.IsLittleEndian)
+            return Peek<<#= type #>>();
+
+        return Endian.Reverse(Peek<<#= type #>>());
+    }
+
+    /// <summary>
+    ///     [Big Endian] Reads an unmanaged, <#= type #> from the stream without incrementing the position.
+    /// </summary>
+    /// <param name="value">The variable to receive the output value.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [ExcludeFromCodeCoverage]
+    public <#= type #> PeekBigEndian(out <#= type #> value) => value = PeekBigEndian<#= type #>();
+
+    /// <summary>
+    ///     [Big Endian] Reads an unmanaged, <#= type #> from the stream.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [ExcludeFromCodeCoverage]
+    public <#= type #> ReadBigEndian<#= type #>()
+    {
+        if (!BitConverter.IsLittleEndian)
+            return Read<<#= type #>>();
+
+        return Endian.Reverse(Read<<#= type #>>());
+    }
+
+    /// <summary>
+    ///     [Big Endian] Reads an unmanaged, <#= type #> from the stream.
+    /// </summary>
+    /// <param name="value">The variable to receive the output value.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [ExcludeFromCodeCoverage]
+    public <#= type #> ReadBigEndian(out <#= type #> value) => value = ReadBigEndian<#= type #>();
+<#
+    }
+#>
+    }
+}
