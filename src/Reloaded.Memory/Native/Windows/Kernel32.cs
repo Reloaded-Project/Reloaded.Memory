@@ -50,6 +50,9 @@ public static partial class Kernel32
     ///     <para>The function fails if the requested read operation crosses into an area of the process that is inaccessible.</para>
     /// </returns>
     [SuppressUnmanagedCodeSecurity]
+#if NET5_0_OR_GREATER
+    [SuppressGCTransition]
+#endif
 #if NET7_0_OR_GREATER
     [LibraryImport("kernel32.dll", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
@@ -97,6 +100,9 @@ public static partial class Kernel32
     ///     </para>
     /// </returns>
     [SuppressUnmanagedCodeSecurity]
+    #if NET5_0_OR_GREATER
+    [SuppressGCTransition]
+    #endif
 #if NET7_0_OR_GREATER
     [LibraryImport("kernel32.dll", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
@@ -281,6 +287,9 @@ public static partial class Kernel32
     ///     </para>
     /// </returns>
     [SuppressUnmanagedCodeSecurity]
+#if NET5_0_OR_GREATER
+    [SuppressGCTransition]
+#endif
 #if NET7_0_OR_GREATER
     [LibraryImport("kernel32.dll", SetLastError = true)]
     public static partial nuint VirtualAllocEx(IntPtr hProcess, UIntPtr lpAddress, UIntPtr dwSize,
@@ -372,6 +381,9 @@ public static partial class Kernel32
     ///     </para>
     /// </returns>
     [SuppressUnmanagedCodeSecurity]
+#if NET5_0_OR_GREATER
+    [SuppressGCTransition]
+#endif
 #if NET7_0_OR_GREATER
     [LibraryImport("kernel32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
@@ -426,6 +438,9 @@ public static partial class Kernel32
     ///     <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
     /// </returns>
     [SuppressUnmanagedCodeSecurity]
+#if NET5_0_OR_GREATER
+    [SuppressGCTransition]
+#endif
 #if NET7_0_OR_GREATER
     [LibraryImport("kernel32.dll", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
@@ -610,6 +625,9 @@ public static partial class Kernel32
     ///     </para>
     /// </returns>
     [SuppressUnmanagedCodeSecurity]
+#if NET5_0_OR_GREATER
+    [SuppressGCTransition]
+#endif
 #if NET7_0_OR_GREATER
     [LibraryImport("kernel32.dll", SetLastError = true)]
     public static partial nuint VirtualAlloc(UIntPtr lpAddress, UIntPtr dwSize,
@@ -699,6 +717,9 @@ public static partial class Kernel32
     ///     </para>
     /// </returns>
     [SuppressUnmanagedCodeSecurity]
+#if NET5_0_OR_GREATER
+    [SuppressGCTransition]
+#endif
 #if NET7_0_OR_GREATER
     [LibraryImport("kernel32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
@@ -752,6 +773,9 @@ public static partial class Kernel32
     ///     <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
     /// </returns>
     [SuppressUnmanagedCodeSecurity]
+#if NET5_0_OR_GREATER
+    [SuppressGCTransition]
+#endif
 #if NET7_0_OR_GREATER
     [LibraryImport("kernel32.dll", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]

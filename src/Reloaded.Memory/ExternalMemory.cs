@@ -47,9 +47,18 @@ public readonly unsafe partial struct ExternalMemory : ICanReadWriteMemory, ICan
 
     /// <summary>
     ///     Creates an instance of the <see cref="ExternalMemory" /> class used to read from an
-    ///     external process with a specified handle.
+    ///     external process with a specified handle. <br/>
+    ///     Note: See warning in <see cref="ExternalMemory(Process)" />.
     /// </summary>
-    /// <param name="process">The individual process to read/write memory from.</param>
+    /// <param name="process">
+    ///     The individual process to read/write memory from.<br/>
+    ///     Warning!! <see cref="ExternalMemory"/> does not hold a reference to the process.<br/> <br/>
+    ///     In order to ensure the handle stays valid, you MUST MANUALLY prevent this parameter from being
+    ///     garbage collected/disposed by storing it somewhere else.
+    /// </param>
+    /// <remarks>
+    ///     On Linux, please insert Process ID here.
+    /// </remarks>
     public ExternalMemory(Process process) : this()
     {
         if (Polyfills.IsWindows())
