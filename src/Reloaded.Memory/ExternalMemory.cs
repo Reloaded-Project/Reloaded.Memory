@@ -6,6 +6,7 @@ using Reloaded.Memory.Native.Unix;
 using Reloaded.Memory.Native.Windows;
 using Reloaded.Memory.Structs;
 using Reloaded.Memory.Utilities;
+using static Reloaded.Memory.Native.Windows.Kernel32;
 #if NET5_0_OR_GREATER
 using System.Runtime.Versioning;
 #endif
@@ -217,19 +218,19 @@ public readonly unsafe partial struct ExternalMemory : ICanReadWriteMemory, ICan
         // Call VirtualAllocEx to allocate memory of fixed chosen size.
         if (Polyfills.IsWindows())
         {
-            nuint returnAddress = Kernel32.VirtualAllocEx
+            nuint returnAddress = VirtualAllocEx
             (
                 _processHandle,
                 UIntPtr.Zero,
                 length,
-                Kernel32.MEM_ALLOCATION_TYPE.MEM_COMMIT | Kernel32.MEM_ALLOCATION_TYPE.MEM_RESERVE,
-                Kernel32.MEM_PROTECTION.PAGE_EXECUTE_READWRITE
+                MEM_ALLOCATION_TYPE.MEM_COMMIT | MEM_ALLOCATION_TYPE.MEM_RESERVE,
+                MEM_PROTECTION.PAGE_EXECUTE_READWRITE
             );
 
-            if (returnAddress == 0)
-                ThrowHelpers.ThrowMemoryAllocationExceptionWindows(length);
+            if (returnAddress != 0)
+                return new MemoryAllocation(returnAddress, length);
 
-            return new MemoryAllocation(returnAddress, length);
+            ThrowHelpers.ThrowMemoryAllocationExceptionWindows(length);
         }
 
         ThrowHelpers.ThrowPlatformNotSupportedException();
@@ -238,9 +239,14 @@ public readonly unsafe partial struct ExternalMemory : ICanReadWriteMemory, ICan
 
     /// <inheritdoc />
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Free(MemoryAllocation allocation) => Kernel32.VirtualFreeEx(_processHandle, allocation.Address,
-        UIntPtr.Zero,
-        Kernel32.MEM_ALLOCATION_TYPE.MEM_RELEASE);
+    public bool Free(MemoryAllocation allocation)
+    {
+        if (Polyfills.IsWindows())
+            return VirtualFreeEx(_processHandle, allocation.Address, UIntPtr.Zero, MEM_ALLOCATION_TYPE.MEM_RELEASE);
+
+        ThrowHelpers.ThrowPlatformNotSupportedException();
+        return false;
+    }
 
     #endregion ICanAllocateMemory
 
@@ -250,13 +256,19 @@ public readonly unsafe partial struct ExternalMemory : ICanReadWriteMemory, ICan
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public nuint ChangeProtectionRaw(nuint memoryAddress, int size, nuint newProtection)
     {
-        var result = Kernel32.VirtualProtectEx(_processHandle, memoryAddress, (nuint)size,
-            (Kernel32.MEM_PROTECTION)newProtection, out Kernel32.MEM_PROTECTION oldPermissions);
+        if (Polyfills.IsWindows())
+        {
+            var result = VirtualProtectEx(_processHandle, memoryAddress, (nuint)size,
+                (MEM_PROTECTION)newProtection, out MEM_PROTECTION oldPermissions);
 
-        if (!result)
+            if (result)
+                return (nuint)oldPermissions;
+
             ThrowHelpers.ThrowMemoryPermissionExceptionWindows(memoryAddress, size, newProtection);
+        }
 
-        return (nuint)oldPermissions;
+        ThrowHelpers.ThrowPlatformNotSupportedException();
+        return 0;
     }
 
     #endregion ICanChangeProtection
