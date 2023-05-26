@@ -25,11 +25,12 @@ Reloaded.Memory is a high performance library which provides `zero-cost abstract
 
 It is designed to be as fast as possible, with no overhead, while providing useful functionality to the user.  
 
-- **Zero Cost Abstractions:** Performance equivalent to using raw pointers.
-- **Stable API:** Versions 9.0.0 and above have a fully stable, backwards compatible API.
-- **Trimming Safe:** The library is fully compatible with .NET Core's Linker.
-- **Fully Documented:** The library is fully tested & documented with XML comments.
-- **Cross Platform:** 99% of the library is fully compatible with Windows, Linux and MacOS.
+- **Zero Cost Abstractions:** Performance equivalent to using raw pointers.  
+- **Stable API:** Versions 9.0.0 and above have a fully stable, backwards compatible API.  
+- **Trimming Safe:** The library is fully compatible with .NET Core's Linker.  
+- **Fully Documented:** The library is fully tested & documented with XML comments.  
+- **Cross Platform:** 99% of the library is fully compatible with Windows, Linux and MacOS.  
+- **Large Address Aware:** The library can correctly leverage all 4GB in x86 processes.  
 
 This project guarantees binary backwards compatibility; meaning you can substitute the library with any newer version
 without recompiling the source code. Should the need to introduce any breaking changes occur; much like the runtime.
