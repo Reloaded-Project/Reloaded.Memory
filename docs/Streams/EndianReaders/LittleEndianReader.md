@@ -2,7 +2,7 @@
 
 !!! info "A struct for reading from a pointer in Big Endian."
 
-!!! tip "LittleEndianReader is preferred over [BufferedStreamReader](BufferedStreamReader.md) when all data is already in memory."
+!!! tip "LittleEndianReader is preferred over [BufferedStreamReader](../BufferedStreamReader.md) when all data is already in memory."
 
 The `LittleEndianReader` struct provides utility methods for reading various data types from a pointer in Big Endian format.
 
