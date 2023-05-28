@@ -1,6 +1,8 @@
 # ArrayRental
 
 !!! info "`ArrayRental` is a struct that represents an instance of a rented array. It should be disposed of after use with the `using` statement."
+
+!!! tip "If you need a generic version, use `ArrayRental<T>`."
   
 The underlying array is managed by the shared `ArrayPool`.  
 
