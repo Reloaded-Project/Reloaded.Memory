@@ -926,3 +926,16 @@ static Reloaded.Memory.Utilities.ObjectMarshal.TryUnbox<T>(this object! obj, out
 static Reloaded.Memory.Utilities.TypeInfo.ApproximateIsBlittable(System.Type! type) -> bool
 static Reloaded.Memory.Utilities.TypeInfo.ApproximateIsBlittable<T>() -> bool
 static Reloaded.Memory.Utilities.TypeInfo.MarshalledSizeOf<T>() -> int
+Reloaded.Memory.Utilities.ArrayRental<T>
+Reloaded.Memory.Utilities.ArrayRental<T>.Array.get -> T[]!
+Reloaded.Memory.Utilities.ArrayRental<T>.ArrayRental() -> void
+Reloaded.Memory.Utilities.ArrayRental<T>.ArrayRental(int numBytes) -> void
+Reloaded.Memory.Utilities.ArrayRental<T>.Dispose() -> void
+Reloaded.Memory.Utilities.ArrayRental<T>.Span.get -> System.Span<T>
+Reloaded.Memory.Utilities.ArrayRentalSlice<T>
+Reloaded.Memory.Utilities.ArrayRentalSlice<T>.ArrayRentalSlice() -> void
+Reloaded.Memory.Utilities.ArrayRentalSlice<T>.ArrayRentalSlice(Reloaded.Memory.Utilities.ArrayRental<T> rental, int length) -> void
+Reloaded.Memory.Utilities.ArrayRentalSlice<T>.Dispose() -> void
+Reloaded.Memory.Utilities.ArrayRentalSlice<T>.Length.get -> int
+Reloaded.Memory.Utilities.ArrayRentalSlice<T>.Rental.get -> Reloaded.Memory.Utilities.ArrayRental<T>
+Reloaded.Memory.Utilities.ArrayRentalSlice<T>.Span.get -> System.Span<T>
