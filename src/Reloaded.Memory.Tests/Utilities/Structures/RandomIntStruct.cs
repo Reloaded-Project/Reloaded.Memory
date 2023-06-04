@@ -66,11 +66,11 @@ public struct RandomIntStruct : ICanWriteToAnEndianWriter, ICanBeReadByAnEndianR
         reader.Seek(sizeof(RandomIntStruct));
     }
 
-    public unsafe void Write<TEndianWriter>(ref TEndianWriter reader) where TEndianWriter : IEndianWriter
+    public unsafe void Write<TEndianWriter>(ref TEndianWriter writer) where TEndianWriter : IEndianWriter
     {
-        reader.WriteAtOffset(A, 0);
-        reader.WriteAtOffset(B, 1);
-        reader.WriteAtOffset(C, 3);
-        reader.Seek(sizeof(RandomIntStruct));
+        writer.WriteAtOffset(A, 0);
+        writer.WriteAtOffset(B, 1);
+        writer.WriteAtOffset(C, 3);
+        writer.Seek(sizeof(RandomIntStruct));
     }
 }
