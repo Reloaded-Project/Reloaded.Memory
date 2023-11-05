@@ -56,6 +56,7 @@ nav:
   - Extensions:
       Array: Extensions/ArrayExtensions.md
       Bool: Extensions/BoolExtensions.md
+      Endian: Extensions/EndianExtensions.md
       Enum: Extensions/EnumExtensions.md
       Span: Extensions/SpanExtensions.md
       Stream: Extensions/StreamExtensions.md
