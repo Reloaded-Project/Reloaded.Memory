@@ -1,3 +1,4 @@
+using System.Buffers.Binary;
 using System.Diagnostics.CodeAnalysis;
 using Reloaded.Memory.Utilities;
 
@@ -32,7 +33,7 @@ public static class EndianExtensions
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static short AsLittleEndian(this short value) => BitConverter.IsLittleEndian ? value : Endian.Reverse(value);
+    public static short AsLittleEndian(this short value) => BitConverter.IsLittleEndian ? value : BinaryPrimitives.ReverseEndianness(value);
 
     /// <summary>
     ///     Converts <paramref name="value"/> to little endian.
@@ -41,7 +42,7 @@ public static class EndianExtensions
     /// <param name="value">The value whose endian to convert.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ushort AsLittleEndian(this ushort value) =>
-        BitConverter.IsLittleEndian ? value : Endian.Reverse(value);
+        BitConverter.IsLittleEndian ? value : BinaryPrimitives.ReverseEndianness(value);
 
     /// <summary>
     ///     Converts <paramref name="value"/> to little endian.
@@ -49,7 +50,7 @@ public static class EndianExtensions
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int AsLittleEndian(this int value) => BitConverter.IsLittleEndian ? value : Endian.Reverse(value);
+    public static int AsLittleEndian(this int value) => BitConverter.IsLittleEndian ? value : BinaryPrimitives.ReverseEndianness(value);
 
     /// <summary>
     ///     Converts <paramref name="value"/> to little endian.
@@ -57,7 +58,7 @@ public static class EndianExtensions
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static uint AsLittleEndian(this uint value) => BitConverter.IsLittleEndian ? value : Endian.Reverse(value);
+    public static uint AsLittleEndian(this uint value) => BitConverter.IsLittleEndian ? value : BinaryPrimitives.ReverseEndianness(value);
 
     /// <summary>
     ///     Converts <paramref name="value"/> to little endian.
@@ -65,7 +66,7 @@ public static class EndianExtensions
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static long AsLittleEndian(this long value) => BitConverter.IsLittleEndian ? value : Endian.Reverse(value);
+    public static long AsLittleEndian(this long value) => BitConverter.IsLittleEndian ? value : BinaryPrimitives.ReverseEndianness(value);
 
     /// <summary>
     ///     Converts <paramref name="value"/> to little endian.
@@ -73,7 +74,7 @@ public static class EndianExtensions
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong AsLittleEndian(this ulong value) => BitConverter.IsLittleEndian ? value : Endian.Reverse(value);
+    public static ulong AsLittleEndian(this ulong value) => BitConverter.IsLittleEndian ? value : BinaryPrimitives.ReverseEndianness(value);
 
     /// <summary>
     ///     Converts <paramref name="value"/> to little endian.
@@ -113,7 +114,7 @@ public static class EndianExtensions
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static short AsBigEndian(this short value) => BitConverter.IsLittleEndian ? Endian.Reverse(value) : value;
+    public static short AsBigEndian(this short value) => BitConverter.IsLittleEndian ? BinaryPrimitives.ReverseEndianness(value) : value;
 
     /// <summary>
     ///     Converts <paramref name="value"/> to big endian.
@@ -121,7 +122,7 @@ public static class EndianExtensions
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ushort AsBigEndian(this ushort value) => BitConverter.IsLittleEndian ? Endian.Reverse(value) : value;
+    public static ushort AsBigEndian(this ushort value) => BitConverter.IsLittleEndian ? BinaryPrimitives.ReverseEndianness(value) : value;
 
     /// <summary>
     ///     Converts <paramref name="value"/> to big endian.
@@ -129,7 +130,7 @@ public static class EndianExtensions
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int AsBigEndian(this int value) => BitConverter.IsLittleEndian ? Endian.Reverse(value) : value;
+    public static int AsBigEndian(this int value) => BitConverter.IsLittleEndian ? BinaryPrimitives.ReverseEndianness(value) : value;
 
     /// <summary>
     ///     Converts <paramref name="value"/> to big endian.
@@ -137,7 +138,7 @@ public static class EndianExtensions
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static uint AsBigEndian(this uint value) => BitConverter.IsLittleEndian ? Endian.Reverse(value) : value;
+    public static uint AsBigEndian(this uint value) => BitConverter.IsLittleEndian ? BinaryPrimitives.ReverseEndianness(value) : value;
 
     /// <summary>
     ///     Converts <paramref name="value"/> to big endian.
@@ -145,7 +146,7 @@ public static class EndianExtensions
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static long AsBigEndian(this long value) => BitConverter.IsLittleEndian ? Endian.Reverse(value) : value;
+    public static long AsBigEndian(this long value) => BitConverter.IsLittleEndian ? BinaryPrimitives.ReverseEndianness(value) : value;
 
     /// <summary>
     ///     Converts <paramref name="value"/> to big endian.
@@ -153,7 +154,7 @@ public static class EndianExtensions
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong AsBigEndian(this ulong value) => BitConverter.IsLittleEndian ? Endian.Reverse(value) : value;
+    public static ulong AsBigEndian(this ulong value) => BitConverter.IsLittleEndian ? BinaryPrimitives.ReverseEndianness(value) : value;
 
     /// <summary>
     ///     Converts <paramref name="value"/> to big endian.
