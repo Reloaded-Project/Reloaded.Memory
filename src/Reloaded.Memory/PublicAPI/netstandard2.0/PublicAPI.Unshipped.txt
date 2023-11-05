@@ -9,6 +9,7 @@ static Reloaded.Memory.Extensions.EndianExtensions.AsBigEndian(this short value)
 static Reloaded.Memory.Extensions.EndianExtensions.AsBigEndian(this uint value) -> uint
 static Reloaded.Memory.Extensions.EndianExtensions.AsBigEndian(this ulong value) -> ulong
 static Reloaded.Memory.Extensions.EndianExtensions.AsBigEndian(this ushort value) -> ushort
+static Reloaded.Memory.Extensions.EndianExtensions.AsBigEndian<T>(this T value) -> T
 static Reloaded.Memory.Extensions.EndianExtensions.AsLittleEndian(this byte value) -> byte
 static Reloaded.Memory.Extensions.EndianExtensions.AsLittleEndian(this double value) -> double
 static Reloaded.Memory.Extensions.EndianExtensions.AsLittleEndian(this float value) -> float
@@ -19,5 +20,4 @@ static Reloaded.Memory.Extensions.EndianExtensions.AsLittleEndian(this short val
 static Reloaded.Memory.Extensions.EndianExtensions.AsLittleEndian(this uint value) -> uint
 static Reloaded.Memory.Extensions.EndianExtensions.AsLittleEndian(this ulong value) -> ulong
 static Reloaded.Memory.Extensions.EndianExtensions.AsLittleEndian(this ushort value) -> ushort
-static Reloaded.Memory.Extensions.EndianExtensions.ToBigEndian<T>(T value) -> T
-static Reloaded.Memory.Extensions.EndianExtensions.ToLittleEndian<T>(T value) -> T
+static Reloaded.Memory.Extensions.EndianExtensions.AsLittleEndian<T>(this T value) -> T

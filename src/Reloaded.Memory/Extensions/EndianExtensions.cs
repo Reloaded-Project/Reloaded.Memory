@@ -1,5 +1,6 @@
 using System.Buffers.Binary;
 using System.Diagnostics.CodeAnalysis;
+using Reloaded.Memory.Interfaces;
 using Reloaded.Memory.Utilities;
 
 namespace Reloaded.Memory.Extensions;
@@ -177,16 +178,30 @@ public static class EndianExtensions
     ///     On big endian this is a no-op. On little endian the bytes are swapped.
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
-    /// <typeparam name="T">Type of value to convert.</typeparam>
+    /// <typeparam name="T">Type of value to reverse the endian of.</typeparam>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static T ToBigEndian<T>(T value) where T : unmanaged => BitConverter.IsLittleEndian ? Endian.Reverse(value) : value;
+    public static T AsBigEndian<T>(this T value) where T : struct, ICanReverseEndian
+    {
+        if (!BitConverter.IsLittleEndian)
+            return value;
+
+        value.ReverseEndian();
+        return value;
+    }
 
     /// <summary>
     ///     Converts <paramref name="value"/> to little endian.
     ///     On little endian this is a no-op. On big endian the bytes are swapped.
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
-    /// <typeparam name="T">Type of value to convert.</typeparam>
+    /// <typeparam name="T">Type of value to reverse the endian of.</typeparam>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static T ToLittleEndian<T>(T value) where T : unmanaged => BitConverter.IsLittleEndian ? value : Endian.Reverse(value);
+    public static T AsLittleEndian<T>(this T value) where T : struct, ICanReverseEndian
+    {
+        if (BitConverter.IsLittleEndian)
+            return value;
+
+        value.ReverseEndian();
+        return value;
+    }
 }
