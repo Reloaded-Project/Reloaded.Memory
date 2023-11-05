@@ -1,1 +1,23 @@
-﻿
+﻿Reloaded.Memory.Extensions.EndianExtensions
+static Reloaded.Memory.Extensions.EndianExtensions.AsBigEndian(this byte value) -> byte
+static Reloaded.Memory.Extensions.EndianExtensions.AsBigEndian(this double value) -> double
+static Reloaded.Memory.Extensions.EndianExtensions.AsBigEndian(this float value) -> float
+static Reloaded.Memory.Extensions.EndianExtensions.AsBigEndian(this int value) -> int
+static Reloaded.Memory.Extensions.EndianExtensions.AsBigEndian(this long value) -> long
+static Reloaded.Memory.Extensions.EndianExtensions.AsBigEndian(this sbyte value) -> sbyte
+static Reloaded.Memory.Extensions.EndianExtensions.AsBigEndian(this short value) -> short
+static Reloaded.Memory.Extensions.EndianExtensions.AsBigEndian(this uint value) -> uint
+static Reloaded.Memory.Extensions.EndianExtensions.AsBigEndian(this ulong value) -> ulong
+static Reloaded.Memory.Extensions.EndianExtensions.AsBigEndian(this ushort value) -> ushort
+static Reloaded.Memory.Extensions.EndianExtensions.AsLittleEndian(this byte value) -> byte
+static Reloaded.Memory.Extensions.EndianExtensions.AsLittleEndian(this double value) -> double
+static Reloaded.Memory.Extensions.EndianExtensions.AsLittleEndian(this float value) -> float
+static Reloaded.Memory.Extensions.EndianExtensions.AsLittleEndian(this int value) -> int
+static Reloaded.Memory.Extensions.EndianExtensions.AsLittleEndian(this long value) -> long
+static Reloaded.Memory.Extensions.EndianExtensions.AsLittleEndian(this sbyte value) -> sbyte
+static Reloaded.Memory.Extensions.EndianExtensions.AsLittleEndian(this short value) -> short
+static Reloaded.Memory.Extensions.EndianExtensions.AsLittleEndian(this uint value) -> uint
+static Reloaded.Memory.Extensions.EndianExtensions.AsLittleEndian(this ulong value) -> ulong
+static Reloaded.Memory.Extensions.EndianExtensions.AsLittleEndian(this ushort value) -> ushort
+static Reloaded.Memory.Extensions.EndianExtensions.ToBigEndian<T>(T value) -> T
+static Reloaded.Memory.Extensions.EndianExtensions.ToLittleEndian<T>(T value) -> T
