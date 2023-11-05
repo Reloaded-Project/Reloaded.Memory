@@ -11,7 +11,7 @@ namespace Reloaded.Memory.Extensions;
 public static class EndianExtensions
 {
     /// <summary>
-    ///     Converts <see cref="value"/> to little endian.
+    ///     Converts <paramref name="value"/> to little endian.
     ///     On little endian this is a no-op. On big endian the bytes are swapped.
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
@@ -19,7 +19,7 @@ public static class EndianExtensions
     public static byte AsLittleEndian(this byte value) => value;
 
     /// <summary>
-    ///     Converts <see cref="value"/> to little endian.
+    ///     Converts <paramref name="value"/> to little endian.
     ///     On little endian this is a no-op. On big endian the bytes are swapped.
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
@@ -27,7 +27,7 @@ public static class EndianExtensions
     public static sbyte AsLittleEndian(this sbyte value) => value;
 
     /// <summary>
-    ///     Converts <see cref="value"/> to little endian.
+    ///     Converts <paramref name="value"/> to little endian.
     ///     On little endian this is a no-op. On big endian the bytes are swapped.
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
@@ -35,7 +35,7 @@ public static class EndianExtensions
     public static short AsLittleEndian(this short value) => BitConverter.IsLittleEndian ? value : Endian.Reverse(value);
 
     /// <summary>
-    ///     Converts <see cref="value"/> to little endian.
+    ///     Converts <paramref name="value"/> to little endian.
     ///     On little endian this is a no-op. On big endian the bytes are swapped.
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
@@ -44,7 +44,7 @@ public static class EndianExtensions
         BitConverter.IsLittleEndian ? value : Endian.Reverse(value);
 
     /// <summary>
-    ///     Converts <see cref="value"/> to little endian.
+    ///     Converts <paramref name="value"/> to little endian.
     ///     On little endian this is a no-op. On big endian the bytes are swapped.
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
@@ -52,7 +52,7 @@ public static class EndianExtensions
     public static int AsLittleEndian(this int value) => BitConverter.IsLittleEndian ? value : Endian.Reverse(value);
 
     /// <summary>
-    ///     Converts <see cref="value"/> to little endian.
+    ///     Converts <paramref name="value"/> to little endian.
     ///     On little endian this is a no-op. On big endian the bytes are swapped.
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
@@ -60,7 +60,7 @@ public static class EndianExtensions
     public static uint AsLittleEndian(this uint value) => BitConverter.IsLittleEndian ? value : Endian.Reverse(value);
 
     /// <summary>
-    ///     Converts <see cref="value"/> to little endian.
+    ///     Converts <paramref name="value"/> to little endian.
     ///     On little endian this is a no-op. On big endian the bytes are swapped.
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
@@ -68,7 +68,7 @@ public static class EndianExtensions
     public static long AsLittleEndian(this long value) => BitConverter.IsLittleEndian ? value : Endian.Reverse(value);
 
     /// <summary>
-    ///     Converts <see cref="value"/> to little endian.
+    ///     Converts <paramref name="value"/> to little endian.
     ///     On little endian this is a no-op. On big endian the bytes are swapped.
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
@@ -76,7 +76,7 @@ public static class EndianExtensions
     public static ulong AsLittleEndian(this ulong value) => BitConverter.IsLittleEndian ? value : Endian.Reverse(value);
 
     /// <summary>
-    ///     Converts <see cref="value"/> to little endian.
+    ///     Converts <paramref name="value"/> to little endian.
     ///     On little endian this is a no-op. On big endian the bytes are swapped.
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
@@ -84,7 +84,7 @@ public static class EndianExtensions
     public static float AsLittleEndian(this float value) => BitConverter.IsLittleEndian ? value : Endian.Reverse(value);
 
     /// <summary>
-    ///     Converts <see cref="value"/> to little endian.
+    ///     Converts <paramref name="value"/> to little endian.
     ///     On little endian this is a no-op. On big endian the bytes are swapped.
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
@@ -92,7 +92,7 @@ public static class EndianExtensions
     public static double AsLittleEndian(this double value) => BitConverter.IsLittleEndian ? value : Endian.Reverse(value);
 
     /// <summary>
-    ///     Converts <see cref="value"/> to big endian.
+    ///     Converts <paramref name="value"/> to big endian.
     ///     On big endian this is a no-op. On little endian the bytes are swapped.
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
@@ -100,7 +100,7 @@ public static class EndianExtensions
     public static byte AsBigEndian(this byte value) => value;
 
     /// <summary>
-    ///     Converts <see cref="value"/> to big endian.
+    ///     Converts <paramref name="value"/> to big endian.
     ///     On big endian this is a no-op. On little endian the bytes are swapped.
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
@@ -108,7 +108,7 @@ public static class EndianExtensions
     public static sbyte AsBigEndian(this sbyte value) => value;
 
     /// <summary>
-    ///     Converts <see cref="value"/> to big endian.
+    ///     Converts <paramref name="value"/> to big endian.
     ///     On big endian this is a no-op. On little endian the bytes are swapped.
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
@@ -116,7 +116,7 @@ public static class EndianExtensions
     public static short AsBigEndian(this short value) => BitConverter.IsLittleEndian ? Endian.Reverse(value) : value;
 
     /// <summary>
-    ///     Converts <see cref="value"/> to big endian.
+    ///     Converts <paramref name="value"/> to big endian.
     ///     On big endian this is a no-op. On little endian the bytes are swapped.
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
@@ -124,7 +124,7 @@ public static class EndianExtensions
     public static ushort AsBigEndian(this ushort value) => BitConverter.IsLittleEndian ? Endian.Reverse(value) : value;
 
     /// <summary>
-    ///     Converts <see cref="value"/> to big endian.
+    ///     Converts <paramref name="value"/> to big endian.
     ///     On big endian this is a no-op. On little endian the bytes are swapped.
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
@@ -132,7 +132,7 @@ public static class EndianExtensions
     public static int AsBigEndian(this int value) => BitConverter.IsLittleEndian ? Endian.Reverse(value) : value;
 
     /// <summary>
-    ///     Converts <see cref="value"/> to big endian.
+    ///     Converts <paramref name="value"/> to big endian.
     ///     On big endian this is a no-op. On little endian the bytes are swapped.
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
@@ -140,7 +140,7 @@ public static class EndianExtensions
     public static uint AsBigEndian(this uint value) => BitConverter.IsLittleEndian ? Endian.Reverse(value) : value;
 
     /// <summary>
-    ///     Converts <see cref="value"/> to big endian.
+    ///     Converts <paramref name="value"/> to big endian.
     ///     On big endian this is a no-op. On little endian the bytes are swapped.
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
@@ -148,7 +148,7 @@ public static class EndianExtensions
     public static long AsBigEndian(this long value) => BitConverter.IsLittleEndian ? Endian.Reverse(value) : value;
 
     /// <summary>
-    ///     Converts <see cref="value"/> to big endian.
+    ///     Converts <paramref name="value"/> to big endian.
     ///     On big endian this is a no-op. On little endian the bytes are swapped.
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
@@ -156,7 +156,7 @@ public static class EndianExtensions
     public static ulong AsBigEndian(this ulong value) => BitConverter.IsLittleEndian ? Endian.Reverse(value) : value;
 
     /// <summary>
-    ///     Converts <see cref="value"/> to big endian.
+    ///     Converts <paramref name="value"/> to big endian.
     ///     On big endian this is a no-op. On little endian the bytes are swapped.
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
@@ -164,7 +164,7 @@ public static class EndianExtensions
     public static float AsBigEndian(this float value) => BitConverter.IsLittleEndian ? Endian.Reverse(value) : value;
 
     /// <summary>
-    ///     Converts <see cref="value"/> to big endian.
+    ///     Converts <paramref name="value"/> to big endian.
     ///     On big endian this is a no-op. On little endian the bytes are swapped.
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
@@ -172,7 +172,7 @@ public static class EndianExtensions
     public static double AsBigEndian(this double value) => BitConverter.IsLittleEndian ? Endian.Reverse(value) : value;
 
     /// <summary>
-    ///     Converts <see cref="value"/> to big endian.
+    ///     Converts <paramref name="value"/> to big endian.
     ///     On big endian this is a no-op. On little endian the bytes are swapped.
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
@@ -181,7 +181,7 @@ public static class EndianExtensions
     public static T ToBigEndian<T>(T value) where T : unmanaged => BitConverter.IsLittleEndian ? Endian.Reverse(value) : value;
 
     /// <summary>
-    ///     Converts <see cref="value"/> to little endian.
+    ///     Converts <paramref name="value"/> to little endian.
     ///     On little endian this is a no-op. On big endian the bytes are swapped.
     /// </summary>
     /// <param name="value">The value whose endian to convert.</param>
