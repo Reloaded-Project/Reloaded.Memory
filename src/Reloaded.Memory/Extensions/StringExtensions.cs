@@ -3,6 +3,10 @@ using Reloaded.Memory.Internals;
 using Reloaded.Memory.Internals.Algorithms;
 using Reloaded.Memory.Utilities.License;
 
+#if NET7_0_OR_GREATER
+using Reloaded.Memory.Internals.Backports.System.Globalization;
+#endif
+
 namespace Reloaded.Memory.Extensions;
 
 /// <summary>
@@ -28,7 +32,9 @@ public static class StringExtensions
     [MITLicense]
     public static ref char DangerousGetReference(this string text)
     {
-#if NET6_0_OR_GREATER
+#if NET8_0_OR_GREATER
+        return ref Unsafe.AsRef(in text.GetPinnableReference());
+#elif NET6_0_OR_GREATER
         return ref Unsafe.AsRef(text.GetPinnableReference());
 #else
         return ref MemoryMarshal.GetReference(text.AsSpan());
@@ -50,7 +56,9 @@ public static class StringExtensions
     [MITLicense]
     public static ref char DangerousGetReferenceAt(this string text, int i)
     {
-#if NET6_0_OR_GREATER
+#if NET8_0_OR_GREATER
+        ref char r0 = ref Unsafe.AsRef(in text.GetPinnableReference());
+#elif NET6_0_OR_GREATER
         ref char r0 = ref Unsafe.AsRef(text.GetPinnableReference());
 #else
         ref var r0 = ref MemoryMarshal.GetReference(text.AsSpan());
@@ -105,4 +113,54 @@ public static class StringExtensions
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static unsafe nuint GetHashCodeFast(this ReadOnlySpan<char> text) => text.GetHashCodeUnstable();
+
+#if NET7_0_OR_GREATER
+    /// <summary>
+    ///     Converts the given string to lower case (invariant casing), using the fastest possible implementation.
+    /// </summary>
+    /// <param name="text">The string for which to get hash code for.</param>
+    /// <remarks>
+    ///     This method is currently unoptimized for short non-ASCII inputs (due to runtime API limitations).
+    ///     This will be worked around in the future.
+    /// </remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static string ToLowerInvariantFast(this string text) => TextInfo.ChangeCase<TextInfo.ToLowerConversion>(text);
+
+    /// <summary>
+    ///     Converts the given string to lower case (invariant casing), using the fastest possible implementation.
+    /// </summary>
+    /// <param name="text">The string for which to get hash code for.</param>
+    /// <param name="target"></param>
+    /// <remarks>
+    ///     This method is currently unoptimized for short non-ASCII inputs (due to runtime API limitations).
+    ///     This will be worked around in the future.
+    /// </remarks>
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe void ToLowerInvariantFast(this ReadOnlySpan<char> text, Span<char> target) => TextInfo.ChangeCase<TextInfo.ToLowerConversion>(text, target);
+
+    /// <summary>
+    ///     Converts the given string to upper case (invariant casing), using the fastest possible implementation.
+    /// </summary>
+    /// <param name="text">The string for which to get hash code for.</param>
+    /// <remarks>
+    ///     This method is currently unoptimized for short non-ASCII inputs (due to runtime API limitations).
+    ///     This will be worked around in the future.
+    /// </remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static string ToUpperInvariantFast(this string text) => TextInfo.ChangeCase<TextInfo.ToUpperConversion>(text);
+
+    /// <summary>
+    ///     Converts the given string to upper case (invariant casing), using the fastest possible implementation.
+    /// </summary>
+    /// <param name="text">The string for which to get hash code for.</param>
+    /// <param name="target">The destination where the new string should be written.</param>
+    /// <remarks>
+    ///     This method is currently unoptimized for short non-ASCII inputs (due to runtime API limitations).
+    ///     This will be worked around in the future.
+    /// </remarks>
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe void ToUpperInvariantFast(this ReadOnlySpan<char> text, Span<char> target) => TextInfo.ChangeCase<TextInfo.ToUpperConversion>(text, target);
+#endif
 }

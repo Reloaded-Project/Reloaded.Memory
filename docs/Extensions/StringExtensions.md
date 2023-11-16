@@ -47,6 +47,29 @@ Faster hashcode for strings; but does not randomize between application runs.
 Use this method if and only if 'Denial of Service' attacks are not a concern
 (i.e. never used for free-form user input), or are otherwise mitigated.
 
+This method does not provide guarantees about producing the same hash across different machines or library versions,
+or runtime; only for the current process. Instead, it prioritises speed over all.
+
+### ToLowerInvariantFast
+
+```csharp
+public static string ToLowerInvariantFast(this string text)
+public static unsafe void ToLowerInvariantFast(this ReadOnlySpan<char> text, Span<char> target)
+```
+
+Converts the given string to lower case (invariant casing) using the fastest possible implementation.
+This method is optimized for performance but currently has limitations for short non-ASCII inputs.
+
+### ToUpperInvariantFast
+
+```csharp
+public static string ToUpperInvariantFast(this string text)
+public static unsafe void ToUpperInvariantFast(this ReadOnlySpan<char> text, Span<char> target)
+```
+
+Converts the given string to upper case (invariant casing) using the fastest possible implementation.
+This method is optimized for performance but currently has limitations for short non-ASCII inputs.
+
 ## Usage
 
 ### Get Reference to First Element in String
@@ -77,4 +100,34 @@ int count = text.Count(targetChar);
 ```csharp
 string text = "Hello, world!";
 nuint fastHashCode = text.GetHashCodeFast();
+```
+
+## Convert String to Lower Case Invariant Fast
+
+```csharp
+string text = "Hello, WORLD!";
+string lowerInvariant = text.ToLowerInvariantFast(); // hello, world!
+```
+
+### Convert String to Upper Case Invariant Fast
+
+```csharp
+string text = "hello, world!";
+string upperInvariant = text.ToUpperInvariantFast(); // HELLO, WORLD!
+```
+
+### Convert ReadOnlySpan to Lower Case Invariant Fast
+
+```csharp
+string text = "Hello, WORLD!";
+Span<char> target = stackalloc char[textSpan.Length]; // Careful with string length!
+text.AsSpan().ToLowerInvariantFast(target); // hello, world! (on stack)
+```
+
+### Convert ReadOnlySpan to Upper Case Invariant Fast
+
+```csharp
+string text = "hello, world!";
+Span<char> target = stackalloc char[textSpan.Length]; // Careful with string length!
+text.AsSpan().ToLowerInvariantFast(target); // HELLO, WORLD! (on stack)
 ```

@@ -55,7 +55,9 @@ public static class TypeInfo
 
         try
         {
+#pragma warning disable SYSLIB0050
             var instance = FormatterServices.GetUninitializedObject(type);
+#pragma warning restore SYSLIB0050
             GCHandle.Alloc(instance, GCHandleType.Pinned).Free();
             return true;
         }

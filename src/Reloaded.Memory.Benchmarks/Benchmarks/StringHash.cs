@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using BenchmarkDotNet.Attributes;
 using Reloaded.Memory.Benchmarks.Framework;
+using Reloaded.Memory.Benchmarks.Utilities;
 using Reloaded.Memory.Extensions;
 using Reloaded.Memory.Internals.Algorithms;
 
@@ -28,7 +29,7 @@ public class StringHashBenchmark
         Input = new string[ItemCount];
 
         for (var x = 0; x < ItemCount; x++)
-            Input[x] = RandomString(CharacterCount);
+            Input[x] = StringGenerators.RandomStringUpperWithEmoji(CharacterCount);
     }
 
     [Benchmark]
@@ -163,13 +164,5 @@ public class StringHashBenchmark
 
             return (int)(hash1 + hash2 * 1566083941);
         }
-    }
-
-
-    public static string RandomString(int length)
-    {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        return new string(Enumerable.Repeat(chars, length)
-            .Select(s => s[_random.Next(s.Length)]).ToArray());
     }
 }
