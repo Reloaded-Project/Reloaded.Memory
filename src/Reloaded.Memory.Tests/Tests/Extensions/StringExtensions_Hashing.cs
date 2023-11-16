@@ -2,13 +2,11 @@
 using System.Runtime.Intrinsics.X86;
 using Reloaded.Memory.Internals.Algorithms;
 #else
-using System;
-using Reloaded.Memory.Extensions;
+using Reloaded.Memory.Internals.Algorithms;
 #endif
 using System;
 using FluentAssertions;
 using Reloaded.Memory.Extensions;
-using Reloaded.Memory.Internals.Algorithms;
 using Xunit;
 using static Reloaded.Memory.Tests.Utilities.StringGenerators;
 
