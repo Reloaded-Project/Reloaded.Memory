@@ -6,7 +6,6 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Intrinsics;
-using System.Text;
 using Reloaded.Memory.Internals.Backports.System.Text.Unicode;
 // ReSharper disable UnusedType.Global
 
