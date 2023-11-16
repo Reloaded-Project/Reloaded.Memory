@@ -33,6 +33,10 @@ internal abstract class ThrowHelpers
         => throw new PlatformNotSupportedException("Operating System in use is not supported.");
 
     [MethodImpl(MethodImplOptions.NoInlining)]
+    public static void ThrowArchitectureNotSupportedException()
+        => throw new PlatformNotSupportedException("Architecture is not supported. Only 32/64 bit platforms are supported.");
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public static void ThrowReadExternalMemoryExceptionWindows(nuint memoryAddress, int structSize)
         => throw new MemoryException(
             $"ReadProcessMemory failed to read {structSize} bytes of memory from {memoryAddress}. Error: {Marshal.GetLastWin32Error()}");

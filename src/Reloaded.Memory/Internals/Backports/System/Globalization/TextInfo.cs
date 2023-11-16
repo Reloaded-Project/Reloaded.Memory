@@ -26,6 +26,21 @@ internal static class TextInfo
         string.Create(source.Length, source, (span, state) => ChangeCase<TConversion>(state, span));
 
     /// <summary>
+    ///     Custom overload for backported vectorised change case implementations from .NET 8.
+    /// </summary>
+    /// <typeparam name="TConversion">Type of conversion to use.</typeparam>
+    /// <param name="source">The string whose case is to be changed (as span).</param>
+    public static unsafe string ChangeCase<TConversion>(ReadOnlySpan<char> source) where TConversion : struct
+    {
+        // Some dumb overhead here, but it's unavoidable, since Span can be sourced from Heap String or Array
+        fixed (char* first = &source.GetPinnableReference())
+        {
+            var prms = new ChangeCaseParams(first, source.Length);
+            return string.Create(source.Length, prms, (span, state) => ChangeCase<TConversion>(new ReadOnlySpan<char>(state.First, state.Length), span));
+        }
+    }
+
+    /// <summary>
     ///     Backported vectorised change case implementations from .NET 8 (extended with Vector256 support!)
     /// </summary>
     /// <typeparam name="TConversion">Type of conversion to use.</typeparam>
@@ -186,5 +201,11 @@ internal static class TextInfo
 
     // A dummy struct that is used for 'ToLower' in generic parameters
     public readonly struct ToLowerConversion;
+
+    private unsafe struct ChangeCaseParams(char* first, int length)
+    {
+        public readonly char* First = first;
+        public readonly int Length = length;
+    };
 }
 #endif

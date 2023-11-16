@@ -114,6 +114,37 @@ public static class StringExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static unsafe nuint GetHashCodeFast(this ReadOnlySpan<char> text) => text.GetHashCodeUnstable();
 
+    /// <summary>
+    ///     Faster hashcode for strings; but does not randomize between application runs.
+    ///     Hashes the string in lower (invariant) case.
+    /// </summary>
+    /// <param name="text">The string for which to get hash code for.</param>
+    /// <remarks>
+    ///     'Use this if and only if 'Denial of Service' attacks are not a concern (i.e. never used for free-form user input),
+    ///     or are otherwise mitigated.
+    ///
+    ///     This method does not provide guarantees about producing the same hash across different machines or library versions,
+    ///     or runtime; only for the current process. Instead, it prioritises speed over all.
+    /// </remarks>
+    public static nuint GetHashCodeLowerFast(this string text) => text.AsSpan().GetHashCodeLowerFast();
+
+    /// <summary>
+    ///     Faster hashcode for strings; but does not randomize between application runs.
+    ///     Hashes the string in lower (invariant) case.
+    /// </summary>
+    /// <param name="text">The string for which to get hash code for.</param>
+    /// <remarks>
+    ///     'Use this if and only if 'Denial of Service' attacks are not a concern (i.e. never used for free-form user input),
+    ///     or are otherwise mitigated.
+    ///
+    ///     This method does not provide guarantees about producing the same hash across different machines or library versions,
+    ///     or runtime; only for the current process. Instead, it prioritises speed over all.
+    /// </remarks>
+    [ExcludeFromCodeCoverage] // "Cannot be accurately measured without multiple architectures. Known good impl." This is still tested tho.
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe nuint GetHashCodeLowerFast(this ReadOnlySpan<char> text) => text.GetHashCodeUnstableLower();
+
 #if NET7_0_OR_GREATER
     /// <summary>
     ///     Converts the given string to lower case (invariant casing), using the fastest possible implementation.

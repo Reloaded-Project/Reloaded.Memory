@@ -1,4 +1,6 @@
-﻿static Reloaded.Memory.Extensions.StringExtensions.ToLowerInvariantFast(this string! text) -> string!
+﻿static Reloaded.Memory.Extensions.StringExtensions.GetHashCodeLowerFast(this string! text) -> nuint
+static Reloaded.Memory.Extensions.StringExtensions.GetHashCodeLowerFast(this System.ReadOnlySpan<char> text) -> nuint
+static Reloaded.Memory.Extensions.StringExtensions.ToLowerInvariantFast(this string! text) -> string!
 static Reloaded.Memory.Extensions.StringExtensions.ToLowerInvariantFast(this System.ReadOnlySpan<char> text, System.Span<char> target) -> void
 static Reloaded.Memory.Extensions.StringExtensions.ToUpperInvariantFast(this string! text) -> string!
 static Reloaded.Memory.Extensions.StringExtensions.ToUpperInvariantFast(this System.ReadOnlySpan<char> text, System.Span<char> target) -> void

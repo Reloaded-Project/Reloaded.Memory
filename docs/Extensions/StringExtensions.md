@@ -36,7 +36,9 @@ Counts the number of occurrences of a given character in a target `string` insta
 
 !!! warning "SIMD method currently restricted to .NET 7+. PRs for backports are welcome."
 
-!!! warning "Will produce different hashes depending on runtime."
+!!! warning "Will produce different hashes depending on runtime or CPU."
+
+!!! info "Optimised for File Paths specifically"
 
 ```csharp
 public static nuint GetHashCodeFast(string text)
@@ -44,6 +46,28 @@ public static unsafe nuint GetHashCodeFast(this ReadOnlySpan<char> text)
 ```
 
 Faster hashcode for strings; but does not randomize between application runs.
+
+Use this method if and only if 'Denial of Service' attacks are not a concern
+(i.e. never used for free-form user input), or are otherwise mitigated.
+
+This method does not provide guarantees about producing the same hash across different machines or library versions,
+or runtime; only for the current process. Instead, it prioritises speed over all.
+
+### GetHashCodeLowerFast
+
+!!! warning "SIMD method currently restricted to .NET 7+. PRs for backports are welcome."
+
+!!! warning "Will produce different hashes depending on runtime or CPU."
+
+!!! info "Optimised for File Paths specifically"
+
+```csharp
+public static nuint GetHashCodeLowerFast(this string text)
+public static unsafe nuint GetHashCodeLowerFast(this ReadOnlySpan<char> text)
+```
+
+Faster hashcode for strings, hashed in lower (invariant) case; does not randomize between application runs.
+
 Use this method if and only if 'Denial of Service' attacks are not a concern
 (i.e. never used for free-form user input), or are otherwise mitigated.
 
@@ -100,6 +124,13 @@ int count = text.Count(targetChar);
 ```csharp
 string text = "Hello, world!";
 nuint fastHashCode = text.GetHashCodeFast();
+```
+
+### Get Lower Case Hash Code
+
+```csharp
+string text = "Hello, World!";
+nuint lowerCaseHashCode = text.GetHashCodeLowerFast();
 ```
 
 ## Convert String to Lower Case Invariant Fast

@@ -16,6 +16,7 @@ internal static class UnstableStringHash
 {
     /// <summary>
     ///     Faster hashcode for strings; but does not randomize between application runs.
+    ///     Inspired by .NET Runtime's own implementation; combining unrolled djb-like and FNV-1.
     /// </summary>
     /// <param name="text">The string for which to get hash code for.</param>
     /// <remarks>

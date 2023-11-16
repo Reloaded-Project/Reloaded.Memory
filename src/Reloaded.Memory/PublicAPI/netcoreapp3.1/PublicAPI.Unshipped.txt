@@ -1,1 +1,2 @@
-﻿
+﻿static Reloaded.Memory.Extensions.StringExtensions.GetHashCodeLowerFast(this string! text) -> nuint
+static Reloaded.Memory.Extensions.StringExtensions.GetHashCodeLowerFast(this System.ReadOnlySpan<char> text) -> nuint
