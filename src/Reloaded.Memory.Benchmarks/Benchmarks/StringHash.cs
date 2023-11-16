@@ -40,9 +40,9 @@ public class StringHashBenchmark
         for (var x = 0; x < maxLen; x += 4)
         {
             result = UnstableStringHash.GetHashCodeUnstable(Input.DangerousGetReferenceAt(x));
-            result = UnstableStringHash.GetHashCodeUnstable(Input.DangerousGetReferenceAt(x));
-            result = UnstableStringHash.GetHashCodeUnstable(Input.DangerousGetReferenceAt(x));
-            result = UnstableStringHash.GetHashCodeUnstable(Input.DangerousGetReferenceAt(x));
+            result = UnstableStringHash.GetHashCodeUnstable(Input.DangerousGetReferenceAt(x + 1));
+            result = UnstableStringHash.GetHashCodeUnstable(Input.DangerousGetReferenceAt(x + 2));
+            result = UnstableStringHash.GetHashCodeUnstable(Input.DangerousGetReferenceAt(x + 3));
         }
 
         return result;
@@ -57,9 +57,9 @@ public class StringHashBenchmark
         for (var x = 0; x < maxLen; x += 4)
         {
             result = UnstableStringHash.UnstableHashAvx2(Input.DangerousGetReferenceAt(x));
-            result = UnstableStringHash.UnstableHashAvx2(Input.DangerousGetReferenceAt(x));
-            result = UnstableStringHash.UnstableHashAvx2(Input.DangerousGetReferenceAt(x));
-            result = UnstableStringHash.UnstableHashAvx2(Input.DangerousGetReferenceAt(x));
+            result = UnstableStringHash.UnstableHashAvx2(Input.DangerousGetReferenceAt(x + 1));
+            result = UnstableStringHash.UnstableHashAvx2(Input.DangerousGetReferenceAt(x + 2));
+            result = UnstableStringHash.UnstableHashAvx2(Input.DangerousGetReferenceAt(x + 3));
         }
 
         return result;
@@ -75,9 +75,9 @@ public class StringHashBenchmark
         {
 
             result = UnstableStringHash.UnstableHashVec128(Input.DangerousGetReferenceAt(x));
-            result = UnstableStringHash.UnstableHashVec128(Input.DangerousGetReferenceAt(x));
-            result = UnstableStringHash.UnstableHashVec128(Input.DangerousGetReferenceAt(x));
-            result = UnstableStringHash.UnstableHashVec128(Input.DangerousGetReferenceAt(x));
+            result = UnstableStringHash.UnstableHashVec128(Input.DangerousGetReferenceAt(x + 1));
+            result = UnstableStringHash.UnstableHashVec128(Input.DangerousGetReferenceAt(x + 2));
+            result = UnstableStringHash.UnstableHashVec128(Input.DangerousGetReferenceAt(x + 3));
         }
 
         return result;
@@ -93,9 +93,9 @@ public class StringHashBenchmark
         {
 
             result = UnstableStringHash.UnstableHashNonVector(Input.DangerousGetReferenceAt(x));
-            result = UnstableStringHash.UnstableHashNonVector(Input.DangerousGetReferenceAt(x));
-            result = UnstableStringHash.UnstableHashNonVector(Input.DangerousGetReferenceAt(x));
-            result = UnstableStringHash.UnstableHashNonVector(Input.DangerousGetReferenceAt(x));
+            result = UnstableStringHash.UnstableHashNonVector(Input.DangerousGetReferenceAt(x + 1));
+            result = UnstableStringHash.UnstableHashNonVector(Input.DangerousGetReferenceAt(x + 2));
+            result = UnstableStringHash.UnstableHashNonVector(Input.DangerousGetReferenceAt(x + 3));
         }
 
         return result;
