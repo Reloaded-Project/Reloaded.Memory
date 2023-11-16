@@ -17,6 +17,7 @@ jobs:
           - ubuntu-latest
           - macos-13
         targetFramework:
+          - net8.0
           - net7.0
           - net6.0
           - net5.0
