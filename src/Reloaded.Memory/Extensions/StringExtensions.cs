@@ -85,8 +85,8 @@ public static class StringExtensions
     ///     'Use this if and only if 'Denial of Service' attacks are not a concern (i.e. never used for free-form user input),
     ///     or are otherwise mitigated.
     ///
-    ///     This method does not provide guarantees about producing the same hash across different architectures, or
-    ///     even the same runtime. Instead, it prioritises speed over all.
+    ///     This method does not provide guarantees about producing the same hash across different machines or library versions,
+    ///     or runtime; only for the current process. Instead, it prioritises speed over all.
     /// </remarks>
     public static nuint GetHashCodeFast(this string text) => text.AsSpan().GetHashCodeFast();
 
@@ -98,8 +98,8 @@ public static class StringExtensions
     ///     'Use this if and only if 'Denial of Service' attacks are not a concern (i.e. never used for free-form user input),
     ///     or are otherwise mitigated.
     ///
-    ///     This method does not provide guarantees about producing the same hash across different architectures, or
-    ///     even the same runtime. Instead, it prioritises speed over all.
+    ///     This method does not provide guarantees about producing the same hash across different machines or library versions,
+    ///     or runtime; only for the current process. Instead, it prioritises speed over all.
     /// </remarks>
     [ExcludeFromCodeCoverage] // "Cannot be accurately measured without multiple architectures. Known good impl." This is still tested tho.
     [SuppressMessage("ReSharper", "InconsistentNaming")]
