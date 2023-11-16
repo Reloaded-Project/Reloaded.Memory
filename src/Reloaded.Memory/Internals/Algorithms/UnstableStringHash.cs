@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
-using System.Numerics;
 using Reloaded.Memory.Utilities;
 #if NET7_0_OR_GREATER
+using System.Numerics;
 using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.X86;
 #endif
@@ -27,13 +27,16 @@ internal static class UnstableStringHash
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static unsafe nuint GetHashCodeUnstable(this ReadOnlySpan<char> text)
     {
-        var length = text.Length; // Span has no guarantee of null terminator.
 #if NET7_0_OR_GREATER
+        var length = text.Length; // Span has no guarantee of null terminator.
         // For short strings below size of nuint, we need separate approach; so we use legacy runtime approach
         // for said cold case.
 
+        // Note: The `/ sizeof(char)` accounts that length is measured in 2-byte chars, not bytes.
+
         // ReSharper disable once InvertIf
-        if (length >= sizeof(nuint) / sizeof(char)) // <= do not invert, hot path.
+        // Over 64 bytes (32 chars) + Vector128. Supported on all x64 and ARM64 processors.
+        if (length >= sizeof(Vector128<ulong>) / sizeof(char) * 4) // <= do not invert, hot path.
         {
             // Note. In these implementations we leave some (< sizeof(nuint)) data from the hash.
             // For our use of hashing file paths, this is okay, as files with different names but same extension
@@ -41,14 +44,10 @@ internal static class UnstableStringHash
 
             // AVX Version
             // Ideally I could rewrite this in full Vector256 but I don't know how to get it to emit VPMULUDQ for the multiply operation.
-            if (Avx2.IsSupported && length >= sizeof(Vector256<ulong>) / sizeof(char) * 4) // over 128 bytes + AVX
-                return text.UnstableHashAvx2();
+            if (!Avx2.IsSupported || length < sizeof(Vector256<ulong>) / sizeof(char) * 4) // if under 64 chars (hot case), conditionally use Vector128
+                return Vector128.IsHardwareAccelerated ? text.UnstableHashVec128() : text.UnstableHashNonVector();
 
-            // Over 64 bytes + Vector128. Supported on all x64 and ARM64 processors.
-            if (Vector128.IsHardwareAccelerated && length >= sizeof(Vector128<ulong>) / sizeof(char) * 4)
-                return text.UnstableHashVec128();
-
-            return text.UnstableHashNonVector();
+            return text.UnstableHashAvx2();
         }
 #endif
 

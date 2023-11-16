@@ -3,6 +3,7 @@ using System.Numerics;
 using BenchmarkDotNet.Attributes;
 using Reloaded.Memory.Benchmarks.Framework;
 using Reloaded.Memory.Extensions;
+using Reloaded.Memory.Internals.Algorithms;
 
 namespace Reloaded.Memory.Benchmarks.Benchmarks;
 
@@ -17,7 +18,7 @@ public class StringHashBenchmark
     private static readonly Random _random = new();
     private const int ItemCount = 10000;
 
-    [Params(12, 64, 96, 128, 256, 1024)] public int CharacterCount { get; set; }
+    [Params(4, 8, 12, 16, 64, 96, 128, 256, 1024)] public int CharacterCount { get; set; }
 
     public string[] Input { get; set; } = null!;
 
@@ -31,17 +32,70 @@ public class StringHashBenchmark
     }
 
     [Benchmark]
-    public nuint Custom()
+    public nuint Custom_Unstable()
     {
         nuint result = 0;
         var maxLen = Input.Length / 4;
         // unroll
         for (var x = 0; x < maxLen; x += 4)
         {
-            result = Input.DangerousGetReferenceAt(x).GetHashCodeFast();
-            result = Input.DangerousGetReferenceAt(x + 1).GetHashCodeFast();
-            result = Input.DangerousGetReferenceAt(x + 2).GetHashCodeFast();
-            result = Input.DangerousGetReferenceAt(x + 3).GetHashCodeFast();
+            result = UnstableStringHash.GetHashCodeUnstable(Input.DangerousGetReferenceAt(x));
+            result = UnstableStringHash.GetHashCodeUnstable(Input.DangerousGetReferenceAt(x));
+            result = UnstableStringHash.GetHashCodeUnstable(Input.DangerousGetReferenceAt(x));
+            result = UnstableStringHash.GetHashCodeUnstable(Input.DangerousGetReferenceAt(x));
+        }
+
+        return result;
+    }
+
+    [Benchmark]
+    public nuint Custom_Avx2()
+    {
+        nuint result = 0;
+        var maxLen = Input.Length / 4;
+        // unroll
+        for (var x = 0; x < maxLen; x += 4)
+        {
+            result = UnstableStringHash.UnstableHashAvx2(Input.DangerousGetReferenceAt(x));
+            result = UnstableStringHash.UnstableHashAvx2(Input.DangerousGetReferenceAt(x));
+            result = UnstableStringHash.UnstableHashAvx2(Input.DangerousGetReferenceAt(x));
+            result = UnstableStringHash.UnstableHashAvx2(Input.DangerousGetReferenceAt(x));
+        }
+
+        return result;
+    }
+
+    [Benchmark]
+    public nuint Custom_Vec128()
+    {
+        nuint result = 0;
+        var maxLen = Input.Length / 4;
+        // unroll
+        for (var x = 0; x < maxLen; x += 4)
+        {
+
+            result = UnstableStringHash.UnstableHashVec128(Input.DangerousGetReferenceAt(x));
+            result = UnstableStringHash.UnstableHashVec128(Input.DangerousGetReferenceAt(x));
+            result = UnstableStringHash.UnstableHashVec128(Input.DangerousGetReferenceAt(x));
+            result = UnstableStringHash.UnstableHashVec128(Input.DangerousGetReferenceAt(x));
+        }
+
+        return result;
+    }
+
+    [Benchmark]
+    public nuint Custom_NonVec()
+    {
+        nuint result = 0;
+        var maxLen = Input.Length / 4;
+        // unroll
+        for (var x = 0; x < maxLen; x += 4)
+        {
+
+            result = UnstableStringHash.UnstableHashNonVector(Input.DangerousGetReferenceAt(x));
+            result = UnstableStringHash.UnstableHashNonVector(Input.DangerousGetReferenceAt(x));
+            result = UnstableStringHash.UnstableHashNonVector(Input.DangerousGetReferenceAt(x));
+            result = UnstableStringHash.UnstableHashNonVector(Input.DangerousGetReferenceAt(x));
         }
 
         return result;
