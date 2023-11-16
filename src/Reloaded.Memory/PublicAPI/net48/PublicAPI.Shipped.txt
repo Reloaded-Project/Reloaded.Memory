@@ -962,3 +962,5 @@ static Reloaded.Memory.Extensions.EndianExtensions.AsLittleEndian(this uint valu
 static Reloaded.Memory.Extensions.EndianExtensions.AsLittleEndian(this ulong value) -> ulong
 static Reloaded.Memory.Extensions.EndianExtensions.AsLittleEndian(this ushort value) -> ushort
 static Reloaded.Memory.Extensions.EndianExtensions.AsLittleEndian<T>(this T value) -> T
+static Reloaded.Memory.Extensions.StringExtensions.GetHashCodeLowerFast(this string! text) -> nuint
+static Reloaded.Memory.Extensions.StringExtensions.GetHashCodeLowerFast(this System.ReadOnlySpan<char> text) -> nuint
