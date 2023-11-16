@@ -16,7 +16,6 @@ namespace Reloaded.Memory.Benchmarks.Benchmarks;
 [SuppressMessage("ReSharper", "RedundantAssignment")]
 public class StringHashBenchmark
 {
-    private static readonly Random _random = new();
     private const int ItemCount = 10000;
 
     [Params(4, 8, 12, 16, 64, 96, 128, 256, 1024)] public int CharacterCount { get; set; }

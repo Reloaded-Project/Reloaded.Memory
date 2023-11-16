@@ -11,6 +11,7 @@ using Reloaded.Memory.Internals.Backports.System.Text.Unicode;
 
 namespace Reloaded.Memory.Benchmarks.Benchmarks;
 
+[ShortRunJob]
 [MinColumn]
 [MaxColumn]
 [MedianColumn]
@@ -19,10 +20,9 @@ namespace Reloaded.Memory.Benchmarks.Benchmarks;
 [SuppressMessage("ReSharper", "RedundantAssignment")]
 public class StringHashIgnoreCaseBenchmark
 {
-    private static readonly Random _random = new();
     private const int ItemCount = 10000;
 
-    [Params(4, 8, 12, 16, 64, 96, 128, 256, 1024)] public int CharacterCount { get; set; }
+    [Params(4, 8, 16, 32, 64, 128, 256)] public int CharacterCount { get; set; }
 
     public string[] Input { get; set; } = null!;
 
@@ -53,7 +53,7 @@ public class StringHashIgnoreCaseBenchmark
     }
 
     [Benchmark]
-    public nuint Custom_Avx2()
+    public nuint Custom_Avx2Lower()
     {
         nuint result = 0;
         var maxLen = Input.Length / 4;
@@ -70,7 +70,7 @@ public class StringHashIgnoreCaseBenchmark
     }
 
     [Benchmark]
-    public nuint Custom_Vec128()
+    public nuint Custom_Vec128Lower()
     {
         nuint result = 0;
         var maxLen = Input.Length / 4;
@@ -88,7 +88,7 @@ public class StringHashIgnoreCaseBenchmark
     }
 
     [Benchmark]
-    public nuint Custom_NonVec()
+    public nuint Custom_NonVecLower()
     {
         nuint result = 0;
         var maxLen = Input.Length / 4;
