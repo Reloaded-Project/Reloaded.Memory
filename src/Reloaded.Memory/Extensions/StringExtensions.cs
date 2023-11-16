@@ -168,7 +168,7 @@ public static class StringExtensions
     /// </remarks>
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static unsafe void ToLowerInvariantFast(this ReadOnlySpan<char> text, Span<char> target) => TextInfo.ChangeCase<TextInfo.ToLowerConversion>(text, target);
+    public static void ToLowerInvariantFast(this ReadOnlySpan<char> text, Span<char> target) => TextInfo.ChangeCase<TextInfo.ToLowerConversion>(text, target);
 
     /// <summary>
     ///     Converts the given string to upper case (invariant casing), using the fastest possible implementation.

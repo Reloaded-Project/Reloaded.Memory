@@ -6,6 +6,7 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Intrinsics;
+using Reloaded.Memory.Exceptions;
 using Reloaded.Memory.Internals.Backports.System.Text.Unicode;
 // ReSharper disable UnusedType.Global
 
@@ -53,29 +54,7 @@ internal static class TextInfo
         else if (Vector128.IsHardwareAccelerated && source.Length >= Vector128<ushort>.Count)
             ChangeCase_Vector128<TConversion>(ref MemoryMarshal.GetReference(source), ref MemoryMarshal.GetReference(destination), source.Length);
         else
-        {
-            var toUpper = typeof(TConversion) == typeof(ToUpperConversion);
-            ChangeCase_Fallback(source, destination, toUpper);
-        }
-    }
-
-    private static void ChangeCase_Fallback(ReadOnlySpan<char> source, Span<char> destination, bool toUpper)
-    {
-        try
-        {
-            if (toUpper)
-                source.ToUpperInvariant(destination);
-            else
-                source.ToLowerInvariant(destination);
-        }
-        catch (InvalidOperationException)
-        {
-            // Overlapping buffers
-            if (toUpper)
-                source.ToString().AsSpan().ToUpperInvariant(destination);
-            else
-                source.ToString().AsSpan().ToLowerInvariant(destination);
-        }
+            ChangeCase_Under16B<TConversion>(source, destination);
     }
 
     /// <summary>
@@ -134,7 +113,7 @@ internal static class TextInfo
         var length = charCount - (int)i;
         var srcSpan = MemoryMarshal.CreateSpan(ref Unsafe.Add(ref source, i), length);
         var dstSpan = MemoryMarshal.CreateSpan(ref Unsafe.Add(ref destination, i), length);
-        ChangeCase_Fallback(srcSpan, dstSpan, toUpper);
+        ChangeCase_Fallback<TConversion>(srcSpan, dstSpan);
     }
 
     /// <summary>
@@ -193,7 +172,7 @@ internal static class TextInfo
         var length = charCount - (int)i;
         var srcSpan = MemoryMarshal.CreateSpan(ref Unsafe.Add(ref source, i), length);
         var dstSpan = MemoryMarshal.CreateSpan(ref Unsafe.Add(ref destination, i), length);
-        ChangeCase_Fallback(srcSpan, dstSpan, toUpper);
+        ChangeCase_Fallback<TConversion>(srcSpan, dstSpan);
     }
 
     // A dummy struct that is used for 'ToUpper' in generic parameters
@@ -207,5 +186,168 @@ internal static class TextInfo
         public readonly char* First = first;
         public readonly int Length = length;
     };
+
+    /// <summary>
+    ///     An implementation of Change Case for inputs up to 16 bytes.
+    ///     Custom, not taken from runtime.
+    /// </summary>
+    /// <param name="source">Source span.</param>
+    /// <param name="destination">Destination span.</param>
+    public static unsafe void ChangeCase_Under16B<TConversion>(ReadOnlySpan<char> source, Span<char> destination) where TConversion : struct
+    {
+        var length = source.Length;
+
+        // JIT will treat this as a constant in release builds
+        var toUpper = typeof(TConversion) == typeof(ToUpperConversion);
+
+        // 32 bit implementation
+        if (sizeof(nuint) == 4)
+        {
+            ref uint srcNuintPtr = ref Unsafe.As<char, uint>(ref MemoryMarshal.GetReference(source));
+            ref uint dstNuintPtr = ref Unsafe.As<char, uint>(ref MemoryMarshal.GetReference(destination));
+
+            // 32 bit implementation
+            // range: 0-7 chars (0-14 bytes)
+            // keep converting 4 bytes at once until we are left with 0-2
+            while (length >= 2)
+            {
+                length -= 2;
+                if (!Utf16Utility.AllCharsInUIntAreAscii(srcNuintPtr))
+                    goto NotAscii;
+
+                dstNuintPtr = toUpper
+                    ? Utf8Utility.ConvertAllAsciiBytesInUInt32ToUppercase(srcNuintPtr)
+                    : Utf8Utility.ConvertAllAsciiBytesInUInt32ToLowercase(srcNuintPtr);
+
+                srcNuintPtr = ref Unsafe.Add(ref srcNuintPtr, 1);
+                dstNuintPtr = ref Unsafe.Add(ref dstNuintPtr, 1);
+            }
+
+            ref char srcCharPtr = ref Unsafe.As<uint, char>(ref srcNuintPtr);
+            ref char dstCharPtr = ref Unsafe.As<uint, char>(ref dstNuintPtr);
+            if (length > 0)
+            {
+                if (toUpper)
+                {
+                    if (UnicodeUtility.IsInRangeInclusive(srcCharPtr, 'a', 'z'))
+                    {
+                        dstCharPtr = (char)(srcCharPtr - (char)0x20u);
+                        return;
+                    }
+
+                    goto NotAscii;
+                }
+                else
+                {
+                    if (UnicodeUtility.IsInRangeInclusive(srcCharPtr, 'A', 'Z'))
+                    {
+                        dstCharPtr = (char)(srcCharPtr + (char)0x20u);
+                        return;
+                    }
+
+                    goto NotAscii;
+                }
+            }
+
+            return;
+        }
+
+        // 64 bit implementation
+        if (sizeof(nuint) == 8)
+        {
+            ref nuint srcNuintPtr = ref Unsafe.As<char, nuint>(ref MemoryMarshal.GetReference(source));
+            ref nuint dstNuintPtr = ref Unsafe.As<char, nuint>(ref MemoryMarshal.GetReference(destination));
+
+            // range: 0-7 chars (0-14 bytes)
+            // -4 chars
+            if (length >= 4)
+            {
+                length -= sizeof(nuint) / sizeof(char);
+                if (!Utf16Utility.AllCharsInNuintAreAscii(srcNuintPtr))
+                    goto NotAscii;
+
+                dstNuintPtr = toUpper
+                    ? (nuint)Utf8Utility.ConvertAllAsciiBytesInUInt64ToUppercase(srcNuintPtr)
+                    : (nuint)Utf8Utility.ConvertAllAsciiBytesInUInt64ToLowercase(srcNuintPtr);
+
+                srcNuintPtr = ref Unsafe.Add(ref srcNuintPtr, 1);
+                dstNuintPtr = ref Unsafe.Add(ref dstNuintPtr, 1);
+            }
+
+            // -2 chars
+            ref uint srcUIntPtr = ref Unsafe.As<nuint, uint>(ref srcNuintPtr);
+            ref uint dstUIntPtr = ref Unsafe.As<nuint, uint>(ref dstNuintPtr);
+            if (length >= 2)
+            {
+                length -= 2;
+                if (!Utf16Utility.AllCharsInUIntAreAscii(srcUIntPtr))
+                    goto NotAscii;
+
+                dstUIntPtr = toUpper
+                    ? Utf8Utility.ConvertAllAsciiBytesInUInt32ToUppercase(srcUIntPtr)
+                    : Utf8Utility.ConvertAllAsciiBytesInUInt32ToLowercase(srcUIntPtr);
+
+                srcUIntPtr = ref Unsafe.Add(ref srcUIntPtr, 1);
+                dstUIntPtr = ref Unsafe.Add(ref dstUIntPtr, 1);
+            }
+
+            // -1 char
+            ref char srcCharPtr = ref Unsafe.As<uint, char>(ref srcUIntPtr);
+            ref char dstCharPtr = ref Unsafe.As<uint, char>(ref dstUIntPtr);
+            if (length >= 1)
+            {
+                if (toUpper)
+                {
+                    if (UnicodeUtility.IsInRangeInclusive(srcCharPtr, 'a', 'z'))
+                    {
+                        dstCharPtr = (char)(srcCharPtr - (char)0x20u);
+                        return;
+                    }
+
+                    goto NotAscii;
+                }
+                else
+                {
+                    if (UnicodeUtility.IsInRangeInclusive(srcCharPtr, 'A', 'Z'))
+                    {
+                        dstCharPtr = (char)(srcCharPtr + (char)0x20u);
+                        return;
+                    }
+
+                    goto NotAscii;
+                }
+            }
+
+            return;
+        }
+
+        ThrowHelpers.ThrowArchitectureNotSupportedException();
+        return;
+
+        NotAscii:
+            ChangeCase_Fallback<TConversion>(source, destination);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void ChangeCase_Fallback<TConversion>(ReadOnlySpan<char> source, Span<char> destination)
+    {
+        // JIT will treat this as a constant in release builds
+        var toUpper = typeof(TConversion) == typeof(ToUpperConversion);
+        try
+        {
+            if (toUpper)
+                source.ToUpperInvariant(destination);
+            else
+                source.ToLowerInvariant(destination);
+        }
+        catch (InvalidOperationException)
+        {
+            // Overlapping buffers
+            if (toUpper)
+                source.ToString().AsSpan().ToUpperInvariant(destination);
+            else
+                source.ToString().AsSpan().ToLowerInvariant(destination);
+        }
+    }
 }
 #endif

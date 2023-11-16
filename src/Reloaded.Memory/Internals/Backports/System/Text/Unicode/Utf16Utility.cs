@@ -2,17 +2,55 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using System.Diagnostics.CodeAnalysis;
+using Reloaded.Memory.Exceptions;
+
 #if NET7_0_OR_GREATER
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Intrinsics;
+#endif
 
 namespace Reloaded.Memory.Internals.Backports.System.Text.Unicode;
 
 #pragma warning disable RCS1141 // Add parameter to documentation comment.
-[ExcludeFromCodeCoverage(Justification = "Taken from .NET Runtime")]
+[ExcludeFromCodeCoverage] // "Taken from .NET Runtime"
 internal static class Utf16Utility
 {
+    /// <summary>
+    ///     Returns true iff the 64-bit nuint represents all ASCII UTF-16 characters in machine endianness.
+    /// </summary>
+    /// <param name="value">The value to assert.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static unsafe bool AllCharsInNuintAreAscii(nuint value)
+    {
+        switch (sizeof(nuint))
+        {
+            // Replaced with concrete implementation by JIT.
+            case 4:
+                return (value & ~0x007F_007Fu) == 0;
+            case 8:
+                return (value & ~0x007F_007F_007F_007Fu) == 0;
+            default:
+                ThrowHelpers.ThrowArchitectureNotSupportedException();
+                return false;
+        }
+    }
+
+    /// <summary>
+    ///     Returns true iff the 64-bit nuint represents all ASCII UTF-16 characters in machine endianness.
+    /// </summary>
+    /// <param name="value">The value to assert.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static bool AllCharsInULongAreAscii(ulong value) => (value & ~0x007F_007F_007F_007Fu) == 0;
+
+    /// <summary>
+    ///     Returns true iff the 32-bit nuint represents all ASCII UTF-16 characters in machine endianness.
+    /// </summary>
+    /// <param name="value">The value to assert.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static bool AllCharsInUIntAreAscii(uint value) => (value & ~0x007F_007F) == 0;
+
+#if NET7_0_OR_GREATER
     /// <summary>
     ///     Returns true iff the Vector128 represents 8 ASCII UTF-16 characters in machine endianness.
     /// </summary>
@@ -114,5 +152,5 @@ internal static class Utf16Utility
         // Drop the lowercase indicator (0x20 bit) from all a-z letters
         return vec - Vector256.AndNot(Vector256.Create((sbyte)0x20), combIndicator1).AsUInt16();
     }
-}
 #endif
+}

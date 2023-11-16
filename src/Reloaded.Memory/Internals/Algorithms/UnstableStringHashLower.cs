@@ -1,9 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
 using Reloaded.Memory.Exceptions;
 using Reloaded.Memory.Utilities;
+using static Reloaded.Memory.Internals.Backports.System.Text.Unicode.Utf16Utility;
 #if NET7_0_OR_GREATER
 using Reloaded.Memory.Extensions;
-using Reloaded.Memory.Internals.Backports.System.Text.Unicode;
 using Reloaded.Memory.Internals.Backports.System.Globalization;
 using System.Numerics;
 using System.Runtime.Intrinsics;
@@ -131,28 +131,28 @@ internal static class UnstableStringHashLower
                 length -= (sizeof(Vector128<ulong>) / sizeof(char)) * 4;
 
                 Vector128<ulong> v0 = Vector128.Load((ulong*)ptr);
-                if (!Utf16Utility.AllCharsInVector128AreAscii(v0))
+                if (!AllCharsInVector128AreAscii(v0))
                     goto NotAscii;
 
                 hash1_128 = Vector128.Xor(hash1_128, Vector128.BitwiseOr(v0, toLower));
                 hash1_128 = Vector128.Multiply(hash1_128.AsUInt32(), prime.AsUInt32()).AsUInt64();
 
                 v0 = Vector128.Load((ulong*)ptr + 2);
-                if (!Utf16Utility.AllCharsInVector128AreAscii(v0))
+                if (!AllCharsInVector128AreAscii(v0))
                     goto NotAscii;
 
                 hash2_128 = Vector128.Xor(hash2_128, Vector128.BitwiseOr(v0, toLower));
                 hash2_128 = Vector128.Multiply(hash2_128.AsUInt32(), prime.AsUInt32()).AsUInt64();
 
                 v0 = Vector128.Load((ulong*)ptr + 4);
-                if (!Utf16Utility.AllCharsInVector128AreAscii(v0))
+                if (!AllCharsInVector128AreAscii(v0))
                     goto NotAscii;
 
                 hash1_128 = Vector128.Xor(hash1_128, Vector128.BitwiseOr(v0, toLower));
                 hash1_128 = Vector128.Multiply(hash1_128.AsUInt32(), prime.AsUInt32()).AsUInt64();
 
                 v0 = Vector128.Load((ulong*)ptr + 6);
-                if (!Utf16Utility.AllCharsInVector128AreAscii(v0))
+                if (!AllCharsInVector128AreAscii(v0))
                     goto NotAscii;
 
                 hash2_128 = Vector128.Xor(hash2_128, Vector128.BitwiseOr(v0, toLower));
@@ -165,7 +165,7 @@ internal static class UnstableStringHashLower
                 length -= sizeof(Vector128<ulong>) / sizeof(char);
 
                 Vector128<ulong> v0 = Vector128.Load((ulong*)ptr);
-                if (!Utf16Utility.AllCharsInVector128AreAscii(v0))
+                if (!AllCharsInVector128AreAscii(v0))
                     goto NotAscii;
 
                 hash1_128 = Vector128.Xor(hash1_128, Vector128.BitwiseOr(v0, toLower));
@@ -251,28 +251,28 @@ internal static class UnstableStringHashLower
                 length -= (sizeof(Vector256<ulong>) / sizeof(char)) * 4;
 
                 Vector256<ulong> v0 = Vector256.Load((ulong*)ptr);
-                if (!Utf16Utility.AllCharsInVector256AreAscii(v0))
+                if (!AllCharsInVector256AreAscii(v0))
                     goto NotAscii;
 
                 hash1Avx = Avx2.Xor(hash1Avx, Avx2.Or(v0, toLower));
                 hash1Avx = Avx2.Multiply(hash1Avx.AsUInt32(), prime.AsUInt32());
 
                 v0 = Vector256.Load((ulong*)ptr + 4);
-                if (!Utf16Utility.AllCharsInVector256AreAscii(v0))
+                if (!AllCharsInVector256AreAscii(v0))
                     goto NotAscii;
 
                 hash2Avx = Avx2.Xor(hash2Avx, Avx2.Or(v0, toLower));
                 hash2Avx = Avx2.Multiply(hash2Avx.AsUInt32(), prime.AsUInt32());
 
                 v0 = Vector256.Load((ulong*)ptr + 8);
-                if (!Utf16Utility.AllCharsInVector256AreAscii(v0))
+                if (!AllCharsInVector256AreAscii(v0))
                     goto NotAscii;
 
                 hash1Avx = Avx2.Xor(hash1Avx, Avx2.Or(v0, toLower));
                 hash1Avx = Avx2.Multiply(hash1Avx.AsUInt32(), prime.AsUInt32());
 
                 v0 = Vector256.Load((ulong*)ptr + 12);
-                if (!Utf16Utility.AllCharsInVector256AreAscii(v0))
+                if (!AllCharsInVector256AreAscii(v0))
                     goto NotAscii;
 
                 hash2Avx = Avx2.Xor(hash2Avx, Avx2.Or(v0, toLower));
@@ -285,7 +285,7 @@ internal static class UnstableStringHashLower
                 length -= sizeof(Vector256<ulong>) / sizeof(char);
 
                 Vector256<ulong> v0 = Vector256.Load((ulong*)ptr);
-                if (!Utf16Utility.AllCharsInVector256AreAscii(v0))
+                if (!AllCharsInVector256AreAscii(v0))
                     goto NotAscii;
 
                 hash1Avx = Avx2.Xor(hash1Avx, Avx2.Or(v0, toLower));
@@ -572,20 +572,6 @@ internal static class UnstableStringHashLower
         NotAscii:
             return GetHashCodeUnstableLowerSlow(text);
     }
-
-    /// <summary>
-    ///     Returns true iff the 64-bit nuint represents all ASCII UTF-16 characters in machine endianness.
-    /// </summary>
-    /// <param name="value">The value to assert.</param>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static unsafe bool AllCharsInULongAreAscii(ulong value) => (value & ~0x007F_007F_007F_007Fu) == 0;
-
-    /// <summary>
-    ///     Returns true iff the 32-bit nuint represents all ASCII UTF-16 characters in machine endianness.
-    /// </summary>
-    /// <param name="value">The value to assert.</param>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static unsafe bool AllCharsInUIntAreAscii(uint value) => (value & ~0x007F_007F) == 0;
 
 #if (NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER) && !NET7_0_OR_GREATER
     private unsafe struct ChangeCaseParams(char* first, int length)
