@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using BenchmarkDotNet.Attributes;
 using Reloaded.Memory.Benchmarks.Framework;
 using Reloaded.Memory.Benchmarks.Utilities;
@@ -59,10 +60,10 @@ public class StringChangeCaseAsciiBenchmark
         // unroll
         for (var x = 0; x < maxLen; x += 4)
         {
-            Input.DangerousGetReferenceAt(x).AsSpan().ToLowerInvariant(outBuf);
-            Input.DangerousGetReferenceAt(x + 1).AsSpan().ToLowerInvariant(outBuf);
-            Input.DangerousGetReferenceAt(x + 2).AsSpan().ToLowerInvariant(outBuf);
-            Input.DangerousGetReferenceAt(x + 3).AsSpan().ToLowerInvariant(outBuf);
+            Ascii.ToLower(Input.DangerousGetReferenceAt(x).AsSpan(), outBuf, out _);
+            Ascii.ToLower(Input.DangerousGetReferenceAt(x + 1).AsSpan(), outBuf, out _);
+            Ascii.ToLower(Input.DangerousGetReferenceAt(x + 2).AsSpan(), outBuf, out _);
+            Ascii.ToLower(Input.DangerousGetReferenceAt(x + 3).AsSpan(), outBuf, out _);
         }
 
         return result;
@@ -97,10 +98,10 @@ public class StringChangeCaseAsciiBenchmark
         // unroll
         for (var x = 0; x < maxLen; x += 4)
         {
-            Input.DangerousGetReferenceAt(x).AsSpan().ToUpperInvariant(outBuf);
-            Input.DangerousGetReferenceAt(x + 1).AsSpan().ToUpperInvariant(outBuf);
-            Input.DangerousGetReferenceAt(x + 2).AsSpan().ToUpperInvariant(outBuf);
-            Input.DangerousGetReferenceAt(x + 3).AsSpan().ToUpperInvariant(outBuf);
+            Ascii.ToUpper(Input.DangerousGetReferenceAt(x).AsSpan(), outBuf, out _);
+            Ascii.ToUpper(Input.DangerousGetReferenceAt(x + 1).AsSpan(), outBuf, out _);
+            Ascii.ToUpper(Input.DangerousGetReferenceAt(x + 2).AsSpan(), outBuf, out _);
+            Ascii.ToUpper(Input.DangerousGetReferenceAt(x + 3).AsSpan(), outBuf, out _);
         }
 
         return result;
