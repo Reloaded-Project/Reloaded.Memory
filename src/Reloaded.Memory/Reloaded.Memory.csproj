@@ -6,7 +6,7 @@
     <RootNamespace>Reloaded.Memory</RootNamespace>
     <PackageProjectUrl>https://github.com/Reloaded-Project/Reloaded.Memory</PackageProjectUrl>
     <Description>High performance, near zero overhead utilities for working with native memory.</Description>
-    <Version>9.3.2</Version>
+    <Version>9.3.3</Version>
     <Authors>Sewer56</Authors>
     <Product>Reloaded Memory Library</Product>
     <PackageId>Reloaded.Memory</PackageId>
