@@ -30,7 +30,7 @@ public class StringExtensions_Hashing
 
                 #if NET7_0_OR_GREATER
                 if (Avx2.IsSupported)
-                    UnstableStringHash.UnstableHashAvx2(text).Should().Be(UnstableStringHash.UnstableHashAvx2(text));
+                    UnstableStringHash.UnstableHashVec256(text).Should().Be(UnstableStringHash.UnstableHashVec256(text));
                 if (Sse2.IsSupported)
                     UnstableStringHash.UnstableHashVec128(text).Should().Be(UnstableStringHash.UnstableHashVec128(text));
 
@@ -58,7 +58,7 @@ public class StringExtensions_Hashing
             {
                 var text = RandomStringAsciiMixedCase(x);
                 var lowerInvariantText = text.ToLowerInvariantFast();
-                UnstableStringHashLower.UnstableHashAvx2Lower(text).Should().Be(UnstableStringHashLower.UnstableHashAvx2Lower(lowerInvariantText));
+                UnstableStringHashLower.UnstableHashVec256Lower(text).Should().Be(UnstableStringHashLower.UnstableHashVec256Lower(lowerInvariantText));
             }
         }
     }

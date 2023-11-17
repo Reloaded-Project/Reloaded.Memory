@@ -55,14 +55,14 @@ internal static class Utf16Utility
     ///     Returns true iff the Vector128 represents 8 ASCII UTF-16 characters in machine endianness.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static bool AllCharsInVector128AreAscii(Vector128<ulong> vec) =>
+    internal static bool AllCharsInVector128AreAscii(Vector128<uint> vec) =>
         AllCharsInVector128AreAscii(vec.AsUInt16());
 
     /// <summary>
     ///     Returns true iff the Vector256 represents 16 ASCII UTF-16 characters in machine endianness.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static bool AllCharsInVector256AreAscii(Vector256<ulong> vec) =>
+    internal static bool AllCharsInVector256AreAscii(Vector256<uint> vec) =>
         AllCharsInVector256AreAscii(vec.AsUInt16());
 
     /// <summary>

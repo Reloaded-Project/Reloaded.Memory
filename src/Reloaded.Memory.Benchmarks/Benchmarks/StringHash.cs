@@ -49,17 +49,17 @@ public class StringHashBenchmark
     }
 
     [Benchmark]
-    public nuint Custom_Avx2()
+    public nuint Custom_Vec256()
     {
         nuint result = 0;
         var maxLen = Input.Length / 4;
         // unroll
         for (var x = 0; x < maxLen; x += 4)
         {
-            result = UnstableStringHash.UnstableHashAvx2(Input.DangerousGetReferenceAt(x));
-            result = UnstableStringHash.UnstableHashAvx2(Input.DangerousGetReferenceAt(x + 1));
-            result = UnstableStringHash.UnstableHashAvx2(Input.DangerousGetReferenceAt(x + 2));
-            result = UnstableStringHash.UnstableHashAvx2(Input.DangerousGetReferenceAt(x + 3));
+            result = UnstableStringHash.UnstableHashVec256(Input.DangerousGetReferenceAt(x));
+            result = UnstableStringHash.UnstableHashVec256(Input.DangerousGetReferenceAt(x + 1));
+            result = UnstableStringHash.UnstableHashVec256(Input.DangerousGetReferenceAt(x + 2));
+            result = UnstableStringHash.UnstableHashVec256(Input.DangerousGetReferenceAt(x + 3));
         }
 
         return result;

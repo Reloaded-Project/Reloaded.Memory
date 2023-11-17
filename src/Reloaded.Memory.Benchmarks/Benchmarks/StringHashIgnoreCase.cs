@@ -60,10 +60,10 @@ public class StringHashIgnoreCaseBenchmark
         // unroll
         for (var x = 0; x < maxLen; x += 4)
         {
-            result = UnstableStringHashLower.UnstableHashAvx2Lower(Input.DangerousGetReferenceAt(x));
-            result = UnstableStringHashLower.UnstableHashAvx2Lower(Input.DangerousGetReferenceAt(x + 1));
-            result = UnstableStringHashLower.UnstableHashAvx2Lower(Input.DangerousGetReferenceAt(x + 2));
-            result = UnstableStringHashLower.UnstableHashAvx2Lower(Input.DangerousGetReferenceAt(x + 3));
+            result = UnstableStringHashLower.UnstableHashVec256Lower(Input.DangerousGetReferenceAt(x));
+            result = UnstableStringHashLower.UnstableHashVec256Lower(Input.DangerousGetReferenceAt(x + 1));
+            result = UnstableStringHashLower.UnstableHashVec256Lower(Input.DangerousGetReferenceAt(x + 2));
+            result = UnstableStringHashLower.UnstableHashVec256Lower(Input.DangerousGetReferenceAt(x + 3));
         }
 
         return result;
