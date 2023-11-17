@@ -58,7 +58,7 @@ internal static class UnstableStringHashLower
     /// <summary>
     ///     [Lowercase/Ignore Case Version]
     ///     Faster hashcode for strings; but does not randomize between application runs.
-    ///     Inspired by .NET Runtime's own implementation; combining unrolled djb-like and FNV-1.
+    ///     Essentially a SIMD'ed FNV-1a.
     /// </summary>
     /// <param name="text">The string for which to get hash code for.</param>
     /// <remarks>
@@ -369,14 +369,15 @@ internal static class UnstableStringHashLower
         fixed (char* src = &text.GetPinnableReference())
         {
             var length = text.Length; // Span has no guarantee of null terminator.
-            uint hash1 = (5381 << 16) + 5381;
+            const ulong prime = 0x01000193;
+            ulong hash1 = 0x811c9dc5;
             var hash2 = hash1;
             var ptr = (uint*)(src);
 
             // We "normalize to lowercase" every char by ORing with 0x0020. This casts
             // a very wide net because it will change, e.g., '^' to '~'. But that should
             // be ok because we expect this to be very rare in practice.
-            const uint NormalizeToLowercase = 0x0020_0020; // valid both for big-endian and for little-endian
+            const uint normalizeToLowercase = 0x0020_0020; // valid both for big-endian and for little-endian
 
             // 32 byte
             while (length >= (sizeof(uint) / sizeof(char)) * 8)
@@ -388,32 +389,32 @@ internal static class UnstableStringHashLower
                 if (!AllCharsInUIntAreAscii(p0 | p1))
                     goto NotAscii;
 
-                hash1 = (Polyfills.RotateLeft(hash1, 5) + hash1) ^ (p0 | NormalizeToLowercase);
-                hash2 = (Polyfills.RotateLeft(hash2, 5) + hash2) ^ (p1 | NormalizeToLowercase);
+                hash1 = (hash1 ^ (p0 | normalizeToLowercase)) * prime;
+                hash2 = (hash2 ^ (p1 | normalizeToLowercase)) * prime;
 
                 p0 = ptr[2];
                 p1 = ptr[3];
                 if (!AllCharsInUIntAreAscii(p0 | p1))
                     goto NotAscii;
 
-                hash1 = (Polyfills.RotateLeft(hash1, 5) + hash1) ^ (p0 | NormalizeToLowercase);
-                hash2 = (Polyfills.RotateLeft(hash2, 5) + hash2) ^ (p1 | NormalizeToLowercase);
+                hash1 = (hash1 ^ (p0 | normalizeToLowercase)) * prime;
+                hash2 = (hash2 ^ (p1 | normalizeToLowercase)) * prime;
 
                 p0 = ptr[4];
                 p1 = ptr[5];
                 if (!AllCharsInUIntAreAscii(p0 | p1))
                     goto NotAscii;
 
-                hash1 = (Polyfills.RotateLeft(hash1, 5) + hash1) ^ (p0 | NormalizeToLowercase);
-                hash2 = (Polyfills.RotateLeft(hash2, 5) + hash2) ^ (p1 | NormalizeToLowercase);
+                hash1 = (hash1 ^ (p0 | normalizeToLowercase)) * prime;
+                hash2 = (hash2 ^ (p1 | normalizeToLowercase)) * prime;
 
                 p0 = ptr[6];
                 p1 = ptr[7];
                 if (!AllCharsInUIntAreAscii(p0 | p1))
                     goto NotAscii;
 
-                hash1 = (Polyfills.RotateLeft(hash1, 5) + hash1) ^ (p0 | NormalizeToLowercase);
-                hash2 = (Polyfills.RotateLeft(hash2, 5) + hash2) ^ (p1 | NormalizeToLowercase);
+                hash1 = (hash1 ^ (p0 | normalizeToLowercase)) * prime;
+                hash2 = (hash2 ^ (p1 | normalizeToLowercase)) * prime;
                 ptr += 8;
             }
 
@@ -427,16 +428,16 @@ internal static class UnstableStringHashLower
                 if (!AllCharsInUIntAreAscii(p0 | p1))
                     goto NotAscii;
 
-                hash1 = (Polyfills.RotateLeft(hash1, 5) + hash1) ^ (p0 | NormalizeToLowercase);
-                hash2 = (Polyfills.RotateLeft(hash2, 5) + hash2) ^ (p1 | NormalizeToLowercase);
+                hash1 = (hash1 ^ (p0 | normalizeToLowercase)) * prime;
+                hash2 = (hash2 ^ (p1 | normalizeToLowercase)) * prime;
 
                 p0 = ptr[2];
                 p1 = ptr[3];
                 if (!AllCharsInUIntAreAscii(p0 | p1))
                     goto NotAscii;
 
-                hash1 = (Polyfills.RotateLeft(hash1, 5) + hash1) ^ (p0 | NormalizeToLowercase);
-                hash2 = (Polyfills.RotateLeft(hash2, 5) + hash2) ^ (p1 | NormalizeToLowercase);
+                hash1 = (hash1 ^ (p0 | normalizeToLowercase)) * prime;
+                hash2 = (hash2 ^ (p1 | normalizeToLowercase)) * prime;
                 ptr += 4;
             }
 
@@ -449,8 +450,8 @@ internal static class UnstableStringHashLower
                 if (!AllCharsInUIntAreAscii(p0 | p1))
                     goto NotAscii;
 
-                hash1 = (Polyfills.RotateLeft(hash1, 5) + hash1) ^ (p0 | NormalizeToLowercase);
-                hash2 = (Polyfills.RotateLeft(hash2, 5) + hash2) ^ (p1 | NormalizeToLowercase);
+                hash1 = (hash1 ^ (p0 | normalizeToLowercase)) * prime;
+                hash2 = (hash2 ^ (p1 | normalizeToLowercase)) * prime;
                 ptr += 2;
             }
 
@@ -461,7 +462,18 @@ internal static class UnstableStringHashLower
                 if (!AllCharsInUIntAreAscii(p0))
                     goto NotAscii;
 
-                hash1 = (Polyfills.RotateLeft(hash1, 5) + hash1) ^ (p0 | NormalizeToLowercase);
+                hash1 = (hash1 ^ (p0 | normalizeToLowercase)) * prime;
+            }
+
+            // 2 bytes potentially left
+            var remainingPtr = (char*)ptr;
+            if (length >= 1)
+            {
+                uint p0 = remainingPtr[0];
+                if (!AllCharsInUIntAreAscii(p0))
+                    goto NotAscii;
+
+                hash2 = (hash2 ^ (p0 | normalizeToLowercase)) * prime;
             }
 
             // ReSharper disable once RedundantCast
@@ -477,7 +489,8 @@ internal static class UnstableStringHashLower
         fixed (char* src = &text.GetPinnableReference())
         {
             var length = text.Length; // Span has no guarantee of null terminator.
-            ulong hash1 = (5381 << 16) + 5381;
+            const ulong prime = 0x00000100000001B3;
+            ulong hash1 = 0xcbf29ce484222325;
             var hash2 = hash1;
             var ptr = (ulong*)(src);
 
@@ -498,10 +511,10 @@ internal static class UnstableStringHashLower
                 if (!AllCharsInULongAreAscii(p0 | p1 | p2 | p3))
                     goto NotAscii;
 
-                hash1 = (Polyfills.RotateLeft(hash1, 5) + hash1) ^ (p0 | normalizeToLowercase);
-                hash2 = (Polyfills.RotateLeft(hash2, 5) + hash2) ^ (p1 | normalizeToLowercase);
-                hash1 = (Polyfills.RotateLeft(hash1, 5) + hash1) ^ (p2 | normalizeToLowercase);
-                hash2 = (Polyfills.RotateLeft(hash2, 5) + hash2) ^ (p3 | normalizeToLowercase);
+                hash1 = (hash1 ^ (p0 | normalizeToLowercase)) * prime;
+                hash2 = (hash2 ^ (p1 | normalizeToLowercase)) * prime;
+                hash1 = (hash1 ^ (p2 | normalizeToLowercase)) * prime;
+                hash2 = (hash2 ^ (p3 | normalizeToLowercase)) * prime;
 
                 p0 = ptr[4];
                 p1 = ptr[5];
@@ -510,10 +523,10 @@ internal static class UnstableStringHashLower
                 if (!AllCharsInULongAreAscii(p0 | p1 | p2 | p3))
                     goto NotAscii;
 
-                hash1 = (Polyfills.RotateLeft(hash1, 5) + hash1) ^ (p0 | normalizeToLowercase);
-                hash2 = (Polyfills.RotateLeft(hash2, 5) + hash2) ^ (p1 | normalizeToLowercase);
-                hash1 = (Polyfills.RotateLeft(hash1, 5) + hash1) ^ (p2 | normalizeToLowercase);
-                hash2 = (Polyfills.RotateLeft(hash2, 5) + hash2) ^ (p3 | normalizeToLowercase);
+                hash1 = (hash1 ^ (p0 | normalizeToLowercase)) * prime;
+                hash2 = (hash2 ^ (p1 | normalizeToLowercase)) * prime;
+                hash1 = (hash1 ^ (p2 | normalizeToLowercase)) * prime;
+                hash2 = (hash2 ^ (p3 | normalizeToLowercase)) * prime;
                 ptr += 8;
             }
 
@@ -529,10 +542,10 @@ internal static class UnstableStringHashLower
                 if (!AllCharsInULongAreAscii(p0 | p1 | p2 | p3))
                     goto NotAscii;
 
-                hash1 = (Polyfills.RotateLeft(hash1, 5) + hash1) ^ (p0 | normalizeToLowercase);
-                hash2 = (Polyfills.RotateLeft(hash2, 5) + hash2) ^ (p1 | normalizeToLowercase);
-                hash1 = (Polyfills.RotateLeft(hash1, 5) + hash1) ^ (p2 | normalizeToLowercase);
-                hash2 = (Polyfills.RotateLeft(hash2, 5) + hash2) ^ (p3 | normalizeToLowercase);
+                hash1 = (hash1 ^ (p0 | normalizeToLowercase)) * prime;
+                hash2 = (hash2 ^ (p1 | normalizeToLowercase)) * prime;
+                hash1 = (hash1 ^ (p2 | normalizeToLowercase)) * prime;
+                hash2 = (hash2 ^ (p3 | normalizeToLowercase)) * prime;
                 ptr += 4;
             }
 
@@ -546,8 +559,8 @@ internal static class UnstableStringHashLower
                 if (!AllCharsInULongAreAscii(p0 | p1))
                     goto NotAscii;
 
-                hash1 = (Polyfills.RotateLeft(hash1, 5) + hash1) ^ (p0 | normalizeToLowercase);
-                hash2 = (Polyfills.RotateLeft(hash2, 5) + hash2) ^ (p1 | normalizeToLowercase);
+                hash1 = (hash1 ^ (p0 | normalizeToLowercase)) * prime;
+                hash2 = (hash2 ^ (p1 | normalizeToLowercase)) * prime;
                 ptr += 2;
             }
 
@@ -558,7 +571,32 @@ internal static class UnstableStringHashLower
                 if (!AllCharsInULongAreAscii(p0))
                     goto NotAscii;
 
-                hash1 = (Polyfills.RotateLeft(hash1, 5) + hash1) ^ (p0 | normalizeToLowercase);
+                hash1 = (hash1 ^ (p0 | normalizeToLowercase)) * prime;
+            }
+
+            // 2/4/6 bytes left
+            var remainingPtr = (char*)ptr;
+            if (length >= 2)
+            {
+                length -= 2;
+
+                var p0 = remainingPtr[0];
+                var p1 = remainingPtr[1];
+                if (!AllCharsInULongAreAscii((ulong)(p0 | p1)))
+                    goto NotAscii;
+
+                hash1 = (hash1 ^ (p0 | normalizeToLowercase)) * prime;
+                hash2 = (hash2 ^ (p1 | normalizeToLowercase)) * prime;
+                remainingPtr += 2;
+            }
+
+            if (length >= 1)
+            {
+                var p0 = remainingPtr[0];
+                if (!AllCharsInULongAreAscii(p0))
+                    goto NotAscii;
+
+                hash1 = (hash1 ^ (p0 | normalizeToLowercase)) * prime;
             }
 
             // ReSharper disable once RedundantCast

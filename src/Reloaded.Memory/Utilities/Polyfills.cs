@@ -1,5 +1,4 @@
 ﻿#if NET7_0_OR_GREATER
-using System.Numerics;
 #else
 using Reloaded.Memory.Exceptions;
 #endif
@@ -165,66 +164,6 @@ internal static class Polyfills
 
         rental.Array.AsSpan(0, buffer.Length).CopyTo(buffer);
         return totalRead;
-#endif
-    }
-
-    /// <summary>
-    ///     Rotates the specified value left by the specified number of bits.
-    ///     Similar in behavior to the x86 instruction ROL.
-    /// </summary>
-    /// <param name="value">The value to rotate.</param>
-    /// <param name="offset">
-    ///     The number of bits to rotate by.
-    ///     Any value outside the range [0..31] is treated as congruent mod 32.
-    /// </param>
-    /// <returns>The rotated value.</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static uint RotateLeft(uint value, int offset)
-    {
-#if NET7_0_OR_GREATER
-        return BitOperations.RotateLeft(value, offset);
-#else
-        return (value << offset) | (value >> (32 - offset));
-#endif
-    }
-
-    /// <summary>
-    ///     Rotates the specified value left by the specified number of bits.
-    ///     Similar in behavior to the x86 instruction ROL.
-    /// </summary>
-    /// <param name="value">The value to rotate.</param>
-    /// <param name="offset">
-    ///     The number of bits to rotate by.
-    ///     Any value outside the range [0..31] is treated as congruent mod 32.
-    /// </param>
-    /// <returns>The rotated value.</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static unsafe nuint RotateLeft(nuint value, int offset)
-    {
-#if NET7_0_OR_GREATER
-        return BitOperations.RotateLeft(value, offset);
-#else
-        return (value << offset) | (value >> (sizeof(nuint) * 8) - offset);
-#endif
-    }
-
-    /// <summary>
-    ///     Rotates the specified value left by the specified number of bits.
-    ///     Similar in behavior to the x86 instruction ROL.
-    /// </summary>
-    /// <param name="value">The value to rotate.</param>
-    /// <param name="offset">
-    ///     The number of bits to rotate by.
-    ///     Any value outside the range [0..31] is treated as congruent mod 32.
-    /// </param>
-    /// <returns>The rotated value.</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static unsafe ulong RotateLeft(ulong value, int offset)
-    {
-#if NET7_0_OR_GREATER
-        return BitOperations.RotateLeft(value, offset);
-#else
-        return (value << offset) | (value >> (sizeof(nuint) * 8) - offset);
 #endif
     }
 }

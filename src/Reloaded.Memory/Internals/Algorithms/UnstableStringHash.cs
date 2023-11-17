@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using Reloaded.Memory.Exceptions;
 using Reloaded.Memory.Utilities;
 #if NET7_0_OR_GREATER
 using System.Numerics;
@@ -16,7 +17,7 @@ internal static class UnstableStringHash
 {
     /// <summary>
     ///     Faster hashcode for strings; but does not randomize between application runs.
-    ///     Inspired by .NET Runtime's own implementation; combining unrolled djb-like and FNV-1.
+    ///     Essentially a SIMD'ed FNV-1a.
     /// </summary>
     /// <param name="text">The string for which to get hash code for.</param>
     /// <remarks>
@@ -187,54 +188,150 @@ internal static class UnstableStringHash
 
     internal static unsafe UIntPtr UnstableHashNonVector(this ReadOnlySpan<char> text)
     {
+        // JIT will convert this to direct branch.
+        switch (sizeof(nuint))
+        {
+            case 4:
+                return UnstableHashNonVector32(text);
+            case 8:
+                return UnstableHashNonVector64(text);
+            default:
+                ThrowHelpers.ThrowArchitectureNotSupportedException();
+                return (nuint) 0;
+        }
+    }
+
+    internal static unsafe UIntPtr UnstableHashNonVector32(this ReadOnlySpan<char> text)
+    {
         fixed (char* src = &text.GetPinnableReference())
         {
             var length = text.Length; // Span has no guarantee of null terminator.
-            nuint hash1 = (5381 << 16) + 5381;
+            const ulong prime = 0x01000193;
+            ulong hash1 = 0x811c9dc5;
             var hash2 = hash1;
-            var ptr = (nuint*)(src);
+            var ptr = (uint*)(src);
 
             // Non-vector accelerated version here.
-            // 32/64 byte loop
-            while (length >= (sizeof(nuint) / sizeof(char)) * 8)
+            // 32 byte loop
+            while (length >= (sizeof(uint) / sizeof(char)) * 8)
             {
-                length -= (sizeof(nuint) / sizeof(char)) * 8;
-                hash1 = (Polyfills.RotateLeft(hash1, 5) + hash1) ^ ptr[0];
-                hash2 = (Polyfills.RotateLeft(hash2, 5) + hash2) ^ ptr[1];
-                hash1 = (Polyfills.RotateLeft(hash1, 5) + hash1) ^ ptr[2];
-                hash2 = (Polyfills.RotateLeft(hash2, 5) + hash2) ^ ptr[3];
-                hash1 = (Polyfills.RotateLeft(hash1, 5) + hash1) ^ ptr[4];
-                hash2 = (Polyfills.RotateLeft(hash2, 5) + hash2) ^ ptr[5];
-                hash1 = (Polyfills.RotateLeft(hash1, 5) + hash1) ^ ptr[6];
-                hash2 = (Polyfills.RotateLeft(hash2, 5) + hash2) ^ ptr[7];
+                length -= (sizeof(uint) / sizeof(char)) * 8;
+                hash1 = (hash1 ^ ptr[0]) * prime;
+                hash2 = (hash2 ^ ptr[1]) * prime;
+                hash1 = (hash1 ^ ptr[2]) * prime;
+                hash2 = (hash2 ^ ptr[3]) * prime;
+                hash1 = (hash1 ^ ptr[4]) * prime;
+                hash2 = (hash2 ^ ptr[5]) * prime;
+                hash1 = (hash1 ^ ptr[6]) * prime;
+                hash2 = (hash2 ^ ptr[7]) * prime;
                 ptr += 8;
             }
 
-            // 16/32 byte
-            if (length >= (sizeof(nuint) / sizeof(char)) * 4)
+            // 16 byte
+            if (length >= (sizeof(uint) / sizeof(char)) * 4)
             {
-                length -= (sizeof(nuint) / sizeof(char)) * 4;
-                hash1 = (Polyfills.RotateLeft(hash1, 5) + hash1) ^ ptr[0];
-                hash2 = (Polyfills.RotateLeft(hash2, 5) + hash2) ^ ptr[1];
-                hash1 = (Polyfills.RotateLeft(hash1, 5) + hash1) ^ ptr[2];
-                hash2 = (Polyfills.RotateLeft(hash2, 5) + hash2) ^ ptr[3];
+                length -= (sizeof(uint) / sizeof(char)) * 4;
+                hash1 = (hash1 ^ ptr[0]) * prime;
+                hash2 = (hash2 ^ ptr[1]) * prime;
+                hash1 = (hash1 ^ ptr[2]) * prime;
+                hash2 = (hash2 ^ ptr[3]) * prime;
                 ptr += 4;
             }
 
-            // 8/16 byte
-            if (length >= (sizeof(nuint) / sizeof(char)) * 2)
+            // 8 byte
+            if (length >= (sizeof(uint) / sizeof(char)) * 2)
             {
-                length -= (sizeof(nuint) / sizeof(char)) * 2;
-                hash1 = (Polyfills.RotateLeft(hash1, 5) + hash1) ^ ptr[0];
-                hash2 = (Polyfills.RotateLeft(hash2, 5) + hash2) ^ ptr[1];
+                length -= (sizeof(uint) / sizeof(char)) * 2;
+                hash1 = (hash1 ^ ptr[0]) * prime;
+                hash2 = (hash2 ^ ptr[1]) * prime;
                 ptr += 2;
             }
 
-            // 4/8 byte
-            if (length >= (sizeof(nuint) / sizeof(char)))
-                hash1 = (Polyfills.RotateLeft(hash1, 5) + hash1) ^ ptr[0];
+            // 4 byte
+            if (length >= (sizeof(uint) / sizeof(char)))
+            {
+                length -= (sizeof(uint) / sizeof(char));
+                hash1 = (hash1 ^ ptr[0]) * prime;
+                ptr += 1;
+            }
 
-            return hash1 + (hash2 * 1566083941);
+            // 2 bytes potentially left
+            var remainingPtr = (char*)ptr;
+            if (length >= 1)
+                hash2 = (hash2 ^ remainingPtr[0]) * prime;
+
+            return (nuint)(hash1 + (hash2 * 1566083941));
+        }
+    }
+
+    internal static unsafe UIntPtr UnstableHashNonVector64(this ReadOnlySpan<char> text)
+    {
+        fixed (char* src = &text.GetPinnableReference())
+        {
+            var length = text.Length; // Span has no guarantee of null terminator.
+            const ulong prime = 0x00000100000001B3;
+            ulong hash1 = 0xcbf29ce484222325;
+            var hash2 = hash1;
+            var ptr = (ulong*)(src);
+
+            // Non-vector accelerated version here.
+            // 64 byte loop
+            while (length >= (sizeof(ulong) / sizeof(char)) * 8)
+            {
+                length -= (sizeof(ulong) / sizeof(char)) * 8;
+                hash1 = (hash1 ^ ptr[0]) * prime;
+                hash2 = (hash2 ^ ptr[1]) * prime;
+                hash1 = (hash1 ^ ptr[2]) * prime;
+                hash2 = (hash2 ^ ptr[3]) * prime;
+                hash1 = (hash1 ^ ptr[4]) * prime;
+                hash2 = (hash2 ^ ptr[5]) * prime;
+                hash1 = (hash1 ^ ptr[6]) * prime;
+                hash2 = (hash2 ^ ptr[7]) * prime;
+                ptr += 8;
+            }
+
+            // 32 byte
+            if (length >= (sizeof(ulong) / sizeof(char)) * 4)
+            {
+                length -= (sizeof(ulong) / sizeof(char)) * 4;
+                hash1 = (hash1 ^ ptr[0]) * prime;
+                hash2 = (hash2 ^ ptr[1]) * prime;
+                hash1 = (hash1 ^ ptr[2]) * prime;
+                hash2 = (hash2 ^ ptr[3]) * prime;
+                ptr += 4;
+            }
+
+            // 16 byte
+            if (length >= (sizeof(ulong) / sizeof(char)) * 2)
+            {
+                length -= (sizeof(ulong) / sizeof(char)) * 2;
+                hash1 = (hash1 ^ ptr[0]) * prime;
+                hash2 = (hash2 ^ ptr[1]) * prime;
+                ptr += 2;
+            }
+
+            // 8 byte
+            if (length >= (sizeof(ulong) / sizeof(char)))
+            {
+                length -= (sizeof(ulong) / sizeof(char));
+                hash1 = (hash1 ^ ptr[0]) * prime;
+                ptr += 1;
+            }
+
+            // 2/4/6 bytes left
+            var remainingPtr = (char*)ptr;
+            if (length >= 2)
+            {
+                length -= 2;
+                hash1 = (hash1 ^ remainingPtr[0]) * prime;
+                hash2 = (hash2 ^ remainingPtr[1]) * prime;
+                remainingPtr += 2;
+            }
+
+            if (length >= 1)
+                hash2 = (hash2 ^ remainingPtr[0]) * prime;
+
+            return (nuint)(hash1 + (hash2 * 1566083941));
         }
     }
 }
