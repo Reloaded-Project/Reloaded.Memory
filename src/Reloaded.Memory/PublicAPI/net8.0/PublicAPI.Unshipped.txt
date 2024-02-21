@@ -1,1 +1,6 @@
-﻿
+﻿Reloaded.Memory.Exceptions.MemoryAllocationException.MemoryAllocationException() -> void
+Reloaded.Memory.Exceptions.MemoryAllocationException.MemoryAllocationException(string! message, System.Exception! innerException) -> void
+Reloaded.Memory.Exceptions.MemoryException.MemoryException() -> void
+Reloaded.Memory.Exceptions.MemoryException.MemoryException(string! message, System.Exception! innerException) -> void
+Reloaded.Memory.Exceptions.MemoryPermissionException.MemoryPermissionException() -> void
+Reloaded.Memory.Exceptions.MemoryPermissionException.MemoryPermissionException(string! message, System.Exception! innerException) -> void
