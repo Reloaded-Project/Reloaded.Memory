@@ -2,6 +2,7 @@
 using FluentAssertions;
 using Reloaded.Memory.Utilities;
 using Xunit;
+#pragma warning disable CS0618 // Type or member is obsolete
 
 namespace Reloaded.Memory.Tests.Tests.Utility;
 

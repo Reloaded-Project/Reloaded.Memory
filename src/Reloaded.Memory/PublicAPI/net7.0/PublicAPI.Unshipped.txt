@@ -4,3 +4,21 @@ Reloaded.Memory.Exceptions.MemoryException.MemoryException() -> void
 Reloaded.Memory.Exceptions.MemoryException.MemoryException(string! message, System.Exception! innerException) -> void
 Reloaded.Memory.Exceptions.MemoryPermissionException.MemoryPermissionException() -> void
 Reloaded.Memory.Exceptions.MemoryPermissionException.MemoryPermissionException(string! message, System.Exception! innerException) -> void
+Reloaded.Memory.Utilities.CircularBufferStruct
+Reloaded.Memory.Utilities.CircularBufferStruct.Add(byte* data, uint length) -> nuint
+Reloaded.Memory.Utilities.CircularBufferStruct.Add<T>(T value) -> nuint
+Reloaded.Memory.Utilities.CircularBufferStruct.Add<TSource, T>(TSource source, T value) -> nuint
+Reloaded.Memory.Utilities.CircularBufferStruct.Add<TSource>(TSource source, byte* data, uint length) -> nuint
+Reloaded.Memory.Utilities.CircularBufferStruct.CanItemFit(uint itemSize) -> Reloaded.Memory.Utilities.ItemFit
+Reloaded.Memory.Utilities.CircularBufferStruct.CanItemFit<T>() -> Reloaded.Memory.Utilities.ItemFit
+Reloaded.Memory.Utilities.CircularBufferStruct.CircularBufferStruct() -> void
+Reloaded.Memory.Utilities.CircularBufferStruct.CircularBufferStruct(nuint start, int size) -> void
+Reloaded.Memory.Utilities.CircularBufferStruct.Current.get -> nuint
+Reloaded.Memory.Utilities.CircularBufferStruct.End.get -> nuint
+Reloaded.Memory.Utilities.CircularBufferStruct.Remaining.get -> nuint
+Reloaded.Memory.Utilities.CircularBufferStruct.Size.get -> nuint
+Reloaded.Memory.Utilities.CircularBufferStruct.Start.get -> nuint
+Reloaded.Memory.Utilities.ItemFit
+Reloaded.Memory.Utilities.ItemFit.No = 2 -> Reloaded.Memory.Utilities.ItemFit
+Reloaded.Memory.Utilities.ItemFit.StartOfBuffer = 1 -> Reloaded.Memory.Utilities.ItemFit
+Reloaded.Memory.Utilities.ItemFit.Yes = 0 -> Reloaded.Memory.Utilities.ItemFit
