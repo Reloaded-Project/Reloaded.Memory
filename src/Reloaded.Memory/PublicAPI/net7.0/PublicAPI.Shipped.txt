@@ -968,3 +968,27 @@ static Reloaded.Memory.Extensions.StringExtensions.ToLowerInvariantFast(this str
 static Reloaded.Memory.Extensions.StringExtensions.ToLowerInvariantFast(this System.ReadOnlySpan<char> text, System.Span<char> target) -> void
 static Reloaded.Memory.Extensions.StringExtensions.ToUpperInvariantFast(this string! text) -> string!
 static Reloaded.Memory.Extensions.StringExtensions.ToUpperInvariantFast(this System.ReadOnlySpan<char> text, System.Span<char> target) -> void
+Reloaded.Memory.Exceptions.MemoryAllocationException.MemoryAllocationException() -> void
+Reloaded.Memory.Exceptions.MemoryAllocationException.MemoryAllocationException(string! message, System.Exception! innerException) -> void
+Reloaded.Memory.Exceptions.MemoryException.MemoryException() -> void
+Reloaded.Memory.Exceptions.MemoryException.MemoryException(string! message, System.Exception! innerException) -> void
+Reloaded.Memory.Exceptions.MemoryPermissionException.MemoryPermissionException() -> void
+Reloaded.Memory.Exceptions.MemoryPermissionException.MemoryPermissionException(string! message, System.Exception! innerException) -> void
+Reloaded.Memory.Utilities.CircularBufferStruct
+Reloaded.Memory.Utilities.CircularBufferStruct.Add(byte* data, uint length) -> nuint
+Reloaded.Memory.Utilities.CircularBufferStruct.Add<T>(T value) -> nuint
+Reloaded.Memory.Utilities.CircularBufferStruct.Add<TSource, T>(TSource source, T value) -> nuint
+Reloaded.Memory.Utilities.CircularBufferStruct.Add<TSource>(TSource source, byte* data, uint length) -> nuint
+Reloaded.Memory.Utilities.CircularBufferStruct.CanItemFit(uint itemSize) -> Reloaded.Memory.Utilities.CircularBufferStruct.ItemFit
+Reloaded.Memory.Utilities.CircularBufferStruct.CanItemFit<T>() -> Reloaded.Memory.Utilities.CircularBufferStruct.ItemFit
+Reloaded.Memory.Utilities.CircularBufferStruct.CircularBufferStruct() -> void
+Reloaded.Memory.Utilities.CircularBufferStruct.CircularBufferStruct(nuint start, int size) -> void
+Reloaded.Memory.Utilities.CircularBufferStruct.Current.get -> nuint
+Reloaded.Memory.Utilities.CircularBufferStruct.End.get -> nuint
+Reloaded.Memory.Utilities.CircularBufferStruct.ItemFit
+Reloaded.Memory.Utilities.CircularBufferStruct.ItemFit.No = 2 -> Reloaded.Memory.Utilities.CircularBufferStruct.ItemFit
+Reloaded.Memory.Utilities.CircularBufferStruct.ItemFit.StartOfBuffer = 1 -> Reloaded.Memory.Utilities.CircularBufferStruct.ItemFit
+Reloaded.Memory.Utilities.CircularBufferStruct.ItemFit.Yes = 0 -> Reloaded.Memory.Utilities.CircularBufferStruct.ItemFit
+Reloaded.Memory.Utilities.CircularBufferStruct.Remaining.get -> nuint
+Reloaded.Memory.Utilities.CircularBufferStruct.Size.get -> nuint
+Reloaded.Memory.Utilities.CircularBufferStruct.Start.get -> nuint
