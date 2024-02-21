@@ -233,25 +233,25 @@ public unsafe struct CircularBufferStruct
 
         return ItemFit.No;
     }
-}
-
-/// <summary>
-///     Possible results for whether the item can fit.
-/// </summary>
-public enum ItemFit
-{
-    /// <summary>
-    ///     The item can fit into the buffer.
-    /// </summary>
-    Yes,
 
     /// <summary>
-    ///     The item can fit into the buffer, but not in the remaining space (will be placed at start of buffer).
+    ///     Possible results for whether the item can fit.
     /// </summary>
-    StartOfBuffer,
+    public enum ItemFit
+    {
+        /// <summary>
+        ///     The item can fit into the buffer.
+        /// </summary>
+        Yes,
 
-    /// <summary>
-    ///     The item is too large to fit into the buffer.
-    /// </summary>
-    No
+        /// <summary>
+        ///     The item can fit into the buffer, but not in the remaining space (will be placed at start of buffer).
+        /// </summary>
+        StartOfBuffer,
+
+        /// <summary>
+        ///     The item is too large to fit into the buffer.
+        /// </summary>
+        No
+    }
 }
