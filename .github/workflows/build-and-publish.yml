@@ -2,10 +2,14 @@ name: Build, Test and Publish
 on:
   push:
     branches: [ master, refactor-reloaded3-compliance ]
+    paths:
+      - "src/**"
     tags:
       - '*'
   pull_request:
     branches: [ master, refactor-reloaded3-compliance ]
+    paths:
+      - "src/**"
   workflow_dispatch:
 
 jobs:
