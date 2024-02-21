@@ -44,14 +44,14 @@ without recompiling the source code. Should the need to introduce any breaking c
 
 !!! info "Common Classes within this Package Include"
 
-**Memory Manipulation:  **
+**Memory Manipulation:**
 
 | Action                              | Description                                                                         |
 |-------------------------------------|-------------------------------------------------------------------------------------|
 | [Memory](./About-Memory.md)         | Allows you to Read, Write, Allocate & Change Memory Protection for Current Process. |
 | [ExternalMemory](./About-Memory.md) | Read, Write, Allocate & Change Memory Protection but for Another Process.           |
 
-**Streams Management:  **
+**Streams Management:**
 
 | Action                                                                                                                        | Description                                     |
 |-------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------|
@@ -59,7 +59,7 @@ without recompiling the source code. Should the need to introduce any breaking c
 | LittleEndian([Reader](./Streams/EndianReaders/LittleEndianReader.md)/[Writer](./Streams/EndianReaders/LittleEndianWriter.md)) | Read/write raw data in memory as Little Endian. |
 | [BufferedStreamReader](./Streams/BufferedStreamReader.md)                                                                     | High performance alternative to `BinaryReader`. |
 
-**Extensions:  **
+**Extensions:**
 
 | Action                                                                                      | Description                                                                       |
 |---------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
@@ -67,7 +67,7 @@ without recompiling the source code. Should the need to introduce any breaking c
 | [StreamExtensions](./Extensions/StreamExtensions.md)                                        | Extensions for reading and writing from/to generics.                              |
 | [StringExtensions](./Extensions/StringExtensions.md)                                        | Custom Hash Function(s) and unsafe character references.                          |
 
-**Utilities:  **
+**Utilities:**
 
 | Action                                                       | Description                                                                            |
 |--------------------------------------------------------------|----------------------------------------------------------------------------------------|
@@ -76,7 +76,7 @@ without recompiling the source code. Should the need to introduce any breaking c
 | [CircularBuffer](./Utilities/CircularBuffer.md)              | Basic high-performance circular buffer.                                                |
 | [Pinnable<T>](./Utilities/Pinnable.md)                       | Utility for pinning C# objects for access from native code.                            |
 
-**Base building blocks:  **
+**Base building blocks:**
 
 | Action                                                                                   | Description                                     |
 |------------------------------------------------------------------------------------------|-------------------------------------------------|
