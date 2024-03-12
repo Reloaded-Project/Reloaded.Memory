@@ -3,6 +3,7 @@ using Reloaded.Memory.Exceptions;
 using Reloaded.Memory.Utilities;
 using static Reloaded.Memory.Internals.Backports.System.Text.Unicode.Utf16Utility;
 #if NET7_0_OR_GREATER
+using static Reloaded.Memory.Internals.Algorithms.UnstableStringHash;
 using Reloaded.Memory.Extensions;
 using Reloaded.Memory.Internals.Backports.System.Globalization;
 using System.Numerics;
@@ -48,7 +49,7 @@ internal static class UnstableStringHashLower
             return text.UnstableHashVec256Lower();
 
         // Over 4 Vec128 regs (16 * 4 = 64 bytes)
-        if (Vector256.IsHardwareAccelerated && length >= (sizeof(Vector128<ulong>) / sizeof(char)) * 4)
+        if (Vector128.IsHardwareAccelerated && length >= (sizeof(Vector128<ulong>) / sizeof(char)) * 4)
             return text.UnstableHashVec128Lower();
 #endif
 
@@ -104,6 +105,9 @@ internal static class UnstableStringHashLower
     }
 
     #if NET7_0_OR_GREATER
+    #if NET8_0 // Bug in .NET 8 seems to cause this to not re-jit to tier1 till like 200k calls on Linux x64
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+    #endif
     internal static unsafe UIntPtr UnstableHashVec128Lower(this ReadOnlySpan<char> text)
     {
         fixed (char* src = &text.GetPinnableReference())
@@ -113,46 +117,46 @@ internal static class UnstableStringHashLower
             var hash2 = hash1;
             var ptr = (nuint*)(src);
 
-            var prime = Vector128.Create((uint)0x01000193);
-            var hash1_128 = Vector128.Create(0x811c9dc5);
-            var hash2_128 = Vector128.Create(0x811c9dc5);
+            var prime = Vector128.Create((ulong)0x100000001b3);
+            var hash1_128 = Vector128.Create(0xcbf29ce484222325);
+            var hash2_128 = Vector128.Create(0xcbf29ce484222325);
 
             // We "normalize to lowercase" every char by ORing with 0x0020. This casts
             // a very wide net because it will change, e.g., '^' to '~'. But that should
             // be ok because we expect this to be very rare in practice.
-            var toLower = Vector128.Create<uint>(0x0020_0020);
+            var toLower = Vector128.Create<short>(0x0020).AsUInt64();
 
             while (length >= sizeof(Vector128<ulong>) / sizeof(char) * 4) // 64 byte chunks.
             {
                 length -= (sizeof(Vector128<ulong>) / sizeof(char)) * 4;
 
-                var v0 = Vector128.Load((ulong*)ptr).AsUInt32();
-                if (!AllCharsInVector128AreAscii(v0))
+                var v0 = Vector128.Load((ulong*)ptr);
+                if (!AllCharsInVector128AreAscii(v0.AsUInt16()))
                     goto NotAscii;
 
                 hash1_128 = Vector128.Xor(hash1_128, Vector128.BitwiseOr(v0, toLower));
-                hash1_128 = Vector128.Multiply(hash1_128, prime);
+                hash1_128 = HashMultiply128(hash1_128, prime);
 
-                v0 = Vector128.Load((ulong*)ptr + 2).AsUInt32();
-                if (!AllCharsInVector128AreAscii(v0))
+                v0 = Vector128.Load((ulong*)ptr + 2);
+                if (!AllCharsInVector128AreAscii(v0.AsUInt16()))
                     goto NotAscii;
 
                 hash2_128 = Vector128.Xor(hash2_128, Vector128.BitwiseOr(v0, toLower));
-                hash2_128 = Vector128.Multiply(hash2_128, prime);
+                hash2_128 = HashMultiply128(hash2_128, prime);
 
-                v0 = Vector128.Load((ulong*)ptr + 4).AsUInt32();
-                if (!AllCharsInVector128AreAscii(v0))
+                v0 = Vector128.Load((ulong*)ptr + 4);
+                if (!AllCharsInVector128AreAscii(v0.AsUInt16()))
                     goto NotAscii;
 
                 hash1_128 = Vector128.Xor(hash1_128, Vector128.BitwiseOr(v0, toLower));
-                hash1_128 = Vector128.Multiply(hash1_128, prime);
+                hash1_128 = HashMultiply128(hash1_128, prime);
 
-                v0 = Vector128.Load((ulong*)ptr + 6).AsUInt32();
-                if (!AllCharsInVector128AreAscii(v0))
+                v0 = Vector128.Load((ulong*)ptr + 6);
+                if (!AllCharsInVector128AreAscii(v0.AsUInt16()))
                     goto NotAscii;
 
                 hash2_128 = Vector128.Xor(hash2_128, Vector128.BitwiseOr(v0, toLower));
-                hash2_128 = Vector128.Multiply(hash2_128, prime);
+                hash2_128 = HashMultiply128(hash2_128, prime);
                 ptr += (sizeof(Vector128<ulong>) / sizeof(nuint)) * 4;
             }
 
@@ -160,12 +164,12 @@ internal static class UnstableStringHashLower
             {
                 length -= sizeof(Vector128<ulong>) / sizeof(char);
 
-                var v0 = Vector128.Load((ulong*)ptr).AsUInt32();
-                if (!AllCharsInVector128AreAscii(v0))
+                var v0 = Vector128.Load((ulong*)ptr);
+                if (!AllCharsInVector128AreAscii(v0.AsUInt16()))
                     goto NotAscii;
 
                 hash1_128 = Vector128.Xor(hash1_128, Vector128.BitwiseOr(v0, toLower));
-                hash1_128 = Vector128.Multiply(hash1_128, prime);
+                hash1_128 = HashMultiply128(hash1_128, prime);
                 ptr += (sizeof(Vector128<ulong>) / sizeof(nuint));
             }
 
@@ -224,6 +228,9 @@ internal static class UnstableStringHashLower
             return GetHashCodeUnstableLowerSlow(text);
     }
 
+#if NET8_0 // Bug in .NET 8 seems to cause this to not re-jit to tier1 till like 200k calls on Linux x64
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+#endif
     internal static unsafe UIntPtr UnstableHashVec256Lower(this ReadOnlySpan<char> text)
     {
         fixed (char* src = &text.GetPinnableReference())
@@ -233,46 +240,46 @@ internal static class UnstableStringHashLower
             var hash2 = hash1;
             var ptr = (nuint*)(src);
 
-            var prime = Vector256.Create((uint)0x01000193);
-            var hash1_256 = Vector256.Create(0x811c9dc5);
-            var hash2_256 = Vector256.Create(0x811c9dc5);
+            var prime = Vector256.Create((ulong)0x100000001b3);
+            var hash1_256 = Vector256.Create(0xcbf29ce484222325);
+            var hash2_256 = Vector256.Create(0xcbf29ce484222325);
 
             // We "normalize to lowercase" every char by ORing with 0x0020. This casts
             // a very wide net because it will change, e.g., '^' to '~'. But that should
             // be ok because we expect this to be very rare in practice.
-            var toLower = Vector256.Create<uint>(0x0020_0020);
+            var toLower = Vector256.Create<short>(0x0020).AsUInt64();
 
             while (length >= sizeof(Vector256<ulong>) / sizeof(char) * 4) // 128 byte chunks.
             {
                 length -= (sizeof(Vector256<ulong>) / sizeof(char)) * 4;
 
-                var v0 = Vector256.Load((ulong*)ptr).AsUInt32();
-                if (!AllCharsInVector256AreAscii(v0))
+                var v0 = Vector256.Load((ulong*)ptr);
+                if (!AllCharsInVector256AreAscii(v0.AsUInt16()))
                     goto NotAscii;
 
                 hash1_256 = Vector256.Xor(hash1_256, Vector256.BitwiseOr(v0, toLower));
-                hash1_256 = Vector256.Multiply(hash1_256.AsUInt32(), prime.AsUInt32());
+                hash1_256 = HashMultiply256(hash1_256, prime);
 
-                v0 = Vector256.Load((ulong*)ptr + 4).AsUInt32();
-                if (!AllCharsInVector256AreAscii(v0))
+                v0 = Vector256.Load((ulong*)ptr + 4);
+                if (!AllCharsInVector256AreAscii(v0.AsUInt16()))
                     goto NotAscii;
 
                 hash2_256 = Vector256.Xor(hash2_256, Vector256.BitwiseOr(v0, toLower));
-                hash2_256 = Vector256.Multiply(hash2_256.AsUInt32(), prime.AsUInt32());
+                hash2_256 = HashMultiply256(hash2_256, prime);
 
-                v0 = Vector256.Load((ulong*)ptr + 8).AsUInt32();
-                if (!AllCharsInVector256AreAscii(v0))
+                v0 = Vector256.Load((ulong*)ptr + 8);
+                if (!AllCharsInVector256AreAscii(v0.AsUInt16()))
                     goto NotAscii;
 
                 hash1_256 = Vector256.Xor(hash1_256, Vector256.BitwiseOr(v0, toLower));
-                hash1_256 = Vector256.Multiply(hash1_256.AsUInt32(), prime.AsUInt32());
+                hash1_256 = HashMultiply256(hash1_256, prime);
 
-                v0 = Vector256.Load((ulong*)ptr + 12).AsUInt32();
-                if (!AllCharsInVector256AreAscii(v0))
+                v0 = Vector256.Load((ulong*)ptr + 12);
+                if (!AllCharsInVector256AreAscii(v0.AsUInt16()))
                     goto NotAscii;
 
                 hash2_256 = Vector256.Xor(hash2_256, Vector256.BitwiseOr(v0, toLower));
-                hash2_256 = Vector256.Multiply(hash2_256.AsUInt32(), prime.AsUInt32());
+                hash2_256 = HashMultiply256(hash2_256, prime);
                 ptr += (sizeof(Vector256<ulong>) / sizeof(nuint)) * 4;
             }
 
@@ -280,12 +287,12 @@ internal static class UnstableStringHashLower
             {
                 length -= sizeof(Vector256<ulong>) / sizeof(char);
 
-                var v0 = Vector256.Load((ulong*)ptr).AsUInt32();
-                if (!AllCharsInVector256AreAscii(v0))
+                var v0 = Vector256.Load((ulong*)ptr);
+                if (!AllCharsInVector256AreAscii(v0.AsUInt16()))
                     goto NotAscii;
 
                 hash1_256 = Vector256.Xor(hash1_256, Vector256.BitwiseOr(v0, toLower));
-                hash1_256 = Vector256.Multiply(hash1_256.AsUInt32(), prime.AsUInt32());
+                hash1_256 = HashMultiply256(hash1_256, prime);
                 ptr += (sizeof(Vector256<ulong>) / sizeof(nuint));
             }
 
@@ -347,7 +354,7 @@ internal static class UnstableStringHashLower
         NotAscii:
             return GetHashCodeUnstableLowerSlow(text);
     }
-    #endif
+#endif
 
     internal static unsafe nuint UnstableHashNonVectorLower(this ReadOnlySpan<char> text)
     {

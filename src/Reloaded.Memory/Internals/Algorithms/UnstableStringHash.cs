@@ -45,7 +45,7 @@ internal static class UnstableStringHash
             return text.UnstableHashVec256();
 
         // Over 4 Vec128 regs (16 * 4 = 64 bytes)
-        if (Vector256.IsHardwareAccelerated && length >= (sizeof(Vector128<ulong>) / sizeof(char)) * 4)
+        if (Vector128.IsHardwareAccelerated && length >= (sizeof(Vector128<ulong>) / sizeof(char)) * 4)
             return text.UnstableHashVec128();
 #endif
 
@@ -53,6 +53,9 @@ internal static class UnstableStringHash
     }
 
     #if NET7_0_OR_GREATER
+#if NET8_0 // Bug in .NET 8 seems to cause this to not re-jit to tier1 till like 200k calls on Linux x64
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+#endif
     internal static unsafe UIntPtr UnstableHashVec128(this ReadOnlySpan<char> text)
     {
         fixed (char* src = &text.GetPinnableReference())
@@ -62,32 +65,32 @@ internal static class UnstableStringHash
             var hash2 = hash1;
             var ptr = (nuint*)(src);
 
-            var prime = Vector128.Create((uint)0x01000193);
-            var hash1_128 = Vector128.Create(0x811c9dc5);
-            var hash2_128 = Vector128.Create(0x811c9dc5);
+            var prime = Vector128.Create((ulong)0x100000001b3);
+            var hash1_128 = Vector128.Create(0xcbf29ce484222325);
+            var hash2_128 = Vector128.Create(0xcbf29ce484222325);
 
             while (length >= sizeof(Vector128<ulong>) / sizeof(char) * 4) // 64 byte chunks.
             {
                 length -= (sizeof(Vector128<ulong>) / sizeof(char)) * 4;
-                hash1_128 = Vector128.Xor(hash1_128, Vector128.Load((ulong*)ptr).AsUInt32());
-                hash1_128 = Vector128.Multiply(hash1_128, prime);
+                hash1_128 = Vector128.Xor(hash1_128, Vector128.Load((ulong*)ptr));
+                hash1_128 = HashMultiply128(hash1_128, prime);
 
-                hash2_128 = Vector128.Xor(hash2_128, Vector128.Load((ulong*)ptr + 2).AsUInt32());
-                hash2_128 = Vector128.Multiply(hash2_128, prime);
+                hash2_128 = Vector128.Xor(hash2_128, Vector128.Load((ulong*)ptr + 2));
+                hash2_128 = HashMultiply128(hash2_128, prime);
 
-                hash1_128 = Vector128.Xor(hash1_128, Vector128.Load((ulong*)ptr + 4).AsUInt32());
-                hash1_128 = Vector128.Multiply(hash1_128, prime);
+                hash1_128 = Vector128.Xor(hash1_128, Vector128.Load((ulong*)ptr + 4));
+                hash1_128 = HashMultiply128(hash1_128, prime);
 
-                hash2_128 = Vector128.Xor(hash2_128, Vector128.Load((ulong*)ptr + 6).AsUInt32());
-                hash2_128 = Vector128.Multiply(hash2_128, prime);
+                hash2_128 = Vector128.Xor(hash2_128, Vector128.Load((ulong*)ptr + 6));
+                hash2_128 = HashMultiply128(hash2_128, prime);
                 ptr += (sizeof(Vector128<ulong>) / sizeof(nuint)) * 4;
             }
 
             while (length >= sizeof(Vector128<ulong>) / sizeof(char)) // 16 byte chunks.
             {
                 length -= sizeof(Vector128<ulong>) / sizeof(char);
-                hash1_128 = Vector128.Xor(hash1_128, Vector128.Load((ulong*)ptr).AsUInt32());
-                hash1_128 = Vector128.Multiply(hash1_128, prime);
+                hash1_128 = Vector128.Xor(hash1_128, Vector128.Load((ulong*)ptr));
+                hash1_128 = HashMultiply128(hash1_128, prime);
                 ptr += (sizeof(Vector128<ulong>) / sizeof(nuint));
             }
 
@@ -117,6 +120,9 @@ internal static class UnstableStringHash
         }
     }
 
+#if NET8_0 // Bug in .NET 8 seems to cause this to not re-jit to tier1 till like 200k calls on Linux x64
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+#endif
     internal static unsafe UIntPtr UnstableHashVec256(this ReadOnlySpan<char> text)
     {
         fixed (char* src = &text.GetPinnableReference())
@@ -126,32 +132,32 @@ internal static class UnstableStringHash
             var hash2 = hash1;
             var ptr = (nuint*)(src);
 
-            var prime = Vector256.Create((uint)0x01000193);
-            var hash1_256 = Vector256.Create(0x811c9dc5);
-            var hash2_256 = Vector256.Create(0x811c9dc5);
+            var prime = Vector256.Create((ulong)0x100000001b3);
+            var hash1_256 = Vector256.Create(0xcbf29ce484222325);
+            var hash2_256 = Vector256.Create(0xcbf29ce484222325);
 
             while (length >= sizeof(Vector256<ulong>) / sizeof(char) * 4) // 128 byte chunks.
             {
                 length -= (sizeof(Vector256<ulong>) / sizeof(char)) * 4;
-                hash1_256 = Vector256.Xor(hash1_256, Vector256.Load((ulong*)ptr).AsUInt32());
-                hash1_256 = Vector256.Multiply(hash1_256, prime).AsUInt32();
+                hash1_256 = Vector256.Xor(hash1_256, Vector256.Load((ulong*)ptr));
+                hash1_256 = HashMultiply256(hash1_256, prime);
 
-                hash2_256 = Vector256.Xor(hash2_256, Vector256.Load((ulong*)ptr + 4).AsUInt32());
-                hash2_256 = Vector256.Multiply(hash2_256, prime).AsUInt32();
+                hash2_256 = Vector256.Xor(hash2_256, Vector256.Load((ulong*)ptr + 4));
+                hash2_256 = HashMultiply256(hash2_256, prime);
 
-                hash1_256 = Vector256.Xor(hash1_256, Vector256.Load((ulong*)ptr + 8).AsUInt32());
-                hash1_256 = Vector256.Multiply(hash1_256, prime).AsUInt32();
+                hash1_256 = Vector256.Xor(hash1_256, Vector256.Load((ulong*)ptr + 8));
+                hash1_256 = HashMultiply256(hash1_256, prime);
 
-                hash2_256 = Vector256.Xor(hash2_256, Vector256.Load((ulong*)ptr + 12).AsUInt32());
-                hash2_256 = Vector256.Multiply(hash2_256, prime).AsUInt32();
+                hash2_256 = Vector256.Xor(hash2_256, Vector256.Load((ulong*)ptr + 12));
+                hash2_256 = HashMultiply256(hash2_256, prime);
                 ptr += (sizeof(Vector256<ulong>) / sizeof(nuint)) * 4;
             }
 
             while (length >= sizeof(Vector256<ulong>) / sizeof(char)) // 32 byte chunks.
             {
                 length -= sizeof(Vector256<ulong>) / sizeof(char);
-                hash1_256 = Vector256.Xor(hash1_256, Vector256.Load((ulong*)ptr).AsUInt32());
-                hash1_256 = Vector256.Multiply(hash1_256, prime).AsUInt32();
+                hash1_256 = Vector256.Xor(hash1_256, Vector256.Load((ulong*)ptr));
+                hash1_256 = HashMultiply256(hash1_256, prime);
                 ptr += (sizeof(Vector256<ulong>) / sizeof(nuint));
             }
 
@@ -183,6 +189,28 @@ internal static class UnstableStringHash
 
             return hash1 + (hash2 * 1566083941);
         }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static Vector128<ulong> HashMultiply128(Vector128<ulong> a, Vector128<ulong> b)
+    {
+        // See comment in HashMultiply256
+        if (Sse2.IsSupported)
+            return Sse2.Multiply(a.AsUInt32(), b.AsUInt32()).AsUInt64();
+
+        return Vector128.Multiply(a.AsUInt32(), b.AsUInt32()).AsUInt64();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static Vector256<ulong> HashMultiply256(Vector256<ulong> a, Vector256<ulong> b)
+    {
+        // On AVX2, we want VPMULUDQ.
+        // Unfortunately the Vector256 fallback can't produce this,
+        // so we fallback to multiplying 32-bit ints, which isn't as good, but still not terrible.
+        if (Avx2.IsSupported)
+            return Avx2.Multiply(a.AsUInt32(), b.AsUInt32()).AsUInt64();
+
+        return Vector256.Multiply(a.AsUInt32(), b.AsUInt32()).AsUInt64();
     }
     #endif
 
