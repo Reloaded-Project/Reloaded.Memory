@@ -40,12 +40,10 @@ internal static class UnstableStringHash
         // For our use of hashing file paths, this is okay, as files with different names but same extension
         // would still hash differently. If I were to PR this to runtime though, this would need fixing.
 
-        // Over 4 Vec256 regs (32 * 4 = 128 bytes)
-        if (Vector256.IsHardwareAccelerated && length >= (sizeof(Vector256<ulong>) / sizeof(char)) * 4)
+        if (Vector256.IsHardwareAccelerated && length >= sizeof(nuint) * 8)
             return text.UnstableHashVec256();
 
-        // Over 4 Vec128 regs (16 * 4 = 64 bytes)
-        if (Vector128.IsHardwareAccelerated && length >= (sizeof(Vector128<ulong>) / sizeof(char)) * 4)
+        if (Vector128.IsHardwareAccelerated && length >= sizeof(nuint) * 4)
             return text.UnstableHashVec128();
 #endif
 
