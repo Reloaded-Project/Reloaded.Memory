@@ -32,7 +32,8 @@ public unsafe class FixedArrayPtr
     }
 
     [GlobalCleanup]
-    public bool Cleanup() => new Reloaded.Memory.Memory().Free(_allocation);
+    // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+    public void Cleanup() => new Reloaded.Memory.Memory().Free(_allocation);
 
     [Benchmark]
     public void FixedArrayPtr_CopyFrom() => _fixedArrayPtr.CopyFrom(_sourceArray, ArrayLength);

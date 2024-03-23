@@ -19,7 +19,8 @@ public unsafe class Memory
     public void Setup() => Alloc = new Reloaded.Memory.Memory().Allocate(DataSize);
 
     [GlobalCleanup]
-    public bool Cleanup() => new Reloaded.Memory.Memory().Free(Alloc);
+    // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+    public void Cleanup() => new Reloaded.Memory.Memory().Free(Alloc);
 
     // Note: We're not unrolling because we don't care for it to run as fast as possible, only that it's zero overhead.
 
