@@ -135,11 +135,11 @@ public static partial class Posix
     ///     but with an API similar to <see cref="Kernel32.ReadProcessMemory" />.
     /// </summary>
     /// <param name="processId">Id of the process to read from.</param>
-    /// <param name="localIov">Local memory address.</param>
     /// <param name="remoteIov">Remote memory address.</param>
+    /// <param name="localIov">Local memory address.</param>
     /// <param name="numBytes">Memory size.</param>
     /// <returns>True on success, else false.</returns>
-    public static unsafe bool process_vm_readv_k32(nint processId, nuint localIov, nuint remoteIov, nuint numBytes)
+    public static unsafe bool process_vm_readv_k32(nint processId, nuint remoteIov, nuint localIov, nuint numBytes)
     {
         IoVec local = new() { iov_base = localIov, iov_len = numBytes };
         IoVec remote = new() { iov_base = remoteIov, iov_len = numBytes };
