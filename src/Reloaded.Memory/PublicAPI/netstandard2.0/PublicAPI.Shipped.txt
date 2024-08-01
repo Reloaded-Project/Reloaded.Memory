@@ -988,3 +988,4 @@ Reloaded.Memory.Utilities.CircularBufferStruct.ItemFit.Yes = 0 -> Reloaded.Memor
 Reloaded.Memory.Utilities.CircularBufferStruct.Remaining.get -> nuint
 Reloaded.Memory.Utilities.CircularBufferStruct.Size.get -> nuint
 Reloaded.Memory.Utilities.CircularBufferStruct.Start.get -> nuint
+static Reloaded.Memory.Native.Unix.Posix.process_vm_readv_k32_2(nint processId, nuint remoteIov, nuint localIov, nuint numBytes) -> bool

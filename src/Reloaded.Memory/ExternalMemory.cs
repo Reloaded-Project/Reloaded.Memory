@@ -201,7 +201,7 @@ public readonly unsafe partial struct ExternalMemory : ICanReadWriteMemory, ICan
             return Kernel32.ReadProcessMemory(_processHandle, location, (nuint)buffer, numBytes, out _);
 
         if (Polyfills.IsLinux())
-            return Posix.process_vm_readv_k32(_processHandle, location, (nuint)buffer, numBytes);
+            return Posix.process_vm_readv_k32_2(_processHandle, location, (nuint)buffer, numBytes);
 
         ThrowHelpers.ThrowPlatformNotSupportedException();
         return false;
