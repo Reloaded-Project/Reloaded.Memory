@@ -16,37 +16,37 @@ jobs:
   build:
     strategy:
       matrix:
-        os:
-          - windows-latest
-          - ubuntu-latest
-          - macos-13
-        targetFramework:
-          - net8.0
-          - net7.0
-          - net6.0
-          - net5.0
-          - netcoreapp3.1
-        platform:
-          - x64
         include:
-          - os: windows-latest
-            targetFramework: net48
-            platform: x64
-          - os: windows-latest
-            targetFramework: net48
-            platform: x86
-          - os: windows-latest
-            targetFramework: net7.0
-            platform: x86
-          - os: windows-latest
-            targetFramework: net6.0
-            platform: x86
-          - os: windows-latest
-            targetFramework: net5.0
-            platform: x86
-          - os: windows-latest
-            targetFramework: netcoreapp3.1
-            platform: x86
+          # .NET 8.0 Tests
+          - { os: windows-latest, targetFramework: net8.0, platform: x64 }
+          - { os: ubuntu-latest, targetFramework: net8.0, platform: x64 }
+          - { os: macos-15-intel, targetFramework: net8.0, platform: x64 }
+          
+          # .NET 7.0 Tests
+          - { os: windows-latest, targetFramework: net7.0, platform: x64 }
+          - { os: ubuntu-latest, targetFramework: net7.0, platform: x64 }
+          - { os: macos-15-intel, targetFramework: net7.0, platform: x64 }
+          - { os: windows-latest, targetFramework: net7.0, platform: x86 }
+          
+          # .NET 6.0 Tests
+          - { os: windows-latest, targetFramework: net6.0, platform: x64 }
+          - { os: ubuntu-latest, targetFramework: net6.0, platform: x64 }
+          - { os: macos-15-intel, targetFramework: net6.0, platform: x64 }
+          - { os: windows-latest, targetFramework: net6.0, platform: x86 }
+          
+          # .NET 5.0 Tests (no Ubuntu, libSSL issues)
+          - { os: windows-latest, targetFramework: net5.0, platform: x64 }
+          - { os: macos-15-intel, targetFramework: net5.0, platform: x64 }
+          - { os: windows-latest, targetFramework: net5.0, platform: x86 }
+          
+          # .NET Core 3.1 Tests (no Ubuntu, libSSL issues)
+          - { os: windows-latest, targetFramework: netcoreapp3.1, platform: x64 }
+          - { os: macos-15-intel, targetFramework: netcoreapp3.1, platform: x64 }
+          - { os: windows-latest, targetFramework: netcoreapp3.1, platform: x86 }
+          
+          # .NET Framework 4.8 Tests (Windows only)
+          - { os: windows-latest, targetFramework: net48, platform: x64 }
+          - { os: windows-latest, targetFramework: net48, platform: x86 }
     
     runs-on: ${{ matrix.os }}
     steps:
