@@ -26,7 +26,11 @@ internal static class UnstableStringHash
     /// </remarks>
     [ExcludeFromCodeCoverage] // "Cannot be accurately measured without multiple architectures. Known good impl." This is still tested tho.
     [SuppressMessage("ReSharper", "InconsistentNaming")]
+#if NET5_0_OR_GREATER
+    [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+#else
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
     internal static unsafe nuint GetHashCodeUnstable(this ReadOnlySpan<char> text)
     {
 #if NET7_0_OR_GREATER
@@ -51,9 +55,7 @@ internal static class UnstableStringHash
     }
 
     #if NET7_0_OR_GREATER
-#if NET8_0 // Bug in .NET 8 seems to cause this to not re-jit to tier1 till like 200k calls on Linux x64
     [MethodImpl(MethodImplOptions.AggressiveOptimization)]
-#endif
     internal static unsafe UIntPtr UnstableHashVec128(this ReadOnlySpan<char> text)
     {
         fixed (char* src = &text.GetPinnableReference())
@@ -118,9 +120,7 @@ internal static class UnstableStringHash
         }
     }
 
-#if NET8_0 // Bug in .NET 8 seems to cause this to not re-jit to tier1 till like 200k calls on Linux x64
     [MethodImpl(MethodImplOptions.AggressiveOptimization)]
-#endif
     internal static unsafe UIntPtr UnstableHashVec256(this ReadOnlySpan<char> text)
     {
         fixed (char* src = &text.GetPinnableReference())
