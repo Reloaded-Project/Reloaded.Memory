@@ -19,7 +19,7 @@ jobs:
         os:
           - windows-latest
           - ubuntu-latest
-          - macos-13
+          - macos-15-intel
         targetFramework:
           - net8.0
           - net7.0
