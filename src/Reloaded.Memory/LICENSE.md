@@ -1,144 +1,17 @@
 # Specific note for Reloaded.Memory
 
-This library is licensed under the GNU General Public License v3.0, however, some components, are forked from
+This library is licensed under the GNU General Public License v3.0, however, some components are forked from
 Microsoft Community Toolkit, and are thus licensed under the MIT License. These are marked in source files using
-the methods cited below. You may use these components under the terms of the MIT License.
+methods cited below. You may use these components under the terms of the MIT License.
 
-# The Reloaded Project License FAQ (1.0.0)
+This project is licensed under the GNU General Public License v3.0 (GPLv3).
 
-Components of the Reloaded-Project are governed by the *GPLv3* license as of May 2023.  
-Prior versions of the project were under the LGPLv3 license.
+For a detailed FAQ about this license and its implications, please visit:
+https://reloaded-project.github.io/License/GPLv3/about.html
 
-The complete license text can be found at the end of this document.
+For custom/alternative/commercial licensing options, contact admin@sewer56.dev
 
-This FAQ is meant to clarify our licensing choice and its implications.
-Please note, though, that the full license text is the final legal authority.
-
-## Why was GPL v3 chosen?
-
-The primary objective is to prevent closed-source, commercial exploitation of the project.  
-We want to ensure that the project isn't used within a proprietary environment for
-profit-making purposes such as:
-
-- Being sold behind a Patreon paywall.
-- Being integrated into a closed-source commercial product for sale.
-
-The Reloaded Project is a labour of love from unpaid hobbyist volunteers.  
-It wasn't designed for commercial use, and exploiting it for profit feels fundamentally unfair.
-
-While the GPLv3 license doesn't prohibit commercial use outright, it does prevent commercial
-exploitation by requiring that contributions are given back to the open-source community.
-
-In that fashion, everyone can benefit from the projects under the Reloaded label.
-
-## Can I use Reloaded Libraries Commercially?
-
-You can as long as the resulting produce is also licensed under GPLv3, and thus open source.
-
-## Can I use Reloaded Libraries in a closed-source application?
-
-The license terms do not permit this.
-
-However, if your software is completely non-commercial, meaning it's neither
-sold for profit, funded in development, nor hidden behind a paywall (like Patreon),
-we will just look the other way.
-
-This often applies to non-professional programmers, learners, or those
-with no intent to exploit the project. We believe in understanding and
-leniency for those who might not know better.
-
-GPL v3 exists to protect the project and its contributors.  
-If you're not exploiting the project for commercial gain, you're not hurting us; 
-and we will not enforce the terms of the GPL.  
-
-If you are interested in obtaining a commercial license, or want an explicit written exemption,
-please get in touch with the repository owners.
-
-## Can I link Reloaded Libraries statically/dynamically?
-
-Yes, as long as you adhere to the GPLv3 license terms, you're permitted to statically
-link Reloaded Libraries into your project, for instance, through the use of NativeAOT or ILMerge.
-
-## Guidelines for Non-Commercial Use
-
-We support and encourage the non-commercial use of Reloaded Libraries.
-Non-commercial use generally refers to the usage of our libraries for personal projects,
-educational purposes, academic research, or use by non-profit organizations.
-
-**Personal Projects:** You're free to use our libraries for projects that you undertake
-for your own learning, hobby or personal enjoyment. This includes creating mods for your
-favorite games or building your own applications for personal use.
-
-**Educational Use:** Teachers and students are welcome to use our libraries as a learning
-resource. You can incorporate them into your teaching materials, student projects, coding
-bootcamps, workshops, etc.
-
-**Academic Research:** Researchers may use our libraries for academic and scholarly research.
-We'd appreciate if you cite our work in any publications that result from research involving our libraries.
-
-**Non-profit Organizations:** If you're part of a registered non-profit organization,
-you can use our libraries in your projects. However, any derivative work that uses our
-libraries must also be released under the GPL.
-
-Please remember, if your usage of our libraries evolves from non-commercial to commercial,
-you must ensure compliance with the terms of the GPL v3 license.
-
-## Attribution Requirements
-
-As Reloaded Project is a labor of love, done purely out of passion and with an aim to contribute
-to the broader community, we highly appreciate your support in providing attribution when using
-our libraries. While not legally mandatory under the GPL v3, it is a simple act that can go a long
-way in recognizing the efforts of our contributors and fostering an open and collaborative atmosphere.
-
-If you choose to provide attribution (and we hope you do!), here are some guidelines:
-
-- **Acknowledge the Use of Reloaded Libraries:** Mention that your project uses or is based on Reloaded libraries.
-  This could be in your project's readme, a credits page on a website, a manual, or within the software itself.
-
-- **Link to the Project:** If possible, provide a link back to the Reloaded Project.
-  This allows others to explore and potentially benefit from our work.
-
-Remember, attribution is more than just giving credit,,, it's a way of saying thank you 👉👈, fostering reciprocal
-respect, and acknowledging the power of collaborative open-source development.
-
-We appreciate your support and look forward to seeing what amazing projects you create using Reloaded libraries!
-
-## Code from MIT/BSD Licensed Projects
-
-In some rare instances, code from more permissively licensed projects, such as those under the
-`MIT` or `BSD` licenses, may be referenced, incorporated, or slightly modified within the Reloaded Project.
-
-It's important to us to respect the terms and intentions of these permissive licenses,
-which often allow their code to be used in a wide variety of contexts, including in GPL-licensed projects like ours.
-
-In these cases, the Reloaded Project is committed to clearly disclosing the usage of such code:
-
-- **Method-Level Disclosure:** For individual methods or small code snippets, we use appropriate
-  attribution methods, like programming language attributes. For example, methods borrowed or adapted
-  from MIT-licensed projects might be marked with a `[MITLicense]` attribute.
-
-- **File-Level Disclosure:** For larger amounts of code, such as entire files or modules, we'll include
-  the original license text at the top of the file and clearly indicate which portions of the code originate
-  from a differently-licensed project.
-
-- **Project-Level Disclosure:** If an entire library or significant portion of a project under a more permissive
-  license is used, we will include an acknowledgment in a prominent location, such as the readme file or the
-  project's license documentation.
-
-This approach ensures we honor the contributions of the open source community at large, respect the original
-licenses, and maintain transparency with our users about where code originates from.
-
-Any files/methods or snippets marked with those attributes may be consumed using their original license terms.  
-i.e. If a method is marked with `[MITLicense]`, you may use it under the terms of the MIT license.
-
-## Contributing to the Reloaded Project
-
-We welcome and appreciate contributions to the Reloaded Project!
-By contributing, you agree to share your changes under the same GPLv3 license,
-helping to make the project better for everyone.
-
-------------------------
-# Reloaded.Memory
+===================
 
                     GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
@@ -210,7 +83,7 @@ patents cannot be used to render the program non-free.
 The precise terms and conditions for copying, distribution and
 modification follow.
 
-                       TERMS AND CONDITIONS
+                        TERMS AND CONDITIONS
 
 0. Definitions.
 
@@ -328,8 +201,8 @@ measures.
 
 When you convey a covered work, you waive any legal power to forbid
 circumvention of technological measures to the extent such circumvention
-is effected by exercising rights under this License with respect to
-the covered work, and you disclaim any intention to limit operation or
+is effected by exercising rights under this License with respect to the
+covered work, and you disclaim any intention to limit operation or
 modification of the work as a means of enforcing, against the work's
 users, your or third parties' legal rights to forbid circumvention of
 technological measures.
@@ -633,8 +506,8 @@ propagate the contents of its contributor version.
 
 In the following three paragraphs, a "patent license" is any express
 agreement or commitment, however denominated, not to enforce a patent
-(such as an express permission to practice a patent or covenant not to
-sue for patent infringement).  To "grant" such a patent license to a
+(such as an express permission to practice a patent or covenant not
+to sue for patent infringement).  To "grant" such a patent license to a
 party means to make such an agreement or commitment not to enforce a
 patent against the party.
 
@@ -762,6 +635,59 @@ copy of the Program in return for a fee.
 
                      END OF TERMS AND CONDITIONS
 
+            How to Apply These Terms to Your New Programs
+
+If you develop a new program, and you want it to be of the greatest
+possible use to the public, the best way to achieve this is to make it
+free software which everyone can redistribute and change under these terms.
+
+To do so, attach the following notices to the program.  It is safest
+to attach them to the start of each source file to most effectively
+state the exclusion of warranty; and each file should have at least
+the "copyright" line and a pointer to where the full notice is found.
+
+    <one line to give the program's name and a brief idea of what it does.>
+    Copyright (C) <year>  <name of author>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+Also add information on how to contact you by electronic and paper mail.
+
+If the program does terminal interaction, make it output a short
+notice like this when it starts in an interactive mode:
+
+    <program>  Copyright (C) <year>  <name of author>
+    This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+    This is free software, and you are welcome to redistribute it
+    under certain conditions; type `show c' for details.
+
+The hypothetical commands `show w' and `show c' should show the appropriate
+parts of the General Public License.  Of course, your program's commands
+might be different; for a GUI interface, you would use an "about box".
+
+You should also get your employer (if you work as a programmer) or school,
+if any, to sign a "copyright disclaimer" for the program, if necessary.
+For more information on this, and how to apply and follow the GNU GPL, see
+<https://www.gnu.org/licenses/>.
+
+The GNU General Public License does not permit incorporating your program
+into proprietary programs.  If your program is a subroutine library, you
+may consider it more useful to permit linking proprietary applications with
+the library.  If this is what you want to do, use the GNU Lesser General
+Public License instead of this License.  But first, please read
+<https://www.gnu.org/licenses/why-not-lgpl.html>.
+
 ------------------------
 # .NET Community Toolkit
 
@@ -772,14 +698,14 @@ All rights reserved.
 ## MIT License (MIT)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-documentation files (the “Software”), to deal in the Software without restriction, including without limitation the 
+documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
 rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
 permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of 
 the Software.
 
-THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO 
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO 
 THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS 
 OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
